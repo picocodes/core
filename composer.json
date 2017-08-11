@@ -1,0 +1,29 @@
+{
+  "name": "mailoptin/core",
+  "description": "Core lib for MailOptin",
+  "type": "library",
+  "require": {
+    "soundasleep/html2text": "~0.5",
+    "pelago/emogrifier": "^1.0",
+    "league/csv": "7.2.0",
+    "collizo4sky/persist-admin-notices-dismissal": "^1.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "MailOptin\\Core\\": "src/"
+    },
+    "autoload-dev": {
+      "psr-4": {
+        "MailOptin\\Tests\\Core\\": "tests/"
+      }
+    },
+    "files": [
+      "src/Functions/custom-settings-api.php",
+      "src/Functions/functions.php",
+      "src/Functions/php-html-css-js-minifier.php"
+    ]
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^5.5"
+  }
+}

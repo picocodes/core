@@ -1,0 +1,145 @@
+<?php
+
+namespace MailOptin\Core\Admin\SettingsPage;
+
+// Exit if accessed directly
+use W3Guy\Custom_Settings_Page_Api;
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+class Settings extends AbstractSettingsPage
+{
+    public function __construct()
+    {
+        $this->init_menu();
+        add_action('admin_menu', array($this, 'register_settings_page'));
+    }
+
+    public function register_settings_page()
+    {
+        add_submenu_page(
+            'mailoptin-settings',
+            __('Settings - MailOptin', 'mailoptin'),
+            __('Settings', 'mailoptin'),
+            'manage_options',
+            'mailoptin-settings',
+            array($this, 'settings_admin_page_callback')
+        );
+    }
+
+    public function settings_admin_page_callback()
+    {
+        $args = array(
+            'general_settings' => apply_filters('mailoptin_settings_general_settings_page', array(
+                    'section_title' => __('General Settings', 'mailoptin'),
+                    'remove_plugin_data' => array(
+                        'type' => 'checkbox',
+                        'label' => __('Remove Data on Uninstall?', 'mailoptin'),
+                        'description' => __('Check this box if you would like MailOptin to completely remove all of its data when uninstalled.', 'mailoptin'),
+                    ),
+                    'allow_tracking' => array(
+                        'type' => 'checkbox',
+                        'label' => __('Allow Usage Tracking?', 'mailoptin'),
+                        'description' => __('Allow MailOptin to anonymously track how this plugin is used and help us make the plugin better. Opt-in to tracking and our newsletter. No sensitive data is tracked. Ever.', 'mailoptin'),
+                    ),
+                )
+            ),
+            'optin_campaign_settings' => apply_filters('mailoptin_settings_optin_campaign_settings_page', array(
+                    'section_title' => __('Optin Campaign Settings', 'mailoptin'),
+                    'global_cookie' => array(
+                        'type' => 'number',
+                        'value' => 0,
+                        'label' => __('Global Interaction Cookie', 'mailoptin'),
+                        'description' => __(
+                            'Entering a number of days (e.g. 30) will set a global cookie once any optin is closed by a user or visitor.
+                            This global cookie will prevent any other optins from loading on your site for that visitor until the cookie expires. Defaults to 0 (no global interaction cookie).',
+                            'mailoptin'
+                        ),
+                    ),
+                    'global_success_cookie' => array(
+                        'type' => 'number',
+                        'value' => 0,
+                        'label' => __('Global Success Cookie', 'mailoptin'),
+                        'description' => __(
+                            'Entering a number of days (e.g. 30) will set a global cookie once any optin has resulted in a successful conversion. This global cookie will prevent any other optins from loading on your site for that visitor until the cookie expires. Defaults to 0 (no global success cookie).',
+                            'mailoptin'
+                        ),
+                    ),
+                )
+            ),
+            'email_campaign_settings' => apply_filters('mailoptin_settings_email_campaign_settings_page', array(
+                    'section_title' => __('Email Campaign Settings', 'mailoptin'),
+                    'from_name' => array(
+                        'type' => 'text',
+                        'label' => __('From Name', 'mailoptin'),
+                        'description' => sprintf(__('Enter the sender name to be used as the "From Name".', 'mailoptin')),
+                    ),
+                    'from_email' => array(
+                        'type' => 'text',
+                        'label' => __('From Email', 'mailoptin'),
+                        'description' => __('Enter the email address to be used as the "From Email"', 'mailoptin'),
+                    ),
+                    'reply_to' => array(
+                        'type' => 'text',
+                        'label' => __('Reply To', 'mailoptin'),
+                        'description' => __('Enter the email address to be used as the "Reply To"', 'mailoptin'),
+                    ),
+                    'company_name' => array(
+                        'type' => 'text',
+                        'label' => __('Company / Organization', 'mailoptin'),
+                        'description' => __('Enter the name of your company or organization.', 'mailoptin'),
+                    ),
+                    'company_address' => array(
+                        'type' => 'text',
+                        'label' => __('Address', 'mailoptin'),
+                    ),
+                    'company_address_2' => array(
+                        'type' => 'text',
+                        'label' => __('Address 2', 'mailoptin'),
+                    ),
+                    'company_city' => array(
+                        'type' => 'text',
+                        'label' => __('City', 'mailoptin'),
+                    ),
+                    'company_state' => array(
+                        'type' => 'text',
+                        'label' => __('State / Province / Region', 'mailoptin'),
+                    ),
+                    'company_zip' => array(
+                        'type' => 'text',
+                        'label' => __('Zip / Postal code', 'mailoptin')
+                    ),
+                    'company_country' => array(
+                        'type' => 'select',
+                        'label' => __('Country', 'mailoptin'),
+                        'options' => \MailOptin\Core\countries_array()
+                    )
+                )
+            )
+        );
+
+        if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
+            unset($args['optin_campaign_settings']);
+        }
+
+        $instance = Custom_Settings_Page_Api::instance($args, MAILOPTIN_SETTINGS_DB_OPTION_NAME, __('MailOptin - Settings', 'mailoptin'));
+        $this->register_core_settings($instance);
+        $instance->build();
+    }
+
+    /**
+     * @return Settings
+     */
+    public static function get_instance()
+    {
+        static $instance = null;
+
+        if (is_null($instance)) {
+            $instance = new self();
+        }
+
+        return $instance;
+    }
+}

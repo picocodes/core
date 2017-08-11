@@ -1,0 +1,11 @@
+.customize-control-textarea textarea {
+    height: 500px;
+}
+
+.customize-control-textarea textarea[data-customize-setting-link*="success_message"] {
+    height: 100px !important;
+}
+
+#sub-accordion-section-mo_wp_page_filter_display_rule_section {
+    height: 100% !important;
+}
