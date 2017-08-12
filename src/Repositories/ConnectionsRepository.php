@@ -17,6 +17,18 @@ class ConnectionsRepository
         // hooked array must be a key/label pair eg $arg['sendy'] = 'Sendy'
         $connections = apply_filters('mailoptin_registered_connections', array('' => __('Select...', 'mailoptin')));
 
+        /** remove unconnected connections.  eg if an api key is missing or oauth authorization missing */
+        foreach ($connections as $className => $label) {
+            $connection_class = "MailOptin\\$className\\Connect";
+
+            if (class_exists($connection_class) &&
+                method_exists($connection_class, 'is_connected') &&
+                $connection_class::is_connected() === false) {
+                unset($connections[$className]);
+            }
+        }
+
+        // if lite version and we are in email campaign customizer UI, remove ESP.
         if (!defined('MAILOPTIN_DETACH_LIBSODIUM') && $customizer_type == 'email_campaign') {
             foreach ($connections as $key => $value) {
                 if ($key == '') {
