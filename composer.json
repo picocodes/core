@@ -19,7 +19,6 @@
     }
   },
   "files": [
-    "src/Functions/countries.php",
     "src/Functions/custom-settings-api.php",
     "src/Functions/functions.php",
     "src/Functions/php-html-css-js-minifier.php"
