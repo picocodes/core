@@ -11,18 +11,18 @@
   "autoload": {
     "psr-4": {
       "MailOptin\\Core\\": "src/"
-    }
+    },
+    "files": [
+      "src/Functions/custom-settings-api.php",
+      "src/Functions/functions.php",
+      "src/Functions/php-html-css-js-minifier.php"
+    ]
   },
   "autoload-dev": {
     "psr-4": {
       "MailOptin\\Tests\\Core\\": "tests/"
     }
   },
-  "files": [
-    "src/Functions/custom-settings-api.php",
-    "src/Functions/functions.php",
-    "src/Functions/php-html-css-js-minifier.php"
-  ],
   "require-dev": {
     "phpunit/phpunit": "^5.5"
   }
