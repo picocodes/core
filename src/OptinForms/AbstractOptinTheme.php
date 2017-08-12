@@ -320,6 +320,10 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         $style = esc_attr($atts['style']);
         $style = "$headline_styles $style";
 
+        if ($atts['tag'] == 'h2') {
+            $style .= "padding: 0;";
+        }
+
         $html = "<$tag class=\"mo-optin-form-headline $class\" style=\"$style\">$headline</$tag>";
 
         return $html;
