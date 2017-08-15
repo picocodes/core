@@ -649,7 +649,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
 
                                 // Because JavaScript treats 0 as loosely equal to false (i.e. 0 == false, but 0 !== false),
                                 // to check for the presence of value within array, you need to check if it's not equal to (or greater than) -1.
-                                if ($.inArray($optin_type, ['lightbox', 'bar']) !== -1 && optin_js_config.icon_close !== true) {
+                                if (optin_js_config.icon_close !== true) {
                                     self.addSuccessCloseIcon.call(optin_container);
                                 }
 

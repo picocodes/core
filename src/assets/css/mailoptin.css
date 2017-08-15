@@ -47,6 +47,9 @@
     display: block !important;
     line-height: 32px !important;
     padding: 0 !important;
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
 }
 
 .mo-optin-success-msg {
