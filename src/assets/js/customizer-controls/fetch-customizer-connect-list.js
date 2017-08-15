@@ -117,10 +117,10 @@
             // '*=' selector check if the string after = is found in the element.
             // >= 2 is used because connection email list select-dropdown always have a default "Select..." option.
             if ($("select[data-customize-setting-link*='connection_email_list'] option").length >= 2) {
-                $("div#customize-theme-controls li[id*='connection_email_list").show();
+                $("div#customize-theme-controls li[id*='connection_email_list']").show();
             }
             else {
-                $("div#customize-theme-controls li[id*='connection_email_list").hide();
+                $("div#customize-theme-controls li[id*='connection_email_list']").hide();
             }
         }
     });

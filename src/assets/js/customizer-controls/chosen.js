@@ -13,7 +13,7 @@
 
         chosen_selector.chosen({
             inherit_select_classes: true,
-            width: "250px"
+            width: "100%"
         });
 
 
