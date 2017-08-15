@@ -21,12 +21,11 @@ class OptinThemesRepositoryTest extends WP_UnitTestCase
             'screenshot' => ''
         );
     }
-    
+
     public function tearDown()
     {
         parent::tearDown();
     }
-
 
     public function testGetAll()
     {

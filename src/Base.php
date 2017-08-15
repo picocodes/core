@@ -82,7 +82,19 @@ class Base
 
         add_action('plugins_loaded', [$this, 'register_metadata_table']);
 
+        add_action('plugins_loaded', [$this, 'db_updates']);
+
         add_filter('wpmu_drop_tables', array($this, 'wpmu_drop_tables'));
+    }
+
+
+    public function db_updates()
+    {
+        if (!is_admin()) {
+            return;
+        }
+
+        DBUpdates::get_instance()->maybe_update();
     }
 
     public function admin_hooks()
