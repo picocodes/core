@@ -61,7 +61,7 @@ class CreateDBTables
                   user_agent varchar(150) DEFAULT '',
                   conversion_page varchar(256) DEFAULT '',
                   referrer varchar(256) DEFAULT '',
-                  date_added datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                  date_added datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
                   PRIMARY KEY (id)
                 ) $collate;
 				";
