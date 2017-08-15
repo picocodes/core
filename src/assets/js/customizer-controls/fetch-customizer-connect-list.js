@@ -13,7 +13,7 @@
             toggle_connect_service_connected_fields();
 
             // hide email list select dropdown field before fetching the list of the selected connect/email service.
-            $("div#customize-theme-controls li[id*='connection_email_list").hide();
+            $("div#customize-theme-controls li[id*='connection_email_list']").hide();
 
             add_spinner(this);
 
@@ -32,19 +32,19 @@
                             $("select[data-customize-setting-link*='connection_email_list'] option").remove();
 
                             // append default "Select..." option to select dropdown.
-                            $("select[data-customize-setting-link*='connection_email_list").append($('<option>', {
+                            $("select[data-customize-setting-link*='connection_email_list']").append($('<option>', {
                                 value: '',
                                 text: 'Select...'
                             }));
 
                             $.each(data, function (key, value) {
-                                $("select[data-customize-setting-link*='connection_email_list").append($('<option>', {
+                                $("select[data-customize-setting-link*='connection_email_list']").append($('<option>', {
                                     value: key,
                                     text: value
                                 }));
                             });
 
-                            $("div#customize-theme-controls li[id*='connection_email_list").show();
+                            $("div#customize-theme-controls li[id*='connection_email_list']").show();
 
                             // hide all fields that depending on a connection service before showing that belonging to the selected one
                             $('li[id*="Connect"]').hide();
@@ -55,7 +55,7 @@
                             $(document.body).trigger('mo_email_list_data_found');
                         }
                         else {
-                            $("div#customize-theme-controls li[id*='connection_email_list").hide();
+                            $("div#customize-theme-controls li[id*='connection_email_list']").hide();
 
                             // hide all dependent connection service fields if no connection email list was returned.
                             $('li[id*="Connect"]').hide();
@@ -63,7 +63,7 @@
                         }
                     }
                     else {
-                        $("div#customize-theme-controls li[id*='connection_email_list").hide();
+                        $("div#customize-theme-controls li[id*='connection_email_list']").hide();
 
                         // hide all dependent connection service fields if ajax response came badly or invalid.
                         $('li[id*="Connect"]').hide();
