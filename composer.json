@@ -22,8 +22,5 @@
     "psr-4": {
       "MailOptin\\Tests\\Core\\": "tests/"
     }
-  },
-  "require-dev": {
-    "phpunit/phpunit": "^5.5"
   }
 }
