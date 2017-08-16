@@ -28,8 +28,6 @@ class AbstractConnectTest extends WP_UnitTestCase
 
         $content = file_get_contents(MAILOPTIN_OPTIN_ERROR_LOG.'mailchimp.log');
 
-        var_dump($content);
-
         $this->assertSame('hello'. "\r\n" . 'hi'. "\r\n", $content);
     }
 }

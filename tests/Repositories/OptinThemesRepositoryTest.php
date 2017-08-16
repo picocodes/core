@@ -33,10 +33,10 @@ class OptinThemesRepositoryTest extends WP_UnitTestCase
 
         $this->assertEquals(
             array(
-                'name' => 'Bare Metal',
+                'name' => 'BareMetal',
                 'optin_class' => 'BareMetal',
-                'optin_type' => 'lighbox,sidebar,inpost',
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/baremetal.png'
+                'optin_type' => 'lightbox',
+                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/baremetal-lightbox.png'
             ),
             $data[0]
         );
@@ -49,7 +49,7 @@ class OptinThemesRepositoryTest extends WP_UnitTestCase
 
         $data = OptinThemesRepository::get_by_type('kick');
 
-        $this->assertEquals($this->kick_theme, $data);
+        $this->assertEquals([$this->kick_theme], $data);
     }
 
     public function testGetByName()
@@ -65,8 +65,6 @@ class OptinThemesRepositoryTest extends WP_UnitTestCase
     public function testDeleteByName()
     {
         OptinThemesRepository::add($this->kick_theme);
-
-        $this->assertEquals($this->kick_theme, OptinThemesRepository::get_by_type('kick'));
 
         OptinThemesRepository::delete_by_name('Kick');
 
