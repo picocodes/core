@@ -74,8 +74,15 @@ class OptinCampaignsRepository extends AbstractRepository
     public static function get_optin_campaign_uuid($optin_campaign_id)
     {
         $table = parent::campaigns_table();
+        $cache_key = "campaign_uuid_$optin_campaign_id";
 
-        return parent::wpdb()->get_var("SELECT uuid FROM $table WHERE id = '$optin_campaign_id'");
+        if (wp_cache_get($cache_key) !== false) {
+            return wp_cache_get($cache_key);
+        }
+
+        $result = parent::wpdb()->get_var("SELECT uuid FROM $table WHERE id = '$optin_campaign_id'");
+        wp_cache_set($cache_key, $result);
+        return $result;
     }
 
     /**

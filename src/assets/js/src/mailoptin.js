@@ -5,15 +5,40 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
     function ($, Cookies, mailoptin_globals) {
         "use strict";
 
-        $.MailOptin = {};
-
-        var mailoptin_optin = {
+        $.MailOptin = {
 
             /**
              * Is the current screen customizer preview?
              * @return {boolean}
              */
             is_customize_preview: (mailoptin_globals.is_customize_preview === 'true'),
+
+            /**
+             * Track optin conversion and impression.
+             *
+             * @param {string} optin_uuid
+             */
+            track_impression: function (optin_uuid) {
+                // bail if this is customizer preview
+                if ($.MailOptin.is_customize_preview === true) return;
+
+                var stat_data = {
+                    optin_uuid: optin_uuid,
+                    conversion_page: window.location.href,
+                    referrer: document.referrer || ""
+                };
+
+                $.post(
+                    mailoptin_globals.ajaxurl,
+                    {
+                        action: 'mailoptin_track_impression',
+                        stat_data: stat_data
+                    }
+                );
+            }
+        };
+
+        var mailoptin_optin = {
 
             mailoptin_jq_plugin: function () {
                 var self = this;
@@ -23,7 +48,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                     $optin_type = this.attr('data-optin-type');
                     $optin_css_id = $optin_uuid + '_' + $optin_type;
                     optin_js_config = self.optin_js_config($optin_css_id);
-                    test_mode = (self.is_customize_preview === true) ? true : optin_js_config.test_mode;
+                    test_mode = ($.MailOptin.is_customize_preview === true) ? true : optin_js_config.test_mode;
 
                     // add the close-optin event handler. modal/lightbox has its own so skip.
                     if (this.hasClass('mo-optin-form-lightbox') === false) {
@@ -45,7 +70,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                     }
 
                     // remove the close optin event if we're in customizer.
-                    if (self.is_customize_preview === true) {
+                    if ($.MailOptin.is_customize_preview === true) {
                         $(document).off('submit.moOptinSubmit', 'form.mo-optin-form');
                         $(document).off('click.moOptin', 'a[rel~="moOptin:close"]');
                         $(document).off('click.moOptin', '.mo-close-optin');
@@ -67,7 +92,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                             }
                         };
 
-                        if (self.is_customize_preview === true) {
+                        if ($.MailOptin.is_customize_preview === true) {
                             modal_options.keyClose = false;
                             modal_options.bodyClose = false;
                             modal_options.test_mode = true;
@@ -183,7 +208,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 var _this = this;
 
                 // if customizer, display immediately.
-                if (self.is_customize_preview === true || optin_config.test_mode === true) {
+                if ($.MailOptin.is_customize_preview === true || optin_config.test_mode === true) {
                     return self.display_optin_form.call(_this, optin_config, optin_type);
                 }
 
@@ -334,7 +359,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 var self = mailoptin_optin;
 
                 // do cookie checking if we are not in customizer mode and not test mode is active.
-                if (self.is_customize_preview === false && optin_config.test_mode === false) {
+                if ($.MailOptin.is_customize_preview === false && optin_config.test_mode === false) {
                     if (self.is_optin_visible(optin_config.optin_uuid) === false) return;
                 }
 
@@ -458,30 +483,6 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
             },
 
             /**
-             * Track optin conversion and impression.
-             *
-             * @param {string} optin_uuid
-             */
-            track_impression: function (optin_uuid) {
-                // bail if this is customizer preview
-                if (this.is_customize_preview === true) return;
-
-                var stat_data = {
-                    optin_uuid: optin_uuid,
-                    conversion_page: window.location.href,
-                    referrer: document.referrer || ""
-                };
-
-                $.post(
-                    mailoptin_globals.ajaxurl,
-                    {
-                        action: 'mailoptin_track_impression',
-                        stat_data: stat_data
-                    }
-                );
-            },
-
-            /**
              * Animate optin form display
              */
             animate_optin_display: function (effects) {
@@ -509,7 +510,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 self = this;
 
                 // if we are in customizer preview, bail.
-                if (self.is_customize_preview === true) return;
+                if ($.MailOptin.is_customize_preview === true) return;
 
                 $(document).on('submit.moOptinSubmit', 'form.mo-optin-form', function (e) {
                     e.preventDefault();
@@ -644,11 +645,9 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                                 // set cookie for this option conversion
                                 self.set_cookie('success', optin_data.optin_uuid, optin_js_config);
 
-                                // do not include success icon if icon_close (close icon automatially attached to lightbox) is set to true.
+                                // do not include success icon if icon_close (close icon automatically attached to lightbox) is set to true.
                                 // icon_close config is always false for none lightbox optin forms. see ./Core/src/OptinForms/AbstractOptinForm.php LN497
 
-                                // Because JavaScript treats 0 as loosely equal to false (i.e. 0 == false, but 0 !== false),
-                                // to check for the presence of value within array, you need to check if it's not equal to (or greater than) -1.
                                 if (optin_js_config.icon_close !== true) {
                                     self.addSuccessCloseIcon.call(optin_container);
                                 }
@@ -761,14 +760,9 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
              */
             eventSubscription: function () {
                 var self = this;
-                // track impression for modal
-                $(document).on($.MoModalBox.OPEN, function (e, optin_elem) {
-                    var optin_uuid = optin_elem.attr('id');
-                    self.track_impression(optin_uuid)
-                });
                 // track impression for optin form other than modals
                 $(document).on('moOptin:show', function (e, optin_uuid) {
-                    self.track_impression(optin_uuid)
+                    $.MailOptin.track_impression(optin_uuid)
                 });
             },
 
@@ -777,7 +771,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
              */
             init: function () {
                 var _this = this;
-                // dont wait for dom to be loaded first. start tracking asap.
+                // don't wait for dom to be loaded first. start tracking asap.
                 _this.track_page_views();
                 $(function () {
                     _this.eventSubscription();

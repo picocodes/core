@@ -4,6 +4,7 @@ namespace MailOptin\Core\OptinForms;
 
 use MailOptin\Core\Admin\Customizer\OptinForm\OptinFormFactory;
 use MailOptin\Core\Repositories\OptinCampaignsRepository as OCR;
+use MailOptin\Core\Repositories\OptinCampaignsRepository;
 
 class SidebarWidgets extends \WP_Widget
 {
@@ -30,6 +31,7 @@ class SidebarWidgets extends \WP_Widget
     public function widget($args, $instance)
     {
         $sidebar_optin_id = isset($instance['sidebar_optin_id']) ? $instance['sidebar_optin_id'] : false;
+        $sidebar_optin_uuid = OptinCampaignsRepository::get_optin_campaign_uuid($sidebar_optin_id);
         $title = isset($instance['title']) ? apply_filters('widget_title', $instance['title']) : false;
         $is_activated = OCR::is_activated($sidebar_optin_id);
 
@@ -47,6 +49,7 @@ class SidebarWidgets extends \WP_Widget
             if (!empty($optin_form_fonts)) {
                 echo "<script type='text/javascript'>jQuery(function(){WebFont.load({google: {families: [$optin_form_fonts]}});});</script>";
             }
+            echo "<script type='text/javascript'>jQuery(function(){jQuery.MailOptin.track_impression('$sidebar_optin_uuid')});</script>";
         }
 
         do_action('mo_sidebar_optin_widget_after_optin_form', $args, $instance);
