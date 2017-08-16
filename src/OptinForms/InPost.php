@@ -44,6 +44,8 @@ class InPost
             $optin_position = Repository::get_customizer_value($id, 'inpost_form_optin_position');
             $optin_position = empty($optin_position) ? 'after_content' : $optin_position;
 
+            $optin_uuid = Repository::get_optin_campaign_uuid($id);
+
             // if optin is not enabled, pass.
             if (!Repository::get_customizer_value($id, 'activate_optin')) {
                 continue;
@@ -62,6 +64,8 @@ class InPost
                 if (!empty($optin_form_fonts)) {
                     $optin_form .= "<script type='text/javascript'>jQuery(function(){WebFont.load({google: {families: [$optin_form_fonts]}});});</script>";
                 }
+                $optin_form .= "<script type='text/javascript'>jQuery(function(){jQuery.MailOptin.track_impression('$optin_uuid')});</script>";
+
                 if ('before_content' == $optin_position) {
                     $content = $optin_form . $content;
                 } else {
@@ -120,6 +124,9 @@ class InPost
                     if (!empty($optin_form_fonts)) {
                         $optin_form .= "<script type='text/javascript'>jQuery(function(){WebFont.load({google: {families: [$optin_form_fonts]}});});</script>";
                     }
+
+                    $optin_form .= "<script type='text/javascript'>jQuery(function(){jQuery.MailOptin.track_impression('$optin_uuid')});</script>";
+
                     if ('before_content' == $optin_position) {
                         $content = $optin_form . $content;
                     } else {
