@@ -278,6 +278,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
 
         $affiliate_url = trim(Settings::instance()->mailoptin_affiliate_url());
         $mailoptin_url = 'https://mailoptin.io/?ref=optin-branding';
+
         if (!empty($affiliate_url)) $mailoptin_url = $affiliate_url;
 
         return apply_filters(

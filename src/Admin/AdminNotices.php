@@ -14,11 +14,13 @@ class AdminNotices
 {
     public function __construct()
     {
+        add_action( 'admin_init', array( 'PAnD', 'init' ) );
         add_action('admin_notices', array($this, 'template_class_not_found'));
         add_action('admin_notices', array($this, 'optin_class_not_found'));
         add_action('admin_notices', array($this, 'failed_campaign_retried'));
         add_action('admin_notices', array($this, 'optin_campaign_count_limit_exceeded'));
         add_action('admin_notices', array($this, 'email_campaign_count_limit_exceeded'));
+        add_action('admin_notices', array($this, 'optin_branding_added_by_default'));
 
         add_action('admin_notices', array($this, 'optin_conversion_limit_exceeded'));
 
@@ -86,6 +88,31 @@ class AdminNotices
 
 
     /**
+     * Display notice that branding is now included by default in mailoptin optin forms
+     */
+    public function optin_branding_added_by_default()
+    {
+        if (!PAnD::is_admin_notice_active('optin-branding-added-by-default-forever')) {
+            return;
+        }
+
+        if (MAILOPTIN_VERSION_NUMBER > '1.1.2.0') return;
+
+        $learn_more = 'https://mailoptin.io/article/make-money-mailoptin-branding/?ref=wp_dashboard';
+
+        $notice = sprintf(
+            __('MailOptin branding is now included on all optin forms unless you explicitly disabled it in form builder at "Configuration" panel. %sLearn more%s', 'mailoptin'),
+            '<a href="' . $learn_more . '" target="_blank">',
+            '</a>'
+        );
+
+        echo '<div data-dismissible="optin-branding-added-by-default-forever" class="update-nag notice notice-warning is-dismissible">';
+        echo "<p><strong>$notice</strong></p>";
+        echo '</div>';
+    }
+
+
+    /**
      * Display notice when limit of created optin campaign is exceeded
      */
     public function optin_campaign_count_limit_exceeded()
@@ -107,7 +134,7 @@ class AdminNotices
         );
 
         echo '<div data-dismissible="optin-campaign-count-limit-exceeded-3" class="updated notice notice-success is-dismissible">';
-        echo "<p>$notice</strong></p>";
+        echo "<p>$notice</p>";
         echo '</div>';
     }
 
