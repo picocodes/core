@@ -101,7 +101,7 @@ class AdminNotices
         $learn_more = 'https://mailoptin.io/article/make-money-mailoptin-branding/?ref=wp_dashboard';
 
         $notice = sprintf(
-            __('MailOptin branding is now included on all optin forms unless you explicitly disabled it in form builder at "Configuration" panel. %sLearn more%s', 'mailoptin'),
+            __('MailOptin branding is now included on all optin forms unless you explicitly disabled it at "Configuration" panel in form builder. %sLearn more%s', 'mailoptin'),
             '<a href="' . $learn_more . '" target="_blank">',
             '</a>'
         );
