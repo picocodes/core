@@ -530,6 +530,18 @@ class CustomizerControls
                         'settings' => $this->option_prefix . '[success_message]',
                         'priority' => 100,
                     )
+                ),
+                'remove_branding' => new WP_Customize_Toggle_Control(
+                    $this->wp_customize,
+                    $this->option_prefix . '[remove_branding]',
+                    apply_filters('mo_optin_form_customizer_remove_branding_args', array(
+                            'label' => __('Remove MailOptin Branding', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->configuration_section_id,
+                            'settings' => $this->option_prefix . '[remove_branding]',
+                            'type' => 'light',
+                            'priority' => 110,
+                        )
+                    )
                 )
             ),
             $this->wp_customize,

@@ -320,6 +320,11 @@ class CustomizerSettings extends AbstractCustomizer
                     'type' => 'option',
                     'transport' => 'postMessage',
                 ),
+                'remove_branding' => array(
+                    'default' => apply_filters('mo_optin_form_remove_branding_default', false),
+                    'type' => 'option',
+                    'transport' => 'refresh',
+                )
             ),
             $this
         );
