@@ -44,6 +44,15 @@ class Settings extends AbstractSettingsPage
                         'label' => __('Allow Usage Tracking?', 'mailoptin'),
                         'description' => __('Allow MailOptin to anonymously track how this plugin is used and help us make the plugin better. Opt-in to tracking and our newsletter. No sensitive data is tracked. Ever.', 'mailoptin'),
                     ),
+                    'mailoptin_affiliate_url' => array(
+                        'type' => 'text',
+                        'label' => __('MailOptin Affiliate Link', 'mailoptin'),
+                        'description' => sprintf(
+                            __('You can earn money by promoting MailOptin! %1$sJoin our affiliate program%2$s, and paste your %1$saffiliate link here%2$s. Once entered, it will replace the default MailOptin branding link on your optins.', 'mailoptin'),
+                            '<a href="https://mailoptin.io/affiliates/" target="_blank">',
+                            '</a>'
+                        ),
+                    ),
                 )
             ),
             'optin_campaign_settings' => apply_filters('mailoptin_settings_optin_campaign_settings_page', array(

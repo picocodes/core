@@ -3,6 +3,8 @@
 namespace MailOptin\Core\OptinForms;
 
 
+use MailOptin\Core\PluginSettings\Settings;
+
 abstract class AbstractOptinTheme extends AbstractOptinForm
 {
     public function __construct($optin_campaign_id, $wp_customize = null)
@@ -270,16 +272,13 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
      */
     public function branding_attribute()
     {
-        // disable branding for lite users
-        if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
-            return;
-        }
-
         if ($this->get_customizer_value('remove_branding') === true) {
             return;
         }
 
+        $affiliate_url = trim(Settings::instance()->mailoptin_affiliate_url());
         $mailoptin_url = 'https://mailoptin.io/?ref=optin-branding';
+        if (!empty($affiliate_url)) $mailoptin_url = $affiliate_url;
 
         return apply_filters(
             'mailoptin_branding_attribute',
