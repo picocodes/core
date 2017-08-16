@@ -537,7 +537,7 @@ class CustomizerControls
                     apply_filters('mo_optin_form_customizer_remove_branding_args', array(
                             'label' => __('Remove MailOptin Branding', 'mailoptin'),
                             'description' => sprintf(
-                                __('%sSet your affiliate link%s and make money with branding', 'mailoptin'),
+                                __('%sSet your affiliate link%s and make money with branding.', 'mailoptin'),
                                 '<a href="' . MAILOPTIN_SETTINGS_SETTINGS_PAGE . '#mailoptin_affiliate_url_row" target="_blank">',
                                 '</a>'
                             ),

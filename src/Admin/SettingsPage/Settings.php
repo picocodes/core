@@ -3,6 +3,7 @@
 namespace MailOptin\Core\Admin\SettingsPage;
 
 // Exit if accessed directly
+use MailOptin\Core\Repositories\OptinCampaignsRepository;
 use W3Guy\Custom_Settings_Page_Api;
 
 if (!defined('ABSPATH')) {
@@ -15,6 +16,7 @@ class Settings extends AbstractSettingsPage
     {
         $this->init_menu();
         add_action('admin_menu', array($this, 'register_settings_page'));
+        add_action('wp_cspa_persist_settings', array($this, 'check_for_mailoptin_affiliate_check'), 10, 2);
     }
 
     public function register_settings_page()
@@ -27,6 +29,21 @@ class Settings extends AbstractSettingsPage
             'mailoptin-settings',
             array($this, 'settings_admin_page_callback')
         );
+    }
+
+    /**
+     * If changes is made to the mailoptin affiliate url field, clear cache.
+     */
+    public function check_for_mailoptin_affiliate_check($input, $option_name)
+    {
+        // Send an initial check in on settings save
+        $old_data = get_option(MAILOPTIN_SETTINGS_DB_OPTION_NAME, []);
+        $old_data = $old_data['mailoptin_affiliate_url'];
+        $new_data = $input['mailoptin_affiliate_url'];
+
+        if ($option_name == MAILOPTIN_SETTINGS_DB_OPTION_NAME && $old_data != $new_data) {
+            OptinCampaignsRepository::burst_optin_ids_cache();
+        }
     }
 
     public function settings_admin_page_callback()
