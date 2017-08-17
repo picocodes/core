@@ -152,12 +152,13 @@ class OptinCampaignsRepository extends AbstractRepository
     {
         $table = parent::campaigns_table();
 
-        // add single quote to the imploded optin types to exclude so that SQL is correct.
-        $excludes = "'" . implode("', '", $optin_types_exclude) . "'";
-
         $sql = "SELECT id FROM $table";
 
         if (!empty($optin_types_exclude)) {
+
+            // add single quote to the imploded optin types to exclude so that SQL is correct.
+            $excludes = "'" . implode("', '", $optin_types_exclude) . "'";
+
             $sql .= " WHERE NOT optin_type IN ($excludes)";
         }
 
@@ -440,6 +441,18 @@ class OptinCampaignsRepository extends AbstractRepository
         $all_optin_campaign_settings = self::get_settings();
         unset($all_optin_campaign_settings[$optin_campaign_id]);
         return self::updateSettings($all_optin_campaign_settings);
+    }
+
+    /**
+     * Delete all optin campaign (structure/body) cache.
+     */
+    public static function bust_all_cache()
+    {
+        $optin_ids = self::get_optin_campaign_ids();
+
+        foreach ($optin_ids as $optin_id) {
+            self::burst_cache($optin_id);
+        }
     }
 
     /**

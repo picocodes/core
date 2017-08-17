@@ -42,7 +42,7 @@ class Settings extends AbstractSettingsPage
         $new_data = $input['mailoptin_affiliate_url'];
 
         if ($option_name == MAILOPTIN_SETTINGS_DB_OPTION_NAME && $old_data != $new_data) {
-            OptinCampaignsRepository::burst_optin_ids_cache();
+            OptinCampaignsRepository::bust_all_cache();
         }
     }
 
