@@ -452,8 +452,7 @@ class Custom_Settings_Page_Api
         $data_key = !empty($data_key) ? "data-index='$data_key'" : null;
         $value = !empty($value) ? $value : null;
         ?>
-        <input type="text" placeholder="<?php echo $placeholder; ?>" id="<?php echo $id; ?>" name="<?php echo $name; ?>"
-               class="<?php echo $class; ?>" value="<?php echo $value; ?>" <?php echo $data_key; ?>/>
+        <input type="text" placeholder="<?php echo $placeholder; ?>" id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="<?php echo $class; ?>" value="<?php echo $value; ?>" <?php echo $data_key; ?>/>
         <?php
     }
 
@@ -498,6 +497,39 @@ class Custom_Settings_Page_Api
                 <?php do_action('wp_cspa_before_text_field', $db_options, $option_name, $key, $args); ?>
                 <?php $this->_text_field($key, $name_attr, $value); ?>
                 <?php do_action('wp_cspa_after_text_field', $db_options, $option_name, $key, $args); ?>
+                <p class="description"><?php echo $description; ?></p>
+            </td>
+        </tr>
+        <?php
+        return ob_get_clean();
+    }
+
+    /**
+     * Renders the text field
+     *
+     * @param array $db_options addons DB options
+     * @param string $key array key of class argument
+     * @param array $args class args
+     *
+     * @return string
+     */
+    public function _custom_field_block($db_options, $key, $args)
+    {
+        $key = sanitize_key($key);
+        $label = esc_attr($args['label']);
+        $description = @$args['description'];
+        $tr_id = isset($args['tr_id']) ? $args['tr_id'] : "{$key}_row";
+        $option_name = $this->option_name;
+
+        $data = @$args['data'];
+
+        ob_start(); ?>
+        <tr id="<?php echo $tr_id; ?>">
+            <th scope="row"><label for="<?php echo $key; ?>"><?php echo $label; ?></label></th>
+            <td>
+                <?php do_action('wp_cspa_before_custom_field_block', $db_options, $option_name, $key, $args); ?>
+                <?php echo $data; ?>
+                <?php do_action('wp_cspa_after_custom_field_block', $db_options, $option_name, $key, $args); ?>
                 <p class="description"><?php echo $description; ?></p>
             </td>
         </tr>

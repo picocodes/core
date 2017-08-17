@@ -17,6 +17,7 @@ class Settings extends AbstractSettingsPage
         $this->init_menu();
         add_action('admin_menu', array($this, 'register_settings_page'));
         add_action('wp_cspa_persist_settings', array($this, 'check_for_mailoptin_affiliate_check'), 10, 2);
+        add_action('admin_init', [$this, 'clear_optin_cache']);
     }
 
     public function register_settings_page()
@@ -32,6 +33,18 @@ class Settings extends AbstractSettingsPage
     }
 
     /**
+     * When clear cache button is clicked, do justice.
+     */
+    public function clear_optin_cache()
+    {
+        if (isset($_GET['clear-optin-cache']) && $_GET['clear-optin-cache'] == 'true') {
+            OptinCampaignsRepository::burst_all_cache();
+            wp_redirect(add_query_arg('optin-cache', 'cleared', MAILOPTIN_SETTINGS_SETTINGS_PAGE));
+            exit;
+        }
+    }
+
+    /**
      * If changes is made to the mailoptin affiliate url field, clear cache.
      */
     public function check_for_mailoptin_affiliate_check($input, $option_name)
@@ -42,12 +55,13 @@ class Settings extends AbstractSettingsPage
         $new_data = $input['mailoptin_affiliate_url'];
 
         if ($option_name == MAILOPTIN_SETTINGS_DB_OPTION_NAME && $old_data != $new_data) {
-            OptinCampaignsRepository::bust_all_cache();
+            OptinCampaignsRepository::burst_all_cache();
         }
     }
 
     public function settings_admin_page_callback()
     {
+        $clear_optin_cache_url = add_query_arg('clear-optin-cache', 'true', MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE);
         $args = array(
             'general_settings' => apply_filters('mailoptin_settings_general_settings_page', array(
                     'section_title' => __('General Settings', 'mailoptin'),
@@ -69,6 +83,18 @@ class Settings extends AbstractSettingsPage
                             '<a href="https://mailoptin.io/affiliates/" target="_blank">',
                             '</a>'
                         ),
+                    ),
+                    'clear_optin_cache' => array(
+                        'type' => 'custom_field_block',
+                        'label' => __('Clear Optin Cache', 'mailoptin'),
+                        'data' => "<a href='$clear_optin_cache_url' class='button action'>" . __('Clear Cache', 'mailoptin') . '</a>',
+                        'description' => '<p class="description">' .
+                            sprintf(
+                                __('Each time you create and make changes to your %soptin campaigns%s, MailOptin caches the designs so it doesn\'t hurt your website speed and performance. If for some reasons changes you made to your campaigns are not reflected on your website frontend, use this button to clear the cache.', 'mailoptin'),
+                                '<a href="' . MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE . '">',
+                                '</a>'
+                            ) .
+                            '</p>',
                     ),
                 )
             ),

@@ -446,7 +446,7 @@ class OptinCampaignsRepository extends AbstractRepository
     /**
      * Delete all optin campaign (structure/body) cache.
      */
-    public static function bust_all_cache()
+    public static function burst_all_cache()
     {
         $optin_ids = self::get_optin_campaign_ids();
 

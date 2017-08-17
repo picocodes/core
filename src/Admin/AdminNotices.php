@@ -14,7 +14,8 @@ class AdminNotices
 {
     public function __construct()
     {
-        add_action( 'admin_init', array( 'PAnD', 'init' ) );
+        add_action('admin_init', array('PAnD', 'init'));
+        add_action('admin_notices', array($this, 'optin_campaigns_cache_cleared'));
         add_action('admin_notices', array($this, 'template_class_not_found'));
         add_action('admin_notices', array($this, 'optin_class_not_found'));
         add_action('admin_notices', array($this, 'failed_campaign_retried'));
@@ -30,8 +31,25 @@ class AdminNotices
     public function removable_query_args($args)
     {
         $args[] = 'email-campaign-error';
+        $args[] = 'optin-cache';
 
         return $args;
+    }
+
+    /**
+     * Notice shown when optin campaign caches has been successfully cleared.
+     */
+    public function optin_campaigns_cache_cleared()
+    {
+        if (!is_super_admin(get_current_user_id())) return;
+
+        if (isset($_GET['optin-cache']) && $_GET['optin-cache'] == 'cleared') : ?>
+            <div id="message" class="updated notice is-dismissible">
+                <p>
+                    <?php _e('Optin campaigns cache successfully cleared.', 'mailoptin'); ?>
+                </p>
+            </div>
+        <?php endif;
     }
 
     /**
@@ -86,7 +104,6 @@ class AdminNotices
         <?php endif;
     }
 
-
     /**
      * Display notice that branding is now included by default in mailoptin optin forms
      */
@@ -110,7 +127,6 @@ class AdminNotices
         echo "<p><strong>$notice</strong></p>";
         echo '</div>';
     }
-
 
     /**
      * Display notice when limit of created optin campaign is exceeded
