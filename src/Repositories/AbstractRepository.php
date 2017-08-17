@@ -4,11 +4,6 @@ namespace MailOptin\Core\Repositories;
 
 use MailOptin\Core\Core;
 
-
-/**
- * @todo make this class extends RepositoryInterface and ensure all sub class that extends this abstract
- * obeys the interface implementation.
- */
 abstract class AbstractRepository
 {
     /**
