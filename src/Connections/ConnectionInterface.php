@@ -8,6 +8,13 @@ interface ConnectionInterface
     const connectionName = '';
 
     /**
+     * Connections must return array of features (e.g optin_campaign, email_campaign) they support.
+     *
+     * @return array
+     */
+    public static function features_support();
+
+    /**
      * Replace placeholder tags in content_html and content_text with connect/email service replacement.
      *
      * @param string $content

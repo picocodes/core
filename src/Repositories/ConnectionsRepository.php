@@ -10,6 +10,8 @@ class ConnectionsRepository
     /**
      * List of connections available.
      *
+     * @param string $customizer_type the customizer calling this function.
+     *
      * @return mixed
      */
     public static function get_connections($customizer_type = 'optin_campaign')
@@ -17,18 +19,31 @@ class ConnectionsRepository
         // hooked array must be a key/label pair eg $arg['sendy'] = 'Sendy'
         $connections = apply_filters('mailoptin_registered_connections', array('' => __('Select...', 'mailoptin')));
 
-        /** remove unconnected connections.  eg if an api key is missing or oauth authorization missing */
         foreach ($connections as $className => $label) {
             $connection_class = "MailOptin\\$className\\Connect";
 
-            if (class_exists($connection_class) &&
-                method_exists($connection_class, 'is_connected') &&
-                $connection_class::is_connected() === false) {
+
+            /** remove unconnected connections.  eg if an api key is missing or oauth authorization missing */
+            if (class_exists($connection_class) && method_exists($connection_class, 'is_connected') && $connection_class::is_connected() === false) {
                 unset($connections[$className]);
+            }
+
+            if (class_exists($connection_class) && method_exists($connection_class, 'features_support')) {
+                if ($customizer_type == 'optin_campaign') {
+                    if (!in_array('optin_campaign', $connection_class::features_support())) {
+                        unset($connections[$className]);
+                    }
+                }
+
+                if ($customizer_type == 'email_campaign') {
+                    if (!in_array('email_campaign', $connection_class::features_support())) {
+                        unset($connections[$className]);
+                    }
+                }
             }
         }
 
-        // if lite version and we are in email campaign customizer UI, remove ESP.
+        // Remove all ESP in email campaign customizer in lite.
         if (!defined('MAILOPTIN_DETACH_LIBSODIUM') && $customizer_type == 'email_campaign') {
             foreach ($connections as $key => $value) {
                 if ($key == '') {

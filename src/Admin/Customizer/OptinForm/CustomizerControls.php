@@ -570,8 +570,6 @@ class CustomizerControls
     public function integration_controls()
     {
         $email_providers = ConnectionsRepository::get_connections();
-        // remove registered users from array of connections
-        unset($email_providers['RegisteredUsersConnect']);
 
         // saved optin campaign email provider
         $optin_campaign_id = $this->customizerClassInstance->optin_campaign_id;
