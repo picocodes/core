@@ -6,11 +6,8 @@ use MailOptin\Core\Admin\Customizer\CustomControls\ControlsHelpers;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Google_Font_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Font_Stack_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Chosen_Select_Control;
-use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Range_Control;
-use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Range_Value_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Tinymce_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Toggle_Control;
-use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_X_Page_Views_Control;
 use MailOptin\Core\Repositories\ConnectionsRepository;
 use MailOptin\Core\Repositories\OptinCampaignsRepository;
 

@@ -102,7 +102,9 @@
                 // hide any shown connection service fields before showing that of selected one.
                 $('li[id*="Connect"]').hide();
 
-                $('li[id^="' + selected_connection_service + '"]').show();
+                console.log(selected_connection_service);
+
+                $('li[id*="' + selected_connection_service + '"]').show();
             }
             else {
                 $('li[id*="Connect"]').hide();
