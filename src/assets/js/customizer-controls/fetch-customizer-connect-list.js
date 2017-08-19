@@ -19,11 +19,10 @@
 
             $.post(ajaxurl, {
                     action: 'mailoptin_customizer_fetch_email_list',
-                    connect_service: $(this).val(),
+                    connect_service: connect_service,
                     security: $("input[data-customize-setting-link*='[ajax_nonce]']").val()
                 },
                 function (response) {
-                    console.log(response);
                     if (_.isObject(response) && 'success' in response && 'data' in response) {
                         var data = response.data;
 
@@ -52,14 +51,14 @@
                             // show any settings field connected to the selected service prefixed with ID as the connect service name.
                             $('li[id*="' + connect_service + '"]').show();
 
-                            $(document.body).trigger('mo_email_list_data_found');
+                            $(document.body).trigger('mo_email_list_data_found', [connect_service]);
                         }
                         else {
                             $("div#customize-theme-controls li[id*='connection_email_list']").hide();
 
                             // hide all dependent connection service fields if no connection email list was returned.
                             $('li[id*="Connect"]').hide();
-                            $(document.body).trigger('mo_email_list_data_not_found');
+                            $(document.body).trigger('mo_email_list_data_not_found', [connect_service]);
                         }
                     }
                     else {
@@ -67,7 +66,7 @@
 
                         // hide all dependent connection service fields if ajax response came badly or invalid.
                         $('li[id*="Connect"]').hide();
-                        $(document.body).trigger('mo_email_list_invalid_response');
+                        $(document.body).trigger('mo_email_list_invalid_response', [connect_service]);
                     }
 
                     remove_spinner();
@@ -101,8 +100,6 @@
             ) {
                 // hide any shown connection service fields before showing that of selected one.
                 $('li[id*="Connect"]').hide();
-
-                console.log(selected_connection_service);
 
                 $('li[id*="' + selected_connection_service + '"]').show();
             }
