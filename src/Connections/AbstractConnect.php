@@ -9,6 +9,51 @@ abstract class AbstractConnect
 {
     use EmailCampaignTrait;
 
+    public function __construct()
+    {
+        add_action('customize_controls_print_footer_scripts', [$this, 'js_script']);
+    }
+
+    /**
+     * Change the label from "Email Provider List" to "ConvertKit Form" on convertkit selected as email provider.
+     */
+    public function js_script()
+    {
+        $ck_label = __('ConverKit Form', 'mailoptin');
+        $drip_label = __('Drip Campaign', 'mailoptin');
+        $default_label = __('Email Provider List', 'mailoptin');
+        ?>
+
+        <script type="text/javascript">
+            (function ($) {
+                function logic(connection_service) {
+                    if (connection_service === undefined) {
+                        connection_service = $("select[data-customize-setting-link*='connection_service']").val();
+                    }
+
+                    if (connection_service === 'ConvertKitConnect') {
+                        $('li[id*="connection_email_list"] span.customize-control-title').text('<?php echo $ck_label; ?>');
+                    }
+
+                    if (connection_service === 'DripConnect') {
+                        $('li[id*="connection_email_list"] span.customize-control-title').text('<?php echo $drip_label; ?>');
+                    }
+                }
+
+                // on ready event
+                $(function () {
+                    logic();
+                    $(document.body).on('mo_email_list_data_found', function (e, connection_service) {
+                        // restore default label before change
+                        $('li[id*="connection_email_list"] span.customize-control-title').text('<?php echo $default_label; ?>');
+                        logic(connection_service, 'convertkitish');
+                    });
+                })
+            })(jQuery);
+        </script>
+        <?php
+    }
+
     /**
      * Helper to return success error.
      *
