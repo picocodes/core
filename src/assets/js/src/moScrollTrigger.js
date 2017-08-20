@@ -23,7 +23,6 @@ define(["jquery"], function ($) {
     $.moScrollTrigger = function (enable) {
         if (enable === "enable") {
             $(window).on("scroll", function () {
-                console.log('scrolling');
                 clearTimeout(throttlescroll);
                 throttlescroll = setTimeout(function () {
                     amountscrolled()
