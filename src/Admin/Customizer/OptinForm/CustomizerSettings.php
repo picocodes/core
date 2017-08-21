@@ -398,6 +398,11 @@ class CustomizerSettings extends AbstractCustomizer
                     'type' => 'option',
                     'transport' => 'postMessage',
                 ),
+                'optin_trigger_notice' => array(
+                    'default' => apply_filters('mo_optin_form_optin_trigger_notice', false),
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
                 'exit_intent_status' => array(
                     'default' => apply_filters('mo_optin_form_exit_intent_status', false),
                     'type' => 'option',

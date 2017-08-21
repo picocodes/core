@@ -24,7 +24,7 @@ class EC_Customizer_Setting extends \WP_Customize_Setting
     /**
      * Validation for campaign settings.
      *
-     * This can also be used for data sanitization before saving to DB. but instead of validate, it is sanitize
+     * This can also be used for data sanitation before saving to DB. but instead of validate, it is sanitize
      *
      * @param mixed $value
      *

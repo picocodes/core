@@ -3,6 +3,7 @@
 namespace MailOptin\Core\Admin\Customizer\OptinForm;
 
 use MailOptin\Core\Admin\Customizer\CustomControls\ControlsHelpers;
+use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Custom_Content;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Google_Font_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Font_Stack_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Chosen_Select_Control;
@@ -663,6 +664,27 @@ class CustomizerControls
                     'section' => $this->customizerClassInstance->setup_display_rule_section_id,
                     'settings' => $this->option_prefix . '[hide_logged_in]',
                     'priority' => 25,
+                )
+            );
+        } else {
+            $content = sprintf(
+                __('Upgrade to %sMailOptin Premium%s to avail yourself of optin triggers such as %3$sExit Intent%4$s, %3$sPage views%4$s, %3$sTime on Site%4$s and %3$sScroll trigger%4$s proven to boost conversions.', 'mailoptin'),
+                '<a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=quick_setup_panel">',
+                '</a>',
+                '<strong>',
+                '</strong>'
+            );
+
+            // always prefix with the name of the connect/connection service.
+            $setup_display_control_args['optin_trigger_notice'] = new WP_Customize_Custom_Content(
+                $this->wp_customize,
+                $this->option_prefix . '[optin_trigger_notice]',
+                apply_filters('mo_optin_form_customizer_optin_trigger_notice_args', array(
+                        'content' => $content,
+                        'section' => $this->customizerClassInstance->setup_display_rule_section_id,
+                        'settings' => $this->option_prefix . '[optin_trigger_notice]',
+                        'priority' => 199,
+                    )
                 )
             );
         }

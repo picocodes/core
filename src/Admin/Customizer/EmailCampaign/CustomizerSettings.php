@@ -80,6 +80,11 @@ class CustomizerSettings extends AbstractCustomizer
                     'transport' => 'postMessage',
                     'sanitize_callback' => 'absint',
                 ),
+                'email_campaign_settings_notice' => array(
+                    'default' => false,
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
                 'ajax_nonce' => array(
                     'default' => wp_create_nonce('customizer-fetch-email-list'),
                     'type' => 'option',

@@ -2,6 +2,7 @@
 
 namespace MailOptin\Core\Admin\Customizer\EmailCampaign;
 
+use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Custom_Content;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Custom_Input_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Email_Schedule_Time_Fields_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Range_Control;
@@ -170,10 +171,7 @@ class CustomizerControls
                             'hours' => __('Hours', 'mailoptin'),
                             'days' => __('Days', 'mailoptin'),
                         ],
-                        'description' => apply_filters('mailoptin_customizer_settings_email_campaign_schedule_description',
-                            __('Configure when email campaign will be sent out after post publication.', 'mailoptin'),
-                            $campaign_type
-                        ),
+                        'description' => apply_filters('mailoptin_customizer_settings_email_campaign_schedule_description', __('Configure when email campaign will be sent out after post publication.', 'mailoptin'), $campaign_type),
                         'priority' => 80
                     )
                 )
@@ -189,6 +187,29 @@ class CustomizerControls
                 )
             )
         );
+
+        if(!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
+            $content = sprintf(
+                __('Upgrade to %sMailOptin Premium%s to send email campaigns directly to your email list on MailChimp, Campaign Monitor, Aweber, Constant Contact, Drip, MailerLite, ConvertKit etc.', 'mailoptin'),
+                '<a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=new_post_campaign_settings">',
+                '</a>',
+                '<strong>',
+                '</strong>'
+            );
+
+            // always prefix with the name of the connect/connection service.
+            $campaign_settings_controls['email_campaign_settings_notice'] = new WP_Customize_Custom_Content(
+                $this->wp_customize,
+                $this->option_prefix . '[email_campaign_settings_notice]',
+                apply_filters('mo_optin_form_customizer_email_campaign_settings_notice_args', array(
+                        'content' => $content,
+                        'section' => $this->customizerClassInstance->campaign_settings_section_id,
+                        'settings' => $this->option_prefix . '[email_campaign_settings_notice]',
+                        'priority' => 80,
+                    )
+                )
+            );
+        }
 
         $email_campaign_settings_control_args = apply_filters(
             "mailoptin_email_campaign_customizer_settings_controls",
