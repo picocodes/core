@@ -64,7 +64,7 @@ class InPost
                 if (!empty($optin_form_fonts)) {
                     $optin_form .= "<script type='text/javascript'>jQuery(function(){WebFont.load({google: {families: [$optin_form_fonts]}});});</script>";
                 }
-                $optin_form .= "<script type='text/javascript'>jQuery(function(){jQuery.MailOptin.track_impression('$optin_uuid')});</script>";
+                $optin_form .= "<script type='text/javascript'>jQuery(function(){if(jQuery.MailOptin.track_impression !== undefined) jQuery.MailOptin.track_impression('$optin_uuid')});</script>";
 
                 if ('before_content' == $optin_position) {
                     $content = $optin_form . $content;
@@ -125,7 +125,7 @@ class InPost
                         $optin_form .= "<script type='text/javascript'>jQuery(function(){WebFont.load({google: {families: [$optin_form_fonts]}});});</script>";
                     }
 
-                    $optin_form .= "<script type='text/javascript'>jQuery(function(){jQuery.MailOptin.track_impression('$optin_uuid')});</script>";
+                    $optin_form .= "<script type='text/javascript'>jQuery(function(){if(jQuery.MailOptin.track_impression !== undefined) jQuery.MailOptin.track_impression('$optin_uuid')});</script>";
 
                     if ('before_content' == $optin_position) {
                         $content = $optin_form . $content;
