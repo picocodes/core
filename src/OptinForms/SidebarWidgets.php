@@ -49,7 +49,7 @@ class SidebarWidgets extends \WP_Widget
             if (!empty($optin_form_fonts)) {
                 echo "<script type='text/javascript'>jQuery(function(){WebFont.load({google: {families: [$optin_form_fonts]}});});</script>";
             }
-            echo "<script type='text/javascript'>jQuery(function(){if(jQuery.MailOptin.track_impression !== undefined) jQuery.MailOptin.track_impression('$sidebar_optin_uuid')});</script>";
+            echo "<script type='text/javascript'>jQuery(function(){if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_impression !== 'undefined') {jQuery.MailOptin.track_impression('$sidebar_optin_uuid');}});</script>";
         }
 
         do_action('mo_sidebar_optin_widget_after_optin_form', $args, $instance);
