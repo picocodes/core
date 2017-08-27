@@ -10,10 +10,11 @@
 
             var connect_service = $(this).val();
 
-            toggle_connect_service_connected_fields();
-
             // hide email list select dropdown field before fetching the list of the selected connect/email service.
             $("div#customize-theme-controls li[id*='connection_email_list']").hide();
+
+            // hide all fields that depending on a connection service before showing that belonging to the selected one
+            $('li[id*="Connect"]').hide();
 
             add_spinner(this);
 
@@ -27,6 +28,7 @@
                         var data = response.data;
 
                         if (_.size(data) >= 1) {
+
                             // clear out the select options before appending.
                             $("select[data-customize-setting-link*='connection_email_list'] option").remove();
 
@@ -43,13 +45,10 @@
                                 }));
                             });
 
+                            // show email list field.
                             $("div#customize-theme-controls li[id*='connection_email_list']").show();
 
-                            // hide all fields that depending on a connection service before showing that belonging to the selected one
-                            $('li[id*="Connect"]').hide();
-
-                            // show any settings field connected to the selected service prefixed with ID as the connect service name.
-                            $('li[id*="' + connect_service + '"]').show();
+                            toggle_connect_service_connected_fields();
 
                             $(document.body).trigger('mo_email_list_data_found', [connect_service]);
                         }
