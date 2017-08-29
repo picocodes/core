@@ -57,7 +57,7 @@ class CustomizerSettings extends AbstractCustomizer
                 'connection_service' => array(
                     'default' => $this->customizer_defaults['connection_service'],
                     'type' => 'option',
-                    'transport' => 'postMessage',
+                    'transport' => 'refresh',
                 ),
                 'connection_email_list' => array(
                     'default' => $this->customizer_defaults['connection_email_list'],

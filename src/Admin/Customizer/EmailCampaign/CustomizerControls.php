@@ -629,7 +629,7 @@ class CustomizerControls
                 ),
                 'footer_description' => apply_filters('mailoptin_template_customizer_footer_description_args',
                     array(
-                        'label' => __('Footer Description', 'mailoptin'),
+                        'label' => __('Mailing Address', 'mailoptin'),
                         'type' => 'textarea',
                         'section' => $this->customizerClassInstance->campaign_footer_section_id,
                         'settings' => $this->option_prefix . '[footer_description]',

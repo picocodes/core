@@ -19,7 +19,7 @@ abstract class AbstractConnect
      */
     public function js_script()
     {
-        $ck_label = __('ConverKit Form', 'mailoptin');
+        $ck_label = __('ConvertKit Form', 'mailoptin');
         $drip_label = __('Drip Campaign', 'mailoptin');
         $default_label = __('Email Provider List', 'mailoptin');
         ?>

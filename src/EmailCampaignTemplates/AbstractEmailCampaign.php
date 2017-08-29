@@ -388,7 +388,6 @@ CSS;
 <table class="mo-powered-by-attribute" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: #ffffff; margin-left: auto; margin-right: auto; table-layout: auto !important" bgcolor="#ffffff">
     <tbody>
     <tr>
-        <td class="footer-mobile-hidden"><img alt="" width="1" height="5" border="0" hspace="0" vspace="0" src=""></td>
         <td class="footer-main-width" width="580" align="center" valign="top" style="width: 580px;">
             <div class="footer-max-main-width" align="center" style="margin-left: auto; margin-right: auto; max-width: 580px;">
                 <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -426,7 +425,6 @@ CSS;
                 </table>
             </div>
         </td>
-        <td class="footer-mobile-hidden"><img alt="" width="1" height="5" border="0" hspace="0" vspace="0" src="https://static.ctctcdn.com/letters/images/1101116784221/S.gif"></td>
     </tr>
     </tbody>
 </table>

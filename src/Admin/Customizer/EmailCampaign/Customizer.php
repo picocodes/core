@@ -102,8 +102,15 @@ class Customizer
     public function customizer_contextual_controls()
     {
         wp_enqueue_script(
-            'mailoptin-optin-form-fetch-customizer-connect-list-controls',
+            'mailoptin-fetch-email-customizer-connect-list-controls',
             MAILOPTIN_ASSETS_URL . 'js/customizer-controls/fetch-customizer-connect-list.js',
+            array('customize-controls'),
+            MAILOPTIN_VERSION_NUMBER
+        );
+
+        wp_enqueue_script(
+            'mailoptin-email-customizer-contextual-controls',
+            MAILOPTIN_ASSETS_URL . 'js/customizer-controls/contextual-email-customizer-controls.js',
             array('customize-controls'),
             MAILOPTIN_VERSION_NUMBER
         );
