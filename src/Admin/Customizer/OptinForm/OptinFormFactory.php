@@ -2,6 +2,7 @@
 
 namespace MailOptin\Core\Admin\Customizer\OptinForm;
 
+use MailOptin\Core\OptinForms\AbstractOptinForm;
 use MailOptin\Core\Repositories\OptinCampaignsRepository;
 use MailOptin\Core\OptinForms\OptinFormInterface;
 
@@ -16,7 +17,7 @@ class OptinFormFactory
      * @param int $optin_campaign_id
      * @param null|\WP_Customize_Manager $wp_customize
      *
-     * @return false|OptinFormInterface
+     * @return false|AbstractOptinForm
      */
     public static function make($optin_campaign_id, $wp_customize = null)
     {

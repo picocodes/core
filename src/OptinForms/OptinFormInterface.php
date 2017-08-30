@@ -25,25 +25,4 @@ interface OptinFormInterface {
 	 * @return string
 	 */
 	public function optin_script();
-
-	/**
-	 * Full HTML doctype markup preview of a optin form.
-	 *
-	 * @return string
-	 */
-	public function get_preview_structure();
-	
-	/**
-	 * HTML and CSS structure of an optin form.
-	 * 
-	 * @return string
-	 */
-	public function get_optin_form_structure();
-
-	/**
-	 * Return array of fonts used by optin form.
-	 *
-	 * @return string
-	 */
-	public function get_optin_form_fonts();
 }

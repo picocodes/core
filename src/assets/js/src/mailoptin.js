@@ -500,8 +500,8 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 return window[optin_css_id];
             },
 
-            /**
-             * Handle actual conversion of optin.
+            /** @todo move this into its own class/object such that all methods/functions utilized when conversion happens have access to properties and data without passing the data/properites via arguments
+             * @see https://www.phpied.com/3-ways-to-define-a-javascript-class/
              */
             optin_conversion: function () {
 
@@ -648,7 +648,11 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                                 // do not include success icon if icon_close (close icon automatically attached to lightbox) is set to true.
                                 // icon_close config is always false for none lightbox optin forms. see ./Core/src/OptinForms/AbstractOptinForm.php LN497
 
-                                if (optin_js_config.icon_close !== true) {
+                                // Because JavaScript treats 0 as loosely equal to false (i.e. 0 == false, but 0 !== false),
+                                // to check for the presence of value within array, you need to check if it's not equal to (or greater than) -1.
+
+                                /**@todo revisit this when new optin type is added */
+                                if ($.inArray($optin_type, ['lightbox', 'bar', 'slidein']) !== -1 && optin_js_config.icon_close !== true) {
                                     self.addSuccessCloseIcon.call(optin_container);
                                 }
 

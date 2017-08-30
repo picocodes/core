@@ -176,6 +176,34 @@ abstract class AbstractOptinForm extends AbstractCustomizer implements OptinForm
     }
 
     /**
+     * Track optin impression.
+     *
+     * @return string
+     */
+    public function impression_tracker()
+    {
+        return "<script type='text/javascript'>
+jQuery(function(){
+    if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_impression !== 'undefined') {
+        jQuery.MailOptin.track_impression('{$this->optin_campaign_uuid}');
+    }
+});
+</script>";
+    }
+
+    /**
+     * Load Google fonts.
+     *
+     * @param string $optin_form_fonts
+     * @return string
+     */
+    public function webfont_loader($optin_form_fonts)
+    {
+        return "<script type='text/javascript'>jQuery(function(){WebFont.load({google: {families: [$optin_form_fonts]}});});</script>";
+
+    }
+
+    /**
      * Full HTML doctype markup preview of a optin form.
      *
      * @return string
@@ -381,6 +409,12 @@ abstract class AbstractOptinForm extends AbstractCustomizer implements OptinForm
     {
         // retrieve uncached result if we are in customizer screen.
         if (apply_filters('mailoptin_disable_optin_form_cache', is_customize_preview())) {
+            return $this->_get_optin_form_structure();
+        }
+
+        // bypass cache if this optin form has successfully received opt-in from visitor so success message overlay will be
+        // shown instead of opt-in form.
+        if (isset($_COOKIE['mo_success_' . $this->optin_campaign_uuid]) && $_COOKIE['mo_success_' . $this->optin_campaign_uuid] === 'true') {
             return $this->_get_optin_form_structure();
         }
 

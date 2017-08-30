@@ -247,10 +247,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         $html .= '</form>';
         $html .= apply_filters('mo_optin_form_after_form_tag', '', $this->optin_campaign_id, $this->optin_campaign_type, $optin_campaign_uuid, $optin_css_id);
 
-        // processing / spinner div
-        $html .= apply_filters('mo_optin_processing_structure', '<div class="mo-optin-spinner" style="display: none"></div>', $optin_campaign_uuid, $optin_css_id);
-        // success div
-        $html .= apply_filters('mo_optin_success_structure', '<div class="mo-optin-success-msg" style="display: none">' . $this->get_customizer_value('success_message') . '</div>', $optin_campaign_uuid, $optin_css_id);
+        $html .= $this->processing_success_structure();
 
         if ($this->optin_campaign_type != 'lightbox') {
             $html .= $this->branding_attribute();
@@ -261,6 +258,31 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         if ($this->optin_campaign_type == 'lightbox') {
             $html .= $this->branding_attribute();
         }
+
+        return $html;
+    }
+
+    /**
+     * HTML markup for processing and success div.
+     * @return string
+     */
+    public function processing_success_structure()
+    {
+        $style = 'display:none';
+        if (isset($_COOKIE['mo_success_' . $this->optin_campaign_uuid]) && $_COOKIE['mo_success_' . $this->optin_campaign_uuid] === 'true') {
+            $style = 'background-image: none;'; //note: "bg none css rule" is basically only useful in processing/spinner div.
+        }
+
+        // processing / spinner div
+        $html = apply_filters('mo_optin_processing_structure', "<div class='mo-optin-spinner' style='$style'></div>", $this->optin_campaign_uuid, $this->optin_css_id);
+
+        // success div
+        $html .= apply_filters(
+            'mo_optin_success_structure',
+            '<div class="mo-optin-success-msg" style="' . $style . '">' . $this->get_customizer_value('success_message') . '</div>',
+            $this->optin_campaign_uuid,
+            $this->optin_css_id
+        );
 
         return $html;
     }
