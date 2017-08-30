@@ -7,9 +7,6 @@ use MailOptin\Core\Repositories\OptinCampaignsRepository as Repository;
 
 class FrontEndOutput
 {
-    /** @var string hold the fonts of every optin form that could be displayed */
-    public $all_optin_fonts = '';
-
     public function __construct()
     {
         add_action('wp_footer', array($this, 'load_optin'), 999999999);
@@ -48,6 +45,8 @@ class FrontEndOutput
 
         foreach ($optin_ids as $id) {
 
+            $id = absint($id);
+
             do_action('mailoptin_before_footer_optin_display', $id, $optin_ids, $post_id);
 
             // if optin is not enabled, pass.
@@ -62,9 +61,7 @@ class FrontEndOutput
 
             // if display rule definition not defined, load globally
             if (!defined('MAILOPTIN_DISPLAY_RULES_FLAG') || Repository::get_customizer_value($id, 'load_optin_globally')) {
-                $optinInstance = OptinFormFactory::make(intval($id));
-                echo $optinInstance->get_optin_form_structure();
-                $this->all_optin_fonts .= $optinInstance->get_optin_form_fonts();
+                echo OptinFormFactory::build($id);
             } else {
                 $load_optin_index = Repository::get_customizer_value($id, 'load_optin_index');
                 $posts_never_load = Repository::get_customizer_value($id, 'posts_never_load');
@@ -116,28 +113,17 @@ class FrontEndOutput
                     continue;
                 }
 
-                $optinInstance = OptinFormFactory::make(intval($id));
-                echo $optinInstance->get_optin_form_structure();
-
-                // delimit each font with comma
-                $this->all_optin_fonts .= $optinInstance->get_optin_form_fonts();
+                echo OptinFormFactory::build($id);
 
                 do_action('mailoptin_after_footer_optin_display', $id, $optin_ids, $post_id);
             }
-        }
-
-        // load the font.
-        if (!empty($this->all_optin_fonts)) {
-            // load google font when DOM is ready.
-            echo "<script type='text/javascript'>jQuery(function(){WebFont.load({google: {families: [$this->all_optin_fonts]}});});</script>";
         }
     }
 
     /**
      * @return FrontEndOutput
      */
-    public
-    static function get_instance()
+    public static function get_instance()
     {
         static $instance = null;
 

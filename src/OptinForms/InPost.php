@@ -39,12 +39,12 @@ class InPost
 
         foreach ($optin_ids as $id) {
 
+            $id = absint($id);
+
             do_action('mailoptin_before_inpost_optin_display_determinant', $id, $optin_ids, $post_id);
 
             $optin_position = Repository::get_customizer_value($id, 'inpost_form_optin_position');
             $optin_position = empty($optin_position) ? 'after_content' : $optin_position;
-
-            $optin_uuid = Repository::get_optin_campaign_uuid($id);
 
             // if optin is not enabled, pass.
             if (!Repository::get_customizer_value($id, 'activate_optin')) {
@@ -58,13 +58,7 @@ class InPost
 
             if (Repository::get_customizer_value($id, 'load_optin_globally')) {
 
-                $optinInstance = OptinFormFactory::make(intval($id));
-                $optin_form_fonts = $optinInstance->get_optin_form_fonts();
-                $optin_form = $optinInstance->get_optin_form_structure();
-                if (!empty($optin_form_fonts)) {
-                    $optin_form .= "<script type='text/javascript'>jQuery(function(){WebFont.load({google: {families: [$optin_form_fonts]}});});</script>";
-                }
-                $optin_form .= "<script type='text/javascript'>jQuery(function(){if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_impression !== 'undefined') {jQuery.MailOptin.track_impression('$optin_uuid');}});</script>";
+                $optin_form = OptinFormFactory::build($id);
 
                 if ('before_content' == $optin_position) {
                     $content = $optin_form . $content;
@@ -118,14 +112,7 @@ class InPost
                 if (array_search(false, $determinant)) {
                     continue;
                 } else {
-                    $optinInstance = OptinFormFactory::make(intval($id));
-                    $optin_form_fonts = $optinInstance->get_optin_form_fonts();
-                    $optin_form = $optinInstance->get_optin_form_structure();
-                    if (!empty($optin_form_fonts)) {
-                        $optin_form .= "<script type='text/javascript'>jQuery(function(){WebFont.load({google: {families: [$optin_form_fonts]}});});</script>";
-                    }
-
-                    $optin_form .= "<script type='text/javascript'>jQuery(function(){if(jQuery.MailOptin.track_impression !== undefined) jQuery.MailOptin.track_impression('$optin_uuid')});</script>";
+                    $optin_form = OptinFormFactory::build($id);
 
                     if ('before_content' == $optin_position) {
                         $content = $optin_form . $content;
@@ -144,7 +131,8 @@ class InPost
     /**
      * @return InPost
      */
-    public static function get_instance()
+    public
+    static function get_instance()
     {
         static $instance = null;
 

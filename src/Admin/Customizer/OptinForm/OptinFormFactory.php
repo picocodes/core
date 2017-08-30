@@ -40,4 +40,21 @@ class OptinFormFactory
         return new $optin_class($optin_campaign_id, $wp_customize);
     }
 
+    /**
+     * Build or make optin form (HTML) structure.
+     *
+     * @param int $optin_campaign_id
+     *
+     * @return string
+     */
+    public static function build($optin_campaign_id)
+    {
+        $optinInstance = self::make($optin_campaign_id);
+        $optin_form = $optinInstance->get_optin_form_structure();
+        $optin_form .= $optinInstance->webfont_loader_js_script();
+        $optin_form .= $optinInstance->impression_tracker_js_script();
+
+        return $optin_form;
+    }
+
 }

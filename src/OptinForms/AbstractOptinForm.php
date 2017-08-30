@@ -180,7 +180,7 @@ abstract class AbstractOptinForm extends AbstractCustomizer implements OptinForm
      *
      * @return string
      */
-    public function impression_tracker()
+    public function impression_tracker_js_script()
     {
         return "<script type='text/javascript'>
 jQuery(function(){
@@ -194,13 +194,15 @@ jQuery(function(){
     /**
      * Load Google fonts.
      *
-     * @param string $optin_form_fonts
      * @return string
      */
-    public function webfont_loader($optin_form_fonts)
+    public function webfont_loader_js_script()
     {
-        return "<script type='text/javascript'>jQuery(function(){WebFont.load({google: {families: [$optin_form_fonts]}});});</script>";
+        $optin_form_fonts = $this->get_optin_form_fonts();
 
+        if (!empty($optin_form_fonts)) {
+            return "<script type='text/javascript'>jQuery(function(){WebFont.load({google: {families: [$optin_form_fonts]}});});</script>";
+        }
     }
 
     /**
@@ -463,7 +465,7 @@ jQuery(function(){
     }
 
     /**
-     * Cache proxy to retrieve the optin form (Google) fonts.
+     * Cache proxy to retrieve comma delimited list of optin form (Google) fonts.
      *
      * @return string
      */
