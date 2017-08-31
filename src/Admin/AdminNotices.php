@@ -22,6 +22,7 @@ class AdminNotices
         add_action('admin_notices', array($this, 'optin_campaign_count_limit_exceeded'));
         add_action('admin_notices', array($this, 'email_campaign_count_limit_exceeded'));
         add_action('admin_notices', array($this, 'optin_branding_added_by_default'));
+        add_action('admin_notices', array($this, 'review_plugin_notice'));
 
         add_action('admin_notices', array($this, 'optin_conversion_limit_exceeded'));
 
@@ -125,6 +126,37 @@ class AdminNotices
 
         echo '<div data-dismissible="optin-branding-added-by-default-forever" class="update-nag notice notice-warning is-dismissible">';
         echo "<p><strong>$notice</strong></p>";
+        echo '</div>';
+    }
+
+    /**
+     * Display one-time admin notice to review plugin at least 7 days after installation
+     */
+    public function review_plugin_notice()
+    {
+        if (!PAnD::is_admin_notice_active('review-plugin-notice-forever')) {
+            return;
+        }
+
+        $install_date = get_option('mo_install_date', '');
+
+        if (empty($install_date)) return;
+
+        $diff = round((time() - strtotime($install_date)) / 24 / 60 / 60);
+
+        if ($diff < 7) return;
+
+        $review_url = 'https://wordpress.org/support/plugin/mailoptin/reviews/?filter=5';
+
+        $notice = sprintf(
+            __('Hey, I noticed you have been using MailOptin for at least 7 days now - that\'s awesome! Could you please do me a BIG favor and give it a %1$s5-star rating on WordPress?%2$s This will help us spread the word and boost our motivation - thanks!', 'mailoptin'),
+            '<a href="' . $review_url . '" target="_blank">',
+            '</a>'
+        );
+        $notice .= "<div style=\"margin:10px 0 0;\"><a href=\"$review_url\" target='_blank' class=\"button-primary\">Sure! I'd love to give a review</a></div>";
+
+        echo '<div data-dismissible="review-plugin-notice-forever" class="update-nag notice notice-warning is-dismissible">';
+        echo "<p>$notice</p>";
         echo '</div>';
     }
 
