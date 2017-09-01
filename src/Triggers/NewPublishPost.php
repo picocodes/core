@@ -13,48 +13,52 @@ class NewPublishPost extends AbstractTriggers
     {
         parent::__construct();
 
-        add_action('publish_post', array($this, 'new_publish_post'), 10, 2);
+        add_action('transition_post_status', array($this, 'new_publish_post'), 10, 3);
     }
 
     /**
-     * @param int $post_id
-     * @param WP_Post $post
+     * @param string $new_status New post status.
+     * @param string $old_status Old post status.
+     * @param WP_Post $post Post object.
      */
-    public function new_publish_post($post_id, $post)
+    public function new_publish_post($new_status, $old_status, $post)
     {
-        $new_publish_post_campaigns = ER::get_by_email_campaign_type(ER::NEW_PUBLISH_POST);
+        if ($new_status == 'publish' && $old_status != 'publish') {
 
-        foreach ($new_publish_post_campaigns as $npp_campaign) {
-            $email_campaign_id = absint($npp_campaign['id']);
-            $is_activated = ER::is_campaign_active($email_campaign_id);
-            $send_immediately_active = $this->send_immediately($email_campaign_id);
-            $email_subject = ER::get_customizer_value($email_campaign_id, 'email_campaign_subject');
+            $new_publish_post_campaigns = ER::get_by_email_campaign_type(ER::NEW_PUBLISH_POST);
 
-            $content_html = (new TemplatifyNewPostPublish($post, $email_campaign_id))->forge();
+            foreach ($new_publish_post_campaigns as $npp_campaign) {
+                $email_campaign_id = absint($npp_campaign['id']);
+                $is_activated = ER::is_campaign_active($email_campaign_id);
+                $send_immediately_active = $this->send_immediately($email_campaign_id);
+                $email_subject = ER::get_customizer_value($email_campaign_id, 'email_campaign_subject');
 
-            if ($is_activated === false) continue;
+                $content_html = (new TemplatifyNewPostPublish($post, $email_campaign_id))->forge();
 
-            $campaign_id = $this->save_campaign_log(
-                $email_campaign_id,
-                self::format_campaign_subject($email_subject, $post),
-                $content_html
-            );
+                if ($is_activated === false) continue;
 
-            if ($send_immediately_active) {
-                $this->send_campaign($email_campaign_id, $campaign_id);
-            } else {
-                // convert schedule time to timestamp.
-                $schedule_time_timestamp = strtotime($this->schedule_time($email_campaign_id));
-
-                $response = wp_schedule_single_event(
-                    $schedule_time_timestamp,
-                    'mailoptin_send_scheduled_email_campaign',
-                    [$email_campaign_id, $campaign_id]
+                $campaign_id = $this->save_campaign_log(
+                    $email_campaign_id,
+                    self::format_campaign_subject($email_subject, $post),
+                    $content_html
                 );
 
-                // wp_schedule_single_event() return false if event wasn't scheduled.
-                if (false !== $response) {
-                    $this->update_campaign_status($campaign_id, 'queued', $schedule_time_timestamp);
+                if ($send_immediately_active) {
+                    $this->send_campaign($email_campaign_id, $campaign_id);
+                } else {
+                    // convert schedule time to timestamp.
+                    $schedule_time_timestamp = strtotime($this->schedule_time($email_campaign_id));
+
+                    $response = wp_schedule_single_event(
+                        $schedule_time_timestamp,
+                        'mailoptin_send_scheduled_email_campaign',
+                        [$email_campaign_id, $campaign_id]
+                    );
+
+                    // wp_schedule_single_event() return false if event wasn't scheduled.
+                    if (false !== $response) {
+                        $this->update_campaign_status($campaign_id, 'queued', $schedule_time_timestamp);
+                    }
                 }
             }
         }

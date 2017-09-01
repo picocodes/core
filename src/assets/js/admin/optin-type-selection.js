@@ -1,6 +1,7 @@
 (function ($) {
     $(document).ready(function () {
         $('.mo-select-optin-type').on('click', function (e) {
+            e.preventDefault();
             // remove all active tab class.
             $('.mo-select-optin-type').removeClass('mailoptin-type-active');
             $(this).addClass('mailoptin-type-active');
