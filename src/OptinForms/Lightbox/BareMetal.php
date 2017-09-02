@@ -311,7 +311,7 @@ HTML;
 
         return <<<CSS
         
-/*.mo-optin-form-lightbox { display: none; }*/
+div#{$optin_css_id}_container { max-width: 650px; width: 100% }
 div#$optin_css_id.mo-baremetal-container {
 text-align:left;
 background: #f0f0f0;
@@ -325,7 +325,6 @@ box-sizing: border-box;
 -moz-border-radius: 5px;
 padding: 1.5em;
 margin: 10px;
-max-width: 650px;
 }
 
 div#$optin_css_id.mo-baremetal-container h2.mo-optin-form-headline {

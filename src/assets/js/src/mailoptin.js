@@ -352,14 +352,20 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
 
             /**
              * Optin-type agnostic helper function to display optin form.
+             *
              * @param {object} optin_config
              * @param {string} optin_type
+             * @param {string} skip_visible_check
              */
-            display_optin_form: function (optin_config, optin_type) {
+            display_optin_form: function (optin_config, optin_type, skip_visible_check) {
+
+                // bail if required parameter is undefined
+                if (typeof optin_type === 'undefined' || typeof optin_type === 'undefined') return;
+
                 var self = mailoptin_optin;
 
                 // do cookie checking if we are not in customizer mode and not test mode is active.
-                if ($.MailOptin.is_customize_preview === false && optin_config.test_mode === false) {
+                if ($.MailOptin.is_customize_preview === false && optin_config.test_mode === false && skip_visible_check === false) {
                     if (self.is_optin_visible(optin_config.optin_uuid) === false) return;
                 }
 
@@ -449,18 +455,38 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
              * Initialize optin event handlers.
              */
             initOptinForms: function () {
+                var self = this;
+
                 /**
                  * simply this for all optin types using one single selector. initOptin
                  */
                 $(".mo-optin-form-lightbox, .mo-optin-form-bar, .mo-optin-form-slidein").each(function (index, element) {
                     var optin_container = $(element);
-
-                    /** @todo click launch */
-                    $('a[data-modal]').click(function (event) {
-                        optin_container.mailoptin();
-                    });
-
                     optin_container.mailoptin();
+                });
+
+                // click trigger
+                $('.mailoptin-click-trigger').click(function (event) {
+                    event.preventDefault();
+
+                    var optin_uuid = $(this).data('optin-uuid');
+
+                    if (typeof optin_uuid !== 'undefined') {
+
+                        var selector = [
+                            "#" + optin_uuid + ".mo-optin-form-lightbox",
+                            "#" + optin_uuid + ".mo-optin-form-bar",
+                            "#" + optin_uuid + ".mo-optin-form-slidein"
+                        ];
+
+                        var selector_jq_object = $(selector.join(','));
+
+                        var optin_type = selector_jq_object.attr('data-optin-type');
+                        var optin_css_id = optin_uuid + '_' + optin_type;
+                        var optin_config = self.optin_js_config(optin_css_id);
+
+                        self.display_optin_form.call(selector_jq_object, optin_config, optin_type, true);
+                    }
                 });
             },
 
@@ -763,7 +789,6 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
              * All event subscription / listener should go here.
              */
             eventSubscription: function () {
-                var self = this;
                 // track impression for optin form other than modals
                 $(document).on('moOptin:show', function (e, optin_uuid) {
                     $.MailOptin.track_impression(optin_uuid)

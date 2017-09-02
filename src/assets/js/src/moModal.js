@@ -78,6 +78,7 @@ define(["jquery"], function ($) {
             //call callback function
             option.onOpen.call(this);
             elm.data('closeFun', option.onClose);
+            console.log(elm.data('closeFun'));
 
             elm.trigger($.MoModalBox.OPEN, [elm, option]);
         },
@@ -91,8 +92,10 @@ define(["jquery"], function ($) {
                 elm.fadeOut(400, function () {
                     elm = $(this);
 
-                    //call callback function
-                    elm.data('closeFun').call(this);
+                    if (typeof elm.data !== "undefined" && typeof elm.data('closeFun') !== "undefined" && typeof elm.data('closeFun').call !== "undefined") {
+                        //call callback function
+                        elm.data('closeFun').call(this);
+                    }
 
                     //restore modal box
                     elm.removeData('closeFun')
