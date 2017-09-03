@@ -269,7 +269,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
     public function processing_success_structure()
     {
         $style = 'display:none';
-        if (isset($_COOKIE['mo_success_' . $this->optin_campaign_uuid]) && $_COOKIE['mo_success_' . $this->optin_campaign_uuid] === 'true') {
+        if (!is_customize_preview() && isset($_COOKIE['mo_success_' . $this->optin_campaign_uuid]) && $_COOKIE['mo_success_' . $this->optin_campaign_uuid] === 'true') {
             $style = 'background-image: none;'; //note: "bg none css rule" is basically only useful in processing/spinner div.
         }
 

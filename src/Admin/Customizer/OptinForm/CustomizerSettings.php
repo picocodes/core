@@ -5,13 +5,15 @@ namespace MailOptin\Core\Admin\Customizer\OptinForm;
 class CustomizerSettings extends AbstractCustomizer
 {
     /** @var \WP_Customize_Manager */
-    private $wp_customize;
+    public $wp_customize;
 
     /** @var Customizer */
-    private $customizerClassInstance;
+    public $customizerClassInstance;
 
     /** @var string DB option name prefix */
-    private $option_prefix;
+    public $option_prefix;
+
+    public $optin_campaign_id;
 
     /**
      *
@@ -25,7 +27,9 @@ class CustomizerSettings extends AbstractCustomizer
         $this->customizerClassInstance = $customizerClassInstance;
         $this->option_prefix = $option_prefix;
 
-        parent::__construct($customizerClassInstance->optin_campaign_id);
+        $this->optin_campaign_id = $customizerClassInstance->optin_campaign_id;
+
+        parent::__construct($this->optin_campaign_id);
     }
 
     /**
@@ -400,26 +404,6 @@ class CustomizerSettings extends AbstractCustomizer
                 ),
                 'optin_trigger_notice' => array(
                     'default' => apply_filters('mo_optin_form_optin_trigger_notice', false),
-                    'type' => 'option',
-                    'transport' => 'postMessage',
-                ),
-                'click_launch_status' => array(
-                    'default' => apply_filters('mo_optin_form_exit_intent_status', ''),
-                    'type' => 'option',
-                    'transport' => 'postMessage',
-                ),
-                'click_launch_basic_shortcode' => array(
-                    'default' => apply_filters('mo_optin_form_exit_intent_status', ''),
-                    'type' => 'option',
-                    'transport' => 'postMessage',
-                ),
-                'click_launch_advance_shortcode' => array(
-                    'default' => apply_filters('mo_optin_form_exit_intent_status', ''),
-                    'type' => 'option',
-                    'transport' => 'postMessage',
-                ),
-                'click_launch_html_code' => array(
-                    'default' => apply_filters('mo_optin_form_exit_intent_status', ''),
                     'type' => 'option',
                     'transport' => 'postMessage',
                 ),

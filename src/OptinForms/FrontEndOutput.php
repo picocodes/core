@@ -60,7 +60,7 @@ class FrontEndOutput
             }
 
             // if display rule definition not defined, load globally
-            if (!defined('MAILOPTIN_DISPLAY_RULES_FLAG') || Repository::get_customizer_value($id, 'load_optin_globally')) {
+            if (!defined('MAILOPTIN_DISPLAY_RULES_FLAG') || Repository::get_customizer_value($id, 'click_launch_status') || Repository::get_customizer_value($id, 'load_optin_globally')) {
                 echo OptinFormFactory::build($id);
             } else {
                 $load_optin_index = Repository::get_customizer_value($id, 'load_optin_index');
