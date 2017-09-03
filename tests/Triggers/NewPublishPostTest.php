@@ -33,9 +33,6 @@ class NewPublishPostTest extends WP_UnitTestCase
                 'post_author' => 1,
             )
         );
-
-        $instance = NewPublishPost::get_instance();
-        $instance->new_publish_post('', '');
     }
 
 //    function test_single() {
@@ -44,9 +41,10 @@ class NewPublishPostTest extends WP_UnitTestCase
 //        $this->assertTrue( have_posts() );
 //    }
 
-    function test_404() {
-        $this->go_to( site_url( '?p=100' ) );
-        $this->assertTrue( is_404() );
+    function test_404()
+    {
+        $this->go_to(site_url('?p=100'));
+        $this->assertTrue(is_404());
     }
 
 }
