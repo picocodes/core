@@ -42,13 +42,17 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
 
             mailoptin_jq_plugin: function () {
                 var self = this;
-                $.fn.mailoptin = function () {
-                    var modal_options, $optin_uuid, $optin_type, $optin_css_id, optin_js_config, test_mode;
+                $.fn.mailoptin = function (skip_display_checks) {
+                    skip_display_checks = typeof skip_display_checks !== 'undefined' ? skip_display_checks : false;
+
+                    var modal_options, $optin_uuid, $optin_type, $optin_css_id, optin_js_config, test_mode, click_launch_status;
                     $optin_uuid = this.attr('id');
                     $optin_type = this.attr('data-optin-type');
                     $optin_css_id = $optin_uuid + '_' + $optin_type;
                     optin_js_config = self.optin_js_config($optin_css_id);
                     test_mode = ($.MailOptin.is_customize_preview === true) ? true : optin_js_config.test_mode;
+                    // boolen: return true if click launch is active
+                    click_launch_status = optin_js_config.click_launch_status === true;
 
                     // add the close-optin event handler. modal/lightbox has its own so skip.
                     if (this.hasClass('mo-optin-form-lightbox') === false) {
@@ -101,7 +105,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                         // merge modal specific object with that of optin js config
                         optin_js_config = $.extend({}, modal_options, optin_js_config);
 
-                        self.rule_base_show_optin_form.call(this, optin_js_config, 'lightbox');
+                        self.rule_base_show_optin_form.call(this, optin_js_config, 'lightbox', skip_display_checks);
                     }
 
                     /** Notification bar */
@@ -110,7 +114,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                         // only one instance of top bar can show at a time.
                         if ($.MailOptin['isActiveMOBar_' + optin_js_config.bar_position] === true) return;
 
-                        self.rule_base_show_optin_form.call(this, optin_js_config, 'bar');
+                        self.rule_base_show_optin_form.call(this, optin_js_config, 'bar', skip_display_checks);
                     }
 
                     /** Slide INs */
@@ -119,7 +123,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                         // only one instance of slidein type can shown at a time.
                         if ($.MailOptin['isActiveMOSlidein_' + optin_js_config.slidein_position] === true) return;
 
-                        self.rule_base_show_optin_form.call(this, optin_js_config, 'slidein');
+                        self.rule_base_show_optin_form.call(this, optin_js_config, 'slidein', skip_display_checks);
                     }
                 };
 
@@ -200,17 +204,21 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
              *
              * @param {object} optin_config for lightbox, this is modal_options.  others is optin_js_config
              * @param {string} optin_type type of optin
+             * @param {boolean} skip_display_checks skip any display/cookie check
              */
-            rule_base_show_optin_form: function (optin_config, optin_type) {
+            rule_base_show_optin_form: function (optin_config, optin_type, skip_display_checks) {
 
                 var self = mailoptin_optin;
                 // we did this becos 'this' inside setTimeout() will be wrong.
                 var _this = this;
 
                 // if customizer, display immediately.
-                if ($.MailOptin.is_customize_preview === true || optin_config.test_mode === true) {
-                    return self.display_optin_form.call(_this, optin_config, optin_type);
+                if ($.MailOptin.is_customize_preview === true || optin_config.test_mode === true || skip_display_checks === true) {
+                    return self.display_optin_form.call(_this, optin_config, optin_type, skip_display_checks);
                 }
+
+                // return if click launch statues is activated for optin but the trigger isn't it.
+                if(optin_config.click_launch_status === true && skip_display_checks === false) return;
 
                 if (self.is_optin_visible(optin_config.optin_uuid) === false) return;
 
@@ -355,9 +363,9 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
              *
              * @param {object} optin_config
              * @param {string} optin_type
-             * @param {string} skip_visible_check
+             * @param {boolean} skip_display_checks
              */
-            display_optin_form: function (optin_config, optin_type, skip_visible_check) {
+            display_optin_form: function (optin_config, optin_type, skip_display_checks) {
 
                 // bail if required parameter is undefined
                 if (typeof optin_type === 'undefined' || typeof optin_type === 'undefined') return;
@@ -365,7 +373,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 var self = mailoptin_optin;
 
                 // do cookie checking if we are not in customizer mode and not test mode is active.
-                if ($.MailOptin.is_customize_preview === false && optin_config.test_mode === false && skip_visible_check === false) {
+                if ($.MailOptin.is_customize_preview === false && optin_config.test_mode === false && skip_display_checks !== true) {
                     if (self.is_optin_visible(optin_config.optin_uuid) === false) return;
                 }
 
@@ -449,45 +457,6 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
 
                 mailoptin_optin.set_cookie('exit', optin_uuid, optin_config);
                 mailoptin_optin.flag_optin_type_close(optin_config, optin_type);
-            },
-
-            /**
-             * Initialize optin event handlers.
-             */
-            initOptinForms: function () {
-                var self = this;
-
-                /**
-                 * simply this for all optin types using one single selector. initOptin
-                 */
-                $(".mo-optin-form-lightbox, .mo-optin-form-bar, .mo-optin-form-slidein").each(function (index, element) {
-                    var optin_container = $(element);
-                    optin_container.mailoptin();
-                });
-
-                // click trigger
-                $('.mailoptin-click-trigger').click(function (event) {
-                    event.preventDefault();
-
-                    var optin_uuid = $(this).data('optin-uuid');
-
-                    if (typeof optin_uuid !== 'undefined') {
-
-                        var selector = [
-                            "#" + optin_uuid + ".mo-optin-form-lightbox",
-                            "#" + optin_uuid + ".mo-optin-form-bar",
-                            "#" + optin_uuid + ".mo-optin-form-slidein"
-                        ];
-
-                        var selector_jq_object = $(selector.join(','));
-
-                        var optin_type = selector_jq_object.attr('data-optin-type');
-                        var optin_css_id = optin_uuid + '_' + optin_type;
-                        var optin_config = self.optin_js_config(optin_css_id);
-
-                        self.display_optin_form.call(selector_jq_object, optin_config, optin_type, true);
-                    }
-                });
             },
 
             /**
@@ -792,6 +761,39 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 // track impression for optin form other than modals
                 $(document).on('moOptin:show', function (e, optin_uuid) {
                     $.MailOptin.track_impression(optin_uuid)
+                });
+            },
+
+            /**
+             * Initialize optin event handlers.
+             */
+            initOptinForms: function () {
+                var self = this;
+
+                /**
+                 * simply this for all optin types using one single selector. initOptin
+                 */
+                $(".mo-optin-form-lightbox, .mo-optin-form-bar, .mo-optin-form-slidein").each(function (index, element) {
+                    var optin_container = $(element);
+                    optin_container.mailoptin();
+                });
+
+                // click launch trigger
+                $('.mailoptin-click-trigger').click(function (event) {
+                    event.preventDefault();
+
+                    var optin_uuid = $(this).data('optin-uuid');
+
+                    if (typeof optin_uuid !== 'undefined') {
+
+                        var selector = [
+                            "#" + optin_uuid + ".mo-optin-form-lightbox",
+                            "#" + optin_uuid + ".mo-optin-form-bar",
+                            "#" + optin_uuid + ".mo-optin-form-slidein"
+                        ];
+
+                        $(selector.join(',')).mailoptin(true);
+                    }
                 });
             },
 

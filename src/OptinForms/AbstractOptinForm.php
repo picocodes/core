@@ -545,6 +545,7 @@ jQuery(function(){
         $global_exit_cookie = Settings::instance()->global_cookie();
         $global_success_cookie = Settings::instance()->global_success_cookie();
 
+        $click_launch_status = $this->get_customizer_value('click_launch_status');
         $x_page_views_status = $this->get_customizer_value('x_page_views_status');
         $x_page_views_condition = $this->get_customizer_value('x_page_views_condition');
         $x_page_views_value = $this->get_customizer_value('x_page_views_value');
@@ -571,6 +572,10 @@ jQuery(function(){
         $data['global_success_cookie'] = $global_success_cookie != '' ? absint($global_success_cookie) : 0;
         $data['success_message'] = $this->get_customizer_value('success_message');
 
+        /** click launch display rule */
+        if ($click_launch_status === true ) {
+            $data['click_launch_status'] = $click_launch_status;
+        }
         /** x page view display rule */
         if ($x_page_views_status === true && $x_page_views_condition != '...' && !empty($x_page_views_value)) {
             $data['x_page_views_status'] = $x_page_views_status;
