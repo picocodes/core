@@ -1,7 +1,6 @@
-( function (api) {
+(function (api, $) {
     'use strict';
 
-    // Add callback for when the header_textcolor setting exists.
     api('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][hide_name_field]', function (setting) {
         var is_hide_name_field, linkSettingValueToControlActiveState;
 
@@ -51,7 +50,6 @@
         api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][name_field_font]', linkSettingValueToControlActiveState);
     });
 
-    // Add callback for when the header_textcolor setting exists.
     api('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][bar_position]', function (setting) {
         var is_displayed, linkSettingValueToControlActiveState;
 
@@ -75,4 +73,23 @@
         api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][bar_sticky]', linkSettingValueToControlActiveState);
     });
 
-}(wp.customize) );
+    $(window).on('load', function () {
+        // handles contextual display of display rules base on click launch activation status.
+        var selector = 'input[data-customize-setting-link*="click_launch_status"]';
+
+        if ($(selector).is(':checked') === true) {
+            $("li[id*='rule_section']").not("li[id*='click_launch_display_rule_section']").hide();
+        } else {
+            $("li[id*='rule_section']").show();
+        }
+
+        $(selector).change(function () {
+            if (this.checked) {
+                $("li[id*='rule_section']").not("li[id*='click_launch_display_rule_section']").hide();
+            } else {
+                $("li[id*='rule_section']").show();
+            }
+        });
+    });
+
+})(wp.customize, jQuery);

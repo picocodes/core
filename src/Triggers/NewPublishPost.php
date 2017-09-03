@@ -23,7 +23,9 @@ class NewPublishPost extends AbstractTriggers
      */
     public function new_publish_post($new_status, $old_status, $post)
     {
-        if ($new_status == 'publish' && $old_status != 'publish') {
+        $post_type_support = apply_filters('mo_new_publish_post_post_types_support', ['post']);
+
+        if ($new_status == 'publish' && $old_status != 'publish' && in_array($post->post_type, $post_type_support)) {
 
             $new_publish_post_campaigns = ER::get_by_email_campaign_type(ER::NEW_PUBLISH_POST);
 

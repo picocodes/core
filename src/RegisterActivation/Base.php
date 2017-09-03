@@ -6,14 +6,6 @@ class Base
 {
     public static function run_install()
     {
-        if (is_multisite() && apply_filters('mo_stop_multisite_install', true)) {
-            if (!function_exists('deactivate_plugins')) {
-                require_once(ABSPATH . 'wp-admin/includes/plugin.php');
-            }
-            deactivate_plugins(plugin_basename(MAILOPTIN_SYSTEM_FILE_PATH));
-            wp_die(self::multisite_deactivate_notice());
-        }
-
         global $wpdb;
 
         if (is_multisite()) {

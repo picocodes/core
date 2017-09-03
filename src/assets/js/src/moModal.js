@@ -78,7 +78,6 @@ define(["jquery"], function ($) {
             //call callback function
             option.onOpen.call(this);
             elm.data('closeFun', option.onClose);
-            console.log(elm.data('closeFun'));
 
             elm.trigger($.MoModalBox.OPEN, [elm, option]);
         },

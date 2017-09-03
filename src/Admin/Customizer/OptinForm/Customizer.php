@@ -51,6 +51,9 @@ class Customizer
     /** @var string ID of "exit intent" customizer section. */
     public $exit_intent_display_rule_section_id = 'mo_wp_exit_intent_display_rule_section';
 
+    /** @var string ID of "link click" customizer section. */
+    public $click_launch_display_rule_section_id = 'mo_wp_click_launch_display_rule_section';
+
     /** @var string ID of "After ‘X’ seconds" customizer section. */
     public $x_seconds_display_rule_section_id = 'mo_wp_x_seconds_display_rule_section';
 
@@ -254,6 +257,7 @@ class Customizer
                 $this->description_section_id,
                 $this->note_section_id,
                 $this->setup_display_rule_section_id,
+                $this->click_launch_display_rule_section_id,
                 $this->exit_intent_display_rule_section_id,
                 $this->x_seconds_display_rule_section_id,
                 $this->x_scroll_display_rule_section_id,

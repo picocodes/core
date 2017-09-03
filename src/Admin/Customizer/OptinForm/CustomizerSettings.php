@@ -403,6 +403,26 @@ class CustomizerSettings extends AbstractCustomizer
                     'type' => 'option',
                     'transport' => 'postMessage',
                 ),
+                'click_launch_status' => array(
+                    'default' => apply_filters('mo_optin_form_exit_intent_status', ''),
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'click_launch_basic_shortcode' => array(
+                    'default' => apply_filters('mo_optin_form_exit_intent_status', ''),
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'click_launch_advance_shortcode' => array(
+                    'default' => apply_filters('mo_optin_form_exit_intent_status', ''),
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'click_launch_html_code' => array(
+                    'default' => apply_filters('mo_optin_form_exit_intent_status', ''),
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
                 'exit_intent_status' => array(
                     'default' => apply_filters('mo_optin_form_exit_intent_status', false),
                     'type' => 'option',
