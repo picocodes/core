@@ -3,6 +3,7 @@
 namespace MailOptin\Core\Admin\Customizer\EmailCampaign;
 
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Submit_Button_Control;
+use MailOptin\Core\Admin\Customizer\UpsellCustomizerSection;
 use MailOptin\Core\Repositories\EmailCampaignRepository;
 
 class Customizer
@@ -44,7 +45,8 @@ class Customizer
     {
         if (!empty($_REQUEST['mailoptin_email_campaign_id'])) {
             add_action('customize_controls_enqueue_scripts', array($this, 'monkey_patch_customizer_payload'));
-            add_action('customize_controls_enqueue_scripts', array($this, 'customizer_contextual_controls'));
+            add_action('customize_controls_enqueue_scripts', array($this, 'customizer_css'));
+            add_action('customize_controls_enqueue_scripts', array($this, 'customizer_js'));
 
             $this->email_campaign_id = absint($_REQUEST['mailoptin_email_campaign_id']);
 
@@ -78,9 +80,6 @@ class Customizer
 
     }
 
-    /**
-     * See wordpress.stackexchange.com/questions/228667/how-to-extend-customizer-payload-sent-when-save-publish-is-triggered
-     */
     public function monkey_patch_customizer_payload()
     {
         wp_add_inline_script('customize-controls', '(function ( api ) {
@@ -99,7 +98,7 @@ class Customizer
     /**
      * Enqueue JavaScript for email campaign template customizer controls.
      */
-    public function customizer_contextual_controls()
+    public function customizer_js()
     {
         wp_enqueue_script(
             'mailoptin-fetch-email-customizer-connect-list-controls',
@@ -114,6 +113,14 @@ class Customizer
             array('customize-controls'),
             MAILOPTIN_VERSION_NUMBER
         );
+    }
+
+    /**
+     * customizer enqueued CSS
+     */
+    public function customizer_css()
+    {
+        wp_enqueue_style('mailoptin-customizer', MAILOPTIN_ASSETS_URL . 'css/admin/customizer-stylesheet.css');
     }
 
 
@@ -226,6 +233,8 @@ class Customizer
             exit;
         }
 
+        $wp_customize->register_section_type('MailOptin\Core\Admin\Customizer\UpsellCustomizerSection');
+
         $this->add_sections($wp_customize);
         $this->add_settings($wp_customize, $option_prefix);
         $this->add_controls($wp_customize, $option_prefix);
@@ -241,6 +250,20 @@ class Customizer
      */
     public function add_sections($wp_customize)
     {
+        if (!apply_filters('mo_email_customizer_disable_upsell_section', false)) {
+            $wp_customize->add_section(
+                new UpsellCustomizerSection($wp_customize, 'mailoptin_upsell_section',
+                    array(
+                        'pro_text' => __('Check out MailOptin Premium!', 'mailoptin'),
+                        'pro_url' => 'https://mailoptin.io/pricing/?utm_source=optin_customizer&utm_medium=upgrade&utm_campaign=upsell_customizer_section',
+                        'capability' => 'manage_options',
+                        'priority' => 0,
+                        'type' => 'mo-upsell-section'
+                    )
+                )
+            );
+        }
+
         $wp_customize->add_section($this->campaign_settings_section_id, array(
                 'title' => __('Campaign Settings', 'mailoptin'),
                 'priority' => 10,
