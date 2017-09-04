@@ -45,14 +45,20 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 $.fn.mailoptin = function (skip_display_checks) {
                     skip_display_checks = typeof skip_display_checks !== 'undefined' ? skip_display_checks : false;
 
-                    var modal_options, $optin_uuid, $optin_type, $optin_css_id, optin_js_config, test_mode, click_launch_status;
+                    var modal_options, $optin_uuid,
+                        $optin_type,
+                        $optin_css_id,
+                        optin_js_config,
+                        test_mode;
+
                     $optin_uuid = this.attr('id');
                     $optin_type = this.attr('data-optin-type');
                     $optin_css_id = $optin_uuid + '_' + $optin_type;
                     optin_js_config = self.optin_js_config($optin_css_id);
+
+                    if(typeof optin_js_config === 'undefined') return;
+
                     test_mode = ($.MailOptin.is_customize_preview === true) ? true : optin_js_config.test_mode;
-                    // boolen: return true if click launch is active
-                    click_launch_status = optin_js_config.click_launch_status === true;
 
                     // add the close-optin event handler. modal/lightbox has its own so skip.
                     if (this.hasClass('mo-optin-form-lightbox') === false) {
@@ -217,8 +223,8 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                     return self.display_optin_form.call(_this, optin_config, optin_type, skip_display_checks);
                 }
 
-                // return if click launch statues is activated for optin but the trigger isn't it.
-                if(optin_config.click_launch_status === true && skip_display_checks === false) return;
+                // return if click launch status is activated for optin but the trigger isn't it.
+                if (optin_config.click_launch_status === true && skip_display_checks === false) return;
 
                 if (self.is_optin_visible(optin_config.optin_uuid) === false) return;
 

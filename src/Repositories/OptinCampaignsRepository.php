@@ -3,6 +3,8 @@
 namespace MailOptin\Core\Repositories;
 
 
+use MailOptin\Core\PluginSettings\Settings;
+
 class OptinCampaignsRepository extends AbstractRepository
 {
     /**
@@ -349,6 +351,32 @@ class OptinCampaignsRepository extends AbstractRepository
         $campaign_settings = self::get_settings_by_id($optin_campaign_id);
 
         return isset($campaign_settings['activate_optin']) && ($campaign_settings['activate_optin'] === true);
+    }
+
+    /**
+     * Check to determine if optin shpuld be shown base on whether global success and interaction cookie is set and active
+     *
+     * @param int $optin_campaign_id
+     *
+     * @return bool
+     */
+    public static function global_cookie_check_result($optin_campaign_id)
+    {
+        $global_exit_cookie = Settings::instance()->global_cookie();
+        $global_exit_cookie = !empty($global_exit_cookie) ? absint($global_exit_cookie) : 0;
+
+        $global_success_cookie = Settings::instance()->global_success_cookie();
+        $global_success_cookie = !empty($global_success_cookie) ? absint($global_success_cookie) : 0;
+
+        if (!is_customize_preview() && !OptinCampaignsRepository::is_test_mode($optin_campaign_id)) {
+            // Do not show if global interaction/exit cookie is set
+            if (isset($_COOKIE['mo_global_cookie']) && $_COOKIE['mo_global_cookie'] === 'true' && $global_exit_cookie > 0) return false;
+
+            // Do not show if global success cookie is set
+            if (isset($_COOKIE['mo_global_success_cookie']) && $_COOKIE['mo_global_success_cookie'] === 'true' && $global_success_cookie > 0) return false;
+        }
+
+        return true;
     }
 
 

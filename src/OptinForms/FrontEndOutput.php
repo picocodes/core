@@ -50,7 +50,12 @@ class FrontEndOutput
             do_action('mailoptin_before_footer_optin_display', $id, $optin_ids, $post_id);
 
             // if optin is not enabled, pass.
-            if (!Repository::get_customizer_value($id, 'activate_optin')) {
+            if (!Repository::is_activated($id)) {
+                continue;
+            }
+
+            // if optin global exit/interaction and success cookie result fails, move to next.
+            if (!Repository::global_cookie_check_result($id)) {
                 continue;
             }
 

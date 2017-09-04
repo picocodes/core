@@ -4,7 +4,6 @@ namespace MailOptin\Core\Admin\Customizer\OptinForm;
 
 use MailOptin\Core\OptinForms\AbstractOptinForm;
 use MailOptin\Core\Repositories\OptinCampaignsRepository;
-use MailOptin\Core\OptinForms\OptinFormInterface;
 
 /**
  * Create a optin form class instance from its ID or class name.

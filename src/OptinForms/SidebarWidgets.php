@@ -4,7 +4,6 @@ namespace MailOptin\Core\OptinForms;
 
 use MailOptin\Core\Admin\Customizer\OptinForm\OptinFormFactory;
 use MailOptin\Core\Repositories\OptinCampaignsRepository as OCR;
-use MailOptin\Core\Repositories\OptinCampaignsRepository;
 
 class SidebarWidgets extends \WP_Widget
 {
@@ -31,19 +30,20 @@ class SidebarWidgets extends \WP_Widget
     public function widget($args, $instance)
     {
         $sidebar_optin_id = isset($instance['sidebar_optin_id']) ? $instance['sidebar_optin_id'] : false;
-        $sidebar_optin_uuid = OptinCampaignsRepository::get_optin_campaign_uuid($sidebar_optin_id);
         $title = isset($instance['title']) ? apply_filters('widget_title', $instance['title']) : false;
         $is_activated = OCR::is_activated($sidebar_optin_id);
+        $global_cookie_check = OCR::global_cookie_check_result($sidebar_optin_id);
 
         do_action('mo_sidebar_optin_widget_before_output', $args, $instance);
 
         echo $args['before_widget'];
 
-        if ($title) echo $args['before_title'] . $title . $args['after_title'];
-
         do_action('mo_sidebar_optin_widget_before_optin_form', $args, $instance);
 
-        if (is_int($sidebar_optin_id) && true === $is_activated) {
+        if (is_int($sidebar_optin_id) && true === $is_activated && true === $global_cookie_check) {
+
+            if ($title) echo $args['before_title'] . $title . $args['after_title'];
+
             echo OptinFormFactory::build($sidebar_optin_id);
         }
 
