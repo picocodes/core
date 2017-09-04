@@ -397,8 +397,8 @@ class CustomizerSettings extends AbstractCustomizer
                     'type' => 'option',
                     'transport' => 'postMessage',
                 ),
-                'hide_logged_in' => array(
-                    'default' => apply_filters('mo_optin_form_hide_logged_in', false),
+                'who_see_optin' => array(
+                    'default' => apply_filters('mo_optin_form_who_see_optin', 'show_all'),
                     'type' => 'option',
                     'transport' => 'postMessage',
                 ),

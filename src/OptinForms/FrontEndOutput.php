@@ -54,9 +54,16 @@ class FrontEndOutput
                 continue;
             }
 
-            // if optin is disabled for logged users, continue
-            if (Repository::get_customizer_value($id, 'hide_logged_in') && is_user_logged_in()) {
-                continue;
+            switch (Repository::get_customizer_value($id, 'who_see_optin')) {
+                case 'show_logged_in':
+                    if (!is_user_logged_in()) continue 2;
+                    break;
+                case 'show_non_logged_in':
+                    if (is_user_logged_in()) continue 2;
+                    break;
+                case 'show_all':
+                    // do nothing
+                    break;
             }
 
             // if display rule definition not defined, load globally

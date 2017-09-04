@@ -657,6 +657,20 @@ class CustomizerControls
                     'priority' => 20
                 )
             );
+            $setup_display_control_args['who_see_optin'] = apply_filters('mo_optin_form_customizer_hide_logged_in_args', array(
+                    'type' => 'select',
+                    'label' => __('Who should see this optin?', 'mailoptin'),
+                    'section' => $this->customizerClassInstance->setup_display_rule_section_id,
+                    'settings' => $this->option_prefix . '[who_see_optin]',
+                    'description' => __('Decide who are able to see this optin.', 'mailoptin'),
+                    'choices' => [
+                        'show_all' => __('Show optin to all visitors and users', 'mailoptin'),
+                        'show_logged_in' => __('Show optin to only logged-in users', 'mailoptin'),
+                        'show_non_logged_in' => __('Show optin to only users not logged-in)', 'mailoptin'),
+                    ],
+                    'priority' => 25,
+                )
+            );
             $setup_display_control_args['hide_logged_in'] = apply_filters('mo_optin_form_customizer_hide_logged_in_args', array(
                     'type' => 'checkbox',
                     'label' => __('Hide for Logged-in Users', 'mailoptin'),
