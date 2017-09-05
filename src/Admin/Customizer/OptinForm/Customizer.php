@@ -125,7 +125,7 @@ class Customizer
             $checked
         );
 
-        $switch .= '<label style="float: left;margin: 9px 0 0 40px;" for="mo-optin-activate-switch" class="tgl-btn"></label>';
+        $switch .= '<label id="mo-optin-active-switch" for="mo-optin-activate-switch" class="tgl-btn"></label>';
         $switch .= '<span data-wenk="' . $tooltip . '" data-wenk-pos="bottom" class="dashicons dashicons-editor-help" style="margin: 9px 5px;font-size: 18px;cursor: pointer;"></span>';
         ?>
         <script>

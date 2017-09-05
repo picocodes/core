@@ -632,21 +632,10 @@ class CustomizerControls
      */
     public function setup_display_rule_controls()
     {
-        $setup_display_control_args =
-            array(
-                'activate_optin' => apply_filters('mo_optin_form_customizer_activate_optin_args',
-                    array(
-                        'type' => 'checkbox',
-                        'label' => __('Activate optin', 'mailoptin'),
-                        'section' => $this->customizerClassInstance->setup_display_rule_section_id,
-                        'settings' => $this->option_prefix . '[activate_optin]',
-                        'description' => __('The optin will not be displayed unless this setting is checked.', 'mailoptin'),
-                        'priority' => 10
-                    )
-                )
-            );
+        $setup_display_control_args = [];
 
         if (defined('MAILOPTIN_DISPLAY_RULES_FLAG')) {
+
             $setup_display_control_args['load_optin_globally'] = apply_filters('mo_optin_form_customizer_load_optin_globally_args',
                 array(
                     'type' => 'checkbox',
@@ -657,6 +646,7 @@ class CustomizerControls
                     'priority' => 20
                 )
             );
+
             $setup_display_control_args['who_see_optin'] = apply_filters('mo_optin_form_customizer_hide_logged_in_args', array(
                     'type' => 'select',
                     'label' => __('Who should see this optin?', 'mailoptin'),

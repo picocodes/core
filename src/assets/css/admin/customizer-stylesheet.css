@@ -53,6 +53,15 @@ li#accordion-section-mailoptin_upsell_section {
     -moz-osx-font-smoothing: grayscale;
 }
 
+#mo-optin-active-switch {
+    float:left;
+    margin: 9px 0 0 40px;
+}
+
+.in-sub-panel #mo-optin-active-switch {
+    margin-left: 0;
+}
+
 /* Inputs */
 .customize-control input[type=tel], .customize-control input[type=url], .customize-control input[type=text],
 .customize-control input[type=password], .customize-control input[type=email], .customize-control input[type=number],
