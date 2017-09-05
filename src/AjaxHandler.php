@@ -27,6 +27,7 @@ class AjaxHandler
         add_action('wp_ajax_mailoptin_create_optin_campaign', [$this, 'create_optin_campaign']);
         add_action('wp_ajax_mailoptin_create_email_campaign', [$this, 'create_email_campaign']);
         add_action('wp_ajax_mailoptin_customizer_fetch_email_list', [$this, 'customizer_fetch_email_list']);
+        add_action('wp_ajax_mailoptin_optin_toggle_active', [$this, 'toggle_optin_active_status']);
         add_action('wp_ajax_mailoptin_optin_type_selection', [$this, 'optin_type_selection']);
 
         add_action('wp_ajax_mailoptin_add_to_email_list', [$this, 'subscribe_to_email_list']);
@@ -281,7 +282,6 @@ class AjaxHandler
         return $randomString;
     }
 
-
     /**
      * fetch connect/email provider email list.
      */
@@ -296,6 +296,24 @@ class AjaxHandler
         $email_list = ConnectionsRepository::connection_email_list($connect);
 
         wp_send_json_success($email_list);
+
+        wp_die();
+    }
+
+    public function toggle_optin_active_status()
+    {
+        check_ajax_referer('customizer-fetch-email-list', 'security');
+
+        current_user_can('administrator') || exit;
+
+        $optin_campaign_id = absint($_POST['id']);
+        $status = sanitize_text_field($_POST['status']);
+
+        if ($status == 'true') {
+            OptinCampaignsRepository::activate_campaign($optin_campaign_id);
+        } else {
+            OptinCampaignsRepository::deactivate_campaign($optin_campaign_id);
+        }
 
         wp_die();
     }

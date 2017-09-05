@@ -110,6 +110,20 @@
         $('.mo-click-select').click(function () {
             this.select();
         });
+
+        // handles activation and deactivation of optin
+        $('#mo-optin-activate-switch').on('change', function () {
+            $.post(ajaxurl, {
+                action: 'mailoptin_optin_toggle_active',
+                id: mailoptin_optin_campaign_id,
+                status: this.checked,
+                security: $("input[data-customize-setting-link*='[ajax_nonce]']").val()
+            }, function($response ) {
+                console.log($response);
+            });
+        });
+
+
     });
 
 })(wp.customize, jQuery);

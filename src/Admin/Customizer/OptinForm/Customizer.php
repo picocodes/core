@@ -76,7 +76,9 @@ class Customizer
         if (!empty($_REQUEST['mailoptin_optin_campaign_id'])) {
             add_action('customize_controls_enqueue_scripts', array($this, 'monkey_patch_customizer_payload'));
             add_action('customize_controls_enqueue_scripts', array($this, 'customizer_js'));
-            add_action('customize_controls_enqueue_scripts', array($this, 'customizer_css'));
+            add_action('customize_controls_enqueue_scripts', [$this, 'customizer_css']);
+
+            add_action('customize_controls_print_footer_scripts', [$this, 'add_activate_switch']);
 
             $this->optin_campaign_id = absint($_REQUEST['mailoptin_optin_campaign_id']);
             $this->optin_campaign_type = OptinCampaignsRepository::get_optin_campaign_type($this->optin_campaign_id);
@@ -111,6 +113,29 @@ class Customizer
         }
     }
 
+    public function add_activate_switch()
+    {
+        $input_value = OptinCampaignsRepository::is_activated($this->optin_campaign_id) ? 'yes' : 'no';
+        $checked = ($input_value == 'yes') ? 'checked="checked"' : null;
+        $tooltip = __('Toggle to activate and deactivate optin.', 'mailoptin');
+
+        $switch = sprintf(
+            '<input id="mo-optin-activate-switch" type="checkbox" class="tgl tgl-light" value="%s" %s />',
+            $input_value,
+            $checked
+        );
+
+        $switch .= '<label style="float: left;margin: 9px 0 0 40px;" for="mo-optin-activate-switch" class="tgl-btn"></label>';
+        $switch .= '<span data-wenk="' . $tooltip . '" data-wenk-pos="bottom" class="dashicons dashicons-editor-help" style="margin: 9px 5px;font-size: 18px;cursor: pointer;"></span>';
+        ?>
+        <script>
+            jQuery(function ($) {
+                $('#customize-header-actions').prepend($('<?php echo $switch; ?>'));
+            });
+        </script>
+        <?php
+    }
+
     /**
      * Burst / clear optin cache after changes in customizer.
      */
@@ -128,6 +153,7 @@ class Customizer
     public function customizer_css()
     {
         wp_enqueue_style('mailoptin-customizer', MAILOPTIN_ASSETS_URL . 'css/admin/customizer-stylesheet.css');
+        wp_enqueue_style('mailoptin-customizer-wenk', MAILOPTIN_ASSETS_URL . 'css/admin/wenk.min.css');
     }
 
     /**
