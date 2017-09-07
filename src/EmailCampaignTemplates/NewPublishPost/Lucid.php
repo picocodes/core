@@ -381,6 +381,36 @@ HTML;
       -webkit-text-size-adjust: none;
       mso-hide: all;
     }
+    
+  
+    pre {
+        overflow: auto;
+        border: 1px dashed #888;
+        padding: 5px 10px;
+        margin: 0;
+        width: 100%;                          /* specify width  */
+        white-space: pre-wrap;                 /* CSS3 browsers  */
+        white-space: -moz-pre-wrap !important; /* 1999+ Mozilla  */
+        white-space: -pre-wrap;                /* Opera 4 thru 6 */
+        white-space: -o-pre-wrap;              /* Opera 7 and up */
+        word-wrap: break-word;                 /* IE 5.5+ and up */
+        /* overflow-x: auto; */                /* Firefox 2 only */
+        /* width: 99%; */		       /* only if needed */
+        }
+/* no vertical scrollbars for standards-compliant browsers */
+    /* no vertical scrollbars for IE 7 */
+    *:first-child+html pre:hover {
+        padding-bottom: 20px;
+        overflow-y: hidden;
+        overflow: visible;
+        overflow-x: auto;
+    }
+    /* no vertical scrollbars for IE 6 */
+    * html pre:hover {
+        padding-bottom: 20px;
+        overflow: visible;
+        overflow-x: auto;
+    }
 
     /*Media Queries ------------------------------ */
     @media only screen and (max-width: 600px) {
