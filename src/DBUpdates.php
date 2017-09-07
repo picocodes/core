@@ -2,12 +2,13 @@
 
 namespace MailOptin\Core;
 
+use MailOptin\Core\Repositories\OptinCampaignsRepository;
 
 class DBUpdates
 {
     public static $instance;
 
-    const DB_VER = 1;
+    const DB_VER = 2;
 
     public function init_options()
     {
@@ -65,6 +66,11 @@ class DBUpdates
         $sql = "ALTER TABLE $table CHANGE date_added date_added DATETIME NOT NULL DEFAULT '1000-01-01 00:00:00';";
 
         $wpdb->query($sql);
+    }
+
+    public function update_routine_2()
+    {
+        OptinCampaignsRepository::burst_all_cache();
     }
 
     /** Singleton poop */
