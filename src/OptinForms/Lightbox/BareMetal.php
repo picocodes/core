@@ -303,7 +303,7 @@ HTML;
     /**
      * Template CSS styling.
      *
-     * @return string
+     * @RETURN STRING ADDENDIO
      */
     public function optin_form_css()
     {
@@ -311,7 +311,7 @@ HTML;
 
         return <<<CSS
         
-div#{$optin_css_id}_container { max-width: 650px; width: 100% }
+div#{$optin_css_id}_container { max-width: 650px; } /** do not set width:100% here */
 div#$optin_css_id.mo-baremetal-container {
 text-align:left;
 background: #f0f0f0;
