@@ -39,33 +39,76 @@ class CustomizerControls
     {
         $page_control_args = apply_filters(
             "mo_optin_form_customizer_design_controls",
-            array(
-                'form_background_color' => new \WP_Customize_Color_Control(
-                    $this->wp_customize,
-                    $this->option_prefix . '[form_background_color]',
-                    apply_filters('mailoptin_optin_customizer_form_background_color_args', array(
-                            'label' => __('Background Color', 'mailoptin'),
-                            'section' => $this->customizerClassInstance->design_section_id,
-                            'settings' => $this->option_prefix . '[form_background_color]',
-                            'priority' => 20,
-                        )
-                    )
-                ),
-                'form_border_color' => new \WP_Customize_Color_Control(
-                    $this->wp_customize,
-                    $this->option_prefix . '[form_border_color]',
-                    apply_filters('mo_optin_form_customizer_form_border_color_args', array(
-                            'label' => __('Border Color', 'mailoptin'),
-                            'section' => $this->customizerClassInstance->design_section_id,
-                            'settings' => $this->option_prefix . '[form_border_color]',
-                            'priority' => 40,
-                        )
+            [],
+            $this->wp_customize, $this->option_prefix,
+            $this->customizerClassInstance
+        );
+
+        if (apply_filters('mo_optin_form_enable_form_image', true)) {
+            $page_control_args['form_image'] = new \WP_Customize_Cropped_Image_Control(
+                $this->wp_customize,
+                $this->option_prefix . '[form_image]',
+                apply_filters('mo_optin_form_customizer_form_background_image_args', array(
+                        'width' => 250,
+                        'heigh' => 250,
+                        'flex_width' => true,
+                        'flex_height' => true,
+                        'label' => __('Image', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->design_section_id,
+                        'settings' => $this->option_prefix . '[form_image]',
+                        'priority' => 10,
                     )
                 )
-            ),
+            );
+
+            $this->wp_customize->selective_refresh->add_partial( $this->option_prefix . '[form_image]', array(
+                'selector' => 'img.mo-optin-form-image',
+                'render_callback' => function() {
+                    bloginfo( 'name' );
+                },
+            ) );
+        }
+
+        if (apply_filters('mo_optin_form_enable_form_background_image', true)) {
+            $page_control_args['form_background_image'] = new \WP_Customize_Cropped_Image_Control(
+                $this->wp_customize,
+                $this->option_prefix . '[form_background_image]',
+                apply_filters('mo_optin_form_customizer_form_background_image_args', array(
+                        'width' => 250,
+                        'heigh' => 250,
+                        'flex_width' => true,
+                        'flex_height' => true,
+                        'label' => __('Background Image', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->design_section_id,
+                        'settings' => $this->option_prefix . '[form_background_image]',
+                        'priority' => 10,
+                    )
+                )
+            );
+        }
+
+        $page_control_args ['form_background_color'] = new \WP_Customize_Color_Control(
             $this->wp_customize,
-            $this->option_prefix,
-            $this->customizerClassInstance
+            $this->option_prefix . '[form_background_color]',
+            apply_filters('mailoptin_optin_customizer_form_background_color_args', array(
+                    'label' => __('Background Color', 'mailoptin'),
+                    'section' => $this->customizerClassInstance->design_section_id,
+                    'settings' => $this->option_prefix . '[form_background_color]',
+                    'priority' => 20,
+                )
+            )
+        );
+
+        $page_control_args['form_border_color'] = new \WP_Customize_Color_Control(
+            $this->wp_customize,
+            $this->option_prefix . '[form_border_color]',
+            apply_filters('mo_optin_form_customizer_form_border_color_args', array(
+                    'label' => __('Border Color', 'mailoptin'),
+                    'section' => $this->customizerClassInstance->design_section_id,
+                    'settings' => $this->option_prefix . '[form_border_color]',
+                    'priority' => 40,
+                )
+            )
         );
 
         do_action('mailoptin_before_design_controls_addition');

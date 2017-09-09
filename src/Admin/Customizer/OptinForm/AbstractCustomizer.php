@@ -34,6 +34,8 @@ class AbstractCustomizer
     public function register_customizer_defaults()
     {
         $defaults = [];
+        $defaults['form_background_image'] = apply_filters('mo_optin_form_background_image_default', '');
+        $defaults['form_image'] = apply_filters('mo_optin_form_image_default', '');
         $defaults['form_background_color'] = apply_filters('mo_optin_form_background_color_default', '');
         $defaults['form_border_color'] = apply_filters('mo_optin_form_border_color_default', '');
         $defaults['form_custom_css'] = apply_filters('mo_optin_form_custom_css_default', '');

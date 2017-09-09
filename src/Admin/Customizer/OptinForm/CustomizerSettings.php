@@ -39,6 +39,18 @@ class CustomizerSettings extends AbstractCustomizer
     {
         $design_settings_args = apply_filters("mo_optin_form_customizer_design_settings",
             array(
+                'form_background_image' => array(
+                    'default' => $this->customizer_defaults['form_background_image'],
+                    'type' => 'option',
+                    'sanitize_callback' => 'absint',
+                    'transport' => 'postMessage',
+                ),
+                'form_image' => array(
+                    'default' => $this->customizer_defaults['form_image'],
+                    'type' => 'option',
+                    'sanitize_callback' => 'absint',
+                    'transport' => 'postMessage',
+                ),
                 'form_background_color' => array(
                     'default' => $this->customizer_defaults['form_background_color'],
                     'type' => 'option',
