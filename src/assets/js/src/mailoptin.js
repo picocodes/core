@@ -56,7 +56,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                     $optin_css_id = $optin_uuid + '_' + $optin_type;
                     optin_js_config = self.optin_js_config($optin_css_id);
 
-                    if(typeof optin_js_config === 'undefined') return;
+                    if (typeof optin_js_config === 'undefined') return;
 
                     test_mode = ($.MailOptin.is_customize_preview === true) ? true : optin_js_config.test_mode;
 
@@ -734,7 +734,11 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                     this.css("-moz-box-shadow", "inset 0px 0px 0px 2px #f45a4a");
                     this.css("box-shadow", "inset 0px 0px 0px 2px #f45a4a");
                 }
-                $('div#' + $optin_css_id + ' .mo-optin-error').text(error).show();
+
+                var mo_optin_error_text = $('div#' + $optin_css_id + ' .mo-optin-error');
+                if (typeof mo_optin_error_text !== 'undefined' && mo_optin_error_text.length > 0) {
+                    mo_optin_error_text.text(error).show();
+                }
             },
 
             /**
