@@ -64,6 +64,8 @@ class OptinCampaign_List extends \WP_List_Table
             $sql .= "  WHERE optin_type = '$optin_type'";
         }
 
+        $sql .= "  ORDER BY id DESC";
+
         $sql .= " LIMIT $per_page";
         if ($current_page > 1) {
             $sql .= "  OFFSET $offset";
