@@ -708,7 +708,7 @@ class CustomizerControls
             );
         } else {
             $content = sprintf(
-                __('Upgrade to %sMailOptin Premium%s to avail yourself of optin triggers such as %3$sExit Intent%4$s, %3$sPage views%4$s, %3$sTime on Site%4$s and %3$sScroll trigger%4$s proven to boost conversions.', 'mailoptin'),
+                __('Upgrade to %sMailOptin Premium%s to avail yourself of optin triggers such as %3$sExit Intent%4$s, %3$sPage views%4$s, %3$sTime on Site%4$s and %3$sScroll trigger%4$s as well as powerful display rules proven to boost conversions.', 'mailoptin'),
                 '<a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=quick_setup_panel">',
                 '</a>',
                 '<strong>',

@@ -621,7 +621,7 @@ class Customizer
         } else {
 
             $wp_customize->add_section($this->setup_display_rule_section_id, array(
-                    'title' => __('Quick Setup', 'mailoptin')
+                    'title' => __('Display Rules', 'mailoptin')
                 )
             );
         }
