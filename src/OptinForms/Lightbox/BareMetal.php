@@ -303,7 +303,7 @@ HTML;
     /**
      * Template CSS styling.
      *
-     * @RETURN STRING ADDENDIO
+     * @return string
      */
     public function optin_form_css()
     {
