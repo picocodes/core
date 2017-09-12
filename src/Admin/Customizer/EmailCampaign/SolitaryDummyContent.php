@@ -2,8 +2,6 @@
 
 namespace MailOptin\Core\Admin\Customizer\EmailCampaign;
 
-use MailOptin\Core\PluginSettings\NPP_EmailCampaigns;
-
 class SolitaryDummyContent
 {
     public static function title()
