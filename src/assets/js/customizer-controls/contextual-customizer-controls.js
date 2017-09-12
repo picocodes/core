@@ -91,6 +91,7 @@
                     api.section('mo_wp_x_scroll_display_rule_section').active(!is_displayed());
                     api.section('mo_wp_x_page_views_display_rule_section').active(!is_displayed());
                     api.section('mo_wp_page_filter_display_rule_section').active(!is_displayed());
+                    api.section('mo_wp_shortcode_template_tag_display_rule_section').active(!is_displayed());
                 };
 
                 control.active.validate = is_displayed;
