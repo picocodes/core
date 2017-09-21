@@ -11,6 +11,8 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
     {
         add_shortcode('mo-optin-form-wrapper', [$this, 'shortcode_optin_form_wrapper']);
         add_shortcode('mo-optin-form-headline', [$this, 'shortcode_optin_form_headline']);
+        add_shortcode('mo-optin-form-image', [$this, 'shortcode_optin_form_image']);
+        add_shortcode('mo-optin-form-background-image', [$this, 'shortcode_optin_form_background_image']);
         add_shortcode('mo-optin-form-description', [$this, 'shortcode_optin_form_description']);
         add_shortcode('mo-optin-form-error', [$this, 'shortcode_optin_form_error']);
         add_shortcode('mo-optin-form-name-field', [$this, 'shortcode_optin_form_name_field']);
@@ -349,6 +351,58 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         $html = "<$tag class=\"mo-optin-form-headline $class\" style=\"$style\">$headline</$tag>";
 
         return $html;
+    }
+
+    /**
+     * Optin form headline shortcode.
+     *
+     * @param array $atts
+     *
+     * @return string
+     */
+    public function shortcode_optin_form_image($atts)
+    {
+        $atts = shortcode_atts(
+            array(
+                'default' => '',
+                'style' => '',
+            ),
+            $atts
+        );
+
+        $style = esc_attr($atts['style']);
+
+        $db_saved_form_image = $this->get_customizer_value('form_image');
+
+        $src = !empty($db_saved_form_image) ? wp_get_attachment_image_url($db_saved_form_image) : $atts['default'];
+
+        return sprintf('<img src="%s" class="mo-optin-form-image" style="%s"/>', esc_url($src), $style);
+    }
+
+    /**
+     * Optin form headline shortcode.
+     *
+     * @param array $atts
+     *
+     * @return string
+     */
+    public function shortcode_optin_form_background_image($atts)
+    {
+        $atts = shortcode_atts(
+            array(
+                'default_image' => '',
+                'style' => '',
+            ),
+            $atts
+        );
+
+        $style = esc_attr($atts['style']);
+
+        $db_saved_form_image = $this->get_customizer_value('form_background_image');
+
+        $src = !empty($db_saved_form_image) ? wp_get_attachment_image_url($db_saved_form_image) : $atts['default_image'];
+
+        return sprintf('<img src="%s" class="mo-optin-form-background-image" style="%s"/>', esc_url($src), $style);
     }
 
     /**

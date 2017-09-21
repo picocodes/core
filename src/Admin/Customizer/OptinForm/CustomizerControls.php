@@ -23,6 +23,12 @@ class CustomizerControls
     /** @var string DB option name prefix */
     private $option_prefix;
 
+    /** @var string default image URL for form_image partial */
+    private $default_form_image;
+
+    /** @var string default image URL for form_background_image partial */
+    private $default_form_background_image;
+
     /**
      * @param \WP_Customize_Manager $wp_customize
      * @param string $option_prefix
@@ -60,6 +66,20 @@ class CustomizerControls
                     )
                 )
             );
+
+            $this->default_form_image = apply_filters('mo_optin_form_partial_default_image', '');
+
+            if (isset($this->wp_customize->selective_refresh)) {
+                $this->wp_customize->selective_refresh->add_partial($this->option_prefix . '[form_image]', array(
+                    'fallback_refresh' => false,
+                    'selector' => apply_filters('mo_optin_form_image_partial_selector', '.mo-optin-form-image-wrapper'),
+                    // determines if change will apply to container / wrapper element.
+                    'container_inclusive' => apply_filters('mo_optin_form_image_partial_container_inclusive', false),
+                    'render_callback' => apply_filters('mo_optin_form_image_render_callback', function () {
+                        return do_shortcode("[mo-optin-form-image default='{$this->default_form_image}']");
+                    })
+                ));
+            }
         }
 
         if (apply_filters('mo_optin_form_enable_form_background_image', false)) {
@@ -78,6 +98,18 @@ class CustomizerControls
                     )
                 )
             );
+
+            if (isset($this->wp_customize->selective_refresh)) {
+                $this->wp_customize->selective_refresh->add_partial($this->option_prefix . '[form_background_image]', array(
+                    'fallback_refresh' => false,
+                    'selector' => apply_filters('mo_optin_form_background_image_partial_selector', '.mo-optin-form-background-image-wrapper'),
+                    // determines if change will apply to container / wrapper element.
+                    'container_inclusive' => apply_filters('mo_optin_form_image_partial_container_inclusive', false),
+                    'render_callback' => apply_filters('mo_optin_form_image_render_callback', function () {
+                        return do_shortcode('[mo-optin-form-image]');
+                    })
+                ));
+            }
         }
 
         $page_control_args ['form_background_color'] = new \WP_Customize_Color_Control(
@@ -115,7 +147,6 @@ class CustomizerControls
         }
 
         do_action('mailoptin_after_design_controls_addition');
-
     }
 
     public function headline_controls()
@@ -179,6 +210,10 @@ class CustomizerControls
         do_action('mailoptin_after_headline_controls_addition');
     }
 
+    public static function form_image_render_callback()
+    {
+        echo 'hello world';
+    }
 
     public function description_controls()
     {

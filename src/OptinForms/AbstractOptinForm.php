@@ -212,24 +212,16 @@ jQuery(function(){
      */
     public function get_preview_structure()
     {
-        $title = __('MailOptin Optin Form', 'mailoptin');
         $optin_form_fonts = $this->get_optin_form_fonts();
 
         // set body padding-top to 0 if optin is bar.
         $body_padding_top = in_array($this->optin_campaign_type, ['bar']) ? 0 : '10%';
         ob_start();
-        ?>
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title><?php echo $title; ?></title>
-            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-            <?php do_action('mo_optin_form_customizer_preview_head'); ?>
-        </head>
 
-    <body style="background: #f3f3f3 !important;padding-top:<?php echo $body_padding_top; ?>;">
-        <?php
+        wp_head();
+
+        echo "<body style='background: #f3f3f3 !important;padding-top:$body_padding_top;'>";
+
         if (in_array($this->optin_campaign_type,
             ['sidebar', 'inpost'])) { // ensure sidebar and inpost optin has a max width for preview sake.
             echo '<div style="max-width:700px;margin: auto">';
@@ -573,7 +565,7 @@ jQuery(function(){
         $data['success_message'] = $this->get_customizer_value('success_message');
 
         /** click launch display rule */
-        if ($click_launch_status === true ) {
+        if ($click_launch_status === true) {
             $data['click_launch_status'] = $click_launch_status;
         }
         /** x page view display rule */
