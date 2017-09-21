@@ -51,6 +51,24 @@ class CustomizerControls
         );
 
         if (apply_filters('mo_optin_form_enable_form_image', false)) {
+
+            $this->default_form_image = apply_filters('mo_optin_form_partial_default_image', '');
+
+            if (isset($this->wp_customize->selective_refresh)) {
+                $this->wp_customize->selective_refresh->add_partial($this->option_prefix . '[form_image]', array(
+                    'fallback_refresh' => false,
+                    'selector' => apply_filters('mo_optin_form_image_partial_selector', '.mo-optin-form-image-wrapper'),
+                    // determines if change will apply to container / wrapper element.
+                    'container_inclusive' => apply_filters('mo_optin_form_image_partial_container_inclusive', false),
+                    'render_callback' => apply_filters('mo_optin_form_image_render_callback', function () {
+                        return do_shortcode("[mo-optin-form-image default='{$this->default_form_image}']");
+                    })
+                ));
+            } else {
+                // if selective refresh not supported, fallback to 'refresh' transport.
+                $this->wp_customize->get_setting($this->option_prefix . '[form_image]')->transport = 'refresh';
+            }
+
             $page_control_args['form_image'] = new \WP_Customize_Cropped_Image_Control(
                 $this->wp_customize,
                 $this->option_prefix . '[form_image]',
@@ -66,23 +84,27 @@ class CustomizerControls
                     )
                 )
             );
-
-            $this->default_form_image = apply_filters('mo_optin_form_partial_default_image', '');
-
-            if (isset($this->wp_customize->selective_refresh)) {
-                $this->wp_customize->selective_refresh->add_partial($this->option_prefix . '[form_image]', array(
-                    'fallback_refresh' => false,
-                    'selector' => apply_filters('mo_optin_form_image_partial_selector', '.mo-optin-form-image-wrapper'),
-                    // determines if change will apply to container / wrapper element.
-                    'container_inclusive' => apply_filters('mo_optin_form_image_partial_container_inclusive', false),
-                    'render_callback' => apply_filters('mo_optin_form_image_render_callback', function () {
-                        return do_shortcode("[mo-optin-form-image default='{$this->default_form_image}']");
-                    })
-                ));
-            }
         }
 
         if (apply_filters('mo_optin_form_enable_form_background_image', false)) {
+
+            $this->default_form_background_image = apply_filters('mo_optin_form_partial_default_background_image', '');
+
+            if (isset($this->wp_customize->selective_refresh)) {
+                $this->wp_customize->selective_refresh->add_partial($this->option_prefix . '[form_background_image]', array(
+                    'fallback_refresh' => false,
+                    'selector' => apply_filters('mo_optin_form_background_image_partial_selector', '.mo-optin-form-background-image-wrapper'),
+                    // determines if change will apply to container / wrapper element.
+                    'container_inclusive' => apply_filters('mo_optin_form_image_partial_container_inclusive', false),
+                    'render_callback' => apply_filters('mo_optin_form_image_render_callback', function () {
+                        return do_shortcode("[mo-optin-form-background-image default='{$this->default_form_background_image}']");
+                    })
+                ));
+            } else {
+                // if selective refresh not supported, fallback to 'refresh' transport.
+                $this->wp_customize->get_setting($this->option_prefix . '[form_background_image]')->transport = 'refresh';
+            }
+
             $page_control_args['form_background_image'] = new \WP_Customize_Cropped_Image_Control(
                 $this->wp_customize,
                 $this->option_prefix . '[form_background_image]',
@@ -98,18 +120,6 @@ class CustomizerControls
                     )
                 )
             );
-
-            if (isset($this->wp_customize->selective_refresh)) {
-                $this->wp_customize->selective_refresh->add_partial($this->option_prefix . '[form_background_image]', array(
-                    'fallback_refresh' => false,
-                    'selector' => apply_filters('mo_optin_form_background_image_partial_selector', '.mo-optin-form-background-image-wrapper'),
-                    // determines if change will apply to container / wrapper element.
-                    'container_inclusive' => apply_filters('mo_optin_form_image_partial_container_inclusive', false),
-                    'render_callback' => apply_filters('mo_optin_form_image_render_callback', function () {
-                        return do_shortcode('[mo-optin-form-image]');
-                    })
-                ));
-            }
         }
 
         $page_control_args ['form_background_color'] = new \WP_Customize_Color_Control(
