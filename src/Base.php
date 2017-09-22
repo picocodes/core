@@ -37,7 +37,7 @@ define('MAILOPTIN_SETTINGS_DB_OPTION_NAME', 'mailoptin_settings');
 define('MO_OPTIN_CAMPAIGN_WP_OPTION_NAME', 'mo_optin_campaign');
 define('MO_OPTIN_TEMPLATE_WP_OPTION_NAME', 'mailoptin_email_templates');
 define('MO_EMAIL_CAMPAIGNS_WP_OPTION_NAME', 'mo_email_campaigns');
-define('MO_LITE_OPTIN_CONVERSION_LIMIT', 200);
+define('MO_LITE_OPTIN_CONVERSION_LIMIT', 100);
 define('MO_LITE_OPTIN_CAMPAIGN_LIMIT', 3);
 
 define('MAILOPTIN_SRC', dirname(__FILE__) . '/');
