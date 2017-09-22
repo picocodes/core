@@ -70,40 +70,34 @@
     transform: translate(-50%, -50%);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 700px) {
     .moModal .mo-optin-form-container {
-        margin: 0 1em !important;
-    }
-}
-
-@media (max-width: 480px) {
-    div.mo-optin-form-container {
-        font-size: 12px !important;
+        margin: 0 15px !important;
     }
 }
 
 @media (max-width: 767px) {
     div.mo-optin-form-container h1 {
-        font-size: 1.6em !important;
+        font-size: 24px !important;
     }
 
     div.mo-optin-form-container h2 {
-        font-size: 1.6em !important;
+        font-size: 24px !important;
     }
 
     div.mo-optin-form-container .mo-optin-form-headline {
-        font-size: 1.6em !important;
+        font-size: 24px !important;
     }
 
     div.mo-optin-form-container p {
-        font-size: 1.2em !important;
+        font-size: 18px !important;
     }
 
     div.mo-optin-form-container .mo-optin-form-description {
-        font-size: 1.2em !important;
+        font-size: 18px !important;
     }
 
     div.mo-optin-form-container .mo-optin-form-note {
-        font-size: 1em !important;
+        font-size: 10px !important;
     }
 }

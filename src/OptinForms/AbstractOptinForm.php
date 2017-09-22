@@ -201,7 +201,7 @@ jQuery(function(){
         $optin_form_fonts = $this->get_optin_form_fonts();
 
         if (!empty($optin_form_fonts)) {
-            return "<script type='text/javascript'>jQuery(function(){WebFont.load({google: {families: [$optin_form_fonts]}});});</script>";
+            return "<script type='text/javascript'>jQuery(function(){if(typeof WebFont!=='undefined'){WebFont.load({google: {families: [$optin_form_fonts]}});}});</script>";
         }
     }
 
@@ -241,7 +241,7 @@ jQuery(function(){
             echo '</div>';
             // script below is below wp_footer() because jquery must have been loaded by now.
             if (!empty($optin_form_fonts)) {
-                echo "<script type='text/javascript'>jQuery(function(){WebFont.load({google: {families: [$optin_form_fonts]}})});</script>";
+                echo "<script type='text/javascript'>jQuery(function(){if(typeof WebFont!=='undefined'){WebFont.load({google: {families: [$optin_form_fonts]}})}});</script>";
             }
         }
         echo '</body>';

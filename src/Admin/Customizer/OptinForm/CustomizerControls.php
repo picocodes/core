@@ -72,9 +72,9 @@ class CustomizerControls
             $page_control_args['form_image'] = new \WP_Customize_Cropped_Image_Control(
                 $this->wp_customize,
                 $this->option_prefix . '[form_image]',
-                apply_filters('mo_optin_form_customizer_form_background_image_args', array(
-                        'width' => 250,
-                        'height' => 250,
+                apply_filters('mo_optin_form_customizer_form_image_args', array(
+                        'width' => 220,
+                        'height' => 35,
                         'flex_width' => true,
                         'flex_height' => true,
                         'label' => __('Image', 'mailoptin'),
@@ -109,8 +109,8 @@ class CustomizerControls
                 $this->wp_customize,
                 $this->option_prefix . '[form_background_image]',
                 apply_filters('mo_optin_form_customizer_form_background_image_args', array(
-                        'width' => 250,
-                        'height' => 250,
+                        'width' => 600,
+                        'height' => 340,
                         'flex_width' => true,
                         'flex_height' => true,
                         'label' => __('Background Image', 'mailoptin'),

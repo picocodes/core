@@ -374,7 +374,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
 
         $db_saved_form_image = $this->get_customizer_value('form_image');
 
-        $src = !empty($db_saved_form_image) ? wp_get_attachment_image_url($db_saved_form_image) : $atts['default'];
+        $src = !empty($db_saved_form_image) ? wp_get_attachment_image_url($db_saved_form_image, '') : $atts['default'];
 
         return sprintf('<img src="%s" class="mo-optin-form-image" style="%s"/>', esc_url($src), $style);
     }
