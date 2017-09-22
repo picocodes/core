@@ -161,7 +161,7 @@ class CustomizerControls
 
     public function headline_controls()
     {
-        $page_control_args = apply_filters(
+        $headline_control_args = apply_filters(
             "mo_optin_form_customizer_headline_controls",
             array(
                 'headline' => new WP_Customize_Tinymce_Control(
@@ -209,15 +209,17 @@ class CustomizerControls
 
         do_action('mailoptin_before_headline_controls_addition');
 
-        foreach ($page_control_args as $id => $args) {
-            if (is_object($args)) {
-                $this->wp_customize->add_control($args);
-            } else {
-                $this->wp_customize->add_control($this->option_prefix . '[' . $id . ']', $args);
+        if (!empty($headline_control_args)) {
+            foreach ($headline_control_args as $id => $args) {
+                if (is_object($args)) {
+                    $this->wp_customize->add_control($args);
+                } else {
+                    $this->wp_customize->add_control($this->option_prefix . '[' . $id . ']', $args);
+                }
             }
-        }
 
-        do_action('mailoptin_after_headline_controls_addition');
+            do_action('mailoptin_after_headline_controls_addition');
+        }
     }
 
     public static function form_image_render_callback()
