@@ -234,7 +234,8 @@ class Custom_Settings_Page_Api
     }
 
     public function metabox_toggle_script()
-    { ?>
+    {
+        ?>
         <script type="text/javascript">
             jQuery(document).ready(function ($) {
                 $('.wp_csa_view .handlediv').click(function () {
@@ -311,7 +312,7 @@ class Custom_Settings_Page_Api
         }
         $pageURL .= "://";
         if ($_SERVER["SERVER_PORT"] != "80") {
-            $pageURL .= $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"] . $_SERVER["REQUEST_URI"];
+            $pageURL .= $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
         } else {
             $pageURL .= $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
         }
