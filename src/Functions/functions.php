@@ -66,14 +66,11 @@ function html_to_text($content)
 function limit_text($text, $limit = 150)
 {
     $limit = !is_int($limit) || 0 === $limit ? 150 : $limit;
+    $more = apply_filters('maioptin_limit_text_ellipsis', '&hellip;');
 
-    if (str_word_count($text, 0) > $limit) {
-        $words = str_word_count($text, 2);
-        $pos = array_keys($words);
-        $text = substr($text, 0, $pos[$limit]) . apply_filters('maioptin_limit_text_ellipsis', '. . .');
-    }
+    $trimmed = wp_trim_words($text, $limit, $more);
 
-    return $text;
+    return $trimmed;
 }
 
 /**
