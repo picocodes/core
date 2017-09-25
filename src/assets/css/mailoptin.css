@@ -82,26 +82,26 @@
 
 @media (max-width: 767px) {
     div.mo-optin-form-container h1 {
-        font-size: 24px !important;
+        font-size: 20px !important;
     }
 
     div.mo-optin-form-container h2 {
-        font-size: 24px !important;
+        font-size: 20px !important;
     }
 
     div.mo-optin-form-container .mo-optin-form-headline {
-        font-size: 24px !important;
+        font-size: 20px !important;
     }
 
     div.mo-optin-form-container p {
-        font-size: 18px !important;
+        font-size: 16px !important;
     }
 
     div.mo-optin-form-container .mo-optin-form-description {
-        font-size: 18px !important;
+        font-size: 16px !important;
     }
 
     div.mo-optin-form-container .mo-optin-form-note {
-        font-size: 10px !important;
+        font-size: 12px !important;
     }
 }
