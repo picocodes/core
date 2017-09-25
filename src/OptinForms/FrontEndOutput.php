@@ -83,6 +83,18 @@ class FrontEndOutput
                 $exclusive_post_types_posts_load = Repository::get_customizer_value($id, 'exclusive_post_types_posts_load');
                 $post_types_load = Repository::get_customizer_value($id, 'exclusive_post_types_load');
 
+                // if all targeting rules are empty, bail (do not show optin)
+                if (empty($load_optin_index) &&
+                    empty($posts_never_load) &&
+                    empty($pages_never_load) &&
+                    empty($cpt_never_load) &&
+                    empty($post_categories_load) &&
+                    empty($exclusive_post_types_posts_load) &&
+                    empty($post_types_load)
+                ) {
+                    continue;
+                }
+
                 // for custom display rules.
                 if (apply_filters('mailoptin_footer_optin_output', false, $id, $optin_ids)) {
                     continue;

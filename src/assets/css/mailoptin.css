@@ -10,6 +10,10 @@
     background-size: 30px 30px;
 }
 
+.moModal .mo-optin-form-container {
+    max-width: 700px;
+}
+
 .moModal .mo-optin-form-container p {
     margin: 0;
 }

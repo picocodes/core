@@ -72,7 +72,6 @@ class InPost
                 }
 
             } else {
-                $determinant = array();
                 $posts_never_load = Repository::get_customizer_value($id, 'posts_never_load');
                 $pages_never_load = Repository::get_customizer_value($id, 'pages_never_load');
                 $cpt_never_load = Repository::get_customizer_value($id, 'cpt_never_load');
@@ -80,19 +79,30 @@ class InPost
                 $exclusive_post_types_posts_load = Repository::get_customizer_value($id, 'exclusive_post_types_posts_load');
                 $post_types_load = Repository::get_customizer_value($id, 'exclusive_post_types_load');
 
+                // if all targeting rules are empty, bail (do not show optin)
+                if (empty($posts_never_load) &&
+                    empty($pages_never_load) &&
+                    empty($cpt_never_load) &&
+                    empty($post_categories_load) &&
+                    empty($exclusive_post_types_posts_load) &&
+                    empty($post_types_load)
+                ) {
+                    continue;
+                }
+
                 // if current post should never contain optin, return false.
                 if (!empty($posts_never_load) && in_array($post_id, $posts_never_load)) {
-                    $determinant['posts_never_load'] = false;
+                    continue;
                 }
 
                 // if current page should never contain optin, return false.
                 if (!empty($pages_never_load) && is_page($post_id) && in_array($post_id, $pages_never_load)) {
-                    $determinant['pages_never_load'] = false;
+                    continue;
                 }
 
                 // if current CPT post should never contain optin, return false.
                 if (!empty($cpt_never_load) && in_array($post_id, $cpt_never_load)) {
-                    $determinant['cpt_never_load'] = false;
+                    continue;
                 }
 
                 // if current post category contain a category that optin should load for, return true.
@@ -100,30 +110,25 @@ class InPost
                 if (!empty($post_categories_load)) {
                     $intersect = array_intersect($post_categories, $post_categories_load);
                     if (empty($intersect)) {
-                        $determinant['post_categories_load'] = false;
+                        continue;
                     }
                 }
 
                 // if current post isn't found in a set of all cpt posts to display optin for, return false.
                 if (!empty($exclusive_post_types_posts_load) && !in_array($post_id, $exclusive_post_types_posts_load)) {
-                    $determinant['exclusive_post_types_posts_load'] = false;
+                    continue;
                 }
 
                 if (!empty($post_types_load) && !in_array($post_post_type, $post_types_load)) {
-                    $determinant['post_types_load'] = false;
+                    continue;
                 }
 
-                // result of the algorithmic calculation :D
-                if (array_search(false, $determinant)) {
-                    continue;
-                } else {
-                    $optin_form = OptinFormFactory::build($id);
+                $optin_form = OptinFormFactory::build($id);
 
-                    if ('before_content' == $optin_position) {
-                        $content = $optin_form . $content;
-                    } else {
-                        $content .= $optin_form;
-                    }
+                if ('before_content' == $optin_position) {
+                    $content = $optin_form . $content;
+                } else {
+                    $content .= $optin_form;
                 }
 
                 do_action('mailoptin_after_inpost_optin_display_determinant', $id, $optin_ids, $post_id);

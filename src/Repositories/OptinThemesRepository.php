@@ -14,7 +14,7 @@ class OptinThemesRepository extends AbstractRepository
                 array(
                     'name' => 'BareMetal',
                     'optin_class' => 'BareMetal',
-                    'optin_type' => 'lightbox', // accpet comma delimited values eg lightbox,sidebar,inpost
+                    'optin_type' => 'lightbox', // accept comma delimited values eg lightbox,sidebar,inpost
                     'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/baremetal-lightbox.png'
                 ),
                 array(
