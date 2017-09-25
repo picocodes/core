@@ -506,7 +506,7 @@ class Custom_Settings_Page_Api
     }
 
     /**
-     * Renders the text field
+     * Renders the custom field block
      *
      * @param array $db_options addons DB options
      * @param string $key array key of class argument
