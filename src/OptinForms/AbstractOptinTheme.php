@@ -235,7 +235,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
             $atts
         );
 
-        $class = sanitize_html_class($atts['class']);
+        $class = esc_attr($atts['class']);
         $class = "mo-optin-form-wrapper $name_email_class_indicator $class";
 
         $style = esc_html($atts['style']);
@@ -338,7 +338,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         );
 
         $tag = sanitize_text_field($atts['tag']);
-        $class = sanitize_html_class($atts['class']);
+        $class = esc_attr($atts['class']);
         $class = "mo-optin-form-headline $class";
 
         $style = esc_attr($atts['style']);
@@ -428,7 +428,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
             $atts
         );
 
-        $class = sanitize_html_class($atts['class']);
+        $class = esc_attr($atts['class']);
         $class = "mo-optin-form-description $class";
 
         $style = esc_attr($atts['style']);
@@ -462,7 +462,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
             $atts
         );
 
-        $class = sanitize_html_class($atts['class']);
+        $class = esc_attr($atts['class']);
         $class = "mo-optin-form-note $class";
 
         $style = esc_attr($atts['style']);
@@ -494,7 +494,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
             $atts
         );
 
-        $class = sanitize_html_class($atts['class']);
+        $class = esc_attr($atts['class']);
         $class = "mo-optin-field mo-optin-form-name-field $class";
 
         $style = esc_attr($atts['style']);
@@ -528,7 +528,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
             $atts
         );
 
-        $class = sanitize_html_class($atts['class']);
+        $class = esc_attr($atts['class']);
         $class = "mo-optin-field mo-optin-form-email-field $class";
 
         $style = esc_attr($atts['style']);
@@ -562,7 +562,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
             $atts
         );
 
-        $class = sanitize_html_class($atts['class']);
+        $class = esc_attr($atts['class']);
         $class = "mo-optin-form-submit-button $class";
 
         $style = esc_attr($atts['style']);
@@ -593,7 +593,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
             $atts
         );
 
-        $class = sanitize_html_class($atts['class']);
+        $class = esc_attr($atts['class']);
         $class = "mo-optin-error $class";
 
         $style = esc_attr($atts['style']);
