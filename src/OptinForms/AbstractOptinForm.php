@@ -326,7 +326,7 @@ jQuery(function(){
                 'top: 0',
                 'width: 100%',
                 'height: 100%',
-                'overflow: hidden', // fixes overflow scrolling bar being shown :D
+                'overflow: auto', // fixes overflow scrolling bar being shown :D
                 'background: rgba(0,0,0,0.7)'
             ]);
 
