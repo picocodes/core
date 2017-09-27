@@ -177,7 +177,8 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
                 'background:' . $this->get_customizer_value('submit_button_background'),
                 'color:' . $this->get_customizer_value('submit_button_color'),
                 'font-family:' . $this->_construct_font_family($this->get_customizer_value('submit_button_font')),
-                'height: auto'
+                'height: auto',
+                'text-shadow: none;'
             ],
             $this->optin_campaign_id,
             $this->optin_campaign_type,
