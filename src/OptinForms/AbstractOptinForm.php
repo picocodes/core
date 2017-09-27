@@ -313,7 +313,7 @@ jQuery(function(){
         $optin_css_id = $this->optin_css_id;
         $optin_campaign_uuid = $this->optin_campaign_uuid;
         $optin_form = '';
-        $name_email_class_indicator = $this->get_customizer_value('hide_name_field') === false ? 'mo-has-name-email' : 'mo-has-email';
+        $name_email_class_indicator = $this->get_customizer_value('hide_name_field') === true ? 'mo-has-email' : 'mo-has-name-email';
 
         if ($this->optin_campaign_type == 'lightbox') {
             $modalWrapperStyle = implode(';', [

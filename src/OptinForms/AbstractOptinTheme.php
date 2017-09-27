@@ -225,8 +225,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         $optin_campaign_uuid = $this->optin_campaign_uuid;
         $optin_css_id = $this->optin_css_id;
         $form_container_styles = $this->form_container_styles();
-        $name_email_class_indicator = $this->get_customizer_value('hide_name_field') === false ? 'mo-has-name-email' : 'mo-has-email';
-
+        $name_email_class_indicator = $this->get_customizer_value('hide_name_field') === true ? 'mo-has-email' : 'mo-has-name-email';
 
         $atts = shortcode_atts(
             array(
