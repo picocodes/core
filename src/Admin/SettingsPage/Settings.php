@@ -54,7 +54,7 @@ class Settings extends AbstractSettingsPage
         // Send an initial check in on settings save
         $old_data = get_option(MAILOPTIN_SETTINGS_DB_OPTION_NAME, []);
         $old_data = $old_data['mailoptin_affiliate_url'];
-        $new_data = $input['mailoptin_affiliate_url'];
+        $new_data = isset($input['mailoptin_affiliate_url']) ? $input['mailoptin_affiliate_url'] : '';
 
         if ($option_name == MAILOPTIN_SETTINGS_DB_OPTION_NAME && $old_data != $new_data) {
             OptinCampaignsRepository::burst_all_cache();

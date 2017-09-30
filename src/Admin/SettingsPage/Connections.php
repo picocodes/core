@@ -17,7 +17,25 @@ class Connections extends AbstractSettingsPage
         add_action('admin_menu', array($this, 'register_settings_page'));
 
         add_action('admin_notices', array($this, 'admin_notices'));
-        add_filter('removable_query_args', array($this,'removable_query_args'));
+        add_filter('removable_query_args', array($this, 'removable_query_args'));
+
+        add_action('wp_cspa_after_persist_settings', [$this, 'bust_all_connection_cache'], 10, 2);
+    }
+
+    /**
+     * Delete or burst all connection cache when connection settings is (re-) saved.
+     *
+     * @param array $sanitized_data
+     * @param string $option_name
+     */
+    public function bust_all_connection_cache($sanitized_data, $option_name)
+    {
+        if ($option_name === MAILOPTIN_CONNECTIONS_DB_OPTION_NAME) {
+            global $wpdb;
+            $table = $wpdb->prefix . 'options';
+
+            $wpdb->query("DELETE FROM $table where option_name LIKE '%_mo_connection_cache_%'");
+        }
     }
 
     public function register_settings_page()
