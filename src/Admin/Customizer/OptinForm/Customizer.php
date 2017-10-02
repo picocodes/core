@@ -384,6 +384,10 @@ class Customizer
                     unset($controls['slidein_position']);
                 }
 
+                if (!in_array($customizerClassInstance->optin_campaign_type, ['lightbox', 'slidein'])) {
+                    unset($controls['hide_close_button']);
+                }
+
                 return $controls;
             }, 10, 4);
 

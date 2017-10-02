@@ -593,7 +593,16 @@ jQuery(function(){
         }
 
         $data['test_mode'] = OptinCampaignsRepository::is_test_mode($optin_campaign_id);
-        $data['icon_close'] = $this->optin_campaign_type == 'lightbox' ? apply_filters('mo_optin_campaign_icon_close', true, $this->optin_campaign_class) : false;
+        $icon_close_config = $this->optin_campaign_type == 'lightbox' ? apply_filters('mo_optin_campaign_icon_close', true, $this->optin_campaign_class) : false;
+
+        // if close button is set to be hidden, return false for $icon_close_config.
+        if ($icon_close_config) {
+            if ($this->get_customizer_value('hide_close_button')) {
+                $icon_close_config = false;
+            }
+        }
+
+        $data['icon_close'] = $icon_close_config;
 
         if ($this->optin_campaign_type == 'lightbox') {
             $data['body_close'] = apply_filters('mo_optin_campaign_body_close', true);

@@ -556,6 +556,14 @@ class CustomizerControls
                         'priority' => 40,
                     )
                 ),
+                'hide_close_button' => apply_filters('mo_optin_form_customizer_hide_close_button_args', array(
+                        'type' => 'checkbox',
+                        'label' => __('Hide Close Button', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->configuration_section_id,
+                        'settings' => $this->option_prefix . '[hide_close_button]',
+                        'priority' => 45,
+                    )
+                ),
                 'hide_headline' => apply_filters('mo_optin_form_customizer_hide_headline_args', array(
                         'type' => 'checkbox',
                         'label' => __('Hide Headline', 'mailoptin'),

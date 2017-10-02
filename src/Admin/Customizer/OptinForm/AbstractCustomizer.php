@@ -70,6 +70,7 @@ class AbstractCustomizer
         $defaults['bar_position'] = apply_filters('mo_optin_form_bar_position_default', 'top');
         $defaults['slidein_position'] = apply_filters('mo_optin_form_slidein_position_default', 'bottom_right');
         $defaults['bar_sticky'] = apply_filters('mo_optin_form_hide_headline_default', true);
+        $defaults['hide_close_button'] = apply_filters('mo_optin_form_hide_close_button_default', false);
         $defaults['hide_headline'] = apply_filters('mo_optin_form_hide_headline_default', false);
         $defaults['hide_description'] = apply_filters('mo_optin_form_hide_description_default', false);
         $defaults['hide_note'] = apply_filters('mo_optin_form_hide_note_default', false);

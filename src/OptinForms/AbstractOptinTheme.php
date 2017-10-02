@@ -11,6 +11,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
     {
         add_shortcode('mo-optin-form-wrapper', [$this, 'shortcode_optin_form_wrapper']);
         add_shortcode('mo-optin-form-headline', [$this, 'shortcode_optin_form_headline']);
+        add_shortcode('mo-close-optin', [$this, 'shortcode_optin_form_close_button']);
         add_shortcode('mo-optin-form-image', [$this, 'shortcode_optin_form_image']);
         add_shortcode('mo-optin-form-background-image', [$this, 'shortcode_optin_form_background_image']);
         add_shortcode('mo-optin-form-description', [$this, 'shortcode_optin_form_description']);
@@ -351,6 +352,34 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         $html = "<$tag class=\"mo-optin-form-headline $class\" style=\"$style\">$headline</$tag>";
 
         return $html;
+    }
+
+    /**
+     * Optin form close button
+     *
+     * @param array $atts
+     * @param mixed $content
+     */
+    public function shortcode_optin_form_close_button($atts, $content = '')
+    {
+        if($this->get_customizer_value('hide_close_button')) return '';
+
+        $atts = array_map('esc_attr', shortcode_atts(
+                array(
+                    'class' => '',
+                    'style' => '',
+                ),
+                $atts
+            )
+        );
+
+        $title = __('Close optin form');
+
+        $close_button = "<a href='#' rel=\"moOptin:close\" title=\"$title\" class='" . $atts['class'] . "' style='" . $atts['style'] . "'>";
+        $close_button .= $content;
+        $close_button .= '</a>';
+
+        return $close_button;
     }
 
     /**
