@@ -107,6 +107,50 @@
             api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][click_launch_html_code]', linkSettingValueToControlActiveState);
         });
 
+        // contextual display of redirect_url and download_url fields in success panel/section.
+        api('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][success_action]', function (setting) {
+                var is_redirect_url_value_displayed, is_download_file_value_displayed,
+                    linkSettingValueToControlActiveState1, linkSettingValueToControlActiveState2;
+
+                is_redirect_url_value_displayed = function () {
+                    return setting.get() === 'redirect_url';
+                };
+
+                is_download_file_value_displayed = function () {
+                    return setting.get() === 'download_file';
+                };
+
+                linkSettingValueToControlActiveState1 = function (control) {
+                    var setActiveState = function () {
+                        control.active.set(is_redirect_url_value_displayed());
+                    };
+
+                    control.active.validate = is_redirect_url_value_displayed;
+
+                    // Set initial active state.
+                    setActiveState();
+
+                    setting.bind(setActiveState);
+                };
+
+                linkSettingValueToControlActiveState2 = function (control) {
+                    var setActiveState = function () {
+                        control.active.set(is_download_file_value_displayed());
+                    };
+
+                    control.active.validate = is_download_file_value_displayed;
+
+                    // Set initial active state.
+                    setActiveState();
+
+                    setting.bind(setActiveState);
+                };
+
+                api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][redirect_url_value]', linkSettingValueToControlActiveState1);
+                api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][download_file_value]', linkSettingValueToControlActiveState2);
+            }
+        );
+
         // handles click to select on input readonly fields
         $('.mo-click-select').click(function () {
             this.select();
@@ -119,7 +163,7 @@
                 id: mailoptin_optin_campaign_id,
                 status: this.checked,
                 security: $("input[data-customize-setting-link*='[ajax_nonce]']").val()
-            }, function($response ) {
+            }, function ($response) {
                 console.log($response);
             });
         });
