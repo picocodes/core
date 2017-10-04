@@ -3,6 +3,7 @@
 namespace MailOptin\Core\Repositories;
 
 
+use MailOptin\Core\Admin\Customizer\OptinForm\AbstractCustomizer;
 use MailOptin\Core\PluginSettings\Settings;
 
 class OptinCampaignsRepository extends AbstractRepository
@@ -275,6 +276,23 @@ class OptinCampaignsRepository extends AbstractRepository
         $data = !is_null($value) ? $value : $default;
 
         return apply_filters('mo_get_customizer_value', $data, $settings_name, $default, $optin_campaign_id);
+    }
+
+    /**
+     * Return value of a optin form customizer settings or the default settings value if not found.
+     *
+     * @param int $optin_campaign_id
+     * @param string $optin_form_setting
+     *
+     * @return string
+     */
+    public function get_merged_customizer_value($optin_campaign_id, $settings_name)
+    {
+        $customizer_defaults = new AbstractCustomizer($optin_campaign_id);
+
+        $default = isset($customizer_defaults[$settings_name]) ? $customizer_defaults[$settings_name] : '';
+
+        return OptinCampaignsRepository::get_customizer_value($optin_campaign_id, $settings_name, $default);
     }
 
 

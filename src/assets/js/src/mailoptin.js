@@ -454,15 +454,24 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 var optin_css_id = optin_uuid + '_' + optin_type;
                 var optin_config = mailoptin_optin.optin_js_config(optin_css_id);
 
-                optin_container.fadeOut(400, function () {
-                    $(this).trigger('moOptin:close', [this]);
-                });
+                mailoptin_optin._close_optin(optin_container);
 
                 // cleanup for on-scroll optin to prevent from triggering all the time
                 optin_container.removeClass('si-open');
 
                 mailoptin_optin.set_cookie('exit', optin_uuid, optin_config);
                 mailoptin_optin.flag_optin_type_close(optin_config, optin_type);
+            },
+
+            /**
+             * Actual func to close non-modal optin forms.
+             * @param optin_container
+             * @private
+             */
+            _close_optin: function (optin_container) {
+                optin_container.fadeOut(400, function () {
+                    $(this).trigger('moOptin:close', [this]);
+                });
             },
 
             /**
@@ -643,6 +652,9 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                     function (response) {
                         if (!$.isEmptyObject(response) && 'success' in response) {
                             if (response.success === true) {
+
+                                jQuery(document.body).trigger('moOptinConversion', [optin_container, optin_js_config, optin_data]);
+
                                 // set cookie for this option conversion
                                 self.set_cookie('success', optin_data.optin_uuid, optin_js_config);
 
@@ -771,6 +783,29 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 // track impression for optin form other than modals
                 $(document).on('moOptin:show', function (e, optin_uuid) {
                     $.MailOptin.track_impression(optin_uuid)
+                });
+
+                // success actions
+                // 'moOptinConversion', [optin_container, optin_js_config, optin_data]
+                $(document).on('moOptinConversion', function (e, optin_container, optin_js_config) {
+                    setTimeout(function () {
+                        var success_action = optin_js_config.success_action;
+                        var redirect_url_val = optin_js_config.redirect_url_value;
+
+                        if (typeof success_action !== 'undefined' && $.inArray(success_action, ['close_optin', 'close_optin_reload_page']) !== -1) {
+                            $.MoModalBox.close();
+                            mailoptin_optin._close_optin(optin_container);
+                        }
+
+                        if (success_action === 'close_optin_reload_page') {
+                            window.location.reload();
+                        }
+
+                        if (success_action === 'redirect_url' && typeof redirect_url_val !== 'undefined' && redirect_url_val !== '') {
+                            window.location.assign(redirect_url_val);
+                        }
+
+                    }, 500);
                 });
             },
 

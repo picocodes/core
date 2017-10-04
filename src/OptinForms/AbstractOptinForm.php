@@ -52,8 +52,7 @@ abstract class AbstractOptinForm extends AbstractCustomizer implements OptinForm
 
             add_filter('mo_optin_form_customizer_design_controls', [$this, 'customizer_design_controls'], 10, 4);
             add_filter('mo_optin_form_customizer_headline_controls', [$this, 'customizer_headline_controls'], 10, 4);
-            add_filter('mo_optin_form_customizer_description_controls', [$this, 'customizer_description_controls'], 10,
-                4);
+            add_filter('mo_optin_form_customizer_description_controls', [$this, 'customizer_description_controls'], 10, 4);
             add_filter('mo_optin_form_customizer_note_controls', array($this, 'customizer_note_controls'), 10, 4);
             add_filter('mo_optin_form_customizer_fields_controls', [$this, 'customizer_fields_controls'], 10, 4);
             add_filter('mo_optin_form_customizer_configuration_controls', [$this, 'customizer_configuration_controls'], 10, 4);
@@ -590,6 +589,18 @@ jQuery(function(){
         /** exit intent display rule */
         if ($exit_intent_status === true && !empty($exit_intent_status)) {
             $data['exit_intent_status'] = $exit_intent_status;
+        }
+
+        /** after conversion / success actions */
+        $success_action = $this->get_customizer_value('success_action');
+        $data['success_action'] = $success_action;
+
+        if ($success_action == 'redirect_url') {
+            $data['redirect_url_value'] = esc_url($this->get_customizer_value('redirect_url_value'));
+        }
+
+        if ($success_action == 'download_file') {
+            $data['download_file_value'] = esc_url($this->get_customizer_value('download_file_value'));
         }
 
         $data['test_mode'] = OptinCampaignsRepository::is_test_mode($optin_campaign_id);
