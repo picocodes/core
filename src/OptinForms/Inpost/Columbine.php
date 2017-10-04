@@ -477,6 +477,7 @@ div#$optin_css_id.columbine-container input.columbine-input {
          border: 1px solid #ccc;
          color: #555;
          outline: none;
+         margin: 0;
      }
 
 div#$optin_css_id.columbine-container input.columbine-submit {
@@ -497,6 +498,7 @@ div#$optin_css_id.columbine-container input.columbine-submit {
          cursor: pointer;
          font-weight: 600;
          width: 100%;
+         margin: 0;
      }
 
 div#$optin_css_id.columbine-container div.columbine-note {

@@ -43,8 +43,7 @@ class InPost
 
             do_action('mailoptin_before_inpost_optin_display_determinant', $id, $optin_ids, $post_id);
 
-            $optin_position = Repository::get_customizer_value($id, 'inpost_form_optin_position');
-            $optin_position = empty($optin_position) ? 'after_content' : $optin_position;
+            $optin_position = Repository::get_merged_customizer_value($id, 'inpost_form_optin_position');
 
             // if optin is not enabled, pass.
             if (!Repository::is_activated($id)) {
@@ -56,9 +55,16 @@ class InPost
                 continue;
             }
 
-            // if optin is disabled for logged users, continue
-            if (Repository::get_customizer_value($id, 'hide_logged_in') && is_user_logged_in()) {
-                continue;
+            switch (Repository::get_customizer_value($id, 'who_see_optin')) {
+                case 'show_logged_in':
+                    if (!is_user_logged_in()) continue 2;
+                    break;
+                case 'show_non_logged_in':
+                    if (is_user_logged_in()) continue 2;
+                    break;
+                case 'show_all':
+                    // do nothing
+                    break;
             }
 
             if (!defined('MAILOPTIN_DISPLAY_RULES_FLAG') || Repository::get_customizer_value($id, 'load_optin_globally')) {
@@ -141,8 +147,7 @@ class InPost
     /**
      * @return InPost
      */
-    public
-    static function get_instance()
+    public static function get_instance()
     {
         static $instance = null;
 

@@ -786,7 +786,6 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 });
 
                 // success actions
-                // 'moOptinConversion', [optin_container, optin_js_config, optin_data]
                 $(document).on('moOptinConversion', function (e, optin_container, optin_js_config) {
                     setTimeout(function () {
                         var success_action = optin_js_config.success_action;
@@ -805,7 +804,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                             window.location.assign(redirect_url_val);
                         }
 
-                    }, 500);
+                    }, 100);
                 });
             },
 

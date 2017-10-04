@@ -599,10 +599,6 @@ jQuery(function(){
             $data['redirect_url_value'] = esc_url($this->get_customizer_value('redirect_url_value'));
         }
 
-        if ($success_action == 'download_file') {
-            $data['download_file_value'] = esc_url($this->get_customizer_value('download_file_value'));
-        }
-
         $data['test_mode'] = OptinCampaignsRepository::is_test_mode($optin_campaign_id);
         $icon_close_config = $this->optin_campaign_type == 'lightbox' ? apply_filters('mo_optin_campaign_icon_close', true, $this->optin_campaign_class) : false;
 

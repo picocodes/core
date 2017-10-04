@@ -286,15 +286,14 @@ class OptinCampaignsRepository extends AbstractRepository
      *
      * @return string
      */
-    public function get_merged_customizer_value($optin_campaign_id, $settings_name)
+    public static function get_merged_customizer_value($optin_campaign_id, $settings_name)
     {
-        $customizer_defaults = new AbstractCustomizer($optin_campaign_id);
+        $customizer_defaults = (new AbstractCustomizer($optin_campaign_id))->customizer_defaults;
 
         $default = isset($customizer_defaults[$settings_name]) ? $customizer_defaults[$settings_name] : '';
 
         return OptinCampaignsRepository::get_customizer_value($optin_campaign_id, $settings_name, $default);
     }
-
 
     /**
      * Retrieve all optin campaign settings.

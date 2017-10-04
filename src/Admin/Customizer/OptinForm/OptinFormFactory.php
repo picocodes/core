@@ -49,6 +49,9 @@ class OptinFormFactory
     public static function build($optin_campaign_id)
     {
         $optinInstance = self::make($optin_campaign_id);
+
+        if (!$optinInstance) return '';
+
         $optin_form = $optinInstance->get_optin_form_structure();
         $optin_form .= $optinInstance->webfont_loader_js_script();
         $optin_form .= $optinInstance->impression_tracker_js_script();

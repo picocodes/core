@@ -354,7 +354,7 @@ class Customizer
                 // do not display these controls if optin type is sidebar.
                 if ($customizerClassInstance->optin_campaign_type == 'sidebar') {
                     unset($controls['load_optin_globally']);
-                    unset($controls['hide_logged_in']);
+                    unset($controls['who_see_optin']);
                 }
 
                 return $controls;
@@ -615,6 +615,7 @@ class Customizer
                 );
             }
 
+            // if sidebar, move Quick Setup from being a panel in "Display Rules" section to stand-alone section.
             if ('sidebar' == $this->optin_campaign_type) {
                 $wp_customize->add_section($this->setup_display_rule_section_id, array(
                         'title' => __('Quick Setup', 'mailoptin')
