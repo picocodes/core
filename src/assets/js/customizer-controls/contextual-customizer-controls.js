@@ -109,7 +109,12 @@
 
         // contextual display of redirect_url in success panel/section.
         api('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][success_action]', function (setting) {
-                var is_redirect_url_value_displayed, linkSettingValueToControlActiveState1;
+                var is_redirect_url_value_displayed, is_success_message_config_link_displayed,
+                    linkSettingValueToControlActiveState1, linkSettingValueToControlActiveState2;
+
+                is_success_message_config_link_displayed = function () {
+                    return setting.get() === 'success_message';
+                };
 
                 is_redirect_url_value_displayed = function () {
                     return setting.get() === 'redirect_url';
@@ -121,7 +126,18 @@
                     };
 
                     control.active.validate = is_redirect_url_value_displayed;
+                    // Set initial active state.
+                    setActiveState();
 
+                    setting.bind(setActiveState);
+                };
+
+                linkSettingValueToControlActiveState2 = function (control) {
+                    var setActiveState = function () {
+                        control.active.set(is_success_message_config_link_displayed());
+                    };
+
+                    control.active.validate = is_success_message_config_link_displayed;
                     // Set initial active state.
                     setActiveState();
 
@@ -129,6 +145,7 @@
                 };
 
                 api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][redirect_url_value]', linkSettingValueToControlActiveState1);
+                api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][success_message_config_link]', linkSettingValueToControlActiveState2);
             }
         );
 

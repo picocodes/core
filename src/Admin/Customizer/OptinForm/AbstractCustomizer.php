@@ -80,7 +80,7 @@ class AbstractCustomizer
         $defaults['inpost_form_optin_position'] = apply_filters('mo_optin_form_inpost_form_optin_position_default', 'after_content');
 
         $defaults['modal_effects'] = apply_filters('mo_optin_form_modal_effects_default', '', $this->customizer_defaults);
-        $defaults['success_action'] = apply_filters('mo_optin_form_success_action_default', 'no_action', $this->customizer_defaults);
+        $defaults['success_action'] = apply_filters('mo_optin_form_success_action_default', 'success_message', $this->customizer_defaults);
 
         return $defaults;
     }
