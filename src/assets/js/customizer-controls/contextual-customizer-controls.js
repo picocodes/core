@@ -145,6 +145,7 @@
                 };
 
                 api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][redirect_url_value]', linkSettingValueToControlActiveState1);
+                api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][pass_lead_data_redirect_url]', linkSettingValueToControlActiveState1);
                 api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][success_message_config_link]', linkSettingValueToControlActiveState2);
             }
         );

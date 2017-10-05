@@ -597,6 +597,7 @@ jQuery(function(){
 
         if ($success_action == 'redirect_url') {
             $data['redirect_url_value'] = esc_url($this->get_customizer_value('redirect_url_value'));
+            $data['pass_lead_data'] = $this->get_customizer_value('pass_lead_data_redirect_url');
         }
 
         $data['test_mode'] = OptinCampaignsRepository::is_test_mode($optin_campaign_id);
