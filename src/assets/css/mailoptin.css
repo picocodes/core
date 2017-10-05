@@ -74,6 +74,11 @@
     transform: translate(-50%, -50%);
 }
 
+.mo-optin-success-msg a {
+    color: #0000EE;
+    text-decoration: underline;
+}
+
 @media (max-width: 700px) {
     .moModal .mo-optin-form-container {
         margin: 0 15px !important;
