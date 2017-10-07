@@ -51,7 +51,6 @@ class WP_Customize_Ace_Editor_Control extends WP_Customize_Control
                 <?php $this->value(); ?>
             </textarea>
 
-
         </label>
         <?php
     }
