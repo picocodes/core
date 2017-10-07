@@ -789,6 +789,12 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 $(document).on('moOptinConversion', function (e, optin_container, optin_js_config, optin_data) {
                     var success_action = optin_js_config.success_action;
                     var redirect_url_val = optin_js_config.redirect_url_value;
+                    var success_js_script = optin_js_config.success_js_script;
+
+                    // if we have a JS success script, trigger it.
+                    if (typeof success_js_script !== 'undefined' && success_js_script !== '') {
+                        new Function(success_js_script)();
+                    }
 
                     if (typeof success_action !== 'undefined' && $.inArray(success_action, ['close_optin', 'redirect_url', 'close_optin_reload_page']) !== -1) {
                         $.MoModalBox.close();

@@ -600,6 +600,11 @@ jQuery(function(){
             $data['pass_lead_data'] = $this->get_customizer_value('pass_lead_data_redirect_url');
         }
 
+        $success_js_script = $this->get_customizer_value('success_js_script');
+        if (!empty($success_js_script)) {
+            $data['success_js_script'] = $success_js_script;
+        }
+
         $data['test_mode'] = OptinCampaignsRepository::is_test_mode($optin_campaign_id);
         $icon_close_config = $this->optin_campaign_type == 'lightbox' ? apply_filters('mo_optin_campaign_icon_close', true, $this->optin_campaign_class) : false;
 
