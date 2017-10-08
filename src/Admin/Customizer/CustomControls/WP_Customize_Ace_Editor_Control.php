@@ -47,7 +47,7 @@ class WP_Customize_Ace_Editor_Control extends WP_Customize_Control
 
             <div id="<?php echo $this->editor_id; ?>" data-block-type="ace" data-ace-lang="<?php echo $this->language; ?>" data-ace-theme="<?php echo $this->theme; ?>" style="position:relative;width:100%;height:400px;"></div>
 
-            <textarea id="<?php echo $this->editor_id; ?>-textarea" <?php echo $this->get_link(); ?> style="display:none;">
+            <textarea id="<?php echo $this->editor_id; ?>-textarea" <?php $this->link(); ?> style="display:none;">
                 <?php $this->value(); ?>
             </textarea>
 

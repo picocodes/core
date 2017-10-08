@@ -7,8 +7,8 @@
 
             var editor = ace.edit(editor_id);
             editor.setTheme("ace/theme/" + theme);
-            console.log(language)
             editor.getSession().setMode("ace/mode/" + language);
+            editor.$blockScrolling = Infinity;
             editor.getSession().setValue( $( 'textarea#' + editor_id + '-textarea' ).val() );
 
             editor.on('change', function () {

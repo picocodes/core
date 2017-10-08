@@ -6,7 +6,7 @@
     height: 100px !important;
 }
 
-#sub-accordion-section-mo_wp_page_filter_display_rule_section {
+#sub-accordion-section-mo_wp_page_filter_display_rule_section, #sub-accordion-section-mo_wp_schedule_display_rule_section {
     height: 100% !important;
 }
 
