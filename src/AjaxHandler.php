@@ -420,6 +420,8 @@ class AjaxHandler
 
             $response = $instance->subscribe($conversion_data->email, $conversion_data->name, $connection_email_list, $extras);
 
+            do_action_ref_array('mailoptin_after_optin_subscription', $extras);
+
             if ($response['success'] === true) {
 
                 // record optin campaign conversion.

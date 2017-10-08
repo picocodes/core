@@ -67,7 +67,6 @@ class Customizer
     /** @var string ID of "URL filter display rule" customizer section. */
     public $url_filter_display_rule_section_id = 'mo_url_filter_display_rule_section';
 
-
     /**
      * Customizer constructor.
      */
@@ -88,6 +87,17 @@ class Customizer
                 echo "var mailoptin_optin_campaign_id = $this->optin_campaign_id;";
                 echo '</script>';
             });
+
+            add_filter('gettext', function ($translations, $text, $domain) {
+                if ($domain == 'default' && $text == 'Publish') {
+                    $translations = 'Save Changes';
+                }
+                if ($domain == 'default' && $text == 'Published') {
+                    $translations = 'Saved';
+                }
+
+                return $translations;
+            }, 10, 3);
 
             add_filter('template_include', array($this, 'include_optin_form_customizer_template'));
 
