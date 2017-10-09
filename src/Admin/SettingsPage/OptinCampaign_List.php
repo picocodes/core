@@ -121,6 +121,7 @@ class OptinCampaign_List extends \WP_List_Table
     {
         $optin_campaign_uuid = OptinCampaignsRepository::get_optin_campaign_uuid($optin_campaign_id);
         setcookie("mo_$optin_campaign_uuid", '', -1, COOKIEPATH, COOKIE_DOMAIN, false);
+        setcookie("mo_success_$optin_campaign_uuid", '', -1, COOKIEPATH, COOKIE_DOMAIN, false);
 
         do_action('mo_optin_after_clear_cookie', $optin_campaign_id, $optin_campaign_uuid);
     }
