@@ -3,7 +3,6 @@
 namespace MailOptin\Core\Admin\Customizer\OptinForm;
 
 use MailOptin\Core\Admin\Customizer\CustomControls\ControlsHelpers;
-use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Ace_Editor_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Custom_Content;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Google_Font_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Font_Stack_Control;
@@ -784,19 +783,6 @@ class CustomizerControls
                         'description' => __('Specify a URL to redirect users to after opt-in. Must begin with http or https.', 'mailoptin')
                     )
                 ),
-                'pass_lead_data_redirect_url' => new WP_Customize_Toggle_Control(
-                    $this->wp_customize,
-                    $this->option_prefix . '[pass_lead_data_redirect_url]',
-                    apply_filters('mo_optin_form_customizer_pass_lead_data_redirect_url_args', array(
-                            'label' => __('Pass Lead Data to Redirect URL', 'mailoptin'),
-                            'description' => __('Enabling this will add lead name and email address as a query parameter to the redirect URL you specified above.', 'mailoptin'),
-                            'section' => $this->customizerClassInstance->success_section_id,
-                            'settings' => $this->option_prefix . '[pass_lead_data_redirect_url]',
-                            'type' => 'light',
-                            'priority' => 30,
-                        )
-                    )
-                ),
                 'success_message_config_link' => new WP_Customize_Custom_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[success_message_config_link]',
@@ -813,6 +799,27 @@ class CustomizerControls
             $this->option_prefix,
             $this->customizerClassInstance
         );
+
+        if(!defined('MAILOPTIN_DISPLAY_RULES_FLAG')) {
+            $content = sprintf(
+                __('Upgrade to %sMailOptin Premium%s to pass lead data to redirect URL and trigger success script after conversion.', 'mailoptin'),
+                '<a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=quick_setup_panel">',
+                '</a>'
+            );
+
+            // always prefix with the name of the connect/connection service.
+            $success_controls_args['after_conversion_notice'] = new WP_Customize_Custom_Content(
+                $this->wp_customize,
+                $this->option_prefix . '[after_conversion_notice]',
+                apply_filters('mo_optin_form_customizer_after_conversion_notice_args', array(
+                        'content' => $content,
+                        'section' => $this->customizerClassInstance->success_section_id,
+                        'settings' => $this->option_prefix . '[after_conversion_notice]',
+                        'priority' => 199,
+                    )
+                )
+            );
+        }
 
         do_action('mailoptin_before_success_controls_addition');
 
