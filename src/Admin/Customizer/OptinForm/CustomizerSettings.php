@@ -396,6 +396,52 @@ class CustomizerSettings extends AbstractCustomizer
         do_action('mo_optin_after_integration_customizer_settings', $this->wp_customize, $integration_settings_args);
     }
 
+    /**
+     * @param \WP_Customize_Manager $wp_customize
+     * @param string $option_prefix
+     * @param Customizer $customizerClassInstance
+     */
+    public function after_conversion_settings()
+    {
+        $success_settings_args = apply_filters("mo_optin_form_customizer_success_settings",
+            array(
+                'success_action' => array(
+                    'default' => $this->customizer_defaults['success_action'],
+                    'type' => 'option',
+                    'sanitize_callback' => 'sanitize_text_field',
+                    'transport' => 'postMessage',
+                ),
+                'redirect_url_value' => array(
+                    'default' => '',
+                    'type' => 'option',
+                    'sanitize_callback' => 'esc_url',
+                    'transport' => 'postMessage',
+                ),
+                'pass_lead_data_redirect_url' => array(
+                    'default' => $this->customizer_defaults['pass_lead_data_redirect_url'],
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'success_message_config_link' => array(
+                    'default' => '',
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'success_js_script' => array(
+                    'default' => '',
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                )
+            ),
+            $this
+        );
+
+        foreach ($success_settings_args as $id => $args) {
+            $this->wp_customize->add_setting($this->option_prefix . '[' . $id . ']', $args);
+        }
+
+        do_action('mo_optin_after_success_customizer_settings', $this->wp_customize, $success_settings_args);
+    }
 
     /**
      * Customize setting for all display rules controls.

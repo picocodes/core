@@ -40,6 +40,9 @@ class Customizer
     /** @var string ID of optin form integration customizer section. */
     public $integration_section_id = 'mo_integration_section';
 
+    /** @var string ID of optin form integration customizer section. */
+    public $success_section_id = 'mo_success_section';
+
     /** @var string panel ID of display rules. */
     public $display_rules_panel_id = 'mo_display_rules_panel_section';
 
@@ -292,7 +295,8 @@ class Customizer
                 $this->x_scroll_display_rule_section_id,
                 $this->x_page_views_display_rule_section_id,
                 $this->page_filter_display_rule_section_id,
-                $this->schedule_display_rule_section_id
+                $this->schedule_display_rule_section_id,
+                $this->success_section_id
             )
         );
 
@@ -593,6 +597,14 @@ class Customizer
             );
         }
 
+        if (!apply_filters('mo_optin_customizer_disable_success_section', false)) {
+            $wp_customize->add_section($this->success_section_id, array(
+                    'title' => __('After Conversion', 'mailoptin'),
+                    'priority' => 40,
+                )
+            );
+        }
+
         do_action('mo_optin_after_integration_customizer_section', $wp_customize, $this);
 
         $this->display_rules_sections($wp_customize);
@@ -664,6 +676,7 @@ class Customizer
         $instance->fields_settings();
         $instance->configuration_settings();
         $instance->integration_settings();
+        $instance->after_conversion_settings();
         $instance->display_rules_settings();
 
         do_action('mo_optin_customizer_settings', $wp_customize, $option_prefix, $this);
@@ -685,6 +698,7 @@ class Customizer
         $instance->fields_controls();
         $instance->configuration_controls();
         $instance->integration_controls();
+        $instance->after_conversion_controls();
         $instance->setup_display_rule_controls();
         $instance->page_filter_display_rule_controls();
 

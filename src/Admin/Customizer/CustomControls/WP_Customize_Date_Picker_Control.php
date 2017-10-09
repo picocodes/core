@@ -65,14 +65,14 @@ class WP_Customize_Date_Picker_Control extends WP_Customize_Control
     public function render_content()
     {
         ?>
-        <label for="<?php echo $this->id ?>">
+        <label for="_<?php echo $this->id ?>">
             <?php if (!empty($this->label)) : ?>
                 <span class="customize-control-title"><?php echo esc_html($this->label); ?></span>
             <?php endif; ?>
         </label>
 
         <div class="mo-datetime-container">
-            <input id="<?php echo $this->id ?>" type="text" value="<?php echo $this->value() ?>" class="mo-date-picker" <?php $this->link(); ?>/>
+            <input id="_<?php echo $this->id ?>" type="text" value="<?php echo $this->value() ?>" class="mo-date-picker" <?php $this->link(); ?>/>
             <span class="dashicons dashicons-calendar-alt mo-datetime-container-icon"></span>
         </div>
 
