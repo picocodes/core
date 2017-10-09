@@ -63,10 +63,10 @@ class WP_Customize_Toggle_Control extends WP_Customize_Control
                 checked($this->value()); ?> />
                 <label for="cb<?php echo $this->instance_number ?>" class="tgl-btn"></label>
             </div>
-            <?php if (!empty($this->description)) : ?>
-                <span class="description customize-control-description"><?php echo $this->description; ?></span>
-            <?php endif; ?>
         </label>
+        <?php if (!empty($this->description)) : ?>
+        <span class="description customize-control-description"><?php echo $this->description; ?></span>
+    <?php endif; ?>
         <?php
     }
 }

@@ -6,6 +6,22 @@
     height: 100px !important;
 }
 
+.mo-datetime-container .bootstrap-datetimepicker-widget a {
+    text-decoration: none;
+}
+
+.mo-datetime-container {
+    position:relative;
+}
+
+.mo-datetime-container-icon {
+    position:absolute;
+    bottom:2px;
+    right:5px;
+    width:24px;
+    height:24px;
+}
+
 #sub-accordion-section-mo_wp_page_filter_display_rule_section, #sub-accordion-section-mo_wp_schedule_display_rule_section {
     height: 100% !important;
 }

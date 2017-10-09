@@ -6,7 +6,7 @@ use WP_Customize_Control;
 
 class WP_Customize_Date_Picker_Control extends WP_Customize_Control
 {
-    public $type = 'mailoptin_range';
+    public $type = 'mailoptin_datetime';
 
     public function enqueue()
     {
@@ -42,6 +42,14 @@ class WP_Customize_Date_Picker_Control extends WP_Customize_Control
             true
         );
 
+        wp_enqueue_script(
+            'mailoptin-datetime-datetimepicker-init',
+            MAILOPTIN_ASSETS_URL . 'js/customizer-controls/datetime-init.js',
+            array('jquery', 'mailoptin-datetime-moment', 'mailoptin-datetime-datetimepicker'),
+            false,
+            true
+        );
+
         wp_enqueue_style(
             'mailoptin-bootstrap-datetimepicker-standalone',
             MAILOPTIN_ASSETS_URL . 'js/customizer-controls/datetime-control/bootstrap/css/bootstrap.css'
@@ -57,17 +65,20 @@ class WP_Customize_Date_Picker_Control extends WP_Customize_Control
     public function render_content()
     {
         ?>
-        <label>
-            <span class="customize-date-picker-control"><?php echo esc_html($this->label); ?></span>
-            <input type="text" id="mo-date-picker"/>
+        <label for="<?php echo $this->id ?>">
+            <?php if (!empty($this->label)) : ?>
+                <span class="customize-control-title"><?php echo esc_html($this->label); ?></span>
+            <?php endif; ?>
         </label>
 
-        <script>
-            console.log(typeof $);
-            $(window).load(function () {
-                $("#mo-date-picker").datetimepicker();
-            });
-        </script>
+        <div class="mo-datetime-container">
+            <input id="<?php echo $this->id ?>" type="text" value="<?php echo $this->value() ?>" class="mo-date-picker" <?php $this->link(); ?>/>
+            <span class="dashicons dashicons-calendar-alt mo-datetime-container-icon"></span>
+        </div>
+
+        <?php if (!empty($this->description)) : ?>
+        <span class="description customize-control-description"><?php echo $this->description; ?></span>
+    <?php endif; ?>
         <?php
     }
 }
