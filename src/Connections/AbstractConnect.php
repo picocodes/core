@@ -21,6 +21,7 @@ abstract class AbstractConnect
     {
         $ck_label = __('ConvertKit Form', 'mailoptin');
         $drip_label = __('Drip Campaign', 'mailoptin');
+        $gr_label = __('GetResponse Campaign', 'mailoptin');
         $default_label = __('Email Provider List', 'mailoptin');
         ?>
 
@@ -31,12 +32,16 @@ abstract class AbstractConnect
                         connection_service = $("select[data-customize-setting-link*='connection_service']").val();
                     }
 
+                    if (connection_service === 'GetResponseConnect') {
+                        $('li[id*="connection_email_list"] .customize-control-title').text('<?php echo $gr_label; ?>');
+                    }
+
                     if (connection_service === 'ConvertKitConnect') {
-                        $('li[id*="connection_email_list"] span.customize-control-title').text('<?php echo $ck_label; ?>');
+                        $('li[id*="connection_email_list"] .customize-control-title').text('<?php echo $ck_label; ?>');
                     }
 
                     if (connection_service === 'DripConnect') {
-                        $('li[id*="connection_email_list"] span.customize-control-title').text('<?php echo $drip_label; ?>');
+                        $('li[id*="connection_email_list"] .customize-control-title').text('<?php echo $drip_label; ?>');
                     }
                 }
 
@@ -44,9 +49,10 @@ abstract class AbstractConnect
                 $(function () {
                     logic();
                     $(document.body).on('mo_email_list_data_found', function (e, connection_service) {
+                        console.log(connection_service);
                         // restore default label before change
-                        $('li[id*="connection_email_list"] span.customize-control-title').text('<?php echo $default_label; ?>');
-                        logic(connection_service, 'convertkitish');
+                        $('li[id*="connection_email_list"] .customize-control-title').text('<?php echo $default_label; ?>');
+                        logic(connection_service);
                     });
                 })
             })(jQuery);

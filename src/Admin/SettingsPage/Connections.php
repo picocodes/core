@@ -59,6 +59,13 @@ class Connections extends AbstractSettingsPage
         $instance = Custom_Settings_Page_Api::instance($args, MAILOPTIN_CONNECTIONS_DB_OPTION_NAME, __('Connections', 'mailoptin'));
         $this->register_core_settings($instance);
         $instance->build();
+
+        do_action('mailoptin_after_connections_settings_page', MAILOPTIN_CONNECTIONS_DB_OPTION_NAME);
+
+        // close all connection settings page
+        echo '<script type="text/javascript">';
+        echo "jQuery(window).load(function() {jQuery('#post-body-content').find('button.handlediv.button-link').click();});";
+        echo '</script>';
     }
 
     public function admin_notices()

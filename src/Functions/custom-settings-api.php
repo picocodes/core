@@ -100,7 +100,7 @@ class Custom_Settings_Page_Api
                 $label = esc_html(@$arg['label']);
                 $class = esc_attr(@$arg['class']);
                 $style = esc_attr(@$arg['style']);
-                $active = $this->current_page_url() == $url ? ' nav-tab-active' : null;
+                $active = strpos($this->current_page_url(), $url) !== false ? ' nav-tab-active' : null;
                 echo "<a href=\"$url\" class=\"$class nav-tab{$active}\" style='$style'>$label</a>";
             }
         }

@@ -40,8 +40,6 @@ class CampaignLog extends AbstractSettingsPage
 
         // Hook the Email_Template_List table to Custom_Settings_Page_Api main content filter.
         add_action('wp_cspa_main_content_area', array($this, 'wp_list_table'), 10, 2);
-
-        add_filter('wp_cspa_main_current_page_url', array($this, 'camapign_log_settings_page_url'), 10, 3);
     }
 
     public function fancybox_scripts()
@@ -51,28 +49,6 @@ class CampaignLog extends AbstractSettingsPage
         wp_enqueue_style('mailoptin-fancybox', MAILOPTIN_ASSETS_URL . 'fancybox/jquery.fancybox.min.css', false, true);
         wp_enqueue_style('mailoptin-activate-fancybox', MAILOPTIN_ASSETS_URL . 'css/admin/fancybox.css', false, true);
     }
-
-
-    /**
-     * We are rewriting the current page url to strip out the eg "&type=widget" from template settings page url
-     * so the template tab will be active when pagination is viewed.
-     *
-     * @param string $current_url
-     *
-     * @return string
-     */
-    public function camapign_log_settings_page_url($current_url)
-    {
-        if ($_GET['page'] == 'mailoptin-campaign-log' && !empty($_GET['paged'])) {
-            $current_url = substr($current_url, 0, strpos($current_url, '&paged'));
-        }
-        elseif(isset($_GET['page'], $_GET['action']) && $_GET['action'] == 'retry') {
-            $current_url = substr($current_url, 0, strpos($current_url, '&action'));
-        }
-
-        return $current_url;
-    }
-
 
     /**
      * Save screen option.

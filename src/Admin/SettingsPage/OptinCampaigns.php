@@ -43,28 +43,6 @@ class OptinCampaigns extends AbstractSettingsPage
     }
 
     /**
-     * We are rewriting the current page url to strip out the eg "&type=widget" from template settings page url
-     * so the template tab will be active when any sub template menu such as solitary, manifold, widget is clicked/being viewed.
-     *
-     * @param string $current_url
-     *
-     * @return string
-     */
-    public function campaign_settings_page_url($current_url)
-    {
-        if ($_GET['page'] == 'mailoptin-optin-campaigns' && !empty($_GET['optin-type'])) {
-            $current_url = substr($current_url, 0, strpos($current_url, '&optin-type'));
-        } elseif ($_GET['page'] == 'mailoptin-optin-campaigns' && !empty($_GET['paged'])) {
-            $current_url = substr($current_url, 0, strpos($current_url, '&paged'));
-        } elseif ($_GET['page'] == 'mailoptin-optin-campaigns' && !empty($_GET['view'])) {
-            $current_url = substr($current_url, 0, strpos($current_url, '&view'));
-        }
-
-        return $current_url;
-    }
-
-
-    /**
      * Sub-menu header for optin theme types.
      */
     public function optin_theme_sub_header()
@@ -159,8 +137,6 @@ class OptinCampaigns extends AbstractSettingsPage
      */
     public function settings_admin_page_callback()
     {
-        add_filter('wp_cspa_main_current_page_url', array($this, 'campaign_settings_page_url'), 10, 3);
-
         if (!empty($_GET['view']) && $_GET['view'] == 'add-new-optin') {
             AddOptinCampaign::get_instance()->settings_admin_page();
         } else {
@@ -174,7 +150,6 @@ class OptinCampaigns extends AbstractSettingsPage
             $instance->page_header(__('Optin Campaigns', 'mailoptin'));
             $this->register_core_settings($instance, true);
             $instance->build(true);
-
         }
     }
 

@@ -51,14 +51,14 @@ class WP_Customize_Date_Picker_Control extends WP_Customize_Control
         );
 
         wp_enqueue_style(
-            'mailoptin-bootstrap-datetimepicker-standalone',
-            MAILOPTIN_ASSETS_URL . 'js/customizer-controls/datetime-control/bootstrap/css/bootstrap.css'
+            'mailoptin-bs',
+            MAILOPTIN_ASSETS_URL . 'js/customizer-controls/datetime-control/bootstrap.css'
         );
 
         wp_enqueue_style(
-            'mailoptin-bootstrap-datetimepicker',
+            'mailoptin-bs-datetimepicker',
             MAILOPTIN_ASSETS_URL . 'js/customizer-controls/datetime-control/bootstrap-datetimepicker.min.css',
-            array('mailoptin-bootstrap-datetimepicker-standalone')
+            array('mailoptin-bs')
         );
     }
 
