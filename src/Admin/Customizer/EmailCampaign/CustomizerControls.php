@@ -5,7 +5,7 @@ namespace MailOptin\Core\Admin\Customizer\EmailCampaign;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Custom_Content;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Custom_Input_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Email_Schedule_Time_Fields_Control;
-use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Range_Control;
+use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Range_Value_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Toggle_Control;
 use MailOptin\Core\Repositories\ConnectionsRepository;
 use MailOptin\Core\Repositories\EmailCampaignRepository;
@@ -68,14 +68,17 @@ class CustomizerControls
         $campaign_type = $this->customizerClassInstance->email_campaign_type;
 
         $campaign_settings_controls = array(
-            'activate_email_campaign' => apply_filters('mailoptin_customizer_settings_campaign_activate_args',
-                array(
-                    'type' => 'checkbox',
-                    'label' => __('Activate Email Campaign', 'mailoptin'),
-                    'section' => $this->customizerClassInstance->campaign_settings_section_id,
-                    'settings' => $this->option_prefix . '[activate_email_campaign]',
-                    'description' => __('This email campaign will not be sent unless this setting is checked.', 'mailoptin'),
-                    'priority' => 10
+            'activate_email_campaign' => new WP_Customize_Toggle_Control(
+                $this->wp_customize,
+                $this->option_prefix . '[activate_email_campaign]',
+                apply_filters('mailoptin_customizer_settings_campaign_activate_args', array(
+                        'label' => __('Activate Email Campaign', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->campaign_settings_section_id,
+                        'settings' => $this->option_prefix . '[activate_email_campaign]',
+                        'description' => __('This email campaign will not be sent unless this setting is checked.', 'mailoptin'),
+                        'type' => 'light',
+                        'priority' => 10,
+                    )
                 )
             ),
             'email_campaign_subject' => new WP_Customize_Custom_Input_Control(
@@ -137,14 +140,16 @@ class CustomizerControls
                     'priority' => 60
                 )
             ),
-            'send_immediately' => apply_filters('mailoptin_customizer_settings_campaign_send_immediately_args',
-                array(
-                    'type' => 'checkbox',
-                    'label' => __('Send Immediately', 'mailoptin'),
-                    'section' => $this->customizerClassInstance->campaign_settings_section_id,
-                    'settings' => $this->option_prefix . '[send_immediately]',
-                    'description' => __('Check to enable sending of "new post newsletter" immediately after publication.', 'mailoptin'),
-                    'priority' => 70
+            'send_immediately' => new WP_Customize_Toggle_Control(
+                $this->wp_customize,
+                $this->option_prefix . '[send_immediately]',
+                apply_filters('mailoptin_customizer_settings_campaign_send_immediately_args', array(
+                        'label' => __('Send Immediately', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->campaign_settings_section_id,
+                        'settings' => $this->option_prefix . '[send_immediately]',
+                        'description' => __('Check to enable sending of "new post newsletter" immediately after publication.', 'mailoptin'),
+                        'priority' => 70,
+                    )
                 )
             ),
             'campaign_schedule' => new WP_Customize_Email_Schedule_Time_Fields_Control(
@@ -188,7 +193,7 @@ class CustomizerControls
             )
         );
 
-        if(!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
+        if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
             $content = sprintf(
                 __('Upgrade to %sMailOptin Premium%s to send email campaigns directly to your email list on MailChimp, Campaign Monitor, Aweber, Constant Contact, Drip, MailerLite, ConvertKit etc.', 'mailoptin'),
                 '<a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=new_post_campaign_settings">',
@@ -435,39 +440,38 @@ class CustomizerControls
                         )
                     )
                 ),
-                'content_title_font_size' => new WP_Customize_Range_Control(
+                'content_title_font_size' => new WP_Customize_Range_Value_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[content_title_font_size]',
-                    array(
-                        'label' => __('Title Font Size', 'mailoptin'),
-                        'section' => $this->customizerClassInstance->campaign_content_section_id,
-                        'settings' => $this->option_prefix . '[content_title_font_size]',
-                        'description' => __('Measurement is in pixel.', 'mailoptin'),
-                        'input_attrs' => array(
-                            'min' => 10,
-                            'max' => 50,
-                        ),
-                        'priority' => 60
+                    apply_filters('mailoptin_template_customizer_content_title_font_size_args', array(
+                            'label' => __('Title Font Size', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->campaign_content_section_id,
+                            'settings' => $this->option_prefix . '[content_title_font_size]',
+                            'input_attrs' => array(
+                                'min' => 10,
+                                'max' => 50,
+                                'step' => 1,
+                                'suffix' => 'px', //optional suffix
+                            ),
+                            'priority' => 60
+                        )
                     )
                 ),
-                'content_body_font_size' => new WP_Customize_Range_Control(
+                'content_body_font_size' => new WP_Customize_Range_Value_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[content_body_font_size]',
-                    array(
-                        'label' => __('Body Font Size', 'mailoptin'),
-                        'section' => $this->customizerClassInstance->campaign_content_section_id,
-                        'settings' => $this->option_prefix . '[content_body_font_size]',
-                        'description' => __('Measurement is in pixel.', 'mailoptin'),
-                        'choices' => array(
-                            'left' => __('Left', 'mailoptin'),
-                            'center' => __('Center', 'mailoptin'),
-                            'right' => __('Right', 'mailoptin'),
-                        ),
-                        'input_attrs' => array(
-                            'min' => 10,
-                            'max' => 50,
-                        ),
-                        'priority' => 80
+                    apply_filters('mailoptin_template_customizer_content_body_font_size_args', array(
+                            'label' => __('Body Font Size', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->campaign_content_section_id,
+                            'settings' => $this->option_prefix . '[content_body_font_size]',
+                            'input_attrs' => array(
+                                'min' => 10,
+                                'max' => 50,
+                                'step' => 1,
+                                'suffix' => 'px'
+                            ),
+                            'priority' => 80
+                        )
                     )
                 ),
                 'content_alignment' => array(
@@ -602,17 +606,18 @@ class CustomizerControls
                         )
                     )
                 ),
-                'footer_font_size' => new WP_Customize_Range_Control(
+                'footer_font_size' => new WP_Customize_Range_Value_Control(
                     $this->wp_customize,
-                    'footer_font_size',
+                    $this->option_prefix . '[footer_font_size]',
                     apply_filters('mailoptin_template_customizer_footer_font_size_args', array(
-                            'label' => __('Font Size', 'mailoptin'),
+                            'label' => __('Footer Font Size', 'mailoptin'),
                             'section' => $this->customizerClassInstance->campaign_footer_section_id,
                             'settings' => $this->option_prefix . '[footer_font_size]',
-                            'description' => __('Measurement is in pixel.', 'mailoptin'),
                             'input_attrs' => array(
                                 'min' => 10,
                                 'max' => 40,
+                                'step' => 1,
+                                'suffix' => 'px'
                             ),
                             'priority' => 40
                         )

@@ -61,6 +61,17 @@ class Customizer
                 echo '</script>';
             });
 
+            add_filter('gettext', function ($translations, $text, $domain) {
+                if ($domain == 'default' && $text == 'Publish') {
+                    $translations = 'Save Changes';
+                }
+                if ($domain == 'default' && $text == 'Published') {
+                    $translations = 'Saved';
+                }
+
+                return $translations;
+            }, 10, 3);
+
             add_action('customize_controls_enqueue_scripts', function () {
                 wp_enqueue_script('mailoptin-send-test-email', MAILOPTIN_ASSETS_URL . 'js/admin/send-test-email.js');
             });

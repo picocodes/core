@@ -6,7 +6,7 @@ use WP_Customize_Control;
 
 class WP_Customize_Toggle_Control extends WP_Customize_Control
 {
-    public $type = 'ios';
+    public $type = 'light';
 
     /**
      * Enqueue scripts/styles.

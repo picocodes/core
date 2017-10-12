@@ -2,8 +2,6 @@
     'use strict';
 
     api('mo_email_campaigns[' + mailoptin_email_campaign_id + '][connection_service]', function (setting) {
-        console.log(setting);
-        console.log(setting.get());
         var is_display_footer_description, linkSettingValueToControlActiveState;
 
         /**
@@ -14,8 +12,6 @@
         is_display_footer_description = function () {
             return setting.get() !== 'ActiveCampaignConnect';
         };
-
-        console.log(is_display_footer_description());
 
         /**
          * Update a control's active state according to the header_textcontrol setting's value.
@@ -45,7 +41,6 @@
              * the preview to refresh and thus the server-side active_callbacks
              * would not get invoked.
              */
-            console.log('event triggered');
             setting.bind(setActiveState);
         };
 

@@ -163,7 +163,7 @@
                 status: this.checked,
                 security: $("input[data-customize-setting-link*='[ajax_nonce]']").val()
             }, function ($response) {
-                console.log($response);
+                // do nothing
             });
         });
 
