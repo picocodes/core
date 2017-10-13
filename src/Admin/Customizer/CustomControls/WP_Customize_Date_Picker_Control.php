@@ -28,7 +28,7 @@ class WP_Customize_Date_Picker_Control extends WP_Customize_Control
 
         wp_enqueue_script(
             'mailoptin-datetime-moment',
-            MAILOPTIN_ASSETS_URL . 'js/customizer-controls/datetime-control/moment-with-locales.js',
+            MAILOPTIN_ASSETS_URL . 'js/src/moment.js',
             array('jquery'),
             false,
             true

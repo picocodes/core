@@ -1,8 +1,8 @@
 /**
  * @var {object} mailoptin_globals
  */
-define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', 'moScrollTrigger'],
-    function ($, Cookies, mailoptin_globals) {
+define(['jquery', 'js.cookie', 'mailoptin_globals', 'mailoptin_moment', 'moModal', 'moExitIntent', 'moScrollTrigger'],
+    function ($, Cookies, mailoptin_globals, moment) {
         "use strict";
 
         $.MailOptin = {
@@ -833,7 +833,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
              * Initialize optin event handlers.
              */
             initOptinForms: function () {
-                var self = this;
+                console.log(moment);
 
                 /**
                  * simply this for all optin types using one single selector. initOptin
