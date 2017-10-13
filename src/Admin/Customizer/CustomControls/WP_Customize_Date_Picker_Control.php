@@ -45,7 +45,7 @@ class WP_Customize_Date_Picker_Control extends WP_Customize_Control
         wp_enqueue_script(
             'mailoptin-datetime-datetimepicker-init',
             MAILOPTIN_ASSETS_URL . 'js/customizer-controls/datetime-init.js',
-            array('jquery', 'mailoptin-datetime-moment', 'mailoptin-datetime-datetimepicker'),
+            array('jquery', 'mailoptin-datetime-moment', 'mailoptin-datetime-datetimepicker', 'customize-base'),
             false,
             true
         );

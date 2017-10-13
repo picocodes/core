@@ -8,12 +8,19 @@ class WP_Customize_Chosen_Single_Select_Control extends WP_Customize_Control
 {
     public $type = 'mailoptin_single_chosen';
 
+    public $attributes = [];
+
     public function enqueue()
     {
-        wp_enqueue_script('jquery');
         wp_enqueue_style('mailoptin-customizer-chosen', MAILOPTIN_ASSETS_URL . 'chosen/chosen.min.css');
-        wp_enqueue_script('mailoptin-customizer-chosen', MAILOPTIN_ASSETS_URL . 'chosen/chosen.jquery.min.js', array('jquery'), MAILOPTIN_VERSION_NUMBER);
-        wp_enqueue_script('mailoptin-customizer-chosen-control', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/chosen.js', array('jquery', 'mailoptin-customizer-chosen'), MAILOPTIN_VERSION_NUMBER);
+        wp_enqueue_script('mailoptin-customizer-chosen', MAILOPTIN_ASSETS_URL . 'chosen/chosen.jquery.min.js', array('jquery'), MAILOPTIN_VERSION_NUMBER, true);
+        wp_enqueue_script('mailoptin-customizer-chosen-single-control', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/chosen-single.js', array('jquery', 'mailoptin-customizer-chosen', 'customize-base'), MAILOPTIN_VERSION_NUMBER, true);
+    }
+
+    public function attributes()
+    {
+
+        echo "data-chosen-attr='" . json_encode($this->attributes) . "'";
     }
 
     public function render_content()
@@ -23,7 +30,7 @@ class WP_Customize_Chosen_Single_Select_Control extends WP_Customize_Control
             <?php if (!empty($this->label)) : ?>
                 <span class="customize-control-title"><?php echo esc_html($this->label); ?></span>
             <?php endif; ?>
-            <select class="mailoptin-chosen" <?php $this->link(); ?>>
+            <select class="mailoptin-single-chosen" <?php $this->attributes(); ?> <?php $this->link(); ?>>
                 <?php
                 foreach ($this->choices as $key => $value) {
                     if (is_array($value)) {
@@ -47,6 +54,6 @@ class WP_Customize_Chosen_Single_Select_Control extends WP_Customize_Control
 
     protected function _selected($key)
     {
-        return in_array($key, (array) $this->value()) ? 'selected=selected' : null;
+        return in_array($key, (array)$this->value()) ? 'selected=selected' : null;
     }
 }

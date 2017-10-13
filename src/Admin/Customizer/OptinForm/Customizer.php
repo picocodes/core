@@ -55,7 +55,6 @@ class Customizer
     /** @var string ID of "exit intent" customizer section. */
     public $exit_intent_display_rule_section_id = 'mo_wp_exit_intent_display_rule_section';
 
-    /** @var string ID of "link click" customizer section. */
     public $schedule_display_rule_section_id = 'mo_wp_schedule_display_rule_section';
 
     /** @var string ID of "link click" customizer section. */

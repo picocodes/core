@@ -1,5 +1,8 @@
-(function ($) {
-    $(window).on('load', function () {
+wp.customize.controlConstructor.mailoptin_ace_editor = wp.customize.Control.extend( {
+    ready: function() {
+        var control = this;
+        wp.customize.Control.prototype.ready.call( control );
+
         $('[data-block-type="ace"]').each(function () {
             var editor_id = $(this).attr('id');
             var theme = $(this).data('ace-theme');
@@ -17,6 +20,5 @@
             });
 
         });
-    });
-
-})(jQuery);
+    }
+} );

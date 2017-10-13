@@ -27,7 +27,7 @@ class WP_Customize_Ace_Editor_Control extends WP_Customize_Control
         wp_enqueue_script(
             'mailoptin-ace-init',
             MAILOPTIN_ASSETS_URL . 'js/customizer-controls/ace-init.js',
-            array('jquery', 'mailoptin-ace-js'),
+            array('jquery', 'mailoptin-ace-js', 'customize-base'),
             false,
             true
         );
