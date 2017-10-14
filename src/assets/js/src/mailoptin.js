@@ -503,7 +503,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'mailoptin_moment', 'moModal
 
             /**
              * Return the configuration in Javascript of an optin.
-             * @param {string} optin_css_id
+             * @param {string} optin_css_id could be optin campaign ID or css ID (optin id with optin type joined by "_")
              * @returns {object}
              */
             optin_js_config: function (optin_css_id) {
@@ -833,8 +833,6 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'mailoptin_moment', 'moModal
              * Initialize optin event handlers.
              */
             initOptinForms: function () {
-                console.log(moment);
-
                 /**
                  * simply this for all optin types using one single selector. initOptin
                  */
@@ -862,6 +860,62 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'mailoptin_moment', 'moModal
                 });
             },
 
+            is_scheduled_for_display: function () {
+
+                $('.moOptinForm').each(function () {
+
+                    var optin_uuid = $(this).attr('id');
+                    var optin_js_config = mailoptin_optin.optin_js_config(optin_uuid);
+
+                    var schedule_status = optin_js_config.schedule_status;
+                    var schedule_start = optin_js_config.schedule_start;
+                    var schedule_end = optin_js_config.schedule_end;
+                    var schedule_timezone = optin_js_config.schedule_timezone;
+
+                    // if we have a JS success script, trigger it.
+                    if (mailoptin_optin.is_defined_not_empty(schedule_status) &&
+                        mailoptin_optin.is_defined_not_empty(schedule_start) &&
+                        mailoptin_optin.is_defined_not_empty(schedule_end) &&
+                        mailoptin_optin.is_defined_not_empty(schedule_timezone)
+                    ) {
+                        var d = new Date(), timezone_offset, now, start, end, result;
+
+                        if (schedule_timezone === 'visitors_local_time') {
+                            // d.getTimezoneOffset is in minutes. so 60 * 1000 converts it to milliseconds
+                            timezone_offset = d.getTimezoneOffset() * 60 * 1000;
+                        }
+                        else {
+                            // convert timezone offset in seconds to milliseconds
+                            timezone_offset = schedule_timezone * 1000;
+                        }
+
+                        now = d.getTime() + timezone_offset;
+                        start = Date.parse(schedule_start) + timezone_offset;
+                        end = Date.parse(schedule_end) + timezone_offset;
+
+                        console.log(optin_uuid);
+
+                        // return true of optin should display or false otherwise
+                        result = (now >= start && now <= end);
+
+                        if (result === false) {
+                            $(this).remove();
+                        }
+                    }
+                });
+            },
+
+            /**
+             * Check if value is defined and not empty.
+             *
+             * @param {mixed} val
+             *
+             * @returns {boolean}
+             */
+            is_defined_not_empty: function (val) {
+                return (typeof val !== 'undefined' && val !== '');
+            },
+
             /**
              * Initialize class
              */
@@ -872,6 +926,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'mailoptin_moment', 'moModal
                 $(function () {
                     _this.eventSubscription();
                     _this.mailoptin_jq_plugin();
+                    _this.is_scheduled_for_display();
                     _this.initOptinForms();
                     _this.optin_conversion();
                 });

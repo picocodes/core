@@ -79,6 +79,11 @@ class AbstractCustomizer
 
         $defaults['inpost_form_optin_position'] = apply_filters('mo_optin_form_inpost_form_optin_position_default', 'after_content');
 
+        $defaults['schedule_status'] = apply_filters('mo_optin_form_schedule_status_default', false, $this->customizer_defaults);
+        $defaults['schedule_start'] = apply_filters('mo_optin_form_schedule_start_default', '', $this->customizer_defaults);
+        $defaults['schedule_end'] = apply_filters('mo_optin_form_schedule_end_default', '', $this->customizer_defaults);
+        $defaults['schedule_timezone'] = apply_filters('mo_optin_form_schedule_timezone_default', 'visitors_local_time', $this->customizer_defaults);
+
         $defaults['modal_effects'] = apply_filters('mo_optin_form_modal_effects_default', '', $this->customizer_defaults);
         $defaults['success_action'] = apply_filters('mo_optin_form_success_action_default', 'success_message', $this->customizer_defaults);
         $defaults['pass_lead_data_redirect_url'] = apply_filters('mo_optin_form_pass_lead_data_redirect_url_default', false, $this->customizer_defaults);

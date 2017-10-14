@@ -536,6 +536,11 @@ jQuery(function(){
         $global_exit_cookie = Settings::instance()->global_cookie();
         $global_success_cookie = Settings::instance()->global_success_cookie();
 
+        $schedule_status = $this->get_customizer_value('schedule_status');
+        $schedule_start = $this->get_customizer_value('schedule_start');
+        $schedule_end = $this->get_customizer_value('schedule_end');
+        $schedule_timezone = $this->get_customizer_value('schedule_timezone');
+
         $click_launch_status = $this->get_customizer_value('click_launch_status');
         $x_page_views_status = $this->get_customizer_value('x_page_views_status');
         $x_page_views_condition = $this->get_customizer_value('x_page_views_condition');
@@ -628,6 +633,13 @@ jQuery(function(){
 
         if ($this->optin_campaign_type == 'slidein') {
             $data['slidein_position'] = $this->get_customizer_value('slidein_position');
+        }
+
+        if ($schedule_status === true && !empty($schedule_start) && !empty($schedule_end) && !empty($schedule_timezone)) {
+            $data['schedule_status'] = $schedule_status;
+            $data['schedule_start'] = $schedule_start;
+            $data['schedule_end'] = $schedule_end;
+            $data['schedule_timezone'] = $schedule_timezone;
         }
 
         $data['unexpected_error'] = apply_filters('mo_optin_campaign_unexpected_error', __('Unexpected error. Please try again.', 'mailoptin'));
