@@ -11,7 +11,7 @@ wp.customize.controlConstructor.mailoptin_datetime = wp.customize.Control.extend
             },
             sideBySide: false,
             // add option to disable this for start time. take cue from chosen single on how to pass config
-            minDate: moment(),
+            // minDate: moment(),
             icons: {
                 time: 'dashicons dashicons-clock',
                 date: 'dashicons dashicons-calendar-alt',

@@ -1,8 +1,8 @@
 /**
  * @var {object} mailoptin_globals
  */
-define(['jquery', 'js.cookie', 'mailoptin_globals', 'mailoptin_moment', 'moModal', 'moExitIntent', 'moScrollTrigger'],
-    function ($, Cookies, mailoptin_globals, moment) {
+define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', 'moScrollTrigger'],
+    function ($, Cookies, mailoptin_globals) {
         "use strict";
 
         $.MailOptin = {
@@ -862,6 +862,8 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'mailoptin_moment', 'moModal
 
             is_scheduled_for_display: function () {
 
+                if ($.MailOptin.is_customize_preview === true) return;
+
                 $('.moOptinForm').each(function () {
 
                     var optin_uuid = $(this).attr('id');
@@ -892,8 +894,6 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'mailoptin_moment', 'moModal
                         now = d.getTime() + timezone_offset;
                         start = Date.parse(schedule_start) + timezone_offset;
                         end = Date.parse(schedule_end) + timezone_offset;
-
-                        console.log(optin_uuid);
 
                         // return true of optin should display or false otherwise
                         result = (now >= start && now <= end);

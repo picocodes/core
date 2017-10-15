@@ -1,7 +1,7 @@
 requirejs.config({
     baseUrl: mailoptin_globals.public_js,
     packages: [{
-        name: 'mailoptin_moment',
+        name: 'moment',
         // This location is relative to baseUrl. Choose bower_components
         // or node_modules, depending on how moment was installed.
         location: './',
