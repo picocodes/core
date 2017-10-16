@@ -5,11 +5,10 @@
         init: function() {
             $(window).on('load', function(){
 
-                $('textarea.mo-ace-textarea').each(function(){
+                $('textarea.wp-editor-area').each(function(){
                     var tArea = $(this),
                         id = tArea.attr('id'),
                         editor = tinyMCE.get(id),
-                        setChange,
                         content;
 
                     if(editor) {
