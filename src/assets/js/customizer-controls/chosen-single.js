@@ -3,9 +3,9 @@ wp.customize.controlConstructor.mailoptin_single_chosen = wp.customize.Control.e
         var control = this;
         wp.customize.Control.prototype.ready.call(control);
 
-        $('.mailoptin-single-chosen').each(function () {
-            var options = $(this).data('chosen-attr');
-            $(this).chosen(options);
+        jQuery('.mailoptin-single-chosen').each(function () {
+            var options = jQuery(this).data('chosen-attr');
+            jQuery(this).chosen(options);
         });
     }
 });

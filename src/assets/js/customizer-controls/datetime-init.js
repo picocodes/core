@@ -3,7 +3,7 @@ wp.customize.controlConstructor.mailoptin_datetime = wp.customize.Control.extend
         var control = this;
         wp.customize.Control.prototype.ready.call(control);
 
-        var datetime_container = $(".mo-date-picker");
+        var datetime_container = jQuery(".mo-date-picker");
         datetime_container.datetimepicker({
             widgetPositioning: {
                 horizontal: 'left',
@@ -25,7 +25,7 @@ wp.customize.controlConstructor.mailoptin_datetime = wp.customize.Control.extend
         });
 
         datetime_container.on('dp.change', function () {
-            $(this).trigger('change');
+            jQuery(this).trigger('change');
         });
     }
 });
