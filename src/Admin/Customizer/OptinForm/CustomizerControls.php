@@ -146,6 +146,27 @@ class CustomizerControls
             )
         );
 
+        if(!defined('MAILOPTIN_DISPLAY_RULES_FLAG')) {
+            $content = sprintf(
+                __('Upgrade to %sMailOptin Premium%s for more customization options including feature to add your own custom CSS.', 'mailoptin'),
+                '<a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=custom_css_notice">',
+                '</a>'
+            );
+
+            // always prefix with the name of the connect/connection service.
+            $page_control_args['custom_css_notice'] = new WP_Customize_Custom_Content(
+                $this->wp_customize,
+                $this->option_prefix . '[custom_css_notice]',
+                apply_filters('mo_optin_form_customizer_custom_css_notice_args', array(
+                        'content' => $content,
+                        'section' => $this->customizerClassInstance->design_section_id,
+                        'settings' => $this->option_prefix . '[custom_css_notice]',
+                        'priority' => 199,
+                    )
+                )
+            );
+        }
+
         do_action('mailoptin_before_design_controls_addition');
 
         foreach ($page_control_args as $id => $args) {
@@ -870,7 +891,7 @@ class CustomizerControls
             );
         } else {
             $content = sprintf(
-                __('Upgrade to %sMailOptin Premium%s to avail yourself of optin triggers such as %3$sExit Intent%4$s, %3$sPage views%4$s, %3$sTime on Site%4$s and %3$sScroll trigger%4$s as well as powerful display rules proven to boost conversions.', 'mailoptin'),
+                __('Upgrade to %sMailOptin Premium%s to get optin triggers such as %3$sExit Intent%4$s, %3$sPage views%4$s, %3$sTime on Site%4$s and %3$sScroll trigger%4$s as well as powerful display rules proven to boost conversions.', 'mailoptin'),
                 '<a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=quick_setup_panel">',
                 '</a>',
                 '<strong>',

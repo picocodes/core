@@ -68,6 +68,11 @@ class CustomizerSettings extends AbstractCustomizer
                     'type' => 'option',
                     'transport' => 'postMessage',
                 ),
+                'custom_css_notice' => array(
+                    'default' => apply_filters('mo_optin_form_custom_css_notice', false),
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
             ),
             $this
         );
