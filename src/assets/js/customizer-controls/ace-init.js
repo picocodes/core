@@ -3,19 +3,19 @@ wp.customize.controlConstructor.mailoptin_ace_editor = wp.customize.Control.exte
         var control = this;
         wp.customize.Control.prototype.ready.call( control );
 
-        $('[data-block-type="ace"]').each(function () {
-            var editor_id = $(this).attr('id');
-            var theme = $(this).data('ace-theme');
-            var language = $(this).data('ace-lang');
+        jQuery('[data-block-type="ace"]').each(function () {
+            var editor_id = jQuery(this).attr('id');
+            var theme = jQuery(this).data('ace-theme');
+            var language = jQuery(this).data('ace-lang');
 
             var editor = ace.edit(editor_id);
             editor.setTheme("ace/theme/" + theme);
             editor.getSession().setMode("ace/mode/" + language);
             editor.$blockScrolling = Infinity;
-            editor.getSession().setValue( $( 'textarea#' + editor_id + '-textarea' ).val() );
+            editor.getSession().setValue( jQuery( 'textarea#' + editor_id + '-textarea' ).val() );
 
             editor.on('change', function () {
-                $('textarea#' + editor_id + '-textarea').val(editor.getSession().getValue()).change();
+                jQuery('textarea#' + editor_id + '-textarea').val(editor.getSession().getValue()).change();
 
             });
 
