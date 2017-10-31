@@ -143,7 +143,7 @@ class AdminNotices
 
         if ($diff < 7) return;
 
-        $review_url = 'https://wordpress.org/support/plugin/mailoptin/reviews/?filter=5';
+        $review_url = 'https://wordpress.org/support/plugin/mailoptin/reviews/?filter=5#new-post';
 
         $notice = sprintf(
             __('Hey, I noticed you have been using MailOptin for at least 7 days now - that\'s awesome! Could you please do me a BIG favor and give it a %1$s5-star rating on WordPress?%2$s This will help us spread the word and boost our motivation - thanks!', 'mailoptin'),
