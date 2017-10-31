@@ -62,7 +62,7 @@ tr#ajax_nonce_row {
 }
 
 #mailoptin-sub-bar .mailoptin-new-toolbar {
-    height: 38px;
+    min-height: 38px;
     padding: 10px;
     background: #fff;
     margin-bottom: 20px;
