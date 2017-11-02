@@ -42,7 +42,7 @@ class CustomizerSettings extends AbstractCustomizer
                 'form_background_image' => array(
                     'default' => $this->customizer_defaults['form_background_image'],
                     'type' => 'option',
-                    'sanitize_callback' => 'absint',
+                    'sanitize_callback' => 'esc_url',
                     'transport' => 'postMessage',
                 ),
                 'form_image' => array(

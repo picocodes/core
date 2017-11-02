@@ -362,7 +362,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
      */
     public function shortcode_optin_form_close_button($atts, $content = '')
     {
-        if($this->get_customizer_value('hide_close_button')) return '';
+        if ($this->get_customizer_value('hide_close_button')) return '';
 
         $atts = array_map('esc_attr', shortcode_atts(
                 array(
@@ -401,9 +401,8 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
 
         $style = esc_attr($atts['style']);
 
-        $db_saved_form_image = $this->get_customizer_value('form_image');
 
-        $src = !empty($db_saved_form_image) ? wp_get_attachment_image_url($db_saved_form_image, '') : $atts['default'];
+        $src = $this->get_form_image_url($atts['default']);
 
         return sprintf('<img src="%s" class="mo-optin-form-image" style="%s"/>', esc_url($src), $style);
     }
@@ -419,7 +418,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
     {
         $atts = shortcode_atts(
             array(
-                'default_image' => '',
+                'default' => '',
                 'style' => '',
             ),
             $atts
@@ -427,11 +426,49 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
 
         $style = esc_attr($atts['style']);
 
-        $db_saved_form_image = $this->get_customizer_value('form_background_image');
-
-        $src = !empty($db_saved_form_image) ? wp_get_attachment_image_url($db_saved_form_image) : $atts['default_image'];
+        $src = $this->get_form_background_image_url($atts['default_image']);
 
         return sprintf('<img src="%s" class="mo-optin-form-background-image" style="%s"/>', esc_url($src), $style);
+    }
+
+    /**
+     * Get form_image URL.
+     *
+     * @param string $default_image_url
+     * @return bool|false|string
+     */
+    public function get_form_image_url($default_image_url = '')
+    {
+        return $this->get_attachment_image_url('form_image', $default_image_url);
+    }
+
+    /**
+     * Get form_background_image URL.
+     *
+     * @param string $default_image_url
+     * @return bool|false|string
+     */
+    public function get_form_background_image_url($default_image_url = '')
+    {
+        $bg_image_url = $this->get_customizer_value('form_background_image');
+
+        return !empty($bg_image_url) ? $bg_image_url : $default_image_url;
+    }
+
+    /**
+     * Get attachment image url from customize image control powered setting.
+     *
+     * @param string $optin_form_setting
+     * @param string $default_image_url
+     * @return bool|false|string
+     */
+    public function get_attachment_image_url($optin_form_setting, $default_image_url = '')
+    {
+        $db_image_attachment_id = $this->get_customizer_value($optin_form_setting);
+
+        // you could use wp_get_attachment_image_url($db_saved_form_image, '');
+        // instead where second param is empty string thus returning full image url.
+        return !empty($db_image_attachment_id) ? wp_get_attachment_url($db_image_attachment_id) : $default_image_url;
     }
 
     /**

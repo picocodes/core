@@ -46,7 +46,8 @@ class CustomizerControls
         $page_control_args = apply_filters(
             "mo_optin_form_customizer_design_controls",
             [],
-            $this->wp_customize, $this->option_prefix,
+            $this->wp_customize,
+            $this->option_prefix,
             $this->customizerClassInstance
         );
 
@@ -56,7 +57,9 @@ class CustomizerControls
 
             if (isset($this->wp_customize->selective_refresh)) {
                 $this->wp_customize->selective_refresh->add_partial($this->option_prefix . '[form_image]', array(
-                    'fallback_refresh' => false,
+                    // Whether to refresh the entire preview in case a partial cannot be refreshed.
+                    // A partial render is considered a failure if the render_callback returns false.
+                    'fallback_refresh' => true,
                     'selector' => apply_filters('mo_optin_form_image_partial_selector', '.mo-optin-form-image-wrapper'),
                     // determines if change will apply to container / wrapper element.
                     'container_inclusive' => apply_filters('mo_optin_form_image_partial_container_inclusive', false),
@@ -90,46 +93,46 @@ class CustomizerControls
 
             $this->default_form_background_image = apply_filters('mo_optin_form_partial_default_background_image', '');
 
-            if (isset($this->wp_customize->selective_refresh)) {
+            if (apply_filters('mo_optin_form_enable_selective_refresh_form_background_image', true) && isset($this->wp_customize->selective_refresh)) {
                 $this->wp_customize->selective_refresh->add_partial($this->option_prefix . '[form_background_image]', array(
-                    'fallback_refresh' => false,
+                    // Whether to refresh the entire preview in case a partial cannot be refreshed.
+                    // A partial render is considered a failure if the render_callback returns false.
+                    'fallback_refresh' => true,
                     'selector' => apply_filters('mo_optin_form_background_image_partial_selector', '.mo-optin-form-background-image-wrapper'),
                     // determines if change will apply to container / wrapper element.
                     'container_inclusive' => apply_filters('mo_optin_form_image_partial_container_inclusive', false),
-                    'render_callback' => apply_filters('mo_optin_form_image_render_callback', function () {
-                        return do_shortcode("[mo-optin-form-background-image default='{$this->default_form_background_image}']");
-                    })
+                    'render_callback' => apply_filters('mo_optin_form_image_render_callback', false)
                 ));
             } else {
                 // if selective refresh not supported, fallback to 'refresh' transport.
                 $this->wp_customize->get_setting($this->option_prefix . '[form_background_image]')->transport = 'refresh';
             }
 
-            $page_control_args['form_background_image'] = new \WP_Customize_Cropped_Image_Control(
+            $page_control_args['form_background_image'] = new \WP_Customize_Image_Control(
                 $this->wp_customize,
                 $this->option_prefix . '[form_background_image]',
                 apply_filters('mo_optin_form_customizer_form_background_image_args', array(
-                        'width' => 600,
-                        'height' => 340,
-                        'flex_width' => true,
-                        'flex_height' => true,
                         'label' => __('Background Image', 'mailoptin'),
                         'section' => $this->customizerClassInstance->design_section_id,
                         'settings' => $this->option_prefix . '[form_background_image]',
-                        'priority' => 10,
+                        'priority' => 20,
                     )
                 )
             );
         }
 
-        $page_control_args ['form_background_color'] = new \WP_Customize_Color_Control(
+        $page_control_args['form_image'] = new \WP_Customize_Cropped_Image_Control(
             $this->wp_customize,
-            $this->option_prefix . '[form_background_color]',
-            apply_filters('mailoptin_optin_customizer_form_background_color_args', array(
-                    'label' => __('Background Color', 'mailoptin'),
+            $this->option_prefix . '[form_image]',
+            apply_filters('mo_optin_form_customizer_form_image_args', array(
+                    'width' => 220,
+                    'height' => 35,
+                    'flex_width' => true,
+                    'flex_height' => true,
+                    'label' => __('Image', 'mailoptin'),
                     'section' => $this->customizerClassInstance->design_section_id,
-                    'settings' => $this->option_prefix . '[form_background_color]',
-                    'priority' => 20,
+                    'settings' => $this->option_prefix . '[form_image]',
+                    'priority' => 30,
                 )
             )
         );
@@ -146,7 +149,7 @@ class CustomizerControls
             )
         );
 
-        if(!defined('MAILOPTIN_DISPLAY_RULES_FLAG')) {
+        if (!defined('MAILOPTIN_DISPLAY_RULES_FLAG')) {
             $content = sprintf(
                 __('Upgrade to %sMailOptin Premium%s for more customization options including feature to add your own custom CSS.', 'mailoptin'),
                 '<a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=custom_css_notice">',
@@ -818,7 +821,7 @@ class CustomizerControls
             $this->customizerClassInstance
         );
 
-        if(!defined('MAILOPTIN_DISPLAY_RULES_FLAG')) {
+        if (!defined('MAILOPTIN_DISPLAY_RULES_FLAG')) {
             $content = sprintf(
                 __('Upgrade to %sMailOptin Premium%s to pass lead data to redirect URL and trigger success script after conversion.', 'mailoptin'),
                 '<a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=quick_setup_panel">',
