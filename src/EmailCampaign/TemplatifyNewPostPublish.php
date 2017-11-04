@@ -58,7 +58,7 @@ class TemplatifyNewPostPublish
      */
     public function post_content()
     {
-        return $this->post->post_content;
+        return do_shortcode($this->post->post_content);
     }
 
     /**
@@ -107,11 +107,7 @@ class TemplatifyNewPostPublish
         $db_template_class = $this->template_class;
         $campaign_type = $this->campaign_type;
 
-        // convert e.g new_publish_post to NewPublishPost
-        $campaign_type_namespace = str_replace(' ', '', ucwords(str_replace('_', ' ', $campaign_type)));
-
         do_action('mailoptin_email_template_before_forge', $email_campaign_id, $db_template_class);
-
 
         $instance = EmailCampaignFactory::make($email_campaign_id);
 

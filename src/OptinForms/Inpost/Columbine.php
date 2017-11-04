@@ -96,13 +96,6 @@ class Columbine extends AbstractOptinTheme
             return 'Lora';
         });
 
-        // change toggling of nae field to 'refresh' transport to handle switching different styling
-        // for when name field is available or not.
-        add_filter('mo_optin_form_customizer_fields_settings', function ($settings) {
-            $settings['hide_name_field']['transport'] = 'refresh';
-            return $settings;
-        });
-
         add_filter('mo_get_optin_form_headline_font', function ($font, $font_type) {
             if ($font_type == 'headline_font' && $font == 'Lora') {
                 $font .= ':400,700,400italic';
@@ -236,7 +229,6 @@ class Columbine extends AbstractOptinTheme
         return $controls;
     }
 
-
     /**
      * @param mixed $fields_settings
      * @param CustomizerSettings $CustomizerSettingsInstance
@@ -245,6 +237,10 @@ class Columbine extends AbstractOptinTheme
      */
     public function customizer_fields_settings($fields_settings, $CustomizerSettingsInstance)
     {
+        // change toggling of nae field to 'refresh' transport to handle switching different styling
+        // for when name field is available or not.
+        $fields_settings['hide_name_field']['transport'] = 'refresh';
+
         return $fields_settings;
     }
 

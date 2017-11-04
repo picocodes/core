@@ -259,7 +259,7 @@ jQuery(function(){
      */
     public function global_css($optin_css_id, $optin_campaign_uuid = '')
     {
-        $global_css = "div#{$optin_css_id}_container div.mo-optin-powered-by{margin:5px auto 0;text-align:center;}";
+        $global_css = "div#{$optin_css_id}_container div.mo-optin-powered-by{margin:5px auto 2px;text-align:center;}";
         $global_css .= "div#{$optin_css_id}_container div.mo-optin-powered-by a {font-size:16px !important; text-decoration: none !important;box-shadow:none !important;border-bottom-width:0px !important;cursor:pointer !important;}";
 
         if ($this->optin_campaign_type == 'bar') {
@@ -274,6 +274,12 @@ jQuery(function(){
         if ($this->optin_campaign_type == 'slidein') {
             $global_css .= "div#$optin_campaign_uuid.mo-slidein-bottom_right {right: 10px;}";
             $global_css .= "div#$optin_campaign_uuid.mo-slidein-bottom_left {left: 10px;}";
+        }
+
+//        var_dump($this->get_customizer_value('hide_name_field'), $optin_campaign_uuid); exit;
+
+        if ($this->get_customizer_value('hide_name_field')) {
+            $global_css .= "div#$optin_css_id #mo-optin-form-name-field {display: none !important;}";
         }
 
         return $global_css;

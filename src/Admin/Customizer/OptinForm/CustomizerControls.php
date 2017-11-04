@@ -121,22 +121,6 @@ class CustomizerControls
             );
         }
 
-        $page_control_args['form_image'] = new \WP_Customize_Cropped_Image_Control(
-            $this->wp_customize,
-            $this->option_prefix . '[form_image]',
-            apply_filters('mo_optin_form_customizer_form_image_args', array(
-                    'width' => 220,
-                    'height' => 35,
-                    'flex_width' => true,
-                    'flex_height' => true,
-                    'label' => __('Image', 'mailoptin'),
-                    'section' => $this->customizerClassInstance->design_section_id,
-                    'settings' => $this->option_prefix . '[form_image]',
-                    'priority' => 30,
-                )
-            )
-        );
-
         $page_control_args['form_border_color'] = new \WP_Customize_Color_Control(
             $this->wp_customize,
             $this->option_prefix . '[form_border_color]',

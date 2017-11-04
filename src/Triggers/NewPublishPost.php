@@ -34,12 +34,13 @@ class NewPublishPost extends AbstractTriggers
             foreach ($new_publish_post_campaigns as $npp_campaign) {
                 $email_campaign_id = absint($npp_campaign['id']);
                 $is_activated = ER::is_campaign_active($email_campaign_id);
+
+                if ($is_activated === false) continue;
+
                 $send_immediately_active = $this->send_immediately($email_campaign_id);
                 $email_subject = ER::get_customizer_value($email_campaign_id, 'email_campaign_subject');
 
                 $content_html = (new TemplatifyNewPostPublish($post, $email_campaign_id))->forge();
-
-                if ($is_activated === false) continue;
 
                 $campaign_id = $this->save_campaign_log(
                     $email_campaign_id,
