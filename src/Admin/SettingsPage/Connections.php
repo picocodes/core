@@ -64,7 +64,7 @@ class Connections extends AbstractSettingsPage
 
         // close all connection settings page
         echo '<script type="text/javascript">';
-        echo "jQuery(window).load(function() {jQuery('#post-body-content').find('button.handlediv.button-link').click();});";
+        echo "jQuery(document).on('ready', function() {jQuery('#post-body-content').find('button.handlediv.button-link').click();});";
         echo '</script>';
     }
 

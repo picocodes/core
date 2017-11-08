@@ -18,6 +18,8 @@ abstract class AbstractSettingsPage
     public function init_menu()
     {
         add_action('admin_menu', array($this, 'register_core_menu'));
+
+        add_action('wp_cspa_after_settings_tab', [$this, 'toggle_buttons']);
     }
 
     public function register_core_menu()
@@ -30,6 +32,17 @@ abstract class AbstractSettingsPage
             '',
             'dashicons-email-alt'
         );
+    }
+
+    public function toggle_buttons($option_name)
+    {
+        if(!in_array($option_name, [MAILOPTIN_CONNECTIONS_DB_OPTION_NAME, MAILOPTIN_SETTINGS_DB_OPTION_NAME])) return;
+        ?>
+        <div style="margin: 10px">
+            <a href="#" id="mo-metabox-expand" class="button"><?php _e('Expand All', 'mailoptin'); ?></a>
+            <a href="#" id="mo-metabox-collapse" class="button"><?php _e('Collapse All', 'mailoptin'); ?></a>
+        </div>
+        <?php
     }
 
     /**
@@ -137,7 +150,7 @@ abstract class AbstractSettingsPage
         $content .= '<p>';
         $content .= sprintf(
             __('Visit the %s for guidance.', 'mailoptin'),
-            '<strong><a href="https://mailoptin.com/docs/" target="_blank">' . __('Documentation', 'mailoptin') . '</a></strong>'
+            '<strong><a href="https://mailoptin.io/docs/" target="_blank">' . __('Documentation', 'mailoptin') . '</a></strong>'
         );
 
         $content .= '</p>';

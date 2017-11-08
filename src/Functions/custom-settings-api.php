@@ -128,9 +128,9 @@ class Custom_Settings_Page_Api
                     <?php foreach ($this->sidebar_config as $arg) : ?>
                         <div class="postbox">
                             <button type="button" class="handlediv button-link" aria-expanded="true">
-                                <span class="screen-reader-text"><?php _e('Toggle panel'); ?>
-                                    : <?php echo $arg['content']; ?></span><span class="toggle-indicator"
-                                                                                 aria-hidden="true"></span>
+                                <span class="screen-reader-text">
+                                    <?php _e('Toggle panel'); ?>: <?php echo $arg['content']; ?></span>
+                                <span class="toggle-indicator" aria-hidden="true"></span>
                             </button>
                             <h3 class="hndle ui-sortable-handle">
                                 <span><?php echo $arg['section_title']; ?></span>

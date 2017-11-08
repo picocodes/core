@@ -11,7 +11,7 @@
         var clone = $('tr.' + field_row_to_clone_id + '_fields_row').eq(-1).clone()
             // convert cloned copy to string. [0] is used because result could be an array (albeit unlikely here)
             [0].outerHTML
-            // increment by 1, the index number in name attribute.
+        // increment by 1, the index number in name attribute.
             .replace(/(.+\[.+\])\[(.+)\](\[.+\])/g, function (fullMatch, $1, $2, $3) {
                 return $1 + '[' + (Number($2) + 1) + ']' + $3;
             })
@@ -37,7 +37,6 @@
         $(this).parent().parent().remove();
     });
 
-
     $('form#mo-clear-stat').submit(function (e) {
         e.stopImmediatePropagation();
 
@@ -47,8 +46,17 @@
             HTMLFormElement.prototype.submit.call($(this).get(0));
             return false;
         }
-
         return false;
+    });
+
+    $('#mo-metabox-collapse').click(function (e) {
+        e.preventDefault();
+        $('#post-body-content').find('div.postbox').addClass('closed');
+    });
+
+    $('#mo-metabox-expand').click(function (e) {
+        e.preventDefault();
+        $('#post-body-content').find('div.postbox').removeClass('closed');
     });
 
 }(jQuery));
