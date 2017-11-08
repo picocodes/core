@@ -27,10 +27,10 @@ class EmailCampaigns extends AbstractSettingsPage
     {
         $hook = add_submenu_page(
             'mailoptin-settings',
-            __('Email Campaigns - MailOptin', 'mailoptin'),
-            __('Email Campaigns', 'mailoptin'),
+            __('Email Automations - MailOptin', 'mailoptin'),
+            __('Email Automations', 'mailoptin'),
             'manage_options',
-            'mailoptin-email-campaigns',
+            'mailoptin-email-automations',
             array($this, 'settings_admin_page_callback')
         );
 
@@ -60,7 +60,7 @@ class EmailCampaigns extends AbstractSettingsPage
     {
         $option = 'per_page';
         $args = array(
-            'label' => __('Email Campaigns', 'mailoptin'),
+            'label' => __('Email Automations', 'mailoptin'),
             'default' => 8,
             'option' => 'email_campaign_per_page',
         );
@@ -74,7 +74,7 @@ class EmailCampaigns extends AbstractSettingsPage
      */
     public function settings_admin_page_callback()
     {
-        if (!empty($_GET['view']) && $_GET['view'] == 'add-new-email-campaign') {
+        if (!empty($_GET['view']) && $_GET['view'] == 'add-new-email-automation') {
             AddEmailCampaign::get_instance()->settings_admin_page();
         } else {
             // Hook the OptinCampaign_List table to Custom_Settings_Page_Api main content filter.
@@ -83,16 +83,15 @@ class EmailCampaigns extends AbstractSettingsPage
 
             $instance = Custom_Settings_Page_Api::instance();
             $instance->option_name(MO_EMAIL_CAMPAIGNS_WP_OPTION_NAME);
-            $instance->page_header(__('Email Campaigns', 'mailoptin'));
+            $instance->page_header(__('Email Automations', 'mailoptin'));
             $this->register_core_settings($instance, true);
             $instance->build(true);
-
         }
     }
 
     public function add_new_email_campaign()
     {
-        $url = add_query_arg('view', 'add-new-email-campaign', MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE);
+        $url = add_query_arg('view', 'add-new-email-automation', MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE);
         echo "<a class=\"add-new-h2\" href=\"$url\">" . __('Add New', 'mailoptin') . '</a>';
     }
 

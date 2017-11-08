@@ -25,8 +25,8 @@ class CampaignLog extends AbstractSettingsPage
     {
         $hook = add_submenu_page(
             'mailoptin-settings',
-            __('Campaign Log - MailOptin', 'mailoptin'),
-            __('Campaign Log', 'mailoptin'),
+            __('Email Campaign Log - MailOptin', 'mailoptin'),
+            __('Email Log', 'mailoptin'),
             'manage_options',
             'mailoptin-campaign-log',
             array($this, 'settings_admin_page_callback')
@@ -71,7 +71,7 @@ class CampaignLog extends AbstractSettingsPage
     {
         $option = 'per_page';
         $args = array(
-            'label' => __('Campaign Log', 'mailoptin'),
+            'label' => __('Email Log', 'mailoptin'),
             'default' => 10,
             'option' => 'campaign_log_per_page',
         );
@@ -87,7 +87,7 @@ class CampaignLog extends AbstractSettingsPage
     {
         $instance = Custom_Settings_Page_Api::instance();
         $instance->option_name('mailoptin_campaign_log');
-        $instance->page_header(__('Campaign Log', 'mailoptin'));
+        $instance->page_header(__('Email Log', 'mailoptin'));
         $this->register_core_settings($instance, true);
         $instance->build(true);
     }

@@ -72,10 +72,10 @@ class CustomizerControls
                 $this->wp_customize,
                 $this->option_prefix . '[activate_email_campaign]',
                 apply_filters('mailoptin_customizer_settings_campaign_activate_args', array(
-                        'label' => __('Activate Email Campaign', 'mailoptin'),
+                        'label' => __('Activate Automation', 'mailoptin'),
                         'section' => $this->customizerClassInstance->campaign_settings_section_id,
                         'settings' => $this->option_prefix . '[activate_email_campaign]',
-                        'description' => __('This email campaign will not be sent unless this setting is checked.', 'mailoptin'),
+                        'description' => __('Email automation will not be sent unless this setting is activated.', 'mailoptin'),
                         'type' => 'light',
                         'priority' => 10,
                     )
@@ -88,7 +88,7 @@ class CustomizerControls
                         'label' => __('Email Campaign Subject', 'mailoptin'),
                         'section' => $this->customizerClassInstance->campaign_settings_section_id,
                         'settings' => $this->option_prefix . '[email_campaign_subject]',
-                        'description' => __('Enter a subject or title for the email campaign newsletter.',
+                        'description' => __('Enter a subject or title for this automation email campaigns.',
                             'mailoptin'),
                         'sub_description' => apply_filters('mailoptin_customizer_settings_email_campaign_subject_description',
                             __('Subject of email campaign.', 'mailoptin'),

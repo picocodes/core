@@ -48,7 +48,7 @@ define('MAILOPTIN_OPTIN_ERROR_LOG', WP_CONTENT_DIR . "/uploads/mailoptin-optin-l
 
 define('MAILOPTIN_SETTINGS_SETTINGS_PAGE', admin_url('admin.php?page=mailoptin-settings'));
 define('MAILOPTIN_CONNECTIONS_SETTINGS_PAGE', admin_url('admin.php?page=mailoptin-connections'));
-define('MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE', admin_url('admin.php?page=mailoptin-email-campaigns'));
+define('MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE', admin_url('admin.php?page=mailoptin-email-automations'));
 define('MAILOPTIN_CAMPAIGN_LOG_SETTINGS_PAGE', admin_url('admin.php?page=mailoptin-campaign-log'));
 define('MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE', admin_url('admin.php?page=mailoptin-optin-campaigns'));
 define('MAILOPTIN_LEAD_BANK_SETTINGS_PAGE', admin_url('admin.php?page=mailoptin-lead-bank'));

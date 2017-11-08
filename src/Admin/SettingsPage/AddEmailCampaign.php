@@ -45,14 +45,14 @@ class AddEmailCampaign extends AbstractSettingsPage
      */
     public function add_email_campaign_settings_header()
     {
-        if (!empty($_GET['page']) && $_GET['page'] == 'mailoptin-email-campaigns') {
+        if (!empty($_GET['page']) && $_GET['page'] == 'mailoptin-email-automations') {
             ?>
             <div class="mailoptin-optin-new-list mailoptin-optin-clear">
-                <strong><?php _e('Campaign Title', 'mailoptin'); ?></strong>
-                <input type="text" name="mailoptin-optin-campaign" id="mailoptin-add-campaign-title" placeholder="<?php _e('Enter a title for this campaign...', 'mailoptin'); ?>">
+                <strong><?php _e('Automation Title', 'mailoptin'); ?></strong>
+                <input type="text" name="mailoptin-optin-campaign" id="mailoptin-add-campaign-title" placeholder="<?php _e('Enter a name for this automation...', 'mailoptin'); ?>">
             </div>
             <div class="mailoptin-optin-new-list mailoptin-new-toolbar mailoptin-optin-clear">
-                <strong><?php _e('Select Campaign Type', 'mailoptin'); ?></strong>
+                <strong><?php _e('Select Email Automation', 'mailoptin'); ?></strong>
                 <i class="fa fa-spinner fa-pulse fa-spin"></i>
                 <?php $this->_build_campaign_types_select_dropdown(); ?>
             </div>
@@ -69,7 +69,7 @@ class AddEmailCampaign extends AbstractSettingsPage
         add_filter('wp_cspa_main_content_area', [$this, 'campaign_available_email_templates']);
 
         $instance = Custom_Settings_Page_Api::instance();
-        $instance->page_header(__('Add New Email Campaign', 'mailoptin'));
+        $instance->page_header(__('Add New Email Automation', 'mailoptin'));
         $this->register_core_settings($instance, true);
         $instance->build(true);
     }
@@ -85,7 +85,6 @@ class AddEmailCampaign extends AbstractSettingsPage
             echo sprintf('<option value="%s">%s</option>', $key, $value);
         }
         echo '</select>';
-
     }
 
     /**
@@ -133,7 +132,6 @@ class AddEmailCampaign extends AbstractSettingsPage
         }
         echo '</div>';
     }
-
 
     /**
      * @return AddEmailCampaign
