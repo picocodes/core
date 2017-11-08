@@ -107,9 +107,9 @@ class Base
 
         Admin\SettingsPage\Settings::get_instance();
         Admin\SettingsPage\Connections::get_instance();
-        Admin\SettingsPage\OptinCampaigns::get_instance();
         Admin\SettingsPage\EmailCampaigns::get_instance();
         Admin\SettingsPage\CampaignLog::get_instance();
+        Admin\SettingsPage\OptinCampaigns::get_instance();
         AdminNotices::get_instance();
         ConversionExport::get_instance();
         ProUpgrade::get_instance();
