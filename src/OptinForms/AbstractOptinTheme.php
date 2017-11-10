@@ -4,6 +4,7 @@ namespace MailOptin\Core\OptinForms;
 
 
 use MailOptin\Core\PluginSettings\Settings;
+use MailOptin\Core\Repositories\OptinCampaignsRepository;
 
 abstract class AbstractOptinTheme extends AbstractOptinForm
 {
@@ -272,7 +273,10 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
     public function processing_success_structure()
     {
         $style = 'display:none';
-        if (!is_customize_preview() && isset($_COOKIE['mo_success_' . $this->optin_campaign_uuid]) && $_COOKIE['mo_success_' . $this->optin_campaign_uuid] === 'true') {
+
+        // what this does is hide cause the spinner and success message div not to be hidden by overriding the display:none style rule above.
+        // the background-image: none; basically remove the spinner gif.
+        if (!is_customize_preview() && OptinCampaignsRepository::user_has_successful_optin($this->optin_campaign_uuid)) {
             $style = 'background-image: none;'; //note: "bg none css rule" is basically only useful in processing/spinner div.
         }
 

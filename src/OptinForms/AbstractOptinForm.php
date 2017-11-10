@@ -413,7 +413,7 @@ jQuery(function(){
 
         // bypass cache if this optin form has successfully received opt-in from visitor so success message overlay will be
         // shown instead of opt-in form.
-        if (isset($_COOKIE['mo_success_' . $this->optin_campaign_uuid]) && $_COOKIE['mo_success_' . $this->optin_campaign_uuid] === 'true') {
+        if (OptinCampaignsRepository::user_has_successful_optin($this->optin_campaign_uuid)) {
             return $this->_get_optin_form_structure();
         }
 

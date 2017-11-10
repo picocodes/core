@@ -669,7 +669,10 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                                     self.addSuccessCloseIcon.call(optin_container);
                                 }
 
-                                self.displaySuccessContent.call(optin_container, optin_js_config.success_message);
+                                if (self.is_defined_not_empty(optin_js_config.success_message)) {
+                                    self.displaySuccessContent.call(optin_container, optin_js_config.success_message);
+                                }
+
                                 self.removeSpinner.call(optin_container);
                             }
                             else {

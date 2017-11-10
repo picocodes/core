@@ -396,6 +396,18 @@ class OptinCampaignsRepository extends AbstractRepository
         return true;
     }
 
+    /**
+     * True if optin form has successfully received opt-in from current visitor/user.
+     *
+     * @param int $optin_campaign_uuid
+     * @return bool
+     */
+    public static function user_has_successful_optin($optin_campaign_uuid)
+    {
+        $result = isset($_COOKIE['mo_success_' . $optin_campaign_uuid]) && $_COOKIE['mo_success_' . $optin_campaign_uuid] === 'true';
+
+        return apply_filters('mo_user_has_successful_optin', $result, $optin_campaign_uuid);
+    }
 
     /**
      * Activate optin campaign.
