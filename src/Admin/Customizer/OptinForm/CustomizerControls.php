@@ -229,14 +229,8 @@ class CustomizerControls
         }
     }
 
-    public static function form_image_render_callback()
-    {
-        echo 'hello world';
-    }
-
     public function description_controls()
     {
-
         $description_controls_args = apply_filters(
             "mo_optin_form_customizer_description_controls",
             array(

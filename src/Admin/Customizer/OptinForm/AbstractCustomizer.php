@@ -87,6 +87,7 @@ class AbstractCustomizer
         $defaults['modal_effects'] = apply_filters('mo_optin_form_modal_effects_default', '', $this->customizer_defaults);
         $defaults['success_action'] = apply_filters('mo_optin_form_success_action_default', 'success_message', $this->customizer_defaults);
         $defaults['pass_lead_data_redirect_url'] = apply_filters('mo_optin_form_pass_lead_data_redirect_url_default', false, $this->customizer_defaults);
+        $defaults['state_after_conversion'] = apply_filters('mo_optin_form_state_after_conversion_default', 'success_message_shown', $this->customizer_defaults);
 
         return $defaults;
     }

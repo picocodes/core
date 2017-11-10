@@ -400,27 +400,42 @@ jQuery(function(){
     }
 
     /**
+     * Value of state after conversion customizer setting.
+     *
+     * @return string
+     */
+    public function state_after_conversion()
+    {
+        return $this->get_customizer_value('state_after_conversion');
+    }
+
+    /**
      * Cache proxy to retrieve the optin form structure.
      *
      * @return string
      */
     public function get_optin_form_structure()
     {
-        // retrieve uncached result if we are in customizer screen.
-        if (apply_filters('mailoptin_disable_optin_form_cache', is_customize_preview())) {
+        if (is_customize_preview()) return $this->_get_optin_form_structure();
+
+        // Bypass cache if this optin form has successfully received opt-in from visitor and 'state after conversion' is not set to still display optin form.
+        // so success message overlay will be shown instead of opt-in form.
+        if (OptinCampaignsRepository::user_has_successful_optin($this->optin_campaign_uuid)) {
+
+            // if state after conversion is set to 'optin form hidden', return nothing.
+            if ($this->state_after_conversion() == 'optin_form_hidden') return '';
+
             return $this->_get_optin_form_structure();
         }
 
-        // bypass cache if this optin form has successfully received opt-in from visitor so success message overlay will be
-        // shown instead of opt-in form.
-        if (OptinCampaignsRepository::user_has_successful_optin($this->optin_campaign_uuid)) {
-            return $this->_get_optin_form_structure();
-        }
+        // if cache is disable, fesh fresh optin structure.
+        if (apply_filters('mailoptin_disable_optin_form_cache', false)) return $this->_get_optin_form_structure();
 
         $cache_key = "mo_get_optin_form_structure_{$this->optin_campaign_id}";
         $optin_structure = get_transient($cache_key);
 
         if (empty($optin_structure) || false === $optin_structure) {
+
             $optin_structure = $this->_get_optin_form_structure();
             set_transient(
                 $cache_key,

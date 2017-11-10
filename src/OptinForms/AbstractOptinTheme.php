@@ -276,7 +276,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
 
         // what this does is hide cause the spinner and success message div not to be hidden by overriding the display:none style rule above.
         // the background-image: none; basically remove the spinner gif.
-        if (!is_customize_preview() && OptinCampaignsRepository::user_has_successful_optin($this->optin_campaign_uuid)) {
+        if (!is_customize_preview() && OptinCampaignsRepository::user_has_successful_optin($this->optin_campaign_uuid) && $this->state_after_conversion() != 'optin_form_shown') {
             $style = 'background-image: none;'; //note: "bg none css rule" is basically only useful in processing/spinner div.
         }
 
