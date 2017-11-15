@@ -456,6 +456,7 @@ div#$optin_css_id.columbine-container div.columbine-two-col2 {
      }
 
 div#$optin_css_id.columbine-container input.columbine-input {
+         background-color: #ffffff;
          width: 100%;
          display: block;
          -webkit-box-sizing: border-box;

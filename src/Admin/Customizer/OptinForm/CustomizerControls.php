@@ -121,6 +121,18 @@ class CustomizerControls
             );
         }
 
+        $page_control_args ['form_background_color'] = new \WP_Customize_Color_Control(
+            $this->wp_customize,
+            $this->option_prefix . '[form_background_color]',
+            apply_filters('mailoptin_optin_customizer_form_background_color_args', array(
+                    'label' => __('Background Color', 'mailoptin'),
+                    'section' => $this->customizerClassInstance->design_section_id,
+                    'settings' => $this->option_prefix . '[form_background_color]',
+                    'priority' => 20,
+                )
+            )
+        );
+
         $page_control_args['form_border_color'] = new \WP_Customize_Color_Control(
             $this->wp_customize,
             $this->option_prefix . '[form_border_color]',

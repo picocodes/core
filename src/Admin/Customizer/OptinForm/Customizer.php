@@ -455,6 +455,7 @@ class Customizer
 
         $wp_customize->register_section_type('MailOptin\Core\Admin\Customizer\UpsellCustomizerSection');
 
+        $this->register_control_type($wp_customize);
         $this->add_sections($wp_customize);
         $this->add_panels($wp_customize);
         $this->add_settings($wp_customize, $option_prefix);
@@ -497,14 +498,30 @@ class Customizer
 
         $wp_customize->add_panel($this->display_rules_panel_id, array(
                 'title' => __('Display Rules', 'mailoptin'),
-                'description' => __('Configure how this optin campaign will be shown to visitors or users.',
-                    'mailoptin')
+                'description' => __('Configure how this optin campaign will be shown to visitors or users.', 'mailoptin')
             )
         );
 
         do_action('mo_optin_after_display_rules_panel', $wp_customize, $this);
     }
 
+    /**
+     * Registered customize control as eligible to be rendered via JS and created dynamically.
+     *
+     * @param \WP_Customize_Manager $wp_customize
+     */
+    public function register_control_type($wp_customize)
+    {
+        $controls = apply_filters('mo_optin_registered_control_types', [
+            'MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Button_Set_Control'
+        ]);
+
+        foreach ($controls as $control) {
+            $wp_customize->register_control_type($control);
+        }
+
+        do_action('mo_optin_register_control_type', $wp_customize, $this);
+    }
 
     /**
      * Add sections to customizer.

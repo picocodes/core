@@ -364,6 +364,7 @@ div#$optin_css_id.lupinSidebar-container input.lupinSidebar-input {
          line-height: 16px;
          text-align: center;
          color: #555;
+         background: #ffffff;
          outline: none;
      }
 

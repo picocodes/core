@@ -32,18 +32,22 @@
                             // clear out the select options before appending.
                             $("select[data-customize-setting-link*='connection_email_list'] option").remove();
 
+                            var connection_email_list = $("select[data-customize-setting-link*='connection_email_list']");
+
                             // append default "Select..." option to select dropdown.
-                            $("select[data-customize-setting-link*='connection_email_list']").append($('<option>', {
+                            connection_email_list.append($('<option>', {
                                 value: '',
                                 text: 'Select...'
                             }));
 
                             $.each(data, function (key, value) {
-                                $("select[data-customize-setting-link*='connection_email_list']").append($('<option>', {
+                                connection_email_list.append($('<option>', {
                                     value: key,
                                     text: value
                                 }));
                             });
+
+                            connection_email_list.trigger('change');
 
                             // show email list field.
                             $("div#customize-theme-controls li[id*='connection_email_list']").show();

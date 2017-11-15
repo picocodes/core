@@ -49,7 +49,6 @@ abstract class AbstractConnect
                 $(function () {
                     logic();
                     $(document.body).on('mo_email_list_data_found', function (e, connection_service) {
-                        console.log(connection_service);
                         // restore default label before change
                         $('li[id*="connection_email_list"] .customize-control-title').text('<?php echo $default_label; ?>');
                         logic(connection_service);
