@@ -276,13 +276,11 @@ jQuery(function(){
             $global_css .= "div#$optin_campaign_uuid.mo-slidein-bottom_left {left: 10px;}";
         }
 
-//        var_dump($this->get_customizer_value('hide_name_field'), $optin_campaign_uuid); exit;
-
         if ($this->get_customizer_value('hide_name_field')) {
             $global_css .= "div#$optin_css_id #mo-optin-form-name-field {display: none !important;}";
         }
 
-        return $global_css;
+        return apply_filters('mo_optin_form_global_css', $global_css, $optin_campaign_uuid, $optin_css_id);
     }
 
     /**
@@ -664,7 +662,7 @@ jQuery(function(){
         }
 
         $data['unexpected_error'] = apply_filters('mo_optin_campaign_unexpected_error', __('Unexpected error. Please try again.', 'mailoptin'));
-        $data['email_missing_error'] = apply_filters('mo_optin_campaign_email_missing_error', 'Please enter a valid email.', 'mailoptin');
+        $data['email_missing_error'] = apply_filters('mo_optin_campaign_email_missing_error', __('Please enter a valid email.', 'mailoptin'));
         $data['name_missing_error'] = apply_filters('mo_optin_campaign_name_missing_error', __('Please enter a valid name.', 'mailoptin'));
         $data['honeypot_error'] = apply_filters('mo_optin_campaign_honeypot_error', __('Your submission has been flagged as potential spam.', 'mailoptin'));
 

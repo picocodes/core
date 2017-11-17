@@ -22,6 +22,8 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         add_shortcode('mo-optin-form-submit-button', [$this, 'shortcode_optin_form_submit_button']);
         add_shortcode('mo-optin-form-note', [$this, 'shortcode_optin_form_note']);
 
+        do_action('mo_optin_theme_shortcodes_add', $optin_campaign_id, $wp_customize);
+
         parent::__construct($optin_campaign_id, $wp_customize);
     }
 

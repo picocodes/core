@@ -212,7 +212,7 @@ class CustomizerControls
                     $this->wp_customize,
                     $this->option_prefix . '[headline_font]',
                     apply_filters('mo_optin_form_customizer_headline_font_args', array(
-                            'label' => __('Font Family'),
+                            'label' => __('Font Family', 'mailoptin'),
                             'section' => $this->customizerClassInstance->headline_section_id,
                             'settings' => $this->option_prefix . '[headline_font]',
                             'count' => 200,
