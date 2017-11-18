@@ -147,6 +147,11 @@ class CustomizerControls
 
         if (!defined('MAILOPTIN_DISPLAY_RULES_FLAG')) {
             $content = sprintf(
+                '<div class="mo-pro"><a href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=custom_css_notice" target="_blank">%s</a></div>',
+                __('Premium Version Available', 'mailoptin')
+            );
+
+            $content .= sprintf(
                 __('Upgrade to %sMailOptin Premium%s for more customization options including feature to add your own custom CSS.', 'mailoptin'),
                 '<a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=custom_css_notice">',
                 '</a>'
@@ -813,6 +818,10 @@ class CustomizerControls
 
         if (!defined('MAILOPTIN_DISPLAY_RULES_FLAG')) {
             $content = sprintf(
+                '<div class="mo-pro"><a href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=quick_setup_panel" target="_blank">%s</a></div>',
+                __('Premium Version Available', 'mailoptin')
+            );
+            $content .= sprintf(
                 __('Upgrade to %sMailOptin Premium%s to pass lead data to redirect URL and trigger success script after conversion.', 'mailoptin'),
                 '<a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=quick_setup_panel">',
                 '</a>'
@@ -884,6 +893,11 @@ class CustomizerControls
             );
         } else {
             $content = sprintf(
+                '<div class="mo-pro"><a href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=quick_setup_panel" target="_blank">%s</a></div>',
+                __('Premium Version Available', 'mailoptin')
+            );
+
+            $content .= sprintf(
                 __('Upgrade to %sMailOptin Premium%s to get optin triggers such as %3$sExit Intent%4$s, %3$sPage views%4$s, %3$sTime on Site%4$s and %3$sScroll trigger%4$s as well as powerful display rules proven to boost conversions.', 'mailoptin'),
                 '<a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=quick_setup_panel">',
                 '</a>',
