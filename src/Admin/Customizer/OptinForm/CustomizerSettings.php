@@ -362,7 +362,6 @@ class CustomizerSettings extends AbstractCustomizer
         do_action('mo_optin_after_configuration_customizer_settings', $this->wp_customize, $configuration_settings_args);
     }
 
-
     /**
      * Customize setting for all optin form integration controls.
      */

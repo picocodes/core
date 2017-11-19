@@ -76,7 +76,7 @@ abstract class AbstractOptinForm extends AbstractCustomizer implements OptinForm
      */
     public function _construct_font_family($val, $fallback = 'Helvetica, Arial, sans-serif;')
     {
-        $font_family = $this->_replace_plus_with_space($val);
+        $font_family = self::_replace_plus_with_space($val);
 
         return strpos($font_family, ' ') ? "'$font_family', $fallback" : $font_family . ", $fallback";
     }
@@ -88,7 +88,7 @@ abstract class AbstractOptinForm extends AbstractCustomizer implements OptinForm
      *
      * @return mixed
      */
-    public function _replace_plus_with_space($val)
+    public static function _replace_plus_with_space($val)
     {
         return str_replace('+', ' ', $val);
     }
@@ -112,7 +112,7 @@ abstract class AbstractOptinForm extends AbstractCustomizer implements OptinForm
      *
      * @return string
      */
-    public function _remove_web_safe_font($font)
+    public static function _remove_web_safe_font($font)
     {
         $web_safe_font = [
             'Helvetica',
@@ -127,7 +127,7 @@ abstract class AbstractOptinForm extends AbstractCustomizer implements OptinForm
             'Segoe UI'
         ];
 
-        $font = $this->_replace_plus_with_space($font);
+        $font = self::_replace_plus_with_space($font);
 
         return in_array($font, $web_safe_font) ? '' : $font;
     }
@@ -487,7 +487,7 @@ jQuery(function(){
         $default_submit_button_font = $this->customizer_defaults['submit_button_font'];
 
         $headline_font = apply_filters('mo_get_optin_form_headline_font',
-            $this->_remove_web_safe_font(
+            self::_remove_web_safe_font(
                 OptinCampaignsRepository::get_customizer_value($this->optin_campaign_id, 'headline_font', $default_headline_font)
             ),
             'headline_font',
@@ -496,7 +496,7 @@ jQuery(function(){
         );
 
         $description_font = apply_filters('mo_get_optin_form_description_font',
-            $this->_remove_web_safe_font(
+            self::_remove_web_safe_font(
                 OptinCampaignsRepository::get_customizer_value($this->optin_campaign_id, 'description_font', $default_description_font)
             ),
             'description_font',
@@ -505,7 +505,7 @@ jQuery(function(){
         );
 
         $note_font = apply_filters('mo_get_optin_form_note_font',
-            $this->_remove_web_safe_font(
+            self::_remove_web_safe_font(
                 OptinCampaignsRepository::get_customizer_value($this->optin_campaign_id, 'note_font', $default_note_font)
             ),
             'note_font',
@@ -514,7 +514,7 @@ jQuery(function(){
         );
 
         $submit_button_font = apply_filters('mo_get_optin_form_submit_button_font',
-            $this->_remove_web_safe_font(
+            self::_remove_web_safe_font(
                 OptinCampaignsRepository::get_customizer_value($this->optin_campaign_id, 'submit_button_font', $default_submit_button_font)
             ),
             'submit_button_font',
@@ -536,6 +536,8 @@ jQuery(function(){
         if (!empty($submit_button_font)) {
             $webfont[] = "'$submit_button_font'";
         }
+
+        $webfont = apply_filters('mo_optin_form_fonts_list', $webfont, $this->optin_campaign_id);
 
         $delimiter = !empty($webfont) ? ',' : null;
 
