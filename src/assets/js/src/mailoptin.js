@@ -535,7 +535,24 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
 
                     // data variable is only populated if validation passes.
                     if (self.validate_optin_form_fields($optin_css_id, optin_js_config)) {
-                        optin_data = {
+
+                        // loop over form fields and create and object with key to the field name and value the field value.
+                        var all_form_fields_and_values = $('form#' + $optin_css_id + '_form').serializeArray().reduce(function (obj, item) {
+                            if (item.name.indexOf('[]') !== -1) {
+                                var item_name = item.name.replace('[]', '');
+                                if (typeof obj[item_name] === 'undefined') {
+                                    obj[item_name] = [];
+                                    obj[item_name].push(item.value);
+                                } else {
+                                    obj[item_name].push(item.value);
+                                }
+                            } else {
+                                obj[item.name] = item.value;
+                            }
+                            return obj;
+                        }, {});
+
+                        optin_data = $.extend({}, all_form_fields_and_values, {
                             optin_uuid: $optin_uuid,
                             email: $('input#' + $optin_css_id + '_email_field').val(),
                             name: $('input#' + $optin_css_id + '_name_field').val(),
@@ -543,7 +560,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                             user_agent: navigator.userAgent,
                             conversion_page: window.location.href,
                             referrer: document.referrer || ""
-                        };
+                        });
 
                         self.addProcessingOverlay.call(optin_container);
 
@@ -732,6 +749,12 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                         self.display_optin_error.call(name_field, $optin_css_id, namefield_error);
                         response = false;
                     }
+                }
+
+                var added_validation = $(document.body).triggerHandler('mo_validate_optin_form_fields', [$optin_css_id, optin_js_config]);
+
+                if (added_validation === false) {
+                    response = false;
                 }
 
                 return response;

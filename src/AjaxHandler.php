@@ -30,8 +30,8 @@ class AjaxHandler
         add_action('wp_ajax_mailoptin_optin_toggle_active', [$this, 'toggle_optin_active_status']);
         add_action('wp_ajax_mailoptin_optin_type_selection', [$this, 'optin_type_selection']);
 
-        add_action('wp_ajax_mailoptin_add_to_email_list', [$this, 'subscribe_to_email_list']);
         add_action('wp_ajax_mailoptin_track_impression', [$this, 'track_optin_impression']);
+        add_action('wp_ajax_mailoptin_add_to_email_list', [$this, 'subscribe_to_email_list']);
         add_action('wp_ajax_nopriv_mailoptin_add_to_email_list', [$this, 'subscribe_to_email_list']);
         add_action('wp_ajax_nopriv_mailoptin_track_impression', [$this, 'track_optin_impression']);
 
