@@ -751,11 +751,12 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                     }
                 }
 
-                var added_validation = $(document.body).triggerHandler('mo_validate_optin_form_fields', [$optin_css_id, optin_js_config]);
+                // we are doing a return here to ensure core validation has passed before hooked validations.
+                if (response === false) return response;
 
-                if (added_validation === false) {
-                    response = false;
-                }
+                var added_validation = $(document.body).triggerHandler('mo_validate_optin_form_fields', [self, $optin_css_id, optin_js_config]);
+
+                if (added_validation === false) response = false;
 
                 return response;
             },
@@ -774,7 +775,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 }
 
                 var mo_optin_error_text = $('div#' + $optin_css_id + ' .mo-optin-error');
-                if (typeof mo_optin_error_text !== 'undefined' && mo_optin_error_text.length > 0) {
+                if (typeof error !== 'undefined' && typeof mo_optin_error_text !== 'undefined' && mo_optin_error_text.length > 0) {
                     mo_optin_error_text.text(error).show();
                 }
             },
@@ -786,7 +787,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
              */
             hide_optin_error: function ($optin_css_id) {
                 var input_fields = $('div#' + $optin_css_id + ' .mo-optin-field');
-                var obj = $('div#' + $optin_css_id + ' .mo-optin-error').hide();
+                $('div#' + $optin_css_id + ' .mo-optin-error').hide();
                 input_fields.css('-webkit-box-shadow', '');
                 input_fields.css('-moz-box-shadow', '');
                 input_fields.css('box-shadow', '');

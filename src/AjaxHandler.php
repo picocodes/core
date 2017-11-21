@@ -246,11 +246,7 @@ class AjaxHandler
             wp_send_json_error(__('Email campaign with similar name exist already.', 'mailoptin'));
         }
 
-        $email_campaign_id = EmailCampaignRepository::add_email_campaign(
-            $title,
-            $type,
-            $template
-        );
+        $email_campaign_id = EmailCampaignRepository::add_email_campaign($title, $type, $template);
 
         if (is_int($email_campaign_id)) {
             wp_send_json_success(
