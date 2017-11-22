@@ -806,7 +806,7 @@ class CustomizerControls
                             'content' => $success_message_config_link,
                             'section' => $this->customizerClassInstance->success_section_id,
                             'settings' => $this->option_prefix . '[success_message_config_link]',
-                            'priority' => 40,
+                            'priority' => 21,
                         )
                     )
                 )
@@ -822,7 +822,7 @@ class CustomizerControls
                 __('Premium Version Available', 'mailoptin')
             );
             $content .= sprintf(
-                __('Upgrade to %sMailOptin Premium%s to pass lead data to redirect URL and trigger success script after conversion.', 'mailoptin'),
+                __('Upgrade to %sMailOptin Premium%s to pass lead data to redirect URL, trigger success script after conversion and specify the state of optin form to subscribed users.', 'mailoptin'),
                 '<a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=quick_setup_panel">',
                 '</a>'
             );
