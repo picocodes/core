@@ -88,6 +88,10 @@ class Lupin extends AbstractOptinTheme
             return 'Open+Sans';
         });
 
+        add_filter('mailoptin_customizer_optin_campaign_MailChimpConnect_user_input_field_color', function () {
+            return '#ffffff';
+        });
+
         parent::__construct($optin_campaign_id);
     }
 
@@ -296,6 +300,7 @@ class Lupin extends AbstractOptinTheme
     [mo-optin-form-email-field class="lupinSidebar-input"]
     [mo-optin-form-submit-button class="lupinSidebar-submit"]
     </div>
+    [mo-mailchimp-interests]
     [mo-optin-form-note class="lupinSidebar-note"]
 [/mo-optin-form-wrapper]
 HTML;

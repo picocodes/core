@@ -104,6 +104,10 @@ class Columbine extends AbstractOptinTheme
             return $font;
         }, 10, 2);
 
+        add_filter('mailoptin_customizer_optin_campaign_MailChimpConnect_user_input_field_color', function () {
+            return '#555555';
+        });
+
         parent::__construct($optin_campaign_id);
     }
 
@@ -373,6 +377,7 @@ class Columbine extends AbstractOptinTheme
                 <div id="columbine-email-field" class="columbine-three-col2">[mo-optin-form-email-field class="columbine-input"]</div>
                 <div id="columbine-submit-button" class="columbine-three-col3">[mo-optin-form-submit-button class="columbine-submit"]</div>
     </div>
+    [mo-mailchimp-interests]
     [mo-optin-form-note class="columbine-note"]
 [/mo-optin-form-wrapper]
 HTML;
