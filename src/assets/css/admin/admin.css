@@ -408,15 +408,15 @@ tr.mo-test-mode {
     width: 2px;
 }
 
-.mailoptin-optin-campaign-listing table.wp-list-table.widefat {
+.mailoptin-data-listing table.wp-list-table.widefat {
     text-align:center;
 }
 
-.mailoptin-optin-campaign-listing th.manage-column {
+.mailoptin-data-listing th.manage-column {
     text-align: center;
 }
 
-.mailoptin-optin-campaign-listing td.name.column-name {
+.mailoptin-data-listing td.name.column-name {
     text-align: left;
 }
 

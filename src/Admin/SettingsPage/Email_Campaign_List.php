@@ -244,19 +244,22 @@ class Email_Campaign_List extends \WP_List_Table
         $customize_url = self::_campaign_customize_url($email_campaign_id);
 
         $action = sprintf(
-            '<a class="button action mailoptin-btn-blue" href="%s">%s</a> &nbsp;',
+            '<a class="mo-tooltipster button action mailoptin-btn-blue" href="%s" title="%s">%s</a> &nbsp;',
             esc_url_raw($customize_url),
-            __('Customize', 'mailoptin')
+            __('Customize', 'mailoptin'),
+            '<i class="fa fa-pencil" aria-hidden="true"></i>'
         );
         $action .= sprintf(
-            '<a class="button action" href="%s">%s</a> &nbsp;',
+            '<a class="mo-tooltipster button action" href="%s" title="%s">%s</a> &nbsp;',
             $clone_url,
-            __('Clone', 'mailoptin')
+            __('Clone', 'mailoptin'),
+            '<i class="fa fa-clone" aria-hidden="true"></i>'
         );
         $action .= sprintf(
-            '<a class="button action mailoptin-btn-red" href="%s">%s</a> &nbsp;',
+            '<a class="mo-tooltipster button action mailoptin-btn-red" href="%s" title="%s">%s</a> &nbsp;',
             $delete_url,
-            __('Delete', 'mailoptin')
+            __('Delete', 'mailoptin'),
+            '<i class="fa fa-trash" aria-hidden="true"></i>'
         );
 
         return $action;
@@ -316,7 +319,7 @@ class Email_Campaign_List extends \WP_List_Table
             'cb' => '<input type="checkbox">',
             'name' => __('Name', 'mailoptin'),
             'campaign_type' => __('Automation Type', 'mailoptin'),
-            'action' => __('Action', 'mailoptin'),
+            'action' => __('Actions', 'mailoptin'),
             'activated' => __('Activated', 'mailoptin'),
         );
 
