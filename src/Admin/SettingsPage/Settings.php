@@ -85,7 +85,11 @@ class Settings extends AbstractSettingsPage
                             '<a href="https://mailoptin.io/affiliates/" target="_blank">',
                             '</a>'
                         ),
-                    ),
+                    )
+                )
+            ),
+            'optin_campaign_settings' => apply_filters('mailoptin_settings_optin_campaign_settings_page', array(
+                    'section_title' => __('Optin Campaign Settings', 'mailoptin'),
                     'clear_optin_cache' => array(
                         'type' => 'custom_field_block',
                         'label' => __('Clear Optin Cache', 'mailoptin'),
@@ -98,10 +102,6 @@ class Settings extends AbstractSettingsPage
                             ) .
                             '</p>',
                     ),
-                )
-            ),
-            'optin_campaign_settings' => apply_filters('mailoptin_settings_optin_campaign_settings_page', array(
-                    'section_title' => __('Optin Campaign Settings', 'mailoptin'),
                     'global_cookie' => array(
                         'type' => 'number',
                         'value' => 0,

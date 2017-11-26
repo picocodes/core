@@ -51,6 +51,7 @@ class AbstractCustomizer
         $defaults['note'] = apply_filters('mo_optin_form_note_default', __('We promise not to spam you. You can unsubscribe at any time.', 'mailoptin'));
         $defaults['note_font_color'] = apply_filters('mo_optin_form_note_font_color_default', '');
         $defaults['note_font'] = apply_filters('mo_optin_form_note_font_default', '');
+        $defaults['note_close_optin_onclick'] = apply_filters('mo_optin_form_note_close_optin_onclick_default', false);
 
         $defaults['hide_name_field'] = apply_filters('mo_optin_form_hide_name_field_default', '');
         $defaults['name_field_placeholder'] = apply_filters('mo_optin_form_name_field_placeholder_default', __('Enter your name here...', 'mailoptin'));

@@ -87,6 +87,21 @@
         });
     });
 
+    wp.customize(mailoptin_optin_option_prefix + '[' + mailoptin_optin_campaign_id + '][note_close_optin_onclick]', function (value) {
+        value.bind(function (to) {
+            var cache = $('.mo-optin-form-note');
+            if(to === true) {
+                cache.addClass('mo-close-optin');
+                cache.css('text-decoration', 'underline');
+                cache.css('cursor', 'pointer');
+            } else {
+                cache.removeClass('mo-close-optin');
+                cache.css('text-decoration', '');
+                cache.css('cursor', '');
+            }
+        });
+    });
+
     // --------------------- Configuration control ----------------------------- //
 
     wp.customize(mailoptin_optin_option_prefix + '[' + mailoptin_optin_campaign_id + '][slidein_position]', function (value) {

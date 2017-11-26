@@ -166,8 +166,6 @@
                 // do nothing
             });
         });
-
-
     });
 
 })(wp.customize, jQuery);

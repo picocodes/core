@@ -320,7 +320,7 @@ class CustomizerControls
                             'settings' => $this->option_prefix . '[note]',
                             'editor_id' => 'note',
                             'editor_height' => 50,
-                            'priority' => 1
+                            'priority' => 10
                         )
                     )
                 ),
@@ -331,7 +331,7 @@ class CustomizerControls
                             'label' => __('Color', 'mailoptin'),
                             'section' => $this->customizerClassInstance->note_section_id,
                             'settings' => $this->option_prefix . '[note_font_color]',
-                            'priority' => 3
+                            'priority' => 30
                         )
                     )
                 ),
@@ -343,7 +343,22 @@ class CustomizerControls
                             'section' => $this->customizerClassInstance->note_section_id,
                             'settings' => $this->option_prefix . '[note_font]',
                             'count' => 200,
-                            'priority' => 2
+                            'priority' => 20
+                        )
+                    )
+                ),
+                'note_close_optin_onclick' => new WP_Customize_Toggle_Control(
+                    $this->wp_customize,
+                    $this->option_prefix . '[note_close_optin_onclick]',
+                    apply_filters('mo_optin_form_customizer_note_close_optin_onclick_args', array(
+                            'label' => __('Close Optin On Click', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->note_section_id,
+                            'settings' => $this->option_prefix . '[note_close_optin_onclick]',
+                            'description' => sprintf(
+                                __('Activate if you want a click on "note" to close the optin form. Particularly useful if close icon is hidden. %sLearn More%s', 'mailoptin'),
+                                '<a href="#" target="_blank">', '</a>'
+                            ),
+                            'priority' => 40,
                         )
                     )
                 ),

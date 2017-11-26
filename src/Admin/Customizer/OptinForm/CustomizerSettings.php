@@ -185,6 +185,11 @@ class CustomizerSettings extends AbstractCustomizer
                     'default' => $this->customizer_defaults['note_font'],
                     'type' => 'option',
                     'transport' => 'refresh',
+                ),
+                'note_close_optin_onclick' => array(
+                    'default' => $this->customizer_defaults['note_close_optin_onclick'],
+                    'type' => 'option',
+                    'transport' => 'postMessage',
                 )
             ),
             $this

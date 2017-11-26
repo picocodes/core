@@ -106,15 +106,16 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
      */
     public function note_styles()
     {
-        $style_arg = apply_filters('mo_optin_form_note_styles',
-            [
-                'color:' . $this->get_customizer_value('note_font_color'),
-                'font-family:' . $this->_construct_font_family($this->get_customizer_value('note_font'))
-            ],
-            $this->optin_campaign_id,
-            $this->optin_campaign_type,
-            $this->optin_campaign_uuid
-        );
+        $style = [
+            'color:' . $this->get_customizer_value('note_font_color'),
+            'font-family:' . $this->_construct_font_family($this->get_customizer_value('note_font'))
+        ];
+
+        if ($this->get_customizer_value('note_close_optin_onclick')) {
+            $style[] = 'text-decoration: underline; cursor:pointer';
+        }
+
+        $style_arg = apply_filters('mo_optin_form_note_styles', $style, $this->optin_campaign_id, $this->optin_campaign_type, $this->optin_campaign_uuid);
 
         if ($this->get_customizer_value('hide_note')) {
             $style_arg[] = 'display: none';
@@ -535,6 +536,11 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         );
 
         $class = esc_attr($atts['class']);
+
+        if ($this->get_customizer_value('note_close_optin_onclick')) {
+            $class .= ' mo-close-optin';
+        }
+
         $class = "mo-optin-form-note $class";
 
         $style = esc_attr($atts['style']);
