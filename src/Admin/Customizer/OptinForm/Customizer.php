@@ -141,7 +141,7 @@ class Customizer
         );
 
         $switch .= '<label id="mo-optin-active-switch" for="mo-optin-activate-switch" class="tgl-btn"></label>';
-        $switch .= '<span data-wenk="' . $tooltip . '" data-wenk-pos="bottom" class="dashicons dashicons-editor-help" style="margin: 9px 5px;font-size: 18px;cursor: pointer;"></span>';
+        $switch .= '<span title="' . $tooltip . '" class="mo-tooltipster dashicons dashicons-editor-help" style="margin: 9px 5px;font-size: 18px;cursor: pointer;"></span>';
         ?>
         <script>
             jQuery(function ($) {
@@ -168,7 +168,6 @@ class Customizer
     public function customizer_css()
     {
         wp_enqueue_style('mailoptin-customizer', MAILOPTIN_ASSETS_URL . 'css/admin/customizer-stylesheet.css');
-        wp_enqueue_style('mailoptin-customizer-wenk', MAILOPTIN_ASSETS_URL . 'css/admin/wenk.min.css');
     }
 
     /**
