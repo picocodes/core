@@ -23,11 +23,14 @@ class AjaxHandler
 {
     public function __construct()
     {
+        add_action('admin_init', [$this, 'act_on_option_activation_actions']);
+
         add_action('wp_ajax_mailoptin_send_test_email', array($this, 'send_test_email'));
         add_action('wp_ajax_mailoptin_create_optin_campaign', [$this, 'create_optin_campaign']);
         add_action('wp_ajax_mailoptin_create_email_campaign', [$this, 'create_email_campaign']);
         add_action('wp_ajax_mailoptin_customizer_fetch_email_list', [$this, 'customizer_fetch_email_list']);
         add_action('wp_ajax_mailoptin_optin_toggle_active', [$this, 'toggle_optin_active_status']);
+        add_action('wp_ajax_mailoptin_toggle_optin_activated', [$this, 'optin_listing_activated_status_toggle']);
         add_action('wp_ajax_mailoptin_optin_type_selection', [$this, 'optin_type_selection']);
 
         add_action('wp_ajax_mailoptin_track_impression', [$this, 'track_optin_impression']);
@@ -312,6 +315,43 @@ class AjaxHandler
         }
 
         wp_die();
+    }
+
+    public function optin_listing_activated_status_toggle()
+    {
+        current_user_can('administrator') || exit;
+
+        $optin_campaign_id = absint($_POST['id']);
+        $status = sanitize_text_field($_POST['status']);
+
+        update_option("mo_optin_campaign_activation_task_$optin_campaign_id", $status);
+
+        wp_die();
+    }
+
+    public function act_on_option_activation_actions()
+    {
+        if (!defined('DOING_AJAX')) return;
+
+        global $wpdb;
+        $table = $wpdb->options;
+
+        $tasks = $wpdb->get_results("SELECT option_name, option_value FROM $table WHERE option_name LIKE 'mo_optin_campaign_activation_task%'");
+
+        if (!empty($tasks)) {
+            foreach ($tasks as $task) {
+                $optin_campaign_id = filter_var($task->option_name, FILTER_SANITIZE_NUMBER_INT);
+                $status = $task->option_value;
+
+                if ($status == 'true') {
+                    OptinCampaignsRepository::activate_campaign($optin_campaign_id);
+                } else {
+                    OptinCampaignsRepository::deactivate_campaign($optin_campaign_id);
+                }
+
+                delete_option($task->option_name);
+            }
+        }
     }
 
     /**

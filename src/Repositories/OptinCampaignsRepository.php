@@ -419,6 +419,7 @@ class OptinCampaignsRepository extends AbstractRepository
      */
     public static function activate_campaign($optin_campaign_id)
     {
+        $optin_campaign_id = absint($optin_campaign_id);
         // update the "activate_optin" setting to true
         $all_settings = self::get_settings();
         $all_settings[$optin_campaign_id]['activate_optin'] = true;
@@ -436,6 +437,7 @@ class OptinCampaignsRepository extends AbstractRepository
      */
     public static function deactivate_campaign($optin_campaign_id)
     {
+        $optin_campaign_id = absint($optin_campaign_id);
         // update the "activate_optin" setting to true
         $all_settings = self::get_settings();
         $all_settings[$optin_campaign_id]['activate_optin'] = false;

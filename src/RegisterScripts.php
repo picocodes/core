@@ -95,6 +95,36 @@ class RegisterScripts
         wp_enqueue_style('mailoptin-admin-tooltipster-borderless', MAILOPTIN_ASSETS_URL . 'tooltipster/borderless.min.css', [], MAILOPTIN_VERSION_NUMBER);
         wp_enqueue_style('mailoptin-admin', MAILOPTIN_ASSETS_URL . 'css/admin/admin.css', [], MAILOPTIN_VERSION_NUMBER);
         wp_enqueue_style('mailoptin-font-awesome', MAILOPTIN_ASSETS_URL . 'css/font-awesome/css/font-awesome.min.css', array(), MAILOPTIN_VERSION_NUMBER);
+
+        wp_enqueue_style('mo-pure-css-toggle-buttons', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/toggle-control/pure-css-togle-buttons.css', array(), false);
+
+        $css = '
+			.disabled-control-title {
+				color: #a0a5aa;
+			}
+			input[type=checkbox].tgl-light:checked + .tgl-btn {
+				background: #0085ba;
+			}
+			input[type=checkbox].tgl-light + .tgl-btn {
+			  background: #a0a5aa;
+			}
+			input[type=checkbox].tgl-light + .tgl-btn:after {
+			  background: #f7f7f7;
+			}
+
+			input[type=checkbox].tgl-ios:checked + .tgl-btn {
+			  background: #0085ba;
+			}
+
+			input[type=checkbox].tgl-flat:checked + .tgl-btn {
+			  border: 4px solid #0085ba;
+			}
+			input[type=checkbox].tgl-flat:checked + .tgl-btn:after {
+			  background: #0085ba;
+			}
+
+		';
+        wp_add_inline_style('mo-pure-css-toggle-buttons', $css);
     }
 
     /**

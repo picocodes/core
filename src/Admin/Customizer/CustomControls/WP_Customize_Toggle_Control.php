@@ -15,8 +15,8 @@ class WP_Customize_Toggle_Control extends WP_Customize_Control
      */
     public function enqueue()
     {
-        wp_enqueue_script('customizer-toggle-control', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/toggle-control/customizer-toggle-control.js', array('jquery'), false, true);
-        wp_enqueue_style('pure-css-toggle-buttons', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/toggle-control/pure-css-togle-buttons.css', array(), false);
+        wp_enqueue_script('mo-customizer-toggle-control', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/toggle-control/customizer-toggle-control.js', array('jquery'), false, true);
+        wp_enqueue_style('mo-pure-css-toggle-buttons', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/toggle-control/pure-css-togle-buttons.css', array(), false);
 
         $css = '
 			.disabled-control-title {
@@ -44,7 +44,7 @@ class WP_Customize_Toggle_Control extends WP_Customize_Control
 			}
 
 		';
-        wp_add_inline_style('pure-css-toggle-buttons', $css);
+        wp_add_inline_style('mo-pure-css-toggle-buttons', $css);
     }
 
     /**

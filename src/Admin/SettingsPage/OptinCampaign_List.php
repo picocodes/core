@@ -432,6 +432,22 @@ class OptinCampaign_List extends \WP_List_Table
     {
         $optin_Campaign_id = absint($item['id']);
 
+        $input_value = OptinCampaignsRepository::is_activated($optin_Campaign_id) ? 'yes' : 'no';
+        $checked = ($input_value == 'yes') ? 'checked="checked"' : null;
+
+        $switch = sprintf(
+            '<input data-mo-optin-id="%1$s" id="mo-optin-activate-switch-%1$s" type="checkbox" class="mo-optin-activate-switch tgl tgl-light" value="%%3$s" %3$s />',
+            $optin_Campaign_id,
+            $input_value,
+            $checked
+        );
+
+        $switch .= sprintf(
+            '<label for="mo-optin-activate-switch-%1$s" style="margin:auto;" class="tgl-btn"></label>',
+            $optin_Campaign_id
+        );
+
+
         if (OptinCampaignsRepository::is_activated($optin_Campaign_id)) {
             $status = '<div class="mo_circle_green"></div>';
             $url = $this->_optin_campaign_deactivate_url($optin_Campaign_id);
@@ -446,7 +462,7 @@ class OptinCampaign_List extends \WP_List_Table
             'activate' => "<a href=\"$url\">$label</a>",
         );
 
-        return $status . $this->row_actions($actions);
+        return $switch;
     }
 
     /**

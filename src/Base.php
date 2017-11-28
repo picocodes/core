@@ -46,14 +46,23 @@ define('MAILOPTIN_SRC', dirname(__FILE__) . '/');
 define('MAILOPTIN_CAMPAIGN_ERROR_LOG', WP_CONTENT_DIR . "/uploads/mailoptin-campaign-log/");
 define('MAILOPTIN_OPTIN_ERROR_LOG', WP_CONTENT_DIR . "/uploads/mailoptin-optin-log/");
 
-define('MAILOPTIN_SETTINGS_SETTINGS_PAGE', admin_url('admin.php?page=mailoptin-settings'));
-define('MAILOPTIN_CONNECTIONS_SETTINGS_PAGE', admin_url('admin.php?page=mailoptin-connections'));
-define('MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE', admin_url('admin.php?page=mailoptin-email-automations'));
-define('MAILOPTIN_CAMPAIGN_LOG_SETTINGS_PAGE', admin_url('admin.php?page=mailoptin-campaign-log'));
-define('MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE', admin_url('admin.php?page=mailoptin-optin-campaigns'));
-define('MAILOPTIN_LEAD_BANK_SETTINGS_PAGE', admin_url('admin.php?page=mailoptin-lead-bank'));
-define('MAILOPTIN_ADVANCE_ANALYTICS_SETTINGS_PAGE', admin_url('admin.php?page=mailoptin-analytics'));
-define('MAILOPTIN_LICENSE_SETTINGS_PAGE', admin_url('admin.php?page=mailoptin-license'));
+define('MAILOPTIN_SETTINGS_SETTINGS_SLUG', 'mailoptin-settings');
+define('MAILOPTIN_CONNECTIONS_SETTINGS_SLUG', 'mailoptin-connections');
+define('MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_SLUG', 'mailoptin-email-automations');
+define('MAILOPTIN_CAMPAIGN_LOG_SETTINGS_SLUG', 'mailoptin-campaign-log');
+define('MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_SLUG', 'mailoptin-optin-campaigns');
+define('MAILOPTIN_LEAD_BANK_SETTINGS_SLUG', 'mailoptin-lead-bank');
+define('MAILOPTIN_ADVANCE_ANALYTICS_SETTINGS_SLUG', 'mailoptin-analytics');
+define('MAILOPTIN_LICENSE_SETTINGS_SLUG', 'mailoptin-license');
+
+define('MAILOPTIN_SETTINGS_SETTINGS_PAGE', admin_url('admin.php?page='.MAILOPTIN_SETTINGS_SETTINGS_SLUG));
+define('MAILOPTIN_CONNECTIONS_SETTINGS_PAGE', admin_url('admin.php?page='.MAILOPTIN_CONNECTIONS_SETTINGS_SLUG));
+define('MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE', admin_url('admin.php?page='.MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_SLUG));
+define('MAILOPTIN_CAMPAIGN_LOG_SETTINGS_PAGE', admin_url('admin.php?page='.MAILOPTIN_CAMPAIGN_LOG_SETTINGS_SLUG));
+define('MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE', admin_url('admin.php?page='.MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_SLUG));
+define('MAILOPTIN_LEAD_BANK_SETTINGS_PAGE', admin_url('admin.php?page='.MAILOPTIN_LEAD_BANK_SETTINGS_SLUG));
+define('MAILOPTIN_ADVANCE_ANALYTICS_SETTINGS_PAGE', admin_url('admin.php?page='.MAILOPTIN_ADVANCE_ANALYTICS_SETTINGS_SLUG));
+define('MAILOPTIN_LICENSE_SETTINGS_PAGE', admin_url('admin.php?page='.MAILOPTIN_LICENSE_SETTINGS_SLUG));
 
 class Base
 {

@@ -59,4 +59,16 @@
         $('#post-body-content').find('div.postbox').removeClass('closed');
     });
 
+    // handles activation and deactivation of optin
+    $('.mo-optin-activate-switch').on('change', function () {
+        var _this = this;
+        $.post(ajaxurl, {
+            action: 'mailoptin_toggle_optin_activated',
+            id: $(_this).data('mo-optin-id'),
+            status: _this.checked
+        }, function ($response) {
+            // do nothing
+        });
+    });
+
 }(jQuery));
