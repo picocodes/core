@@ -248,6 +248,18 @@ class Custom_Settings_Page_Api
         <?php
     }
 
+    public function settings_page_heading()
+    {
+        echo '<h2>';
+        echo $this->page_header;
+        do_action('wp_cspa_before_closing_header');
+        echo '</h2>';
+    }
+
+    public function nonce_field()
+    {
+        printf('<input id="wp_csa_nonce" type="hidden" name="wp_csa_nonce" value="%s">', wp_create_nonce('wp-csa-nonce'));
+    }
 
     /**
      * Build the settings page.
@@ -261,11 +273,7 @@ class Custom_Settings_Page_Api
         $columns2_class = !$exclude_sidebar ? ' columns-2' : null;
         ?>
         <div class="wrap">
-            <div id="icon-options-general" class="icon32"></div>
-            <h2>
-                <?php echo $this->page_header; ?>
-                <?php do_action('wp_cspa_before_closing_header'); ?>
-            </h2>
+            <?php $this->settings_page_heading(); ?>
             <?php $this->do_settings_errors(); ?>
             <?php settings_errors('wp_csa_notice'); ?>
             <?php $this->settings_page_tab(); ?>
@@ -277,16 +285,10 @@ class Custom_Settings_Page_Api
                         <?php do_action('wp_cspa_before_post_body_content', $this->option_name, $this->db_options); ?>
                         <div class="meta-box-sortables ui-sortable">
                             <form method="post" <?php echo do_action('wp_cspa_form_tag', $this->option_name); ?>>
+                                <?php $this->nonce_field(); ?>
                                 <?php ob_start(); ?>
                                 <?php $this->_settings_page_main_content_area(); ?>
-                                <?php echo apply_filters(
-                                    'wp_cspa_main_content_area',
-                                    ob_get_clean(),
-                                    $this->option_name
-                                );
-                                ?>
-                                <input id="wp_csa_nonce" type="hidden" name="wp_csa_nonce"
-                                       value="<?php echo wp_create_nonce('wp-csa-nonce'); ?>">
+                                <?php echo apply_filters('wp_cspa_main_content_area', ob_get_clean(), $this->option_name); ?>
                             </form>
                         </div>
                     </div>
@@ -296,7 +298,8 @@ class Custom_Settings_Page_Api
         </div>
 
         <?php $this->metabox_toggle_script(); ?>
-    <?php }
+        <?php
+    }
 
 
     /**
@@ -325,51 +328,64 @@ class Custom_Settings_Page_Api
 
     /**
      * Main settings page markup.
-     *
-     * @param null|string $db_options
-     * @param null|array $args_arrays
+     * @param bool $return_output
      */
-    public function _settings_page_main_content_area($db_options = null, $args_arrays = null)
+    public function _settings_page_main_content_area($return_output = false)
     {
-        $db_options = !is_null($db_options) ? $db_options : $this->db_options;
-        $args_arrays = !is_null($args_arrays) ? $args_arrays : $this->main_content_config;
+        $args_arrays = $this->main_content_config;
 
         // variable declaration
         $html = '';
 
         if (!empty($args_arrays)) {
-            foreach ($args_arrays as $args) {
-
-                if (!empty($args['section_title'])) {
-                    $html .= $this->_header($args['section_title']);
-                }
-
-                $disable_submit_button = isset($args['disable_submit_button']) ? true : false;
-
-                // remove section title from array to make the argument keys be arrays so it can work with foreach loop
-                if (isset($args['section_title'])) {
-                    unset($args['section_title']);
-                }
-
-                if (isset($args['disable_submit_button'])) {
-                    unset($args['disable_submit_button']);
-                }
-
-                foreach ($args as $key => $value) {
-
-                    $field_type = '_' . $args[$key]['type'];
-                    $html .= $this->{$field_type}($db_options, $key, $args[$key]);
-                }
-
-                if ($disable_submit_button) {
-                    $html .= $this->_footer_without_button();
-                } else {
-                    $html .= $this->_footer();
-                }
+            foreach ($args_arrays as $args_array) {
+                $html .= $this->metax_box_instance($args_array);
             }
         }
 
+        if ($return_output) return $html;
+
         echo $html;
+    }
+
+    /**
+     * @param $args
+     * @return string
+     */
+    public function metax_box_instance($args)
+    {
+        $db_options = $this->db_options;
+
+        $html = '';
+
+        if (!empty($args['section_title'])) {
+            $html .= $this->_header($args['section_title']);
+        }
+
+        $disable_submit_button = isset($args['disable_submit_button']) ? true : false;
+
+        // remove section title from array to make the argument keys be arrays so it can work with foreach loop
+        if (isset($args['section_title'])) {
+            unset($args['section_title']);
+        }
+
+        if (isset($args['disable_submit_button'])) {
+            unset($args['disable_submit_button']);
+        }
+
+        foreach ($args as $key => $value) {
+
+            $field_type = '_' . $args[$key]['type'];
+            $html .= $this->{$field_type}($db_options, $key, $args[$key]);
+        }
+
+        if ($disable_submit_button) {
+            $html .= $this->_footer_without_button();
+        } else {
+            $html .= $this->_footer();
+        }
+
+        return $html;
     }
 
     /**

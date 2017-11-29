@@ -71,4 +71,39 @@
         });
     });
 
+
+    $(document).on('ready', function () {
+        // Switches option sections
+        $('.mailoptin-group-wrapper').hide();
+        var active_tab = '';
+
+        if (typeof(localStorage) !== 'undefined') {
+            active_tab = localStorage.getItem("active-tab");
+        }
+        if (active_tab !== '' && $(active_tab).length) {
+            $(active_tab).fadeIn();
+        } else {
+            $('.mailoptin-group-wrapper:first').fadeIn();
+        }
+
+        if (active_tab !== '' && $(active_tab + '-tab').length) {
+            $(active_tab + '-tab').addClass('nav-tab-active');
+        }
+        else {
+            $('.mailoptin-settings-wrap .nav-tab-wrapper a:first').addClass('nav-tab-active');
+        }
+
+        $('.mailoptin-settings-wrap .nav-tab-wrapper a').click(function (e) {
+            $('.mailoptin-settings-wrap .nav-tab-wrapper a').removeClass('nav-tab-active');
+            $(this).addClass('nav-tab-active').blur();
+            var clicked_group = $(this).attr('href');
+            if (typeof(localStorage) !== 'undefined') {
+                localStorage.setItem("active-tab", $(this).attr('href'));
+            }
+            $('.mailoptin-group-wrapper').hide();
+            $(clicked_group).fadeIn();
+            e.preventDefault();
+        });
+    });
+
 }(jQuery));

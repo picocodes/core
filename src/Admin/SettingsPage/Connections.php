@@ -53,19 +53,46 @@ class Connections extends AbstractSettingsPage
     public function settings_admin_page_callback()
     {
         do_action('mailoptin_before_connections_settings_page', MAILOPTIN_CONNECTIONS_DB_OPTION_NAME);
+        $connection_args = apply_filters('mailoptin_connections_settings_page', array());
+        $nav_tabs = '';
+        $tab_content_area = '';
+        if (!empty($connection_args)) {
+            $instance = Custom_Settings_Page_Api::instance([], MAILOPTIN_CONNECTIONS_DB_OPTION_NAME, __('Connections', 'mailoptin'));
+            foreach ($connection_args as $connection_arg) {
+                $section_title = $connection_arg['section_title'];
+                $section_title_without_status = preg_replace('/<span.+<\/span>/', '', $connection_arg['section_title']);
+                unset($connection_arg['section_title']);
+                $key = key($connection_arg);
+                // re-add section title after we've gotten key.
+                $connection_arg['section_title'] = $section_title;
+                $nav_tabs .= sprintf('<a href="#%1$s" class="nav-tab" id="%1$s-tab"><span class="dashicons dashicons-admin-generic"></span> %2$s</a>', $key, $section_title_without_status);
+                $tab_content_area .= sprintf('<div id="%s" class="mailoptin-group-wrapper">', $key);
+                $tab_content_area .= $instance->metax_box_instance($connection_arg);
+                $tab_content_area .= '</div>';
+            }
 
-        $args = apply_filters('mailoptin_connections_settings_page', array());
+            $this->register_core_settings($instance, true);
+            $instance->persist_plugin_settings();
 
-        $instance = Custom_Settings_Page_Api::instance($args, MAILOPTIN_CONNECTIONS_DB_OPTION_NAME, __('Connections', 'mailoptin'));
-        $this->register_core_settings($instance);
-        $instance->build();
+            echo '<div class="wrap">';
+            $instance->settings_page_heading();
+            $instance->do_settings_errors();
+            settings_errors('wp_csa_notice');
+            $instance->settings_page_tab();
 
-        do_action('mailoptin_after_connections_settings_page', MAILOPTIN_CONNECTIONS_DB_OPTION_NAME);
+            echo '<div class="mailoptin-settings-wrap">';
+            echo '<h2 class="nav-tab-wrapper">' . $nav_tabs . '</h2>';
+            echo '<div class="metabox-holder mailoptin-tab-settings">';
+            echo '<form method="post">';
+            $instance->nonce_field();
+            echo $tab_content_area;
+            echo '</form>';
+            echo '</div>';
+            echo '</div>';
+            echo '</div>';
 
-        // close all connection settings page
-        echo '<script type="text/javascript">';
-        echo "jQuery(document).on('ready', function() {jQuery('#post-body-content').find('button.handlediv.button-link').click();});";
-        echo '</script>';
+            do_action('mailoptin_after_connections_settings_page', MAILOPTIN_CONNECTIONS_DB_OPTION_NAME);
+        }
     }
 
     public function admin_notices()
