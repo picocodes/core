@@ -8,7 +8,7 @@ class DBUpdates
 {
     public static $instance;
 
-    const DB_VER = 2;
+    const DB_VER = 3;
 
     public function init_options()
     {
@@ -71,6 +71,13 @@ class DBUpdates
     public function update_routine_2()
     {
         OptinCampaignsRepository::burst_all_cache();
+    }
+
+    public function update_routine_3()
+    {
+        $db_options = get_option(MAILOPTIN_CONNECTIONS_DB_OPTION_NAME);
+        $db_options['elementor_activate'] = 'true';
+        update_option(MAILOPTIN_CONNECTIONS_DB_OPTION_NAME, $db_options);
     }
 
     /** Singleton poop */

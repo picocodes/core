@@ -87,8 +87,6 @@ class Base
         FrontEndOutput::get_instance();
         InPost::get_instance();
 
-        Elementor\Init::get_instance();
-
         add_action('widgets_init', ['MailOptin\Core\OptinForms\SidebarWidgets', 'widget_registration']);
 
         add_action('plugins_loaded', [$this, 'register_metadata_table']);

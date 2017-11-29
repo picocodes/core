@@ -60,7 +60,8 @@ class Connections extends AbstractSettingsPage
             $instance = Custom_Settings_Page_Api::instance([], MAILOPTIN_CONNECTIONS_DB_OPTION_NAME, __('Connections', 'mailoptin'));
             foreach ($connection_args as $connection_arg) {
                 $section_title = $connection_arg['section_title'];
-                $section_title_without_status = preg_replace('/<span.+<\/span>/', '', $connection_arg['section_title']);
+                // remove "Connection" + connected status from section ttle
+                $section_title_without_status = preg_replace('/[\s]?Connection.+<\/span>/', '', $connection_arg['section_title']);
                 unset($connection_arg['section_title']);
                 $key = key($connection_arg);
                 // re-add section title after we've gotten key.

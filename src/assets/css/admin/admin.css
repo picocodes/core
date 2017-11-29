@@ -602,4 +602,5 @@ a.mobutton {
 }
 .mailoptin-settings-wrap .metabox-holder h3.hndle {
     padding: 12px;
+    cursor: default;
 }
