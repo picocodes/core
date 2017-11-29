@@ -36,7 +36,7 @@ abstract class AbstractSettingsPage
 
     public function toggle_buttons($option_name)
     {
-        if(!in_array($option_name, [MAILOPTIN_CONNECTIONS_DB_OPTION_NAME, MAILOPTIN_SETTINGS_DB_OPTION_NAME])) return;
+        if(!in_array($option_name, [MAILOPTIN_SETTINGS_DB_OPTION_NAME])) return;
         ?>
         <div style="margin: 10px">
             <a href="#" id="mo-metabox-expand" class="button"><?php _e('Expand All', 'mailoptin'); ?></a>
