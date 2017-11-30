@@ -9,6 +9,8 @@ class WP_Customize_Custom_Content extends WP_Customize_Control
     // Whitelist content parameter
     public $content = '';
 
+    public $block_class = 'mo-custom-content-block';
+
     /**
      * Render the control's content.
      *
@@ -23,7 +25,7 @@ class WP_Customize_Custom_Content extends WP_Customize_Control
             echo '<span class="customize-control-title">' . $this->label . '</span>';
         }
         if (isset($this->content)) {
-            echo '<div class="customize-mo-custom-content-block">' . $this->content . '</div>';
+            echo "<div class=\"customize-{$this->block_class}\">" . $this->content . '</div>';
         }
         if (isset($this->description)) {
             echo '<span class="description customize-control-description">' . $this->description . '</span>';

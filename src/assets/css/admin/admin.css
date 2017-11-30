@@ -409,7 +409,7 @@ tr.mo-test-mode {
 }
 
 .mailoptin-data-listing table.wp-list-table.widefat {
-    text-align:center;
+    text-align: center;
 }
 
 .mailoptin-data-listing th.manage-column {
@@ -514,59 +514,74 @@ a.mobutton {
     width: 49%;
     float: left;
 }
+
 .dokan-dashboard .meta-box-sortables {
     margin: 0 8px;
     min-height: 100px;
 }
+
 .dokan-dashboard .postbox .main {
     padding: 0 12px 11px;
 }
+
 .dokan-dashboard .postbox .main:before,
 .dokan-dashboard .postbox .main:after {
     content: " ";
     display: table;
 }
+
 .dokan-dashboard .postbox .main:after {
     clear: both;
 }
+
 .dokan-dashboard .postbox .main a {
     text-decoration: none;
 }
+
 .dokan-dashboard .postbox .main p {
     margin: 0;
 }
+
 .dokan-dashboard .postbox .main h4 {
     margin: 0 0 7px 0;
     padding: 0 0 7px 0;
     border-bottom: 1px solid #EEE;
 }
+
 .dokan-dashboard .postbox .inside {
     margin: 10px 0 0 0;
     padding: 0;
 }
+
 .dokan-dashboard .mark-red a {
     color: red;
 }
+
 .dokan-dashboard .mark-green a {
     color: green;
 }
+
 .dokan-dashboard .dokan-left {
     float: left;
     width: 45%;
 }
+
 .dokan-dashboard .dokan-right {
     float: right;
     width: 45%;
 }
+
 .mailoptin-settings-wrap {
     display: flex;
     border: 1px solid #c8d7e1;
     border-top: 0;
 }
+
 .mailoptin-settings-wrap .dashicons {
     padding-top: 2px;
     margin-right: 5px;
 }
+
 .mailoptin-settings-wrap h2.nav-tab-wrapper {
     flex: 1;
     border-bottom: none;
@@ -574,6 +589,7 @@ a.mobutton {
     background: #f1f1f1;
     border-right: 1px solid #c8d7e1;
 }
+
 .mailoptin-settings-wrap h2.nav-tab-wrapper a {
     float: none;
     display: block;
@@ -584,23 +600,36 @@ a.mobutton {
     font-weight: 500;
     border-bottom: 1px solid #c8d7e1;
 }
+
 .mailoptin-settings-wrap h2.nav-tab-wrapper a.nav-tab-active {
     background: #fff !important;
     border-right: 1px solid #c8d7e1;
     width: 99%;
     color: #2e4453;
 }
+
 .mailoptin-settings-wrap .metabox-holder {
     flex: 3;
     padding-left: 3%;
     padding-right: 10px;
     background: #fff;
 }
+
 .mailoptin-settings-wrap .mailoptin-tab-settings .postbox {
-    border:none;
+    border: none;
     box-shadow: none;
 }
+
 .mailoptin-settings-wrap .metabox-holder h3.hndle {
     padding: 12px;
     cursor: default;
+}
+
+.mo-field-header {
+    background: #0085ba;
+    color: #fff;
+    font-weight: bold;
+    padding: 10px;
+    font-size: 14px;
+    margin:0 -12px;
 }

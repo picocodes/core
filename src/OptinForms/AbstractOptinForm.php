@@ -317,6 +317,7 @@ jQuery(function(){
         $optin_campaign_uuid = $this->optin_campaign_uuid;
         $optin_form = '';
         $name_email_class_indicator = $this->get_customizer_value('hide_name_field') === true ? 'mo-has-email' : 'mo-has-name-email';
+        $display_only_button_class_indicator = $this->get_customizer_value('display_only_button') === true ? ' mo-only-button-display' : '';
 
         if ($this->optin_campaign_type == 'lightbox') {
             $modalWrapperStyle = implode(';', [
@@ -333,7 +334,7 @@ jQuery(function(){
                 'background: rgba(0,0,0,0.7)'
             ]);
 
-            $optin_form .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type} {$name_email_class_indicator}\" data-optin-type='{$this->optin_campaign_type}' style='$modalWrapperStyle'>";
+            $optin_form .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type} {$name_email_class_indicator}{$display_only_button_class_indicator}\" data-optin-type='{$this->optin_campaign_type}' style='$modalWrapperStyle'>";
         }
 
         if ($this->optin_campaign_type == 'bar') {

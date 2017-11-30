@@ -210,8 +210,25 @@ class CustomizerSettings extends AbstractCustomizer
     {
         $fields_settings_args = apply_filters("mo_optin_form_customizer_fields_settings",
             array(
+                'display_only_button' => array(
+                    'default' => $this->customizer_defaults['display_only_button'],
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
                 'hide_name_field' => array(
                     'default' => $this->customizer_defaults['hide_name_field'],
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'name_field_header' => array(
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'email_field_header' => array(
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'submit_button_header' => array(
                     'type' => 'option',
                     'transport' => 'postMessage',
                 ),

@@ -53,7 +53,8 @@ class AbstractCustomizer
         $defaults['note_font'] = apply_filters('mo_optin_form_note_font_default', '');
         $defaults['note_close_optin_onclick'] = apply_filters('mo_optin_form_note_close_optin_onclick_default', false);
 
-        $defaults['hide_name_field'] = apply_filters('mo_optin_form_hide_name_field_default', '');
+        $defaults['display_only_button'] = apply_filters('mo_optin_form_hide_name_field_default', false);
+        $defaults['hide_name_field'] = apply_filters('mo_optin_form_hide_name_field_default', false);
         $defaults['name_field_placeholder'] = apply_filters('mo_optin_form_name_field_placeholder_default', __('Enter your name here...', 'mailoptin'));
         $defaults['name_field_color'] = apply_filters('mo_optin_form_name_field_color_default', '');
         $defaults['name_field_font'] = apply_filters('mo_optin_form_name_field_font_default', 'Consolas, Lucida Console, monospace');

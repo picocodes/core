@@ -46,6 +46,7 @@
             };
 
             // Call linkSettingValueToControlActiveState on the site title and tagline controls when they exist.
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][name_field_header]', linkSettingValueToControlActiveState);
             api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][name_field_placeholder]', linkSettingValueToControlActiveState);
             api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][name_field_color]', linkSettingValueToControlActiveState);
             api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][name_field_font]', linkSettingValueToControlActiveState);

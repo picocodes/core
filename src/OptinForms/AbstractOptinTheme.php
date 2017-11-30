@@ -11,6 +11,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
     public function __construct($optin_campaign_id, $wp_customize = null)
     {
         add_shortcode('mo-optin-form-wrapper', [$this, 'shortcode_optin_form_wrapper']);
+        add_shortcode('mo-optin-form-fields-wrapper', [$this, 'shortcode_optin_form_fields_wrapper']);
         add_shortcode('mo-optin-form-headline', [$this, 'shortcode_optin_form_headline']);
         add_shortcode('mo-close-optin', [$this, 'shortcode_optin_form_close_button']);
         add_shortcode('mo-optin-form-image', [$this, 'shortcode_optin_form_image']);
@@ -265,6 +266,25 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         if ($this->optin_campaign_type == 'lightbox') {
             $html .= $this->branding_attribute();
         }
+
+        return $html;
+    }
+
+    /**
+     * Optin form fields wrapper shortcode.
+     *
+     * @param array $atts
+     * @param string $content
+     *
+     * @return string
+     */
+    public function shortcode_optin_form_fields_wrapper($atts, $content)
+    {
+        $tag = !empty($atts['tag']) ? $atts['tag'] : 'div';
+
+        $html = "<$tag class='mo-optin-fields-wrapper'>";
+        $html .= do_shortcode($content);
+        $html .= '</div>';
 
         return $html;
     }
