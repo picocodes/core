@@ -509,6 +509,10 @@ class Custom_Settings_Page_Api
         $name_attr = $option_name . '[' . $key . ']';
         $value = !empty($db_options[$key]) ? $db_options[$key] : $defvalue;
 
+        if (isset($args['obfuscate_val']) && in_array($args['obfuscate_val'], [true, 'true'])) {
+            $value = $this->obfuscate_string($value);
+        }
+
         ob_start(); ?>
         <tr id="<?php echo $tr_id; ?>">
             <th scope="row"><label for="<?php echo $key; ?>"><?php echo $label; ?></label></th>
@@ -521,6 +525,14 @@ class Custom_Settings_Page_Api
         </tr>
         <?php
         return ob_get_clean();
+    }
+
+    public function obfuscate_string($string)
+    {
+        $length = strlen($string);
+        $obfuscated_length = ceil($length / 2);
+        $string = str_repeat('*', $obfuscated_length) . substr($string, $obfuscated_length);
+        return $string;
     }
 
     /**

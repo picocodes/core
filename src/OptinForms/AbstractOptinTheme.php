@@ -248,7 +248,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
 
         $html = "<div id=\"$optin_css_id\" class=\"$class\" style=\"$style\">";
         $html .= apply_filters('mo_optin_form_before_form_tag', '', $this->optin_campaign_id, $this->optin_campaign_type, $optin_campaign_uuid, $optin_css_id);
-        $html .= "<form method=\"post\" class='mo-optin-form' id='{$optin_css_id}_form'>";
+        $html .= "<form method=\"post\" class='mo-optin-form' id='{$optin_css_id}_form' style='margin 0;'>";
         $html .= do_shortcode($content);
         $html .= $this->honeypot();
         $html .= '</form>';
