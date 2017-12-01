@@ -295,6 +295,16 @@ class CustomizerSettings extends AbstractCustomizer
 
                 // ---- call-to-action button -------- //
 
+                'cta_button_action' => array(
+                    'default' => $this->customizer_defaults['cta_button_action'],
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'cta_button_navigation_url' => array(
+                    'default' => $this->customizer_defaults['cta_button_navigation_url'],
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
                 'cta_button' => array(
                     'default' => $this->customizer_defaults['cta_button'],
                     'type' => 'option',

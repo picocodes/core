@@ -571,12 +571,21 @@ class CustomizerControls
                     $this->wp_customize,
                     $this->option_prefix . '[cta_button_header]',
                     apply_filters('mo_optin_form_customizer_cta_button_header_args', array(
-                            'content' => '<div class="mo-field-header">' . __("Call-to-action Field", 'mailoptin') . '</div>',
+                            'content' => '<div class="mo-field-header">' . __("Call-to-action Button", 'mailoptin') . '</div>',
                             'block_class' => 'mo-field-header-wrapper',
                             'section' => $this->customizerClassInstance->fields_section_id,
                             'settings' => $this->option_prefix . '[cta_button_header]',
                             'priority' => 120,
                         )
+                    )
+                ),
+                'cta_button_action' => apply_filters('mo_optin_form_customizer_cta_button_action_args', array(
+                        'type' => 'select',
+                        'choices' => ['navigate_to_url' => __('Navigate to URL', 'mailoptin'), 'display_optin_form' => __('Display Optin Form', 'mailoptin')],
+                        'label' => __('Action After Button Click', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->fields_section_id,
+                        'settings' => $this->option_prefix . '[cta_button_action]',
+                        'priority' => 125,
                     )
                 ),
                 'cta_button' => apply_filters('mo_optin_form_customizer_cta_button_args',

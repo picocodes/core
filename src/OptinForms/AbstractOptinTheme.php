@@ -280,11 +280,29 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
      */
     public function shortcode_optin_form_fields_wrapper($atts, $content)
     {
-        $tag = !empty($atts['tag']) ? $atts['tag'] : 'div';
+        $atts = shortcode_atts(
+            array(
+                'tag' => 'div',
+                'class' => '',
+                'style' => '',
+            ),
+            $atts
+        );
 
-        $html = "<$tag class='mo-optin-fields-wrapper'>";
+        $tag = $atts['tag'];
+
+        $class = esc_attr($atts['class']);
+        $class = "mo-optin-fields-wrapper $class";
+
+        $style = esc_attr($atts['style']);
+
+        $is_only_display_button = $this->get_customizer_value('display_only_button');
+
+        if ($is_only_display_button) $style .= ' display:none;';
+
+        $html = "<$tag class=\"$class\" style=\"$style\">";
         $html .= do_shortcode($content);
-        $html .= '</div>';
+        $html .= "</$tag>";
 
         return $html;
     }
