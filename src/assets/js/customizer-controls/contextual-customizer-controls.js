@@ -52,6 +52,68 @@
             api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][name_field_font]', linkSettingValueToControlActiveState);
         });
 
+        api('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][display_only_button]', function (setting) {
+            var is_display_optin_fields, is_show_cta_fields, callToActionFieldsToggle, optinFieldsDisplayToggle;
+
+            is_display_optin_fields = function () {
+                return !setting.get();
+            };
+
+            is_show_cta_fields = function () {
+                return setting.get();
+            };
+
+            optinFieldsDisplayToggle = function (control) {
+                var setActiveState = function () {
+                    control.active.set(is_display_optin_fields());
+                };
+
+                control.active.validate = is_display_optin_fields;
+
+                // Set initial active state.
+                setActiveState();
+
+                setting.bind(setActiveState);
+            };
+
+            callToActionFieldsToggle = function (control) {
+                var setActiveState = function () {
+                    control.active.set(is_show_cta_fields());
+                };
+
+                control.active.validate = is_show_cta_fields;
+
+                // Set initial active state.
+                setActiveState();
+
+                setting.bind(setActiveState);
+            };
+
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][hide_name_field]', optinFieldsDisplayToggle);
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][name_field_header]', optinFieldsDisplayToggle);
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][email_field_header]', optinFieldsDisplayToggle);
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][submit_button_header]', optinFieldsDisplayToggle);
+
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][name_field_placeholder]', optinFieldsDisplayToggle);
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][name_field_color]', optinFieldsDisplayToggle);
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][name_field_font]', optinFieldsDisplayToggle);
+
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][email_field_placeholder]', optinFieldsDisplayToggle);
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][email_field_color]', optinFieldsDisplayToggle);
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][email_field_font]', optinFieldsDisplayToggle);
+
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][submit_button]', optinFieldsDisplayToggle);
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][submit_button_color]', optinFieldsDisplayToggle);
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][submit_button_background]', optinFieldsDisplayToggle);
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][submit_button_font]', optinFieldsDisplayToggle);
+
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][cta_button_header]', callToActionFieldsToggle);
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][cta_button]', callToActionFieldsToggle);
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][cta_button_color]', callToActionFieldsToggle);
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][cta_button_background]', callToActionFieldsToggle);
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][cta_button_font]', callToActionFieldsToggle);
+        });
+
         api('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][bar_position]', function (setting) {
             var is_displayed, linkSettingValueToControlActiveState;
 

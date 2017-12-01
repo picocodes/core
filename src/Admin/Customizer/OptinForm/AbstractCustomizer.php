@@ -64,7 +64,11 @@ class AbstractCustomizer
         $defaults['submit_button'] = apply_filters('mo_optin_form_submit_button_default', __('Subscribe Now', 'mailoptin'));
         $defaults['submit_button_color'] = apply_filters('mo_optin_form_submit_button_color_default', '');
         $defaults['submit_button_background'] = apply_filters('mo_optin_form_submit_button_background_default', '');
-        $defaults['submit_button_font'] = apply_filters('mo_optin_form_submit_button_font_default', '');
+        $defaults['submit_button_font'] = apply_filters('mo_optin_form_submit_button_font_default', '');$defaults['cta_button'] = apply_filters('mo_optin_form_cta_button_default', __('Subscribe Now', 'mailoptin'));
+        $defaults['cta_button'] = apply_filters('mo_optin_form_cta_button_default', __('Take Action Now!', 'mailoptin'));
+        $defaults['cta_button_color'] = apply_filters('mo_optin_form_cta_button_color_default', $defaults['submit_button_color']);
+        $defaults['cta_button_background'] = apply_filters('mo_optin_form_cta_button_background_default', $defaults['submit_button_background']);
+        $defaults['cta_button_font'] = apply_filters('mo_optin_form_cta_button_font_default', $defaults['submit_button_font']);
 
 
         $defaults['campaign_title'] = apply_filters('mo_optin_form_campaign_title_default', OptinCampaignsRepository::get_optin_campaign_name($this->optin_campaign_id));

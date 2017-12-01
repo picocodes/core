@@ -331,8 +331,6 @@ class AjaxHandler
 
     public function act_on_option_activation_actions()
     {
-        if (!defined('DOING_AJAX')) return;
-
         global $wpdb;
         $table = $wpdb->options;
 

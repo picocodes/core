@@ -232,6 +232,10 @@ class CustomizerSettings extends AbstractCustomizer
                     'type' => 'option',
                     'transport' => 'postMessage',
                 ),
+                'cta_button_header' => array(
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
                 'name_field_placeholder' => array(
                     'default' => $this->customizer_defaults['name_field_placeholder'],
                     'type' => 'option',
@@ -285,6 +289,29 @@ class CustomizerSettings extends AbstractCustomizer
                 ),
                 'submit_button_font' => array(
                     'default' => $this->customizer_defaults['submit_button_font'],
+                    'type' => 'option',
+                    'transport' => 'refresh',
+                ),
+
+                // ---- call-to-action button -------- //
+
+                'cta_button' => array(
+                    'default' => $this->customizer_defaults['cta_button'],
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'cta_button_color' => array(
+                    'default' => $this->customizer_defaults['cta_button_color'],
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'cta_button_background' => array(
+                    'default' => $this->customizer_defaults['cta_button_background'],
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'cta_button_font' => array(
+                    'default' => $this->customizer_defaults['cta_button_font'],
                     'type' => 'option',
                     'transport' => 'refresh',
                 ),
