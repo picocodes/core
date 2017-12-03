@@ -591,6 +591,7 @@ class CustomizerControls
                 'cta_button_navigation_url' => apply_filters('mo_optin_form_customizer_cta_button_navigation_url_args', array(
                         'type' => 'text',
                         'label' => __('Enter URL', 'mailoptin'),
+                        'description' => __('URL should begin with http or https.', 'mailoptin'),
                         'section' => $this->customizerClassInstance->fields_section_id,
                         'settings' => $this->option_prefix . '[cta_button_navigation_url]',
                         'priority' => 127,

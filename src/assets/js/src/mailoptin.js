@@ -116,7 +116,6 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
 
                     /** Notification bar */
                     if (this.hasClass('mo-optin-form-bar')) {
-
                         // only one instance of top bar can show at a time.
                         if ($.MailOptin['isActiveMOBar_' + optin_js_config.bar_position] === true) return;
 
@@ -125,11 +124,32 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
 
                     /** Slide INs */
                     if (this.hasClass('mo-optin-form-slidein')) {
-
                         // only one instance of slidein type can shown at a time.
                         if ($.MailOptin['isActiveMOSlidein_' + optin_js_config.slidein_position] === true) return;
-
                         self.rule_base_show_optin_form.call(this, optin_js_config, 'slidein', skip_display_checks);
+                    }
+
+                    // handle CTA button click if activated
+                    if (self.is_defined_not_empty(optin_js_config.cta_display) && optin_js_config.cta_display === true && self.is_defined_not_empty(optin_js_config.cta_action)) {
+                        // if cta action is to navigate
+                        $('#' + $optin_css_id + '_cta_button').on('click', function (e) {
+                            e.preventDefault();
+                            if (optin_js_config.cta_action === 'navigate_to_url' && self.is_defined_not_empty(optin_js_config.cta_navigate_url)) {
+                                // set cookie for this option conversion when button is clicked.
+                                self.set_cookie('success', $optin_uuid, optin_js_config);
+                                window.location.assign(optin_js_config.cta_navigate_url);
+                            }
+                            else if (optin_js_config.cta_action === 'reveal_optin_form') {
+                                var cache = $('#' + $optin_css_id);
+                                cache.find('.mo-optin-form-cta-button').slideUp();
+                                cache.find('.mo-optin-fields-wrapper').slideDown();
+                                cache.find('.mo-optin-form-submit-button').slideDown();
+                            }
+                            else {
+                                console.log('something went wrong.');
+                            }
+                            return false;
+                        });
                     }
                 };
 
@@ -804,6 +824,44 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
             },
 
             /**
+             * Handle after conversion/success actions
+             * @param e
+             * @param optin_container
+             * @param optin_js_config
+             * @param optin_data
+             */
+            success_action_after_conversion: function (e, optin_container, optin_js_config, optin_data) {
+                var success_action = optin_js_config.success_action;
+                var redirect_url_val = optin_js_config.redirect_url_value;
+                var success_js_script = optin_js_config.success_js_script;
+
+                // if we have a JS success script, trigger it.
+                if (typeof success_js_script !== 'undefined' && success_js_script !== '') {
+                    new Function(success_js_script)();
+                }
+
+                if (typeof success_action !== 'undefined' && $.inArray(success_action, ['close_optin', 'redirect_url', 'close_optin_reload_page']) !== -1) {
+                    $.MoModalBox.close();
+                    mailoptin_optin._close_optin(optin_container);
+                }
+
+                if (success_action === 'close_optin_reload_page') {
+                    window.location.reload();
+                }
+
+                if (success_action === 'redirect_url' && typeof redirect_url_val !== 'undefined' && redirect_url_val !== '') {
+                    if (typeof optin_js_config.pass_lead_data !== 'undefined' && true === optin_js_config.pass_lead_data) {
+                        redirect_url_val = mailoptin_optin.add_query_args(redirect_url_val, {
+                            mo_name: optin_data.name,
+                            mo_email: optin_data.email
+                        });
+                    }
+
+                    window.location.assign(redirect_url_val);
+                }
+            },
+
+            /**
              * All event subscription / listener should go here.
              */
             eventSubscription: function () {
@@ -813,36 +871,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 });
 
                 // success actions
-                $(document).on('moOptinConversion', function (e, optin_container, optin_js_config, optin_data) {
-                    var success_action = optin_js_config.success_action;
-                    var redirect_url_val = optin_js_config.redirect_url_value;
-                    var success_js_script = optin_js_config.success_js_script;
-
-                    // if we have a JS success script, trigger it.
-                    if (typeof success_js_script !== 'undefined' && success_js_script !== '') {
-                        new Function(success_js_script)();
-                    }
-
-                    if (typeof success_action !== 'undefined' && $.inArray(success_action, ['close_optin', 'redirect_url', 'close_optin_reload_page']) !== -1) {
-                        $.MoModalBox.close();
-                        mailoptin_optin._close_optin(optin_container);
-                    }
-
-                    if (success_action === 'close_optin_reload_page') {
-                        window.location.reload();
-                    }
-
-                    if (success_action === 'redirect_url' && typeof redirect_url_val !== 'undefined' && redirect_url_val !== '') {
-                        if (typeof optin_js_config.pass_lead_data !== 'undefined' && true === optin_js_config.pass_lead_data) {
-                            redirect_url_val = mailoptin_optin.add_query_args(redirect_url_val, {
-                                mo_name: optin_data.name,
-                                mo_email: optin_data.email
-                            });
-                        }
-
-                        window.location.assign(redirect_url_val);
-                    }
-                });
+                $(document).on('moOptinConversion', this.success_action_after_conversion);
             },
 
             add_query_args: function (uri, params) {

@@ -317,7 +317,7 @@ jQuery(function(){
         $optin_campaign_uuid = $this->optin_campaign_uuid;
         $optin_form = '';
         $name_email_class_indicator = $this->get_customizer_value('hide_name_field') === true ? 'mo-has-email' : 'mo-has-name-email';
-        $display_only_button_class_indicator = $this->get_customizer_value('display_only_button') === true ? ' mo-only-button-display' : '';
+        $display_only_button_class_indicator = $this->get_customizer_value('display_only_button') === true ? ' mo-cta-button-display' : '';
 
         if ($this->optin_campaign_type == 'lightbox') {
             $modalWrapperStyle = implode(';', [
@@ -589,6 +589,9 @@ jQuery(function(){
 
         $exit_intent_status = $this->get_customizer_value('exit_intent_status');
 
+        $cta_display_only_button_status = $this->get_customizer_value('display_only_button');
+        $cta_action_after_click = $this->get_customizer_value('cta_button_action');
+
         $data = array();
         $data['optin_uuid'] = $this->optin_campaign_uuid;
         $data['optin_campaign_id'] = $optin_campaign_id;
@@ -607,6 +610,7 @@ jQuery(function(){
         if ($click_launch_status === true) {
             $data['click_launch_status'] = $click_launch_status;
         }
+
         /** x page view display rule */
         if ($x_page_views_status === true && $x_page_views_condition != '...' && !empty($x_page_views_value)) {
             $data['x_page_views_status'] = $x_page_views_status;
@@ -681,6 +685,16 @@ jQuery(function(){
         $data['email_missing_error'] = apply_filters('mo_optin_campaign_email_missing_error', __('Please enter a valid email.', 'mailoptin'));
         $data['name_missing_error'] = apply_filters('mo_optin_campaign_name_missing_error', __('Please enter a valid name.', 'mailoptin'));
         $data['honeypot_error'] = apply_filters('mo_optin_campaign_honeypot_error', __('Your submission has been flagged as potential spam.', 'mailoptin'));
+
+
+        /** CTA button: navigation url support */
+        if ($cta_display_only_button_status) {
+            $data['cta_display'] = true;
+            $data['cta_action'] = $cta_action_after_click;
+            if ($cta_action_after_click == 'navigate_to_url') {
+                $data['cta_navigate_url'] = $this->get_customizer_value('cta_button_navigation_url');
+            }
+        }
 
         $data = apply_filters('mo_optin_js_config', $data, $this);
 

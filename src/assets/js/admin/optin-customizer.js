@@ -243,7 +243,7 @@
             $('.mo-optin-fields-wrapper').toggle(!to);
             $('.mo-optin-form-cta-button').toggle(to);
             // add the flag indicator when active
-            $('.mo-optin-form-wrapper').toggleClass('mo-only-button-display');
+            $('.mo-optin-form-wrapper').toggleClass('mo-cta-button-display');
         });
     });
 
