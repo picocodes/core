@@ -214,6 +214,24 @@
         });
     });
 
+    wp.customize(mailoptin_optin_option_prefix + '[' + mailoptin_optin_campaign_id + '][cta_button]', function (value) {
+        value.bind(function (to) {
+            $('.mo-optin-form-cta-button').attr('value', to);
+        });
+    });
+
+    wp.customize(mailoptin_optin_option_prefix + '[' + mailoptin_optin_campaign_id + '][cta_button_background]', function (value) {
+        value.bind(function (to) {
+            $('.mo-optin-form-cta-button').css('background-color', to)
+        });
+    });
+
+    wp.customize(mailoptin_optin_option_prefix + '[' + mailoptin_optin_campaign_id + '][cta_button_color]', function (value) {
+        value.bind(function (to) {
+            $('.mo-optin-form-cta-button').css('color', to)
+        });
+    });
+
     wp.customize(mailoptin_optin_option_prefix + '[' + mailoptin_optin_campaign_id + '][modal_effects]', function (value) {
         value.bind(function (to) {
             $('.mo-optin-form-wrapper').animateOptin(to);
@@ -223,6 +241,7 @@
     wp.customize(mailoptin_optin_option_prefix + '[' + mailoptin_optin_campaign_id + '][display_only_button]', function (value) {
         value.bind(function (to) {
             $('.mo-optin-fields-wrapper').toggle(!to);
+            $('.mo-optin-form-cta-button').toggle(to);
             // add the flag indicator when active
             $('.mo-optin-form-wrapper').toggleClass('mo-only-button-display');
         });

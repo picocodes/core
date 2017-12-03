@@ -21,6 +21,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         add_shortcode('mo-optin-form-name-field', [$this, 'shortcode_optin_form_name_field']);
         add_shortcode('mo-optin-form-email-field', [$this, 'shortcode_optin_form_email_field']);
         add_shortcode('mo-optin-form-submit-button', [$this, 'shortcode_optin_form_submit_button']);
+        add_shortcode('mo-optin-form-cta-button', [$this, 'shortcode_optin_form_cta_button']);
         add_shortcode('mo-optin-form-note', [$this, 'shortcode_optin_form_note']);
 
         do_action('mo_optin_theme_shortcodes_add', $optin_campaign_id, $wp_customize);
@@ -195,6 +196,34 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
     }
 
     /**
+     * CTA button styles.
+     *
+     * @return string
+     */
+    public function cta_button_styles()
+    {
+        $style = [
+            'background:' . $this->get_customizer_value('cta_button_background'),
+            'color:' . $this->get_customizer_value('cta_button_color'),
+            'font-family:' . $this->_construct_font_family($this->get_customizer_value('cta_button_font')),
+            'height: auto',
+            'text-shadow: none;'
+        ];
+
+        if ($this->get_customizer_value('display_only_button') !== true) {
+            $style[] = 'display:none';
+        }
+
+        $style_arg = apply_filters('mo_optin_form_cta_button_styles', $style,
+            $this->optin_campaign_id,
+            $this->optin_campaign_type,
+            $this->optin_campaign_uuid
+        );
+
+        return implode(';', $style_arg);
+    }
+
+    /**
      * Form container styles.
      *
      * @return string
@@ -294,11 +323,12 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         $class = esc_attr($atts['class']);
         $class = "mo-optin-fields-wrapper $class";
 
-        $style = esc_attr($atts['style']);
+        $style = '';
+        if ($this->get_customizer_value('display_only_button')) {
+            $style .= 'display:none;';
+        }
 
-        $is_only_display_button = $this->get_customizer_value('display_only_button');
-
-        if ($is_only_display_button) $style .= ' display:none;';
+        $style .= esc_attr($atts['style']);
 
         $html = "<$tag class=\"$class\" style=\"$style\">";
         $html .= do_shortcode($content);
@@ -354,7 +384,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         return apply_filters(
             'mailoptin_branding_attribute',
             "<div class=\"mo-optin-powered-by\" style='display:block !important;visibility:visible !important;position:static !important;top: 0 !important;left: 0 !important;text-align: center !important;height: auto !important;width: 60px !important;overflow: visible !important;opacity:1 !important;text-indent: 0 !important;clip: auto !important;clip-path: none !important;box-shadow:none !important'>" .
-            "<a style='display:block !important;visibility:visible !important;position:static !important;top: 0 !important;left: 0 !important;text-align: center !important;height: auto !important;width: 60px !important;overflow: visible !important;opacity:1 !important;text-indent: 0 !important;clip: auto !important;clip-path: none !important;box-shadow:none !important' target=\"_blank\" href=\"$mailoptin_url\">" .
+            "<a style='display:block !important;visibility:visible !important;position:static !important;top: 0 !important;left: 0 !important;text-align: center !important;height: auto !important;width: 60px !important;overflow: visible !important;opacity:1 !important;text-indent: 0 !important;clip: auto !important;clip-path: none !important;box-shadow:none !important' target=\"_blank\" rel='nofollow' href=\"$mailoptin_url\">" .
             '<img src="' . MAILOPTIN_ASSETS_URL . 'images/mo-optin-brand.png" style="height:auto !important;width:60px !important;display:inline !important;visibility:visible !important;position:static !important;top: 0 !important;left: 0 !important;text-align: center !important;overflow: visible !important;opacity:1 !important;text-indent: 0 !important;clip: auto !important;clip-path: none !important;box-shadow:none !important"/>' .
             '</a></div>'
         );
@@ -687,6 +717,40 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         $html = apply_filters('mo_optin_form_before_form_submit_button', '', $this->optin_campaign_id, $this->optin_campaign_type, $this->optin_campaign_uuid, $atts);
         $html .= "<input id=\"{$optin_css_id}_submit_button\" class=\"$class\" style=\"$style\" type=\"submit\" value=\"$submit_button\">";
         $html .= apply_filters('mo_optin_form_after_form_submit_button', '', $this->optin_campaign_id, $this->optin_campaign_type, $this->optin_campaign_uuid, $atts);
+
+        return $html;
+    }
+
+    /**
+     * Optin form call-to-action button shortcode.
+     *
+     * @param array $atts
+     *
+     * @return string
+     */
+    public function shortcode_optin_form_cta_button($atts)
+    {
+        $optin_css_id = $this->optin_css_id;
+        $cta_button_styles = $this->cta_button_styles();
+        $cta_button = $this->get_customizer_value('cta_button');
+
+        $atts = shortcode_atts(
+            array(
+                'class' => '',
+                'style' => ''
+            ),
+            $atts
+        );
+
+        $class = esc_attr($atts['class']);
+        $class = "mo-optin-form-cta-button $class";
+
+        $style = esc_attr($atts['style']);
+        $style = "$cta_button_styles $style";
+
+        $html = apply_filters('mo_optin_form_before_cta_button', '', $this->optin_campaign_id, $this->optin_campaign_type, $this->optin_campaign_uuid, $atts);
+        $html .= "<input id=\"{$optin_css_id}_cta_button\" class=\"$class\" style=\"$style\" type=\"submit\" value=\"$cta_button\">";
+        $html .= apply_filters('mo_optin_form_after_cta_button', '', $this->optin_campaign_id, $this->optin_campaign_type, $this->optin_campaign_uuid, $atts);
 
         return $html;
     }

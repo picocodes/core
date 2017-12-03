@@ -486,6 +486,7 @@ jQuery(function(){
         $default_description_font = $this->customizer_defaults['description_font'];
         $default_note_font = $this->customizer_defaults['note_font'];
         $default_submit_button_font = $this->customizer_defaults['submit_button_font'];
+        $default_cta_button_font = $this->customizer_defaults['cta_button_font'];
 
         $headline_font = apply_filters('mo_get_optin_form_headline_font',
             self::_remove_web_safe_font(
@@ -501,7 +502,7 @@ jQuery(function(){
                 OptinCampaignsRepository::get_customizer_value($this->optin_campaign_id, 'description_font', $default_description_font)
             ),
             'description_font',
-            $default_headline_font,
+            $default_description_font,
             $this->optin_campaign_id
         );
 
@@ -510,7 +511,7 @@ jQuery(function(){
                 OptinCampaignsRepository::get_customizer_value($this->optin_campaign_id, 'note_font', $default_note_font)
             ),
             'note_font',
-            $default_headline_font,
+            $default_note_font,
             $this->optin_campaign_id
         );
 
@@ -519,7 +520,16 @@ jQuery(function(){
                 OptinCampaignsRepository::get_customizer_value($this->optin_campaign_id, 'submit_button_font', $default_submit_button_font)
             ),
             'submit_button_font',
-            $default_headline_font,
+            $default_submit_button_font,
+            $this->optin_campaign_id
+        );
+
+        $cta_button_font = apply_filters('mo_get_optin_form_cta_button_font',
+            self::_remove_web_safe_font(
+                OptinCampaignsRepository::get_customizer_value($this->optin_campaign_id, 'cta_button_font', $default_cta_button_font)
+            ),
+            'cta_button_font',
+            $default_cta_button_font,
             $this->optin_campaign_id
         );
 
@@ -536,6 +546,9 @@ jQuery(function(){
         }
         if (!empty($submit_button_font)) {
             $webfont[] = "'$submit_button_font'";
+        }
+        if (!empty($cta_button_font)) {
+            $webfont[] = "'$cta_button_font'";
         }
 
         $webfont = apply_filters('mo_optin_form_fonts_list', $webfont, $this->optin_campaign_id);

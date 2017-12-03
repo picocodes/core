@@ -403,7 +403,7 @@ CSS;
                                             <tbody>
                                             <tr>
                                                 <td class="footer-cta-text" align="left" valign="top" style="color: #5d5d5d; font-family: Verdana,Geneva,sans-serif; font-size: 12px; padding-left: 52px;">
-                                                    <a href="$mailoptin_url" style="color: #5d5d5d; text-decoration: none" target="_blank">$remove_branding_text</a>
+                                                    <a rel="nofollow" href="$mailoptin_url" style="color: #5d5d5d; text-decoration: none" target="_blank">$remove_branding_text</a>
                                                 </td>
                                             </tr>
                                             <tr>

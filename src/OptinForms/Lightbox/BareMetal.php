@@ -306,8 +306,9 @@ class BareMetal extends AbstractOptinTheme
     [mo-optin-form-fields-wrapper]
     [mo-optin-form-name-field]
     [mo-optin-form-email-field]
-    [/mo-optin-form-fields-wrapper]
     [mo-optin-form-submit-button]
+    [/mo-optin-form-fields-wrapper]
+    [mo-optin-form-cta-button]
     [mo-mailchimp-interests]
     [mo-optin-form-note class="mo-baremetal-note"]
 [/mo-optin-form-wrapper]
@@ -395,7 +396,7 @@ transition: box-shadow 0.45s, border-color 0.45s ease-in-out;
 font-size: 16px;
 }
 
-div#$optin_css_id.mo-baremetal-container #{$optin_css_id}_submit_button {
+div#$optin_css_id.mo-baremetal-container input[type="submit"].mo-optin-form-submit-button, input[type="submit"].mo-optin-form-cta-button {
 border: none;
 font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 line-height: normal;

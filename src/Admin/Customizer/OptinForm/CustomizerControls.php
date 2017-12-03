@@ -391,7 +391,7 @@ class CustomizerControls
                     $this->wp_customize,
                     $this->option_prefix . '[display_only_button]',
                     apply_filters('mo_optin_form_customizer_display_only_button_args', array(
-                            'label' => __('Only Display Button', 'mailoptin'),
+                            'label' => __('Display Only Button', 'mailoptin'),
                             'section' => $this->customizerClassInstance->fields_section_id,
                             'settings' => $this->option_prefix . '[display_only_button]',
                             'description' => __('Activate to hide opt-in form and display a call-to-action button instead.', 'mailoptin'),
@@ -581,11 +581,19 @@ class CustomizerControls
                 ),
                 'cta_button_action' => apply_filters('mo_optin_form_customizer_cta_button_action_args', array(
                         'type' => 'select',
-                        'choices' => ['navigate_to_url' => __('Navigate to URL', 'mailoptin'), 'display_optin_form' => __('Display Optin Form', 'mailoptin')],
+                        'choices' => ['navigate_to_url' => __('Navigate to URL', 'mailoptin'), 'reveal_optin_form' => __('Reveal Optin Form', 'mailoptin')],
                         'label' => __('Action After Button Click', 'mailoptin'),
                         'section' => $this->customizerClassInstance->fields_section_id,
                         'settings' => $this->option_prefix . '[cta_button_action]',
                         'priority' => 125,
+                    )
+                ),
+                'cta_button_navigation_url' => apply_filters('mo_optin_form_customizer_cta_button_navigation_url_args', array(
+                        'type' => 'text',
+                        'label' => __('Enter URL', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->fields_section_id,
+                        'settings' => $this->option_prefix . '[cta_button_navigation_url]',
+                        'priority' => 127,
                     )
                 ),
                 'cta_button' => apply_filters('mo_optin_form_customizer_cta_button_args',
