@@ -241,7 +241,9 @@
     wp.customize(mailoptin_optin_option_prefix + '[' + mailoptin_optin_campaign_id + '][display_only_button]', function (value) {
         value.bind(function (to) {
             $('.mo-optin-fields-wrapper').toggle(!to);
+            // toggling of cta button.
             $('.mo-optin-form-cta-button').toggle(to);
+            $('.mo-mailchimp-interest-container').toggle(!to);
             // add the flag indicator when active
             $('.mo-optin-form-wrapper').toggleClass('mo-cta-button-display');
         });

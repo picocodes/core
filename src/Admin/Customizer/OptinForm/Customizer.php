@@ -143,9 +143,9 @@ class Customizer
         $switch .= '<label id="mo-optin-active-switch" for="mo-optin-activate-switch" class="tgl-btn"></label>';
         $switch .= '<span title="' . $tooltip . '" class="mo-tooltipster dashicons dashicons-editor-help" style="margin: 9px 5px;font-size: 18px;cursor: pointer;"></span>';
         ?>
-        <script>
-            jQuery(function ($) {
-                $('#customize-header-actions').prepend($('<?php echo $switch; ?>'));
+        <script type="text/javascript">
+            jQuery(function () {
+                jQuery('#customize-header-actions').prepend(jQuery('<?php echo $switch; ?>'));
             });
         </script>
         <?php
