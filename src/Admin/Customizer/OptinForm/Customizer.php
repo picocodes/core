@@ -3,6 +3,7 @@
 namespace MailOptin\Core\Admin\Customizer\OptinForm;
 
 use MailOptin\Core\Admin\Customizer\UpsellCustomizerSection;
+use MailOptin\Core\OptinForms\AbstractOptinForm;
 use MailOptin\Core\Repositories\OptinCampaignsRepository;
 
 class Customizer
@@ -442,10 +443,10 @@ class Customizer
 
         do_action('mailoptin_register_optin_form_customizer', $optin_campaign_id);
 
-        $result = OptinFormFactory::make($optin_campaign_id);
+        $optin_class_instance = OptinFormFactory::make($optin_campaign_id);
 
         // $result is false of optin form class do not exist.
-        if (!$result) {
+        if (!$optin_class_instance) {
             wp_redirect(add_query_arg('optin-error', 'class-not-found', MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE));
             exit;
         }
@@ -458,7 +459,7 @@ class Customizer
         $this->add_sections($wp_customize);
         $this->add_panels($wp_customize);
         $this->add_settings($wp_customize, $option_prefix);
-        $this->add_controls($wp_customize, $option_prefix);
+        $this->add_controls($wp_customize, $option_prefix, $optin_class_instance);
 
         // rewrite panel name from blog name to template name.
         add_filter('pre_option_blogname',
@@ -702,10 +703,12 @@ class Customizer
      * Add customizer controls.
      *
      * @param \WP_Customize_Manager $wp_customize
+     * @param string $option_prefix
+     * @param AbstractOptinForm $optin_class_instance
      */
-    public function add_controls($wp_customize, $option_prefix)
+    public function add_controls($wp_customize, $option_prefix, $optin_class_instance = null)
     {
-        $instance = new CustomizerControls($wp_customize, $option_prefix, $this);
+        $instance = new CustomizerControls($wp_customize, $option_prefix, $this, $optin_class_instance);
         $instance->design_controls();
         $instance->headline_controls();
         $instance->description_controls();
@@ -717,7 +720,7 @@ class Customizer
         $instance->setup_display_rule_controls();
         $instance->page_filter_display_rule_controls();
 
-        do_action('mo_optin_after_customizer_controls', $instance, $wp_customize, $option_prefix, $this);
+        do_action('mo_optin_after_customizer_controls', $instance, $wp_customize, $option_prefix, $this, $optin_class_instance);
     }
 
     /**

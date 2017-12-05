@@ -9,6 +9,7 @@ use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Font_Stack_Contr
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Chosen_Select_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Tinymce_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Toggle_Control;
+use MailOptin\Core\OptinForms\AbstractOptinForm;
 use MailOptin\Core\Repositories\ConnectionsRepository;
 use MailOptin\Core\Repositories\OptinCampaignsRepository;
 
@@ -23,6 +24,9 @@ class CustomizerControls
     /** @var string DB option name prefix */
     private $option_prefix;
 
+    /** @var string DB option name prefix */
+    private $optin_class_instance;
+
     /** @var string default image URL for form_image partial */
     private $default_form_image;
 
@@ -33,12 +37,14 @@ class CustomizerControls
      * @param \WP_Customize_Manager $wp_customize
      * @param string $option_prefix
      * @param Customizer $customizerClassInstance
+     * @param null|AbstractOptinForm $optin_class_instance
      */
-    public function __construct($wp_customize, $option_prefix, $customizerClassInstance)
+    public function __construct($wp_customize, $option_prefix, $customizerClassInstance, $optin_class_instance = null)
     {
         $this->wp_customize = $wp_customize;
         $this->customizerClassInstance = $customizerClassInstance;
         $this->option_prefix = $option_prefix;
+        $this->optin_class_instance = $optin_class_instance;
     }
 
     public function design_controls()
@@ -384,22 +390,25 @@ class CustomizerControls
 
     public function fields_controls()
     {
+        $cta_button_action_description = '';
+        $cta_button_action_choices = [
+            'navigate_to_url' => __('Navigate to URL', 'mailoptin'),
+            'reveal_optin_form' => __('Reveal Optin Form', 'mailoptin')
+        ];
+
+        if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
+            $cta_button_action_description = sprintf(
+                __('Upgrade to %sMailOptin Premium%s to have the option to reveal optin form when CTA button is clicked.', 'mailoptin'),
+                '<a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=cta_button_action">',
+                '</a>'
+            );
+
+            unset($cta_button_action_choices['reveal_optin_form']);
+        }
+
         $field_controls_args = apply_filters(
             "mo_optin_form_customizer_fields_controls",
             array(
-                'display_only_button' => new WP_Customize_Toggle_Control(
-                    $this->wp_customize,
-                    $this->option_prefix . '[display_only_button]',
-                    apply_filters('mo_optin_form_customizer_display_only_button_args', array(
-                            'label' => __('Display Only Button', 'mailoptin'),
-                            'section' => $this->customizerClassInstance->fields_section_id,
-                            'settings' => $this->option_prefix . '[display_only_button]',
-                            'description' => __('Activate to hide opt-in form and display a call-to-action button instead.', 'mailoptin'),
-                            'type' => 'light',
-                            'priority' => 10,
-                        )
-                    )
-                ),
                 'hide_name_field' => new WP_Customize_Toggle_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[hide_name_field]',
@@ -565,90 +574,115 @@ class CustomizerControls
                             'priority' => 110
                         )
                     )
-                ),
-
-                'cta_button_header' => new WP_Customize_Custom_Content(
-                    $this->wp_customize,
-                    $this->option_prefix . '[cta_button_header]',
-                    apply_filters('mo_optin_form_customizer_cta_button_header_args', array(
-                            'content' => '<div class="mo-field-header">' . __("Call-to-action Button", 'mailoptin') . '</div>',
-                            'block_class' => 'mo-field-header-wrapper',
-                            'section' => $this->customizerClassInstance->fields_section_id,
-                            'settings' => $this->option_prefix . '[cta_button_header]',
-                            'priority' => 120,
-                        )
-                    )
-                ),
-                'cta_button_action' => apply_filters('mo_optin_form_customizer_cta_button_action_args', array(
-                        'type' => 'select',
-                        'choices' => ['navigate_to_url' => __('Navigate to URL', 'mailoptin'), 'reveal_optin_form' => __('Reveal Optin Form', 'mailoptin')],
-                        'label' => __('Action After Button Click', 'mailoptin'),
-                        'section' => $this->customizerClassInstance->fields_section_id,
-                        'settings' => $this->option_prefix . '[cta_button_action]',
-                        'priority' => 125,
-                    )
-                ),
-                'cta_button_navigation_url' => apply_filters('mo_optin_form_customizer_cta_button_navigation_url_args', array(
-                        'type' => 'text',
-                        'label' => __('Enter URL', 'mailoptin'),
-                        'description' => __('URL should begin with http or https.', 'mailoptin'),
-                        'section' => $this->customizerClassInstance->fields_section_id,
-                        'settings' => $this->option_prefix . '[cta_button_navigation_url]',
-                        'priority' => 127,
-                    )
-                ),
-                'cta_button' => apply_filters('mo_optin_form_customizer_cta_button_args',
-                    array(
-                        'type' => 'text',
-                        'label' => __('CTA Button', 'mailoptin'),
-                        'section' => $this->customizerClassInstance->fields_section_id,
-                        'settings' => $this->option_prefix . '[cta_button]',
-                        'priority' => 130,
-                        'description' => __('The value/label of the call-to-action button.', 'mailoptin'),
-                    )
-                ),
-                'cta_button_color' => new \WP_Customize_Color_Control(
-                    $this->wp_customize,
-                    $this->option_prefix . '[cta_button_color]',
-                    apply_filters('mo_optin_form_customizer_cta_button_color_args', array(
-                            'label' => __('CTA Button Color', 'mailoptin'),
-                            'section' => $this->customizerClassInstance->fields_section_id,
-                            'settings' => $this->option_prefix . '[cta_button_color]',
-                            'priority' => 140,
-                            'description' => __('The text color for the call-to-action button field.', 'mailoptin'),
-                        )
-                    )
-                ),
-                'cta_button_background' => new \WP_Customize_Color_Control(
-                    $this->wp_customize,
-                    $this->option_prefix . '[cta_button_background]',
-                    apply_filters('mo_optin_form_customizer_cta_button_background_args', array(
-                            'label' => __('CTA Button Background', 'mailoptin'),
-                            'section' => $this->customizerClassInstance->fields_section_id,
-                            'settings' => $this->option_prefix . '[cta_button_background]',
-                            'priority' => 150,
-                            'description' => __('The background color of the call-to-action button.', 'mailoptin'),
-                        )
-                    )
-                ),
-                'cta_button_font' => new WP_Customize_Google_Font_Control(
-                    $this->wp_customize,
-                    $this->option_prefix . '[cta_button_font]',
-                    apply_filters('mo_optin_form_customizer_cta_button_font_args', array(
-                            'label' => __('CTA Button Font'),
-                            'section' => $this->customizerClassInstance->fields_section_id,
-                            'settings' => $this->option_prefix . '[cta_button_font]',
-                            'description' => __('The font family for the call-to-action button field.', 'mailoptin'),
-                            'count' => 200,
-                            'priority' => 160
-                        )
-                    )
-                ),
+                )
             ),
             $this->wp_customize,
             $this->option_prefix,
             $this->customizerClassInstance
         );
+
+        if (in_array($this->optin_class_instance->cta_button, $this->optin_class_instance->features_support())) {
+
+            $field_controls_args['display_only_button'] = new WP_Customize_Toggle_Control(
+                $this->wp_customize,
+                $this->option_prefix . '[display_only_button]',
+                apply_filters('mo_optin_form_customizer_display_only_button_args', array(
+                        'label' => __('Display Only Button', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->fields_section_id,
+                        'settings' => $this->option_prefix . '[display_only_button]',
+                        'description' => __('Activate to hide opt-in form and display a call-to-action button instead.', 'mailoptin'),
+                        'type' => 'light',
+                        'priority' => 8,
+                    )
+                )
+            );
+
+            $field_controls_args['cta_button_header'] = new WP_Customize_Custom_Content(
+                $this->wp_customize,
+                $this->option_prefix . '[cta_button_header]',
+                apply_filters('mo_optin_form_customizer_cta_button_header_args', array(
+                        'content' => '<div class="mo-field-header">' . __("Call-to-action Button", 'mailoptin') . '</div>',
+                        'block_class' => 'mo-field-header-wrapper',
+                        'section' => $this->customizerClassInstance->fields_section_id,
+                        'settings' => $this->option_prefix . '[cta_button_header]',
+                        'priority' => 120,
+                    )
+                )
+            );
+
+            $field_controls_args['cta_button_action'] = apply_filters('mo_optin_form_customizer_cta_button_action_args', array(
+                    'type' => 'select',
+                    'description' => $cta_button_action_description,
+                    'choices' => $cta_button_action_choices,
+                    'label' => __('Action After Button Click', 'mailoptin'),
+                    'section' => $this->customizerClassInstance->fields_section_id,
+                    'settings' => $this->option_prefix . '[cta_button_action]',
+                    'priority' => 125,
+                )
+            );
+
+            $field_controls_args['cta_button_navigation_url'] = apply_filters('mo_optin_form_customizer_cta_button_navigation_url_args', array(
+                    'type' => 'text',
+                    'label' => __('Enter URL', 'mailoptin'),
+                    'description' => __('URL should begin with http or https.', 'mailoptin'),
+                    'section' => $this->customizerClassInstance->fields_section_id,
+                    'settings' => $this->option_prefix . '[cta_button_navigation_url]',
+                    'input_attrs' => ['placeholder' => 'https://'],
+                    'priority' => 127,
+                )
+            );
+
+            $field_controls_args['cta_button'] = apply_filters('mo_optin_form_customizer_cta_button_args',
+                array(
+                    'type' => 'text',
+                    'label' => __('CTA Button', 'mailoptin'),
+                    'section' => $this->customizerClassInstance->fields_section_id,
+                    'settings' => $this->option_prefix . '[cta_button]',
+                    'priority' => 130,
+                    'description' => __('The value/label of the call-to-action button.', 'mailoptin'),
+                )
+            );
+
+            $field_controls_args['cta_button_color'] = new \WP_Customize_Color_Control(
+                $this->wp_customize,
+                $this->option_prefix . '[cta_button_color]',
+                apply_filters('mo_optin_form_customizer_cta_button_color_args', array(
+                        'label' => __('CTA Button Color', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->fields_section_id,
+                        'settings' => $this->option_prefix . '[cta_button_color]',
+                        'priority' => 140,
+                        'description' => __('The text color for the call-to-action button field.', 'mailoptin'),
+                    )
+                )
+            );
+
+            $field_controls_args['cta_button_background'] = new \WP_Customize_Color_Control(
+                $this->wp_customize,
+                $this->option_prefix . '[cta_button_background]',
+                apply_filters('mo_optin_form_customizer_cta_button_background_args', array(
+                        'label' => __('CTA Button Background', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->fields_section_id,
+                        'settings' => $this->option_prefix . '[cta_button_background]',
+                        'priority' => 150,
+                        'description' => __('The background color of the call-to-action button.', 'mailoptin'),
+                    )
+                )
+            );
+
+            $field_controls_args['cta_button_font'] = new WP_Customize_Google_Font_Control(
+                $this->wp_customize,
+                $this->option_prefix . '[cta_button_font]',
+                apply_filters('mo_optin_form_customizer_cta_button_font_args', array(
+                        'label' => __('CTA Button Font'),
+                        'section' => $this->customizerClassInstance->fields_section_id,
+                        'settings' => $this->option_prefix . '[cta_button_font]',
+                        'description' => __('The font family for the call-to-action button field.', 'mailoptin'),
+                        'count' => 200,
+                        'priority' => 160
+                    )
+                )
+            );
+        }
 
         do_action('mailoptin_before_fields_controls_addition');
 

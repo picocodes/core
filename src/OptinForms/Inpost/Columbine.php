@@ -111,6 +111,11 @@ class Columbine extends AbstractOptinTheme
         parent::__construct($optin_campaign_id);
     }
 
+    public function features_support()
+    {
+        return [$this->cta_button];
+    }
+
     /**
      * @param mixed $settings
      * @param CustomizerSettings $CustomizerSettingsInstance
@@ -244,6 +249,7 @@ class Columbine extends AbstractOptinTheme
         // change toggling of nae field to 'refresh' transport to handle switching different styling
         // for when name field is available or not.
         $fields_settings['hide_name_field']['transport'] = 'refresh';
+        $fields_settings['display_only_button']['transport'] = 'refresh';
 
         return $fields_settings;
     }

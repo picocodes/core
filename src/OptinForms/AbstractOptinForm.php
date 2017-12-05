@@ -26,6 +26,9 @@ abstract class AbstractOptinForm extends AbstractCustomizer implements OptinForm
     /** @var string optin wrapper CSS ID */
     protected $optin_css_id;
 
+    // feature support flags
+    public $cta_button = 'cta_button';
+
     /**
      * ID of optin form.
      *
@@ -64,6 +67,15 @@ abstract class AbstractOptinForm extends AbstractCustomizer implements OptinForm
         }
 
         parent::__construct($optin_campaign_id);
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return array
+     */
+    public function features_support()
+    {
+        return [];
     }
 
     /**
