@@ -373,9 +373,12 @@ class Columbine extends AbstractOptinTheme
     [mo-optin-form-description class="columbine-caption"]
     <div class="columbine-form">
     [mo-optin-form-error]
+    [mo-optin-form-fields-wrapper]
     <div id="columbine-name-field" class="columbine-three-col1">[mo-optin-form-name-field class="columbine-input"]</div>
-                <div id="columbine-email-field" class="columbine-three-col2">[mo-optin-form-email-field class="columbine-input"]</div>
-                <div id="columbine-submit-button" class="columbine-three-col3">[mo-optin-form-submit-button class="columbine-submit"]</div>
+    <div id="columbine-email-field" class="columbine-three-col2">[mo-optin-form-email-field class="columbine-input"]</div>
+    <div id="columbine-submit-button" class="columbine-three-col3">[mo-optin-form-submit-button class="columbine-submit"]</div>
+    [/mo-optin-form-fields-wrapper]
+    [mo-optin-form-cta-button]
     </div>
     [mo-mailchimp-interests]
     [mo-optin-form-note class="columbine-note"]

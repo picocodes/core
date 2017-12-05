@@ -686,7 +686,6 @@ jQuery(function(){
         $data['name_missing_error'] = apply_filters('mo_optin_campaign_name_missing_error', __('Please enter a valid name.', 'mailoptin'));
         $data['honeypot_error'] = apply_filters('mo_optin_campaign_honeypot_error', __('Your submission has been flagged as potential spam.', 'mailoptin'));
 
-
         /** CTA button: navigation url support */
         if ($cta_display_only_button_status) {
             $data['cta_display'] = true;
