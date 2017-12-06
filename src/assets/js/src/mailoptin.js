@@ -141,9 +141,10 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                             }
                             else if (optin_js_config.cta_action === 'reveal_optin_form') {
                                 var cache = $('#' + $optin_css_id);
-                                cache.find('.mo-optin-form-cta-button').slideUp();
-                                cache.find('.mo-optin-fields-wrapper').slideDown();
-                                cache.find('.mo-optin-form-submit-button').slideDown();
+                                cache.find('.mo-optin-form-cta-button').hide(100, function () {
+                                    cache.find('.mo-optin-fields-wrapper').slideDown();
+                                    cache.find('.mo-optin-form-submit-button').slideDown();
+                                });
                             }
                             else {
                                 console.log('something went wrong.');
@@ -889,10 +890,8 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
              * Initialize optin event handlers.
              */
             initOptinForms: function () {
-                /**
-                 * simply this for all optin types using one single selector. initOptin
-                 */
-                $(".mo-optin-form-lightbox, .mo-optin-form-bar, .mo-optin-form-slidein").each(function (index, element) {
+
+                $(".moOptinForm").each(function (index, element) {
                     var optin_container = $(element);
                     optin_container.mailoptin();
                 });

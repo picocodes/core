@@ -491,16 +491,16 @@ div#$optin_css_id.columbine-container input.columbine-input {
          margin: 0;
      }
 
-div#$optin_css_id.columbine-container input.columbine-submit {
+div#$optin_css_id.columbine-container input.columbine-submit, div#$optin_css_id.columbine-container input[type="submit"].mo-optin-form-cta-button {
          display: block;
          -webkit-box-sizing: border-box;
          -moz-box-sizing: border-box;
          box-sizing: border-box;
          -webkit-appearance: none;
-         border: 1px solid #54C3A5;
+         border: 0;
          background: #54C3A5;
          font-family: 'Lora', times, serif;
-         padding: 12px 18px;
+         padding: 13px 18px;
          font-size: 16px;
          line-height: 16px;
          text-align: center;
@@ -510,6 +510,7 @@ div#$optin_css_id.columbine-container input.columbine-submit {
          font-weight: 600;
          width: 100%;
          margin: 0;
+         border-radius: 0;
      }
 
 div#$optin_css_id.columbine-container div.columbine-note {

@@ -592,7 +592,7 @@ class CustomizerControls
                         'settings' => $this->option_prefix . '[display_only_button]',
                         'description' => __('Activate to hide opt-in form and display a call-to-action button instead.', 'mailoptin'),
                         'type' => 'light',
-                        'priority' => 8,
+                        'priority' => 3,
                     )
                 )
             );

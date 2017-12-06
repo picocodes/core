@@ -95,6 +95,11 @@ class Lupin extends AbstractOptinTheme
         parent::__construct($optin_campaign_id);
     }
 
+    public function features_support()
+    {
+        return [$this->cta_button];
+    }
+
     /**
      * @param mixed $settings
      * @param CustomizerSettings $CustomizerSettingsInstance
@@ -296,9 +301,12 @@ class Lupin extends AbstractOptinTheme
     [mo-optin-form-description class="lupinSidebar-description"]
     <div class="lupinSidebar-form">
     [mo-optin-form-error]
+    [mo-optin-form-fields-wrapper]
     [mo-optin-form-name-field class="lupinSidebar-input"]
     [mo-optin-form-email-field class="lupinSidebar-input"]
     [mo-optin-form-submit-button class="lupinSidebar-submit"]
+    [/mo-optin-form-fields-wrapper]
+    [mo-optin-form-cta-button]
     </div>
     [mo-mailchimp-interests]
     [mo-optin-form-note class="lupinSidebar-note"]
@@ -373,7 +381,7 @@ div#$optin_css_id.lupinSidebar-container input.lupinSidebar-input {
          outline: none;
      }
 
-div#$optin_css_id.lupinSidebar-container input.lupinSidebar-submit {
+div#$optin_css_id.lupinSidebar-container input.lupinSidebar-submit, div#$optin_css_id.lupinSidebar-container input[type="submit"].mo-optin-form-cta-button {
          display: block;
          width: 100%;
          -webkit-box-sizing: border-box;

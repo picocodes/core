@@ -366,7 +366,7 @@ jQuery(function(){
 
             $barWrapperStyle = implode(';', $bar_wrapper_style_properties);
 
-            $optin_form .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type} {$name_email_class_indicator}{$position_class}{$is_sticky}\" data-optin-type='{$this->optin_campaign_type}' style='$barWrapperStyle'>";
+            $optin_form .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type} {$name_email_class_indicator}{$display_only_button_class_indicator}{$position_class}{$is_sticky}\" data-optin-type='{$this->optin_campaign_type}' style='$barWrapperStyle'>";
         }
 
         if ($this->optin_campaign_type == 'slidein') {
@@ -385,15 +385,15 @@ jQuery(function(){
 
             $slideinWrapperStyle = implode(';', $slidein_wrapper_style_properties);
 
-            $optin_form .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type}{$position_class}\" data-optin-type='{$this->optin_campaign_type}' style='$slideinWrapperStyle'>";
+            $optin_form .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type}{$display_only_button_class_indicator}{$position_class}\" data-optin-type='{$this->optin_campaign_type}' style='$slideinWrapperStyle'>";
         }
 
         if ($this->optin_campaign_type == 'sidebar') {
-            $optin_form .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type} {$name_email_class_indicator}\" data-optin-type='{$this->optin_campaign_type}'>";
+            $optin_form .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type} {$name_email_class_indicator}{$display_only_button_class_indicator}\" data-optin-type='{$this->optin_campaign_type}'>";
         }
 
         if ($this->optin_campaign_type == 'inpost') {
-            $optin_form .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type} {$name_email_class_indicator}\" data-optin-type='{$this->optin_campaign_type}'>";
+            $optin_form .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type} {$name_email_class_indicator}{$display_only_button_class_indicator}\" data-optin-type='{$this->optin_campaign_type}'>";
         }
 
         $optin_form .= "<div class='mo-optin-form-container' id='{$optin_css_id}_container' style='position:relative;margin: 0 auto;'>";
