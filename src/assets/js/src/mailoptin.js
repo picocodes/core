@@ -141,7 +141,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                             }
                             else if (optin_js_config.cta_action === 'reveal_optin_form') {
                                 var cache = $('#' + $optin_css_id);
-                                cache.find('.mo-optin-form-cta-button').hide(100, function () {
+                                cache.find('.mo-optin-form-cta-button, mo-optin-form-cta-wrapper').hide(100, function () {
                                     cache.find('.mo-optin-fields-wrapper').slideDown();
                                     cache.find('.mo-optin-form-submit-button').slideDown();
                                 });

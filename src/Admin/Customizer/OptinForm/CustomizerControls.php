@@ -587,7 +587,7 @@ class CustomizerControls
                 $this->wp_customize,
                 $this->option_prefix . '[display_only_button]',
                 apply_filters('mo_optin_form_customizer_display_only_button_args', array(
-                        'label' => __('Display Only Button', 'mailoptin'),
+                        'label' => __('Display Only CTA Button', 'mailoptin'),
                         'section' => $this->customizerClassInstance->fields_section_id,
                         'settings' => $this->option_prefix . '[display_only_button]',
                         'description' => __('Activate to hide opt-in form and display a call-to-action button instead.', 'mailoptin'),
