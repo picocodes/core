@@ -66,7 +66,7 @@ class AbstractCustomizer
         $defaults['submit_button_background'] = apply_filters('mo_optin_form_submit_button_background_default', '');
         $defaults['submit_button_font'] = apply_filters('mo_optin_form_submit_button_font_default', '');$defaults['cta_button'] = apply_filters('mo_optin_form_cta_button_default', __('Subscribe Now', 'mailoptin'));
 
-        $defaults['cta_button_action'] = apply_filters('mo_optin_form_cta_button_action_default', 'navigate_to_url');
+        $defaults['cta_button_action'] = apply_filters('mo_optin_form_cta_button_action_default', 'reveal_optin_form');
         $defaults['cta_button_navigation_url'] = apply_filters('mo_optin_form_cta_button_navigation_url_default', '');
         $defaults['cta_button'] = apply_filters('mo_optin_form_cta_button_default', __('Take Action Now!', 'mailoptin'));
         $defaults['cta_button_color'] = apply_filters('mo_optin_form_cta_button_color_default', $defaults['submit_button_color']);

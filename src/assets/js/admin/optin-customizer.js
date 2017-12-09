@@ -204,13 +204,13 @@
 
     wp.customize(mailoptin_optin_option_prefix + '[' + mailoptin_optin_campaign_id + '][submit_button_background]', function (value) {
         value.bind(function (to) {
-            $('.mo-optin-form-submit-button').css('background-color', to)
+            $('.mo-optin-form-submit-button').css('background-color', to);
         });
     });
 
     wp.customize(mailoptin_optin_option_prefix + '[' + mailoptin_optin_campaign_id + '][submit_button_color]', function (value) {
         value.bind(function (to) {
-            $('.mo-optin-form-submit-button').css('color', to)
+            $('.mo-optin-form-submit-button').css('color', to);
         });
     });
 
@@ -222,13 +222,13 @@
 
     wp.customize(mailoptin_optin_option_prefix + '[' + mailoptin_optin_campaign_id + '][cta_button_background]', function (value) {
         value.bind(function (to) {
-            $('.mo-optin-form-cta-button').css('background-color', to)
+            $('.mo-optin-form-cta-button').css('background-color', to);
         });
     });
 
     wp.customize(mailoptin_optin_option_prefix + '[' + mailoptin_optin_campaign_id + '][cta_button_color]', function (value) {
         value.bind(function (to) {
-            $('.mo-optin-form-cta-button').css('color', to)
+            $('.mo-optin-form-cta-button').css('color', to);
         });
     });
 
@@ -241,8 +241,8 @@
     wp.customize(mailoptin_optin_option_prefix + '[' + mailoptin_optin_campaign_id + '][display_only_button]', function (value) {
         value.bind(function (to) {
             $('.mo-optin-fields-wrapper').toggle(!to);
-            // toggling of cta button.
             $('.mo-optin-form-cta-button').toggle(to);
+            $('.mo-optin-form-cta-wrapper').toggle(to);
             $('.mo-mailchimp-interest-container').toggle(!to);
             // add the flag indicator when CTA button is active
             $('.moOptinForm').toggleClass('mo-cta-button-display', to);

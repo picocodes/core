@@ -12,6 +12,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
     {
         add_shortcode('mo-optin-form-wrapper', [$this, 'shortcode_optin_form_wrapper']);
         add_shortcode('mo-optin-form-fields-wrapper', [$this, 'shortcode_optin_form_fields_wrapper']);
+        add_shortcode('mo-optin-form-cta-wrapper', [$this, 'shortcode_optin_form_cta_wrapper']);
         add_shortcode('mo-optin-form-headline', [$this, 'shortcode_optin_form_headline']);
         add_shortcode('mo-close-optin', [$this, 'shortcode_optin_form_close_button']);
         add_shortcode('mo-optin-form-image', [$this, 'shortcode_optin_form_image']);
@@ -320,11 +321,49 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
 
         $tag = $atts['tag'];
 
-        $class = esc_attr($atts['class']);
-        $class = "mo-optin-fields-wrapper $class";
+        $class = ' ' . esc_attr($atts['class']);
+        $class = "mo-optin-fields-wrapper{$class}";
 
         $style = '';
         if ($this->get_customizer_value('display_only_button')) {
+            $style .= 'display:none;';
+        }
+
+        $style .= esc_attr($atts['style']);
+
+        $html = "<$tag class=\"$class\" style=\"$style\">";
+        $html .= do_shortcode($content);
+        $html .= "</$tag>";
+
+        return $html;
+    }
+
+    /**
+     * Optin form fields wrapper shortcode.
+     *
+     * @param array $atts
+     * @param string $content
+     *
+     * @return string
+     */
+    public function shortcode_optin_form_cta_wrapper($atts, $content)
+    {
+        $atts = shortcode_atts(
+            array(
+                'tag' => 'div',
+                'class' => '',
+                'style' => '',
+            ),
+            $atts
+        );
+
+        $tag = $atts['tag'];
+
+        $class = ' ' . esc_attr($atts['class']);
+        $class = "mo-optin-form-cta-wrapper{$class}";
+
+        $style = '';
+        if ($this->get_customizer_value('display_only_button') !== true) {
             $style .= 'display:none;';
         }
 

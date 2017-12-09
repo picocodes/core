@@ -135,15 +135,17 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                         $('#' + $optin_css_id + '_cta_button').on('click', function (e) {
                             e.preventDefault();
                             if (optin_js_config.cta_action === 'navigate_to_url' && self.is_defined_not_empty(optin_js_config.cta_navigate_url)) {
+                                // bail if we are in customizer preview.
+                                if ($.MailOptin.is_customize_preview === true) return;
                                 // set cookie for this option conversion when button is clicked.
                                 self.set_cookie('success', $optin_uuid, optin_js_config);
                                 window.location.assign(optin_js_config.cta_navigate_url);
                             }
                             else if (optin_js_config.cta_action === 'reveal_optin_form') {
                                 var cache = $('#' + $optin_css_id);
-                                cache.find('.mo-optin-form-cta-button, mo-optin-form-cta-wrapper').hide(100, function () {
-                                    cache.find('.mo-optin-fields-wrapper').slideDown();
-                                    cache.find('.mo-optin-form-submit-button').slideDown();
+                                cache.find('.mo-optin-form-cta-button, .mo-optin-form-cta-wrapper').hide(100, function () {
+                                    cache.find('.mo-optin-fields-wrapper').show();
+                                    cache.find('.mo-optin-form-submit-button').show();
                                 });
                             }
                             else {
