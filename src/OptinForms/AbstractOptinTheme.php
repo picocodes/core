@@ -412,7 +412,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
     public function branding_attribute()
     {
         if ($this->get_customizer_value('remove_branding') === true) {
-            return;
+            return '';
         }
 
         $affiliate_url = trim(Settings::instance()->mailoptin_affiliate_url());
@@ -441,6 +441,9 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         $headline = apply_filters('mo_optin_form_before_headline', '', $this->optin_campaign_id, $this->optin_campaign_type, $this->optin_campaign_uuid, $atts);
         $headline .= $this->get_customizer_value('headline');
         $headline .= apply_filters('mo_optin_form_after_headline', '', $this->optin_campaign_id, $this->optin_campaign_type, $this->optin_campaign_uuid, $atts);
+
+        $headline = do_shortcode($headline);
+
         $headline_styles = $this->headline_styles();
 
         $atts = shortcode_atts(
@@ -598,6 +601,8 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         $description .= $this->get_customizer_value('description');
         $description .= apply_filters('mo_optin_form_after_description', '', $this->optin_campaign_id, $this->optin_campaign_type, $this->optin_campaign_uuid, $atts);
 
+        $description = do_shortcode($description);
+
         $description_styles = $this->description_styles();
 
         $atts = shortcode_atts(
@@ -631,6 +636,8 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         $note = apply_filters('mo_optin_form_before_note', '', $this->optin_campaign_id, $this->optin_campaign_type, $this->optin_campaign_uuid, $atts);
         $note .= $this->get_customizer_value('note');
         $note .= apply_filters('mo_optin_form_after_note', '', $this->optin_campaign_id, $this->optin_campaign_type, $this->optin_campaign_uuid, $atts);
+
+        $note = do_shortcode($note);
 
         $note_styles = $this->note_styles();
 

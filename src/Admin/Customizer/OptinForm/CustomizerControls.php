@@ -357,12 +357,12 @@ class CustomizerControls
                     $this->wp_customize,
                     $this->option_prefix . '[note_close_optin_onclick]',
                     apply_filters('mo_optin_form_customizer_note_close_optin_onclick_args', array(
-                            'label' => __('Close Optin On Click', 'mailoptin'),
+                            'label' => __('Close Optin on Click', 'mailoptin'),
                             'section' => $this->customizerClassInstance->note_section_id,
                             'settings' => $this->option_prefix . '[note_close_optin_onclick]',
                             'description' => sprintf(
                                 __('Activate if you want a click on "note" to close the optin form. Particularly useful if close icon is hidden. %sLearn More%s', 'mailoptin'),
-                                '<a href="#" target="_blank">', '</a>'
+                                '<a href="https://mailoptin.io/article/text-link-closes-popup-optin-form/" target="_blank">', '</a>'
                             ),
                             'priority' => 40,
                         )
