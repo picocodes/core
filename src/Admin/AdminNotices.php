@@ -164,7 +164,7 @@ class AdminNotices
     {
         if (defined('MAILOPTIN_DETACH_LIBSODIUM')) return;
 
-        if (!PAnD::is_admin_notice_active('optin-campaign-count-limit-exceeded-3')) {
+        if (!PAnD::is_admin_notice_active('optin-campaign-count-limit-exceeded-7')) {
             return;
         }
 
@@ -178,7 +178,7 @@ class AdminNotices
             '<strong>', MO_LITE_OPTIN_CAMPAIGN_LIMIT, '</strong>', '<a href="' . $upgrade_url . '" target="_blank"><strong>MailOptin premium</strong></a>'
         );
 
-        echo '<div data-dismissible="optin-campaign-count-limit-exceeded-3" class="updated notice notice-success is-dismissible">';
+        echo '<div data-dismissible="optin-campaign-count-limit-exceeded-7" class="updated notice notice-success is-dismissible">';
         echo "<p>$notice</p>";
         echo '</div>';
     }

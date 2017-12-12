@@ -6,7 +6,9 @@ class ProUpgrade
 {
     public function __construct()
     {
-        add_action('admin_menu', array($this, 'register_settings_page'));
+        add_action('plugins_loaded', function () {
+            add_action('admin_menu', array($this, 'register_settings_page'));
+        }, 399);
 
         $basename = plugin_basename(MAILOPTIN_SYSTEM_FILE_PATH);
         $prefix = is_network_admin() ? 'network_admin_' : '';

@@ -67,7 +67,7 @@ class InPost
                     break;
             }
 
-            if (!defined('MAILOPTIN_DISPLAY_RULES_FLAG') || Repository::get_customizer_value($id, 'load_optin_globally')) {
+            if (!defined('MAILOPTIN_DETACH_LIBSODIUM') || Repository::get_customizer_value($id, 'load_optin_globally')) {
 
                 $optin_form = OptinFormFactory::build($id);
 

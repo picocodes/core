@@ -151,7 +151,7 @@ class CustomizerControls
             )
         );
 
-        if (!defined('MAILOPTIN_DISPLAY_RULES_FLAG')) {
+        if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
             $content = sprintf(
                 '<div class="mo-pro"><a href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=custom_css_notice" target="_blank">%s</a></div>',
                 __('Premium Version Available', 'mailoptin')
@@ -1017,7 +1017,7 @@ class CustomizerControls
             $this->customizerClassInstance
         );
 
-        if (!defined('MAILOPTIN_DISPLAY_RULES_FLAG')) {
+        if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
             $content = sprintf(
                 '<div class="mo-pro"><a href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=quick_setup_panel" target="_blank">%s</a></div>',
                 __('Premium Version Available', 'mailoptin')
@@ -1062,7 +1062,7 @@ class CustomizerControls
     {
         $setup_display_control_args = [];
 
-        if (defined('MAILOPTIN_DISPLAY_RULES_FLAG')) {
+        if (defined('MAILOPTIN_DETACH_LIBSODIUM')) {
 
             $setup_display_control_args['load_optin_globally'] = new WP_Customize_Toggle_Control(
                 $this->wp_customize,
