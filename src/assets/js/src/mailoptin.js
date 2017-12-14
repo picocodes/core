@@ -406,9 +406,12 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 }
 
                 if (optin_type !== undefined && optin_type === 'lightbox') {
-                    this.MoModalBox(optin_config);
                     // trigger optin show event.
-                    $(this).trigger('moOptin:show', [optin_config.optin_uuid]);
+                    $(document.body).on($.MoModalBox.OPEN, function (e, elm, optin_config) {
+                        $(this).trigger('moOptin:show', [optin_config.optin_uuid]);
+                    });
+
+                    this.MoModalBox(optin_config);
                     // stop further execution
                     return;
                 }
