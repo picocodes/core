@@ -210,6 +210,13 @@ class Custom_Settings_Page_Api
             $this->option_name
         );
 
+        // skip unchanged (with asterisk ** in its data) api key/token values.
+        foreach ($sanitized_data as $key => $value) {
+            if(strpos($value, '**') !== false) {
+                unset($sanitized_data[$key]);
+            }
+        }
+
         do_action('wp_cspa_persist_settings', $sanitized_data, $this->option_name);
 
         if (!apply_filters('wp_cspa_disable_default_persistence', false)) {
