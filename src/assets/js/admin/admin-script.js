@@ -66,8 +66,9 @@
             action: 'mailoptin_toggle_optin_activated',
             id: $(_this).data('mo-optin-id'),
             status: _this.checked
-        }, function ($response) {
-            // do nothing
+        }, function () {
+            // trigger act on activation immediately.
+            $.post(ajaxurl, {action: 'mailoptin_act_on_toggle_optin_activated'});
         });
     });
 

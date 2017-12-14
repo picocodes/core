@@ -23,14 +23,13 @@ class AjaxHandler
 {
     public function __construct()
     {
-        add_action('admin_init', [$this, 'act_on_option_activation_actions']);
-
         add_action('wp_ajax_mailoptin_send_test_email', array($this, 'send_test_email'));
         add_action('wp_ajax_mailoptin_create_optin_campaign', [$this, 'create_optin_campaign']);
         add_action('wp_ajax_mailoptin_create_email_campaign', [$this, 'create_email_campaign']);
         add_action('wp_ajax_mailoptin_customizer_fetch_email_list', [$this, 'customizer_fetch_email_list']);
         add_action('wp_ajax_mailoptin_optin_toggle_active', [$this, 'toggle_optin_active_status']);
         add_action('wp_ajax_mailoptin_toggle_optin_activated', [$this, 'optin_listing_activated_status_toggle']);
+        add_action('wp_ajax_mailoptin_act_on_toggle_optin_activated', [$this, 'act_on_option_activation_actions']);
         add_action('wp_ajax_mailoptin_optin_type_selection', [$this, 'optin_type_selection']);
 
         add_action('wp_ajax_mailoptin_track_impression', [$this, 'track_optin_impression']);
