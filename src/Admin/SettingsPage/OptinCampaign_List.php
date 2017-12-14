@@ -21,10 +21,10 @@ class OptinCampaign_List extends \WP_List_Table
     private $lite_optin_types_support;
 
     /** @var array */
-    private $lite_optin_classes_support;
-
-    /** @var string */
     private $lite_themes;
+
+    /** @var array */
+    private $fqn_lite_themes;
 
     /**
      * Class constructor
@@ -38,7 +38,10 @@ class OptinCampaign_List extends \WP_List_Table
         ];
 
         $this->lite_optin_types_support = array_keys($this->lite_themes);
-        $this->lite_optin_classes_support = array_values($this->lite_themes);
+
+        foreach ($this->lite_themes as $type => $class) {
+            $this->fqn_lite_themes[] = $type . '/' . $class;
+        }
 
         $this->wpdb = $wpdb;
         $this->table = $this->wpdb->prefix . Core::optin_campaigns_table_name;
@@ -86,11 +89,9 @@ class OptinCampaign_List extends \WP_List_Table
 
         // if this is lite and $optin_type is not specified. That is "All" optin needed to be fetched regardless of type.
         if (!defined('MAILOPTIN_DETACH_LIBSODIUM') && empty($optin_type)) {
-            $_optin_types = "('" . implode("','", $this->lite_optin_types_support) . "')";
-            $_optin_classes = "('" . implode("','", $this->lite_optin_classes_support) . "')";
+            $_lite_themes = "('" . implode("','", $this->fqn_lite_themes) . "')";
 
-            $sql .= " WHERE optin_type IN $_optin_types";
-            $sql .= " AND optin_class IN $_optin_classes";
+            $sql .= " WHERE CONCAT_WS('/', optin_type,optin_class) IN $_lite_themes";
         }
 
         $sql .= " ORDER BY id DESC";
