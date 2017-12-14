@@ -17,15 +17,29 @@ class OptinCampaign_List extends \WP_List_Table
     /** @var \wpdb */
     private $wpdb;
 
-    /** @var string */
+    /** @var array */
     private $lite_optin_types_support;
+
+    /** @var array */
+    private $lite_optin_classes_support;
+
+    /** @var string */
+    private $lite_themes;
 
     /**
      * Class constructor
      */
     public function __construct($wpdb)
     {
-        $this->lite_optin_types_support = ['sidebar', 'lightbox', 'inpost'];
+        $this->lite_themes = [
+            'lightbox' => 'BareMetal',
+            'inpost' => 'Columbine',
+            'sidebar' => 'Lupin',
+        ];
+
+        $this->lite_optin_types_support = array_keys($this->lite_themes);
+        $this->lite_optin_classes_support = array_values($this->lite_themes);
+
         $this->wpdb = $wpdb;
         $this->table = $this->wpdb->prefix . Core::optin_campaigns_table_name;
         parent::__construct(array(
@@ -47,31 +61,62 @@ class OptinCampaign_List extends \WP_List_Table
      */
     public function get_optin_campaign($per_page, $current_page = 1, $optin_type = '')
     {
-        if (!defined('MAILOPTIN_DETACH_LIBSODIUM') &&
-            !empty($optin_type) &&
-            !in_array($optin_type, $this->lite_optin_types_support)
-        ) {
+        if (!defined('MAILOPTIN_DETACH_LIBSODIUM') && !empty($optin_type) && !in_array($optin_type, $this->lite_optin_types_support)) {
             return [];
         }
 
         $per_page = absint($per_page);
         $current_page = absint($current_page);
+        $optin_type = sanitize_text_field($optin_type);
 
         $offset = ($current_page - 1) * $per_page;
-        $sql = "SELECT * FROM {$this->table}";
+        $sql = "SELECT * FROM $this->table";
+        $args = [];
+
         if (!empty($optin_type)) {
-            $optin_type = esc_sql($optin_type);
-            $sql .= "  WHERE optin_type = '$optin_type'";
+            $sql .= " WHERE optin_type = %s";
+            $args[] = $optin_type;
+
+            // if this is lite and ofcourse $optin_type is specified.
+            if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
+                $sql .= " AND optin_class = %s";
+                $args[] = $this->lite_themes[$optin_type];
+            }
         }
 
-        $sql .= "  ORDER BY id DESC";
+        // if this is lite and $optin_type is not specified. That is "All" optin needed to be fetched regardless of type.
+        if (!defined('MAILOPTIN_DETACH_LIBSODIUM') && empty($optin_type)) {
+            $_optin_types = "('" . implode("','", $this->lite_optin_types_support) . "')";
+            $_optin_classes = "('" . implode("','", $this->lite_optin_classes_support) . "')";
 
-        $sql .= " LIMIT $per_page";
+            $sql .= " WHERE optin_type IN $_optin_types";
+            $sql .= " AND optin_class IN $_optin_classes";
+        }
+
+        $sql .= " ORDER BY id DESC";
+
+
+        $args[] = $per_page;
+
+        $sql .= " LIMIT %d";
         if ($current_page > 1) {
-            $sql .= "  OFFSET $offset";
+            $args[] = $offset;
+            $sql .= "  OFFSET %d";
         }
 
-        $result = $this->wpdb->get_results($sql, 'ARRAY_A');
+        $cache_key = "mo_get_optin_campaign_{$per_page}_{$current_page}_{$optin_type}";
+
+        $result = get_transient($cache_key);
+
+        if ($result === false) {
+
+            $result = $this->wpdb->get_results(
+                $this->wpdb->prepare($sql, $args),
+                'ARRAY_A'
+            );
+
+            set_transient($cache_key, $result, MINUTE_IN_SECONDS);
+        }
 
         return $result;
     }

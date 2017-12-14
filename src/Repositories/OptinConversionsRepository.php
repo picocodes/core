@@ -142,12 +142,12 @@ class OptinConversionsRepository extends AbstractRepository
     /**
      * Return count of optin conversion this month.
      *
-     * @return null|string
+     * @return int
      */
     public static function month_conversion_count()
     {
         $table = parent::conversions_table();
 
-        return parent::wpdb()->get_var("SELECT COUNT(*) FROM $table WHERE MONTH(date_added) = MONTH(CURRENT_DATE())");
+        return absint(parent::wpdb()->get_var("SELECT COUNT(*) FROM $table WHERE MONTH(date_added) = MONTH(CURRENT_DATE())"));
     }
 }

@@ -170,7 +170,7 @@ class AdminNotices
 
         if (OptinCampaignsRepository::campaign_count() < MO_LITE_OPTIN_CAMPAIGN_LIMIT) return;
 
-        if (\MailOptin\Core\current_url_with_query_string() != MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE) return;
+        if(strpos(\MailOptin\Core\current_url_with_query_string(), MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE) === false) return;
 
         $upgrade_url = 'https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=optin_campaign_limit';
         $notice = sprintf(
@@ -196,7 +196,7 @@ class AdminNotices
 
         if (EmailCampaignRepository::campaign_count() < 1) return;
 
-        if (\MailOptin\Core\current_url_with_query_string() != MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE) return;
+        if(strpos(\MailOptin\Core\current_url_with_query_string(), MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE) === false) return;
 
         $upgrade_url = 'https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=email_campaign_limit';
         $notice = sprintf(__('Upgrade to %s now to create multiple email campaigns with advance targeting and availability of your email list subscribers as recipients.', 'mailoptin'),
