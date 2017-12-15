@@ -105,21 +105,10 @@ class OptinCampaign_List extends \WP_List_Table
             $sql .= "  OFFSET %d";
         }
 
-        $cache_key = "mo_get_optin_campaign_{$per_page}_{$current_page}_{$optin_type}";
-
-        $result = get_transient($cache_key);
-
-        if ($result === false) {
-
-            $result = $this->wpdb->get_results(
-                $this->wpdb->prepare($sql, $args),
-                'ARRAY_A'
-            );
-
-            set_transient($cache_key, $result, MINUTE_IN_SECONDS);
-        }
-
-        return $result;
+        return $this->wpdb->get_results(
+            $this->wpdb->prepare($sql, $args),
+            'ARRAY_A'
+        );
     }
 
 
