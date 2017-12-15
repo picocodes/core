@@ -620,6 +620,9 @@ class OptinCampaign_List extends \WP_List_Table
 
         // Clone when the current action is clone.
         if ('clone' === $this->current_action()) {
+
+            if (apply_filters('mailoptin_add_optin_email_campaign_limit', true) && OptinCampaignsRepository::campaign_count() >= MO_LITE_OPTIN_CAMPAIGN_LIMIT) return;
+
             // In our file that handles the request, verify the nonce.
             $nonce = esc_attr($_REQUEST['_wpnonce']);
             if (!wp_verify_nonce($nonce, 'mailoptin_clone_optin_campaign')) {

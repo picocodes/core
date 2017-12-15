@@ -193,12 +193,12 @@ class AjaxHandler
             wp_send_json_error(__('Optin campaign with similar name exist already.', 'mailoptin'));
         }
 
-        if (apply_filters('mailoptin_add_optin_email_campaign_limit', true) && OptinCampaignsRepository::campaign_count() > MO_LITE_OPTIN_CAMPAIGN_LIMIT) {
+        if (apply_filters('mailoptin_add_optin_email_campaign_limit', true) && OptinCampaignsRepository::campaign_count() >= MO_LITE_OPTIN_CAMPAIGN_LIMIT) {
             $upgrade_url = 'https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=add_optin_campaign_limit';
             wp_send_json_error(
                 sprintf(
-                    __('Upgrade to %s to create more than three optin campaigns', 'mailoptin'),
-                    '<a href="' . $upgrade_url . '" target="_blank">MailOptin premium</a>'
+                    __('Upgrade to %sMailOptin premium%s to create more than three optin campaigns', 'mailoptin'),
+                    '<a href="' . $upgrade_url . '" target="_blank">', '</a>'
                 )
             );
         }
