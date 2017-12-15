@@ -23,6 +23,8 @@ class AjaxHandler
 {
     public function __construct()
     {
+        add_action('admin_init', [$this, 'act_on_option_activation_actions']);
+
         add_action('wp_ajax_mailoptin_send_test_email', array($this, 'send_test_email'));
         add_action('wp_ajax_mailoptin_create_optin_campaign', [$this, 'create_optin_campaign']);
         add_action('wp_ajax_mailoptin_create_email_campaign', [$this, 'create_email_campaign']);
