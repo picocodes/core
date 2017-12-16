@@ -419,7 +419,7 @@ class Custom_Settings_Page_Api
         if ((array)isset($db_options[$key]) && !empty($db_options[$key])) {
             $repeatable_fields = $db_options[$key];
         } else {
-            // we are adding an array with key 1 and empty value because repeatable field must begin with an idex of 1.
+            // we are adding an array with key 1 and empty value because repeatable field must begin with an index of 1.
             $repeatable_fields = array(1 => '');
         }
 
