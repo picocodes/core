@@ -573,7 +573,7 @@ class OptinCampaign_List extends \WP_List_Table
      */
     public function prepare_items()
     {
-        if (isset($_GET['page']) && $_GET['page'] == 'mailoptin-optin-campaigns' && !empty($_GET['optin-type'])) {
+        if (isset($_GET['page']) && $_GET['page'] == MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_SLUG && !empty($_GET['optin-type'])) {
             $optin_type = sanitize_text_field($_GET['optin-type']);
         } else {
             $optin_type = '';
