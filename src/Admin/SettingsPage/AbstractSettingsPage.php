@@ -28,7 +28,7 @@ abstract class AbstractSettingsPage
             __('MailOptin WordPress Plugin', 'mailoptin'),
             __('MailOptin', 'mailoptin'),
             'manage_options',
-            'mailoptin-settings',
+            MAILOPTIN_SETTINGS_SETTINGS_SLUG,
             '',
             'dashicons-email-alt'
         );

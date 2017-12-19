@@ -41,11 +41,11 @@ class Connections extends AbstractSettingsPage
     public function register_settings_page()
     {
         add_submenu_page(
-            'mailoptin-settings',
+            MAILOPTIN_SETTINGS_SETTINGS_SLUG,
             __('Connections - MailOptin', 'mailoptin'),
             __('Connections', 'mailoptin'),
             'manage_options',
-            'mailoptin-connections',
+            MAILOPTIN_CONNECTIONS_SETTINGS_SLUG,
             array($this, 'settings_admin_page_callback')
         );
     }

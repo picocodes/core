@@ -364,7 +364,7 @@ class Email_Campaign_List extends \WP_List_Table
         /** Process bulk action */
         $this->process_actions();
 
-        $campaign_type = isset($_GET['page']) && $_GET['page'] == 'mailoptin-email-automations' && !empty($_GET['type']) ? sanitize_text_field($_GET['type']) : '';
+        $campaign_type = isset($_GET['page']) && $_GET['page'] == MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_SLUG && !empty($_GET['type']) ? sanitize_text_field($_GET['type']) : '';
 
         $this->_column_headers = $this->get_column_info();
         $per_page = defined('MAILOPTIN_DETACH_LIBSODIUM') ? $this->get_items_per_page('email_campaign_per_page', 15) : 1;

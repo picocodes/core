@@ -45,7 +45,7 @@ class AddEmailCampaign extends AbstractSettingsPage
      */
     public function add_email_campaign_settings_header()
     {
-        if (!empty($_GET['page']) && $_GET['page'] == 'mailoptin-email-automations') {
+        if (!empty($_GET['page']) && $_GET['page'] == MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_SLUG) {
             ?>
             <div class="mailoptin-optin-new-list mailoptin-optin-clear">
                 <strong><?php _e('Automation Title', 'mailoptin'); ?></strong>

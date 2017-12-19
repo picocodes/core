@@ -29,7 +29,7 @@ class OptinCampaigns extends AbstractSettingsPage
     public function register_settings_page()
     {
         $hook = add_submenu_page(
-            'mailoptin-settings',
+            MAILOPTIN_SETTINGS_SETTINGS_SLUG,
             __('Optin Campaigns - MailOptin', 'mailoptin'),
             __('Optin Campaigns', 'mailoptin'),
             'manage_options',

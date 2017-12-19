@@ -26,11 +26,11 @@ class CampaignLog extends AbstractSettingsPage
     public function register_settings_page()
     {
         $hook = add_submenu_page(
-            'mailoptin-settings',
+            MAILOPTIN_SETTINGS_SETTINGS_SLUG,
             __('Email Campaign Log - MailOptin', 'mailoptin'),
             __('Email Log', 'mailoptin'),
             'manage_options',
-            'mailoptin-campaign-log',
+            MAILOPTIN_CAMPAIGN_LOG_SETTINGS_SLUG,
             array($this, 'settings_admin_page_callback')
         );
 

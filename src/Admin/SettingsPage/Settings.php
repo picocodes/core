@@ -23,11 +23,11 @@ class Settings extends AbstractSettingsPage
     public function register_settings_page()
     {
         add_submenu_page(
-            'mailoptin-settings',
+            MAILOPTIN_SETTINGS_SETTINGS_SLUG,
             __('Settings - MailOptin', 'mailoptin'),
             __('Settings', 'mailoptin'),
             'manage_options',
-            'mailoptin-settings',
+            MAILOPTIN_SETTINGS_SETTINGS_SLUG,
             array($this, 'settings_admin_page_callback')
         );
     }

@@ -44,7 +44,7 @@ class ProUpgrade
     {
         if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
             add_submenu_page(
-                'mailoptin-settings',
+                MAILOPTIN_SETTINGS_SETTINGS_SLUG,
                 __('Upgrade to PRO - MailOptin', 'mailoptin'),
                 '<span style="color:#d54e21;font-weight:bold">' . __('Upgrade to PRO', 'mailoptin') . '</span>',
                 'manage_options',
