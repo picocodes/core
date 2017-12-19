@@ -304,11 +304,11 @@ class Lupin extends AbstractOptinTheme
     [mo-optin-form-fields-wrapper]
     [mo-optin-form-name-field class="lupinSidebar-input"]
     [mo-optin-form-email-field class="lupinSidebar-input"]
+    [mo-mailchimp-interests]
     [mo-optin-form-submit-button class="lupinSidebar-submit"]
     [/mo-optin-form-fields-wrapper]
     [mo-optin-form-cta-button]
     </div>
-    [mo-mailchimp-interests]
     [mo-optin-form-note class="lupinSidebar-note"]
 [/mo-optin-form-wrapper]
 HTML;

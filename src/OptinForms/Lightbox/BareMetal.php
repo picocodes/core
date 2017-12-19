@@ -311,10 +311,10 @@ class BareMetal extends AbstractOptinTheme
     [mo-optin-form-fields-wrapper]
     [mo-optin-form-name-field]
     [mo-optin-form-email-field]
+    [mo-mailchimp-interests]
     [mo-optin-form-submit-button]
     [/mo-optin-form-fields-wrapper]
     [mo-optin-form-cta-button]
-    [mo-mailchimp-interests]
     [mo-optin-form-note class="mo-baremetal-note"]
 [/mo-optin-form-wrapper]
 HTML;
