@@ -238,6 +238,15 @@
         });
     });
 
+    wp.customize(mailoptin_optin_option_prefix + '[' + mailoptin_optin_campaign_id + '][hide_name_field]', function (value) {
+        value.bind(function (to) {
+            // add the flag indicator when "hide name field" is active
+            var cache = $('.moOptinForm, .mo-optin-form-wrapper');
+            cache.toggleClass('mo-has-email', to);
+            cache.toggleClass('mo-has-name-email', !to);
+        });
+    });
+
     wp.customize(mailoptin_optin_option_prefix + '[' + mailoptin_optin_campaign_id + '][display_only_button]', function (value) {
         value.bind(function (to) {
             $('.mo-optin-fields-wrapper').toggle(!to);

@@ -73,18 +73,14 @@ class Customizer
     /** @var string ID of "URL filter display rule" customizer section. */
     public $url_filter_display_rule_section_id = 'mo_url_filter_display_rule_section';
 
-    public function __construct()
-    {
-        add_action('init', [$this, 'init'], 9999999999999);
-    }
     /**
      * Customizer constructor.
      */
-    public function init()
+    public function __construct()
     {
         if (!empty($_REQUEST['mailoptin_optin_campaign_id'])) {
 
-            $this->clean_up_customizer();
+            add_action('init', [$this, 'clean_up_customizer'], 9999999999999);
 
             add_action('customize_controls_enqueue_scripts', array($this, 'monkey_patch_customizer_payload'));
             add_action('customize_controls_enqueue_scripts', array($this, 'customizer_js'));

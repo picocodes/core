@@ -973,17 +973,24 @@ class CustomizerControls
             '</a>'
         );
 
+        $success_control_choices = [
+            'success_message' => __('Display success message.', 'mailoptin'),
+            'close_optin' => __('Close optin', 'mailoptin'),
+            'close_optin_reload_page' => __('Close optin and reload page', 'mailoptin'),
+            'redirect_url' => __('Redirect to URL', 'mailoptin')
+        ];
+
+        if(in_array($this->customizerClassInstance->optin_campaign_type, ['inpost', 'sidebar'])) {
+            unset($success_control_choices['close_optin']);
+            unset($success_control_choices['close_optin_reload_page']);
+        }
+
         $success_controls_args = apply_filters(
             "mo_optin_form_customizer_success_controls",
             array(
                 'success_action' => apply_filters('mo_optin_form_customizer_success_action_args', array(
                         'type' => 'select',
-                        'choices' => [
-                            'success_message' => __('Display success message.', 'mailoptin'),
-                            'close_optin' => __('Close optin', 'mailoptin'),
-                            'close_optin_reload_page' => __('Close optin and reload page', 'mailoptin'),
-                            'redirect_url' => __('Redirect to URL', 'mailoptin')
-                        ],
+                        'choices' => $success_control_choices,
                         'label' => __('Success Action', 'mailoptin'),
                         'section' => $this->customizerClassInstance->success_section_id,
                         'settings' => $this->option_prefix . '[success_action]',
