@@ -13,7 +13,6 @@ final class Core
 
     public function __construct()
     {
-
         add_action('init', [$this, 'load_plugin_textdomain'], 0);
 
         Base::get_instance();

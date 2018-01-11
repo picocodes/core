@@ -3,8 +3,6 @@
 namespace MailOptin\Core\Admin\SettingsPage;
 
 // Exit if accessed directly
-use MailOptin\Core\Base;
-use MailOptin\Core\Core;
 use W3Guy\Custom_Settings_Page_Api;
 
 if (!defined('ABSPATH')) {
