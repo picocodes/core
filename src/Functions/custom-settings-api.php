@@ -212,7 +212,7 @@ class Custom_Settings_Page_Api
 
         // skip unchanged (with asterisk ** in its data) api key/token values.
         foreach ($sanitized_data as $key => $value) {
-            if(strpos($value, '**') !== false) {
+            if (is_string($value) && strpos($value, '**') !== false) {
                 unset($sanitized_data[$key]);
             }
         }
