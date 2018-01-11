@@ -110,3 +110,16 @@
         font-size: 12px !important;
     }
 }
+
+/* make slide-in optin form full width and full heigh on mobile/small screens */
+@media only screen and (max-width: 575px) {
+    div.mo-optin-form-slidein .mo-optin-form-wrapper {
+        max-width: 100% !important;
+    }
+
+    div.mo-optin-form-slidein {
+        max-width: 100% !important;
+        bottom: 0 !important;
+        right: 0 !important;
+    }
+}

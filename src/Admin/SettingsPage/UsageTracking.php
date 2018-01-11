@@ -292,10 +292,10 @@ class UsageTracking
 
             echo '<div class="updated"><p>';
             printf(
-                __('Allow MailOptin to track plugin usage. We guarantee no sensitive data is collected. Ever. Opt-in to tracking immediately be emailed a 15%s discount for <a href="%s">plugin upgrade</a>.', 'mailoptin'),
+                __('Allow MailOptin to track plugin usage. We guarantee no sensitive data is collected. Opt-in to tracking immediately be emailed a 15%s discount for <a href="%s">plugin upgrade</a>.', 'mailoptin'),
                 '%', $store_url
             );
-            echo '&nbsp;<a href="' . esc_url($optin_url) . '" class="button-primary">' . __('Sure! I\'d love to help', 'mailoptin') . '</a>';
+            echo '</p><p><a href="' . esc_url($optin_url) . '" class="button-primary">' . __('Sure! I\'d love to help', 'mailoptin') . '</a>';
             echo '&nbsp;<a href="' . esc_url($optout_url) . '" class="button-secondary">' . __('No thanks', 'mailoptin') . '</a>';
             echo '</p></div>';
         }

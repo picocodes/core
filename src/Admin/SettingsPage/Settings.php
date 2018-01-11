@@ -75,7 +75,7 @@ class Settings extends AbstractSettingsPage
                     'allow_tracking' => array(
                         'type' => 'checkbox',
                         'label' => __('Allow Usage Tracking?', 'mailoptin'),
-                        'description' => __('Allow MailOptin to anonymously track how this plugin is used and help us make the plugin better. Opt-in to tracking and our newsletter. No sensitive data is tracked. Ever.', 'mailoptin'),
+                        'description' => __('Allow MailOptin to anonymously track how this plugin is used and help us make the plugin better. Opt-in to tracking and our newsletter. No sensitive data is tracked.', 'mailoptin'),
                     ),
                     'mailoptin_affiliate_url' => array(
                         'type' => 'text',

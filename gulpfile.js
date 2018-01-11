@@ -5,6 +5,7 @@ gulp.task('rjs', function () {
     return gulp.src('src/assets/js/src/main.js')
         .pipe(requirejsOptimize(function (file) {
             return {
+                preserveLicenseComments: false,
                 optimize: 'uglify',
                 wrap: true,
                 baseUrl: './src/assets/js/src',
