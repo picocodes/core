@@ -871,12 +871,12 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
              */
             eventSubscription: function () {
                 // track impression for optin form other than modals
-                $(document).on('moOptin:show', function (e, optin_uuid) {
+                $(document.body).on('moOptin:show', function (e, optin_uuid) {
                     $.MailOptin.track_impression(optin_uuid)
                 });
 
                 // success actions
-                $(document).on('moOptinConversion', this.success_action_after_conversion);
+                $(document.body).on('moOptinConversion', this.success_action_after_conversion);
             },
 
             add_query_args: function (uri, params) {
