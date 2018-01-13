@@ -574,16 +574,26 @@ a.mobutton {
 }
 
 /* optin popover action block */
-table.optin_forms .column-actions {
-    position: relative;
-    overflow: visible;
+.mo-popover-content ul, .mo-popover-content li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
-.mo-actions-popover {
-    display: none;
+.mo-popover-content li a {
+    display: block;
+    border-bottom: 1px dashed #eaeaea;
+    padding: 7px 0;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
 }
 
-.mo-actions-popover-content a {
-    color: #fff;
-    text-decoration: underline;
+.mo-popover-content li:first-child a {
+    padding-top: 0;
+}
+
+.mo-popover-content li:last-child a {
+    padding-bottom: 0;
+    border: 0 none;
 }

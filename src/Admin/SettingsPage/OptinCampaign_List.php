@@ -267,6 +267,23 @@ class OptinCampaign_List extends \WP_List_Table
     }
 
     /**
+     * Generate URL to clear cookies
+     *
+     * @param int $optin_campaign_id
+     *
+     * @return string
+     */
+    public static function _optin_campaign_clear_cookies_url($optin_campaign_id)
+    {
+        $disable_test_mode_nonce = wp_create_nonce('mailoptin_clear_cookies');
+
+        return sprintf(
+            '?page=%s&action=%s&optin-campaign=%s&_wpnonce=%s',
+            esc_attr($_REQUEST['page']), 'clear_cookies', absint($optin_campaign_id), $disable_test_mode_nonce
+        );
+    }
+
+    /**
      * Generate URL to optin campaign statistic.
      *
      * @param int $optin_campaign_id
@@ -422,23 +439,23 @@ class OptinCampaign_List extends \WP_List_Table
      */
     public function column_name($item)
     {
-        $optin_Campaign_id = absint($item['id']);
-        $customize_url = $this->_optin_campaign_customize_url($optin_Campaign_id);
-        $reset_stat_url = $this->_optin_campaign_reset_stat_url($optin_Campaign_id);
+        $optin_campaign_id = absint($item['id']);
+        $customize_url = $this->_optin_campaign_customize_url($optin_campaign_id);
+        $delete_url = $this->_optin_campaign_delete_url($optin_campaign_id);
 
         $name = '<a href="' . $customize_url . '"><strong>' . $item['name'] . '</strong></a>';
 
-        if (OptinCampaignsRepository::is_test_mode($optin_Campaign_id)) {
-            $url = $this->_optin_campaign_disable_test_mode($optin_Campaign_id);
-            $label = __('Disable Test Mode', 'mailoptin');
+        if (OptinCampaignsRepository::is_test_mode($optin_campaign_id)) {
+            $url = $this->_optin_campaign_disable_test_mode($optin_campaign_id);
+            $label = esc_attr__('Disable Test Mode', 'mailoptin');
         } else {
-            $url = $this->_optin_campaign_enable_test_mode($optin_Campaign_id);
-            $label = __('Enable Test Mode', 'mailoptin');
+            $url = $this->_optin_campaign_enable_test_mode($optin_campaign_id);
+            $label = esc_attr__('Enable Test Mode', 'mailoptin');
         }
 
         $actions = array(
-            'test_mode' => "<a href=\"$url\">$label</a>",
-            'reset_stat' => sprintf("<a href='%s'>%s</a>", $reset_stat_url, __('Reset Stat', 'mailoptin'))
+            'delete' => sprintf("<a href='%s'>%s</a>", $delete_url, esc_attr__('Delete', 'mailoptin')),
+            'test_mode' => "<a href=\"$url\">$label</a>"
         );
 
         return $name . $this->row_actions($actions);
@@ -502,21 +519,6 @@ class OptinCampaign_List extends \WP_List_Table
             $optin_Campaign_id
         );
 
-
-        if (OptinCampaignsRepository::is_activated($optin_Campaign_id)) {
-            $status = '<div class="mo_circle_green"></div>';
-            $url = $this->_optin_campaign_deactivate_url($optin_Campaign_id);
-            $label = __('Deactivate', 'mailoptin');
-        } else {
-            $status = '<div class="mo_circle_red"></div>';
-            $url = $this->_optin_campaign_activate_url($optin_Campaign_id);
-            $label = '&nbsp;&nbsp;' . __('Activate', 'mailoptin');
-        }
-
-        $actions = array(
-            'activate' => "<a href=\"$url\">$label</a>",
-        );
-
         return $switch;
     }
 
@@ -530,7 +532,6 @@ class OptinCampaign_List extends \WP_List_Table
     public function column_actions($item)
     {
         $optin_campaign_id = absint($item['id']);
-        $optin_uuid = OptinCampaignsRepository::get_optin_campaign_uuid($optin_campaign_id);
 
         $delete_url = $this->_optin_campaign_delete_url($optin_campaign_id);
         $clone_url = $this->_optin_campaign_clone_url($optin_campaign_id);
@@ -555,10 +556,10 @@ class OptinCampaign_List extends \WP_List_Table
             '<i class="fa fa-trash" aria-hidden="true"></i>'
         );
 
-        $action .= '<span class="mo-actions-popover-wrapper">';
-        $action .= '<a class="mo-ellipsis-tooltipster button action" href="#"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a> &nbsp;';
-        $action .= "<div class='mo-actions-popover'>";
-        $action .= "<div class='mo-actions-popover-content'>";
+        $action .= '<span class="mo-ellipsis-action">';
+        $action .= '<a class="mo-ellipsis-tooltipster button action"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a> &nbsp;';
+        $action .= "<div style='display: none'>";
+        $action .= "<div class='mo-popover-content'>";
         $action .= $this->popover_action_links($optin_campaign_id);
         $action .= '</div>';
         $action .= '</div>';
@@ -571,15 +572,25 @@ class OptinCampaign_List extends \WP_List_Table
     {
         $actions = apply_filters('mo_optin_popover_actions', [
             'split_test' => [
-                'title' => __('Create variation of this optin'),
+                'title' => __('Create new split variation', 'mailoptin'),
                 'href' => self::_optin_campaign_split_test_url($optin_campaign_id),
-                'label' => __('A/B Split Test')
+                'label' => __('A/B Split Test', 'mailoptin')
             ],
-            'split_testz' => [
-                'title' => __('Create variation of this optin'),
-                'href' => self::_optin_campaign_split_test_url($optin_campaign_id),
-                'label' => __('A/B Split TestA/B Split Test')
-            ]
+            'clone' => [
+                'title' => __('Duplicate optin','mailoptin'),
+                'href' => self::_optin_campaign_clone_url($optin_campaign_id),
+                'label' => __('Duplicate', 'mailoptin')
+            ],
+            'reset_stat' => [
+                'title' => __('Reset optin campaign statistics', 'mailoptin'),
+                'href' => self::_optin_campaign_reset_stat_url($optin_campaign_id),
+                'label' => __('Reset Analytics', 'mailoptin')
+            ],
+            'clear_cookies' => [
+                'title' => __('Clear local cookies of this optin'),
+                'href' => self::_optin_campaign_clear_cookies_url($optin_campaign_id),
+                'label' => __('Clear Local Cookies', 'mailoptin')
+            ],
         ], $optin_campaign_id);
 
         $structure = '<ul>';
@@ -620,7 +631,7 @@ class OptinCampaign_List extends \WP_List_Table
     {
         $actions = array(
             'bulk-delete' => __('Delete', 'mailoptin'),
-            'bulk-clear-cookies' => __('Clear Cookies', 'mailoptin'),
+            'bulk-clear-cookies' => __('Clear Local Cookies', 'mailoptin'),
             'bulk-activate' => __('Activate', 'mailoptin'),
             'bulk-deactivate' => __('Deactivate', 'mailoptin'),
         );
@@ -733,19 +744,6 @@ class OptinCampaign_List extends \WP_List_Table
             }
         }
 
-        // Refresh optin campaign stat.
-        if ('clear_cookie' === $this->current_action()) {
-            // In our file that handles the request, verify the nonce.
-            $nonce = sanitize_text_field($_REQUEST['_wpnonce']);
-            if (!wp_verify_nonce($nonce, 'mailoptin_clear_cookie_campaign')) {
-                die('Go get a life script kiddies');
-            } else {
-                self::clear_cookie($optin_campaign_id);
-                wp_redirect(esc_url_raw(MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE));
-                exit;
-            }
-        }
-
         // Enable test mode for optin campaign.
         if ('enable_test_mode' === $this->current_action()) {
             // In our file that handles the request, verify the nonce.
@@ -769,6 +767,18 @@ class OptinCampaign_List extends \WP_List_Table
             } else {
                 OptinCampaignsRepository::disable_test_mode($optin_campaign_id);
                 OptinCampaignsRepository::burst_cache($optin_campaign_id);
+                wp_redirect(esc_url_raw(MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE));
+                exit;
+            }
+        }
+
+        if ('clear_cookies' === $this->current_action()) {
+            // In our file that handles the request, verify the nonce.
+            $nonce = sanitize_text_field($_REQUEST['_wpnonce']);
+            if (!wp_verify_nonce($nonce, 'mailoptin_clear_cookies')) {
+                die('Go get a life script kiddies');
+            } else {
+                self::clear_cookie($optin_campaign_id);
                 wp_redirect(esc_url_raw(MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE));
                 exit;
             }
