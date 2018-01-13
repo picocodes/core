@@ -138,6 +138,9 @@ class OptinCampaign_List extends \WP_List_Table
     public function record_count($optin_type = '')
     {
         global $wpdb;
+
+        $optin_type = sanitize_text_field($optin_type);
+
         $sql = "SELECT COUNT(*) FROM $this->table";
         if (!empty($optin_type)) {
             $optin_type = esc_sql($optin_type);
@@ -175,6 +178,23 @@ class OptinCampaign_List extends \WP_List_Table
         return sprintf(
             '?page=%s&action=%s&optin-form=%s&_wpnonce=%s',
             esc_attr($_REQUEST['page']), 'delete', absint($optin_campaign_id), $delete_nonce
+        );
+    }
+
+    /**
+     * Generate URL to split test optin campaign.
+     *
+     * @param int $optin_campaign_id
+     *
+     * @return string
+     */
+    public static function _optin_campaign_split_test_url($optin_campaign_id)
+    {
+        $nonce = wp_create_nonce('mailoptin_split_test_optin_campaign');
+
+        return sprintf(
+            '?page=%s&action=%s&optin-form=%s&_wpnonce=%s',
+            esc_attr($_REQUEST['page']), 'split_test', absint($optin_campaign_id), $nonce
         );
     }
 
@@ -369,7 +389,7 @@ class OptinCampaign_List extends \WP_List_Table
             'cb' => '<input type="checkbox" />',
             'name' => __('Name', 'mailoptin'),
             'uuid' => __('Unique ID', 'mailoptin'),
-            'action' => __('Actions', 'mailoptin'),
+            'actions' => __('Actions', 'mailoptin'),
             'activated' => __('Activated', 'mailoptin'),
             'impression' => __('Impression', 'mailoptin'),
             'conversion' => __('Subscribers', 'mailoptin'),
@@ -453,7 +473,7 @@ class OptinCampaign_List extends \WP_List_Table
                 break;
         }
 
-        return apply_filters('optin_monster_table_column', $value, $item, $column_name);
+        return apply_filters('mo_optin_table_column', $value, $item, $column_name);
     }
 
     /**
@@ -507,9 +527,10 @@ class OptinCampaign_List extends \WP_List_Table
      *
      * @return mixed
      */
-    public function column_action($item)
+    public function column_actions($item)
     {
         $optin_campaign_id = absint($item['id']);
+        $optin_uuid = OptinCampaignsRepository::get_optin_campaign_uuid($optin_campaign_id);
 
         $delete_url = $this->_optin_campaign_delete_url($optin_campaign_id);
         $clone_url = $this->_optin_campaign_clone_url($optin_campaign_id);
@@ -534,7 +555,46 @@ class OptinCampaign_List extends \WP_List_Table
             '<i class="fa fa-trash" aria-hidden="true"></i>'
         );
 
+        $action .= '<span class="mo-actions-popover-wrapper">';
+        $action .= '<a class="mo-ellipsis-tooltipster button action" href="#"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a> &nbsp;';
+        $action .= "<div class='mo-actions-popover'>";
+        $action .= "<div class='mo-actions-popover-content'>";
+        $action .= $this->popover_action_links($optin_campaign_id);
+        $action .= '</div>';
+        $action .= '</div>';
+        $action .= '</span>';
+
         return $action;
+    }
+
+    public function popover_action_links($optin_campaign_id)
+    {
+        $actions = apply_filters('mo_optin_popover_actions', [
+            'split_test' => [
+                'title' => __('Create variation of this optin'),
+                'href' => self::_optin_campaign_split_test_url($optin_campaign_id),
+                'label' => __('A/B Split Test')
+            ],
+            'split_testz' => [
+                'title' => __('Create variation of this optin'),
+                'href' => self::_optin_campaign_split_test_url($optin_campaign_id),
+                'label' => __('A/B Split TestA/B Split Test')
+            ]
+        ], $optin_campaign_id);
+
+        $structure = '<ul>';
+        foreach ($actions as $action) {
+            $structure .= sprintf(
+                '<li><a href="%s" title="%s">%s</a></li>',
+                esc_attr($action['href']),
+                esc_attr($action['title']),
+                esc_attr($action['label'])
+            );
+
+        }
+        $structure .= '</ul>';
+
+        return $structure;
     }
 
     /**

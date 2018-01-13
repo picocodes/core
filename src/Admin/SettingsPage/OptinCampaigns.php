@@ -155,6 +155,13 @@ class OptinCampaigns extends AbstractSettingsPage
         }
     }
 
+    public function popover_script()
+    {
+        ?>
+        <script type=""
+        <?php
+    }
+
     public function add_new_optin_form_button()
     {
         $url = add_query_arg('view', 'add-new-optin', MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE);
