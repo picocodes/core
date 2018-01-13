@@ -15,7 +15,7 @@
             };
 
             $.post(ajaxurl, ajaxData, function (response) {
-                    if (typeof response == 'string') {
+                    if (typeof response === 'string') {
                         $('.mailoptin-optin-themes').replaceWith(response);
                     }
                     $('.mailoptin-new-toolbar i.fa-spinner').css('opacity', 0);

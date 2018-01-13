@@ -37,9 +37,19 @@ class OptinCampaigns extends AbstractSettingsPage
             array($this, 'settings_admin_page_callback')
         );
 
-
         add_action("load-$hook", array($this, 'screen_option'));
 
+        add_action("load-$hook", function () {
+            add_action('admin_enqueue_scripts', array($this, 'fancybox_scripts'));
+        });
+    }
+
+    public function fancybox_scripts()
+    {
+        wp_enqueue_script('mailoptin-fancybox');
+        wp_enqueue_script('mailoptin-init-fancybox');
+        wp_enqueue_style('mailoptin-fancybox');
+        wp_enqueue_style('mailoptin-activate-fancybox');
     }
 
     /**
@@ -152,13 +162,37 @@ class OptinCampaigns extends AbstractSettingsPage
             echo '<div class="mailoptin-data-listing">';
             $instance->build(true);
             echo '</div>';
+
+            $this->ab_split_test_form();
         }
     }
 
-    public function popover_script()
+    public function ab_split_test_form()
     {
         ?>
-        <script type=""
+        <div style="display: none">
+            <div id="mo-optin-add-split">
+                <div class="mo-split-header">
+                    <h2><?php _e('Create New Split Test', 'mailoptin'); ?></h2>
+                </div>
+                <div class="mo-split-content">
+                    <p>
+                        <label for="mo-variant-name"><?php _e('Variant Name', 'mailoptin'); ?></label>
+                        <input type="text" id="mo-variant-name" tabindex="59">
+                        <input type="hidden" id="mo-split-parent-id">
+                    </p>
+                    <p>
+                        <label for="mo-split-notes"><?php _e('Notes for Split Test', 'mailoptin'); ?></label>
+                        <textarea id="mo-split-notes" placeholder="<?php _e('Enter some note about this split test...', 'mailoptin'); ?>" tabindex="60" rows="7"></textarea><br>
+                        <span class="description mo-split-description"><?php _e('Useful for keeping track of changes between each split test you create.', 'mailoptin'); ?></span>
+                    </p>
+                    <p>
+                        <input type="submit" class="button button-primary" id="mo-split-submit" value="<?php _e('Create Split Test', 'mailoptin'); ?>" tabindex="61">
+                        <img class="mo-spinner" id="mo-split-submit-spinner" style="margin:10px;display:none" src="<?php echo admin_url('images/spinner.gif'); ?>"/>
+                    </p>
+                </div>
+            </div>
+        </div>
         <?php
     }
 

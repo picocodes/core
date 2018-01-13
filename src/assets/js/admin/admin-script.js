@@ -1,9 +1,10 @@
 (function ($) {
     // get field row to clone via data-repeatable-field attribute
-    var field_row_to_clone_id = $('a.mo_add_repeatable').attr('data-repeatable-field');
+    var mo_repeatable_cache = $('a.mo_add_repeatable');
+    var field_row_to_clone_id = mo_repeatable_cache.attr('data-repeatable-field');
 
     // add repeatable field group.
-    $('a.mo_add_repeatable').click(function (e) {
+    mo_repeatable_cache.click(function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
 
@@ -72,8 +73,26 @@
         });
     });
 
+    $(document.body).on('click', '#mo-split-submit', function (e) {
+        e.preventDefault();
+        $(this).prop("disabled", true);
+        $('#mo-split-submit-spinner').show();
 
-    $(document).on('ready', function () {
+        $.post(ajaxurl, {
+            action: 'mailoptin_create_optin_split_test',
+            variant_name: $('#mo-variant-name').val(),
+            split_note: $('#mo-split-notes').val(),
+            parent_optin_id: $('#mo-split-parent-id').val()
+        }, function (response) {
+
+            $(this).prop("disabled", false);
+            $('#mo-split-submit-spinner').show();
+        });
+
+    });
+
+    // handle sidebar nav tag menu.
+    $(function () {
         // Switches option sections
         $('.mailoptin-group-wrapper').hide();
         var active_tab = '';

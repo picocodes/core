@@ -78,7 +78,7 @@
         });
 
         function add_spinner(placement) {
-            var spinner_html = $('<img class="mo-spinner fetch-email-list" src="' + mailoptin_globals.admin_url + '/images/spinner.gif">');
+            var spinner_html = $('<img class="mo-spinner fetch-email-list" src="' + mailoptin_globals.admin_url + 'images/spinner.gif">');
             $(placement).after(spinner_html);
         }
 

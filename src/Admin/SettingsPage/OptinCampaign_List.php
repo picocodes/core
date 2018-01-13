@@ -182,23 +182,6 @@ class OptinCampaign_List extends \WP_List_Table
     }
 
     /**
-     * Generate URL to split test optin campaign.
-     *
-     * @param int $optin_campaign_id
-     *
-     * @return string
-     */
-    public static function _optin_campaign_split_test_url($optin_campaign_id)
-    {
-        $nonce = wp_create_nonce('mailoptin_split_test_optin_campaign');
-
-        return sprintf(
-            '?page=%s&action=%s&optin-form=%s&_wpnonce=%s',
-            esc_attr($_REQUEST['page']), 'split_test', absint($optin_campaign_id), $nonce
-        );
-    }
-
-    /**
      * Generate URL to activate optin campaign.
      *
      * @param int $optin_campaign_id
@@ -573,11 +556,12 @@ class OptinCampaign_List extends \WP_List_Table
         $actions = apply_filters('mo_optin_popover_actions', [
             'split_test' => [
                 'title' => __('Create new split variation', 'mailoptin'),
-                'href' => self::_optin_campaign_split_test_url($optin_campaign_id),
-                'label' => __('A/B Split Test', 'mailoptin')
+                'href' => 'javascript:;',
+                'label' => __('A/B Split Test', 'mailoptin'),
+                'class' => 'mo-split-test'
             ],
             'clone' => [
-                'title' => __('Duplicate optin','mailoptin'),
+                'title' => __('Duplicate optin', 'mailoptin'),
                 'href' => self::_optin_campaign_clone_url($optin_campaign_id),
                 'label' => __('Duplicate', 'mailoptin')
             ],
@@ -595,9 +579,18 @@ class OptinCampaign_List extends \WP_List_Table
 
         $structure = '<ul>';
         foreach ($actions as $action) {
+            $action = wp_parse_args($action, [
+                'href' => '',
+                'title' => '',
+                'label' => '',
+                'class' => '',
+            ]);
+
             $structure .= sprintf(
-                '<li><a href="%s" title="%s">%s</a></li>',
+                '<li><a href="%s" class="%s" data-optin-id="%d" title="%s">%s</a></li>',
                 esc_attr($action['href']),
+                esc_attr($action['class']),
+                $optin_campaign_id,
                 esc_attr($action['title']),
                 esc_attr($action['label'])
             );
