@@ -64,7 +64,8 @@ class AbstractCustomizer
         $defaults['submit_button'] = apply_filters('mo_optin_form_submit_button_default', __('Subscribe Now', 'mailoptin'));
         $defaults['submit_button_color'] = apply_filters('mo_optin_form_submit_button_color_default', '');
         $defaults['submit_button_background'] = apply_filters('mo_optin_form_submit_button_background_default', '');
-        $defaults['submit_button_font'] = apply_filters('mo_optin_form_submit_button_font_default', '');$defaults['cta_button'] = apply_filters('mo_optin_form_cta_button_default', __('Subscribe Now', 'mailoptin'));
+        $defaults['submit_button_font'] = apply_filters('mo_optin_form_submit_button_font_default', '');
+        $defaults['cta_button'] = apply_filters('mo_optin_form_cta_button_default', __('Subscribe Now', 'mailoptin'));
 
         $defaults['cta_button_action'] = apply_filters('mo_optin_form_cta_button_action_default', 'reveal_optin_form');
         $defaults['cta_button_navigation_url'] = apply_filters('mo_optin_form_cta_button_navigation_url_default', '');
@@ -75,6 +76,7 @@ class AbstractCustomizer
 
 
         $defaults['campaign_title'] = apply_filters('mo_optin_form_campaign_title_default', OptinCampaignsRepository::get_optin_campaign_name($this->optin_campaign_id));
+        $defaults['split_test_note'] = apply_filters('mo_optin_form_split_test_note_default', '');
 
         $defaults['bar_position'] = apply_filters('mo_optin_form_bar_position_default', 'top');
         $defaults['slidein_position'] = apply_filters('mo_optin_form_slidein_position_default', 'bottom_right');

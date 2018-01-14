@@ -190,10 +190,10 @@ tr#ajax_nonce_row {
     margin-top: -3px;
 }
 
-input.mailoptin-input-error {
-    border-color: #ff0000;
-    -webkit-box-shadow: 0 0 2px rgba(255, 0, 0, .8);
-    box-shadow: 0 0 2px rgba(255, 0, 0, .8);
+.mailoptin-input-error {
+    border-color: #ff0000 !important;
+    -webkit-box-shadow: 0 0 2px rgba(255, 0, 0, .8) !important;
+    box-shadow: 0 0 2px rgba(255, 0, 0, .8) !important;
 }
 
 .mailoptin-optin-new-list {

@@ -349,6 +349,11 @@ class CustomizerSettings extends AbstractCustomizer
                     'type' => 'option',
                     'transport' => 'postMessage',
                 ),
+                'split_test_note' => array(
+                    'default' => $this->customizer_defaults['split_test_note'],
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
                 'inpost_form_optin_position' => array(
                     'default' => $this->customizer_defaults['inpost_form_optin_position'],
                     'type' => 'option',

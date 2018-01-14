@@ -706,10 +706,19 @@ class CustomizerControls
             array(
                 'campaign_title' => apply_filters('mo_optin_form_customizer_campaign_title_args', array(
                         'type' => 'text',
-                        'label' => __('Optin Title', 'mailoptin'),
+                        'label' => __('Optin Campaign Name', 'mailoptin'),
                         'section' => $this->customizerClassInstance->configuration_section_id,
                         'settings' => $this->option_prefix . '[campaign_title]',
                         'priority' => 10,
+                    )
+                ),
+                'split_test_note' => apply_filters('mo_optin_form_customizer_split_test_note_args', array(
+                        'type' => 'textarea',
+                        'label' => __('Split Test Note', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->configuration_section_id,
+                        'settings' => $this->option_prefix . '[split_test_note]',
+                        'description' => __('Useful for keeping track of changes between each split test you create.', 'mailoptin'),
+                        'priority' => 13,
                     )
                 ),
                 'inpost_form_optin_position' => apply_filters('mo_optin_form_customizer_inpost_form_optin_position_args', array(
@@ -980,7 +989,7 @@ class CustomizerControls
             'redirect_url' => __('Redirect to URL', 'mailoptin')
         ];
 
-        if(in_array($this->customizerClassInstance->optin_campaign_type, ['inpost', 'sidebar'])) {
+        if (in_array($this->customizerClassInstance->optin_campaign_type, ['inpost', 'sidebar'])) {
             unset($success_control_choices['close_optin']);
             unset($success_control_choices['close_optin_reload_page']);
         }

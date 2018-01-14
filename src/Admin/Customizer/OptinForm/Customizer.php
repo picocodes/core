@@ -569,6 +569,16 @@ class Customizer
             );
         }
 
+        if (!apply_filters('mo_optin_customizer_disable_configuration_section', false)) {
+            $wp_customize->add_section($this->configuration_section_id, array(
+                    'title' => __('Configuration', 'mailoptin'),
+                    'priority' => 3,
+                )
+            );
+        }
+
+        do_action('mo_optin_after_configuration_customizer_section', $wp_customize, $this);
+
         if (!apply_filters('mo_optin_customizer_disable_design_section', false)) {
             $wp_customize->add_section($this->design_section_id, array(
                     'title' => __('Design', 'mailoptin'),
@@ -617,16 +627,6 @@ class Customizer
         }
 
         do_action('mo_optin_after_fields_customizer_section', $wp_customize, $this);
-
-        if (!apply_filters('mo_optin_customizer_disable_configuration_section', false)) {
-            $wp_customize->add_section($this->configuration_section_id, array(
-                    'title' => __('Configuration', 'mailoptin'),
-                    'priority' => 30,
-                )
-            );
-        }
-
-        do_action('mo_optin_after_configuration_customizer_section', $wp_customize, $this);
 
         if (!apply_filters('mo_optin_customizer_disable_integration_section', false)) {
             $wp_customize->add_section($this->integration_section_id, array(

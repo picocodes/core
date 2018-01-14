@@ -182,14 +182,15 @@ class OptinCampaigns extends AbstractSettingsPage
                         <input type="hidden" id="mo-split-parent-id">
                     </p>
                     <p>
-                        <label for="mo-split-notes"><?php _e('Notes for Split Test', 'mailoptin'); ?></label>
-                        <textarea id="mo-split-notes" placeholder="<?php _e('Enter some note about this split test...', 'mailoptin'); ?>" tabindex="60" rows="7"></textarea><br>
+                        <label for="mo-split-notes"><?php _e('Split Test Note', 'mailoptin'); ?></label>
+                        <textarea id="mo-split-notes" tabindex="60" rows="7"></textarea><br>
                         <span class="description mo-split-description"><?php _e('Useful for keeping track of changes between each split test you create.', 'mailoptin'); ?></span>
                     </p>
                     <p>
                         <input type="submit" class="button button-primary" id="mo-split-submit" value="<?php _e('Create Split Test', 'mailoptin'); ?>" tabindex="61">
                         <img class="mo-spinner" id="mo-split-submit-spinner" style="margin:10px;display:none" src="<?php echo admin_url('images/spinner.gif'); ?>"/>
                     </p>
+                    <div id="mo-split-submit-error" class="mailoptin-error" style="display:none;text-align:center;font-weight:normal;"><?php _e('An error occurred. Please try again.', 'mailoptin'); ?></div>
                 </div>
             </div>
         </div>

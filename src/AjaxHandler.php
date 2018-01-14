@@ -6,6 +6,7 @@ use MailOptin\Core\Admin\Customizer\CustomControls\ControlsHelpers;
 use MailOptin\Core\Admin\Customizer\EmailCampaign\SolitaryDummyContent;
 use MailOptin\Core\Admin\SettingsPage\Email_Campaign_List;
 use MailOptin\Core\Admin\SettingsPage\OptinCampaign_List;
+use MailOptin\Core\Admin\SettingsPage\SplitTestOptinCampaign;
 use MailOptin\Core\EmailCampaign\TemplatifyNewPostPublish;
 use MailOptin\Core\Connections\AbstractConnect;
 use MailOptin\Core\Connections\ConnectionFactory;
@@ -33,6 +34,7 @@ class AjaxHandler
         add_action('wp_ajax_mailoptin_toggle_optin_activated', [$this, 'optin_listing_activated_status_toggle']);
         add_action('wp_ajax_mailoptin_act_on_toggle_optin_activated', [$this, 'act_on_option_activation_actions']);
         add_action('wp_ajax_mailoptin_optin_type_selection', [$this, 'optin_type_selection']);
+        add_action('wp_ajax_mailoptin_create_optin_split_test', [$this, 'create_optin_split_test']);
 
         add_action('wp_ajax_mailoptin_track_impression', [$this, 'track_optin_impression']);
         add_action('wp_ajax_mailoptin_add_to_email_list', [$this, 'subscribe_to_email_list']);
@@ -168,6 +170,34 @@ class AjaxHandler
         echo '</div>';
 
         exit;
+    }
+
+    /**
+     * Create optin slit test
+     */
+    public function create_optin_split_test()
+    {
+        if (!current_user_can('administrator')) {
+            return;
+        }
+
+        check_ajax_referer('mailoptin-admin-nonce', 'nonce');
+
+        if (!isset($_REQUEST['variant_name'], $_REQUEST['split_note'], $_REQUEST['parent_optin_id'])) {
+            wp_send_json_error();
+        }
+
+        $variant_name = sanitize_text_field($_REQUEST['variant_name']);
+        $split_note = sanitize_text_field($_REQUEST['split_note']);
+        $parent_optin_id = absint($_REQUEST['parent_optin_id']);
+
+        $optin_campaign_id = (new SplitTestOptinCampaign($parent_optin_id, $variant_name, $split_note))->forge();
+
+        if (!$optin_campaign_id) wp_send_json_error();
+
+        wp_send_json_success(
+            ['redirect' => OptinCampaign_List::_optin_campaign_customize_url($optin_campaign_id)]
+        );
     }
 
     /**

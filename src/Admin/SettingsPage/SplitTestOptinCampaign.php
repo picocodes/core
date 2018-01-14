@@ -5,20 +5,22 @@ namespace MailOptin\Core\Admin\SettingsPage;
 use MailOptin\Core\AjaxHandler;
 use MailOptin\Core\Repositories\OptinCampaignsRepository;
 
-class CloneOptinCampaign
+class SplitTestOptinCampaign
 {
     protected $optin_campaign_id;
 
     /**
      * @param int $optin_campaign_id
      */
-    public function __construct($optin_campaign_id)
+    public function __construct($parent_optin_campaign_id, $name, $note)
     {
-        $this->optin_campaign_id = $optin_campaign_id;
+        $this->optin_campaign_id = $parent_optin_campaign_id;
+        $this->name = $name;
+        $this->note = $note;
     }
 
     /**
-     * Do the clone.
+     * Do the variant creation.
      *
      * @return bool
      */
@@ -28,16 +30,20 @@ class CloneOptinCampaign
 
         $optin_campaign_id = OptinCampaignsRepository::add_optin_campaign(
             AjaxHandler::generateUniqueId(),
-            apply_filters('mailoptin_optin_campaign_clone_name', $clonee['name'] . ' - Copy', $clonee),
+            $this->name,
             $clonee['optin_class'],
             $clonee['optin_type']
         );
 
+        if ($optin_campaign_id === false) return false;
+
         $all_optin_campaign_settings = OptinCampaignsRepository::get_settings();
         // append new template settings to existing settings.
         $all_optin_campaign_settings[$optin_campaign_id] = OptinCampaignsRepository::get_settings_by_id($this->optin_campaign_id);
+        $all_optin_campaign_settings[$optin_campaign_id]['split_test_note'] = $this->note;
         // save to DB
-        return OptinCampaignsRepository::updateSettings($all_optin_campaign_settings);
+        OptinCampaignsRepository::updateSettings($all_optin_campaign_settings);
 
+        return $optin_campaign_id;
     }
 }
