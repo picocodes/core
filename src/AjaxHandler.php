@@ -191,6 +191,10 @@ class AjaxHandler
         $split_note = sanitize_text_field($_REQUEST['split_note']);
         $parent_optin_id = absint($_REQUEST['parent_optin_id']);
 
+        if (OptinCampaignsRepository::campaign_name_exist($variant_name)) {
+            wp_send_json_error(__('Optin campaign with similar variant name exist already.', 'mailoptin'));
+        }
+
         $optin_campaign_id = (new SplitTestOptinCampaign($parent_optin_id, $variant_name, $split_note))->forge();
 
         if (!$optin_campaign_id) wp_send_json_error();

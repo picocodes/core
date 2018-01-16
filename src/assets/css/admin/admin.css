@@ -420,6 +420,17 @@ tr.mo-test-mode {
     text-align: left;
 }
 
+/* remove alternative styling from optin form listing. */
+table.optin_forms.striped > tbody > :nth-child(odd) {
+    background-color: #fff;
+}
+
+tr.mo-is-split-test .check-column input[type="checkbox"],
+tr.mo-is-split-test .column-name > a,
+tr.mo-is-split-test .column-name .row-actions {
+    margin-left: 2em;
+}
+
 table.optin_forms th#actions {
     width: 25% !important;
 }
@@ -632,6 +643,7 @@ a.mobutton {
     padding: 10px;
     width: 100%;
 }
+
 #mo-optin-add-split .mo-split-content input#mo-split-submit {
     height: auto;
     padding: 5px 20px;

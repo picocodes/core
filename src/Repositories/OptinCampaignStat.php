@@ -2,7 +2,7 @@
 
 namespace MailOptin\Core\Repositories;
 
-class OptinCampaignStat extends AbstractOptinCampaignMeta
+class OptinCampaignStat extends OptinCampaignMeta
 {
     /**
      * @var int ID of optin campaign

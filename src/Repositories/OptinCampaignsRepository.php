@@ -9,6 +9,12 @@ use MailOptin\Core\PluginSettings\Settings;
 class OptinCampaignsRepository extends AbstractRepository
 {
     /**
+     * @todo consider using it more for queries that get called frequenly on single page request.
+     * @var array
+     */
+    private static $cache = [];
+
+    /**
      * Check if an optin campaign name already exist.
      *
      * @param string $name
@@ -22,6 +28,37 @@ class OptinCampaignsRepository extends AbstractRepository
         $result = parent::wpdb()->get_var(parent::wpdb()->prepare("SELECT name FROM $table WHERE name = '%s'", $campaign_name));
 
         return !empty($result);
+    }
+
+    /**
+     * Is optin campaign a split test?
+     *
+     * @param int $optin_campaign_id
+     *
+     * @return bool
+     */
+    public static function is_split_test($optin_campaign_id)
+    {
+        // implemented cache to ensure subsequent calls for same optin id
+        // in single request return previous value.
+        $cache_key = 'is_split_test_' . $optin_campaign_id;
+
+        if (!empty(self::$cache[$cache_key])) {
+            return true;
+        }
+
+        $parent_optin_id = OptinCampaignMeta::get_campaign_meta(
+            $optin_campaign_id,
+            'split_test_parent',
+            true
+        );
+
+        if (!empty($parent_optin_id)) {
+            self::$cache[$cache_key] = $parent_optin_id;
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -78,7 +115,7 @@ class OptinCampaignsRepository extends AbstractRepository
     {
         $table = parent::campaigns_table();
         /**
-         * @todo consider adding wp_cache_* to probably all database query methods to speed things up.
+         * @todo consider adding wp_cache_* for unchanging values to probably all database query methods to speed things up.
          */
         $cache_key = "campaign_uuid_$optin_campaign_id";
 
@@ -87,6 +124,7 @@ class OptinCampaignsRepository extends AbstractRepository
         }
 
         $result = parent::wpdb()->get_var("SELECT uuid FROM $table WHERE id = '$optin_campaign_id'");
+        // expiration is not set thus making it not expire-able because uuid never changes. take note.
         wp_cache_set($cache_key, $result);
         return $result;
     }
@@ -168,7 +206,7 @@ class OptinCampaignsRepository extends AbstractRepository
             $sql .= " WHERE NOT optin_type IN ($excludes)";
         }
 
-        return parent::wpdb()->get_col($sql);
+        return parent::wpdb()->get_col(esc_sql($sql));
     }
 
     /**
@@ -212,7 +250,7 @@ class OptinCampaignsRepository extends AbstractRepository
      *
      * @param int $optin_campaign_id
      *
-     * @return array|null|object|void
+     * @return array|null|object
      */
     public static function get_optin_campaign_by_id($optin_campaign_id)
     {
@@ -226,7 +264,7 @@ class OptinCampaignsRepository extends AbstractRepository
      *
      * @param string $optin_uuid
      *
-     * @return array|null|object|void
+     * @return array|null|object
      */
     public static function get_optin_campaign_by_uuid($optin_uuid)
     {

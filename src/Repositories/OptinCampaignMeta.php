@@ -3,7 +3,7 @@
 namespace MailOptin\Core\Repositories;
 
 
-abstract class AbstractOptinCampaignMeta
+class OptinCampaignMeta
 {
     /**
      * Add meta data field to optin campaign.

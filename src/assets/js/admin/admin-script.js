@@ -104,6 +104,7 @@
         if (isEmpty(variant_name) || isEmpty(split_note)) return;
 
         $(_this).prop("disabled", true);
+        $('#mo-split-submit-error').hide();
         $('#mo-split-submit-spinner').show();
 
         $.post(ajaxurl, {
@@ -113,12 +114,12 @@
             parent_optin_id: $('#mo-split-parent-id').val(),
             nonce: mailoptin_globals.nonce
         }, function (response) {
-            if ('success' in response && typeof response.success === true && typeof response.data.redirect !== 'undefined') {
+            if ('success' in response && response.success === true && typeof response.data.redirect !== 'undefined') {
                 window.location.assign(response.data.redirect);
             }
             else {
                 $(_this).prop("disabled", false);
-                $('#mo-split-submit-error').show();
+                $('#mo-split-submit-error').show().html(response.data);
                 $('#mo-split-submit-spinner').hide();
             }
         });

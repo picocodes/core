@@ -372,8 +372,14 @@ class OptinCampaign_List extends \WP_List_Table
     public function single_row($item)
     {
         $optin_Campaign_id = absint($item['id']);
-        $class = OptinCampaignsRepository::is_test_mode($optin_Campaign_id) ? ' class="mo-test-mode"' : null;
-        echo "<tr{$class}>";
+        $class = [];
+
+        OptinCampaignsRepository::is_test_mode($optin_Campaign_id) ? $class[] = 'mo-test-mode' : null;
+        OptinCampaignsRepository::is_split_test($optin_Campaign_id) ? $class[] = 'mo-is-split-test' : null;
+
+        $class = implode(' ', $class);
+
+        echo "<tr class='$class'>";
         $this->single_row_columns($item);
         echo '</tr>';
     }
