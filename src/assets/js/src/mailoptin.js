@@ -1,7 +1,7 @@
 /**
  * @var {object} mailoptin_globals
  */
-define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', 'moScrollTrigger'],
+define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', 'moScrollTrigger', 'mc-groups-validation.js'],
     function ($, Cookies, mailoptin_globals) {
         "use strict";
 
