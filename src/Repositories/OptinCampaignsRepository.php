@@ -31,19 +31,21 @@ class OptinCampaignsRepository extends AbstractRepository
     }
 
     /**
-     * Is optin campaign a split test?
+     * Is optin campaign a split test variant?
      *
      * @param int $optin_campaign_id
      *
      * @return bool
      */
-    public static function is_split_test($optin_campaign_id)
+    public static function is_split_test_variant($optin_campaign_id)
     {
+        $optin_campaign_id = absint($optin_campaign_id);
+
         // implemented cache to ensure subsequent calls for same optin id
         // in single request return previous value.
         $cache_key = 'is_split_test_' . $optin_campaign_id;
 
-        if (!empty(self::$cache[$cache_key])) {
+        if (isset(self::$cache[$cache_key]) && !empty(self::$cache[$cache_key])) {
             return true;
         }
 
@@ -59,6 +61,41 @@ class OptinCampaignsRepository extends AbstractRepository
         }
 
         return false;
+    }
+
+    /**
+     * Check if optin campaign is a parent split test. That is, does it has variants?
+     *
+     * @param int $parent_optin_id
+     *
+     * @return bool
+     */
+    public static function is_split_test_parent($parent_optin_id)
+    {
+        $cache_key = 'is_split_test_parent' . $parent_optin_id;
+
+        if (isset(self::$cache[$cache_key]) && !empty(self::$cache[$cache_key])) {
+            return true;
+        }
+
+        $response = OptinCampaignMeta::get_meta_value_by_key('split_test_parent', $parent_optin_id);
+
+        if (!empty($response)) {
+            self::$cache[$cache_key] = $response;
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Get all AB test variants belong to a parent optin ID.
+     *
+     * @param int $parent_optin_id
+     */
+    public static function get_split_test_variant_ids($parent_optin_id)
+    {
+        return OptinCampaignMeta::get_meta_value_by_key('split_test_parent', $parent_optin_id);
     }
 
     /**
@@ -206,7 +243,7 @@ class OptinCampaignsRepository extends AbstractRepository
             $sql .= " WHERE NOT optin_type IN ($excludes)";
         }
 
-        return parent::wpdb()->get_col(esc_sql($sql));
+        return parent::wpdb()->get_col($sql);
     }
 
     /**
@@ -492,7 +529,13 @@ class OptinCampaignsRepository extends AbstractRepository
      */
     public static function is_test_mode($optin_campaign_id)
     {
-        $campaign_settings = self::get_settings_by_id($optin_campaign_id);
+        $cache_key = 'is_test_mode' . $optin_campaign_id;
+
+        if (isset(self::$cache[$cache_key])) {
+            $campaign_settings = self::$cache[$cache_key];
+        } else {
+            $campaign_settings = self::get_settings_by_id($optin_campaign_id);
+        }
 
         return isset($campaign_settings['test_mode']) && ($campaign_settings['test_mode'] === true);
     }
