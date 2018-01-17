@@ -420,27 +420,57 @@ tr.mo-test-mode {
     text-align: left;
 }
 
-/* remove alternative styling from optin form listing. */
-table.optin_forms.striped > tbody > :nth-child(odd) {
-    background-color: #fff;
-}
-
+/* split test styling */
 tr.mo-is-split-test .check-column input[type="checkbox"],
 tr.mo-is-split-test .column-name > a,
 tr.mo-is-split-test .column-name .row-actions {
     margin-left: 2em;
 }
 
+table.optin_forms .mo-has-split-test-variant {
+    margin-left: 10px;
+    display: inline;
+    padding: 2px 4px;
+    text-decoration: none;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    background: #f7f7f7;
+    text-shadow: none;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: normal;
+    color: #0073aa;
+    cursor: pointer;
+    outline: 0;
+}
+
+/* remove alternative styling from optin form listing. */
+table.optin_forms.striped > tbody > :nth-child(odd),
+table.email_campaigns.striped > tbody > :nth-child(odd) {
+    background-color: #fff;
+}
+
+table.optin_forms th, table.optin_forms td,
+table.email_campaigns th, table.email_campaigns td {
+    border-bottom: 1px solid #eee;
+}
+
+table.optin_forms .mo-has-split-test-variant::after {
+    content: "\f140";
+    font: 200 10px/2 dashicons;
+}
+
+/* optin wp listing column re-arrangement*/
 table.optin_forms th#actions {
-    width: 25% !important;
+    width: 20% !important;
 }
 
 table.optin_forms th#name {
-    width: 20%;
+    width: 26%;
 }
 
 table.optin_forms th#uuid {
-    width: 10%;
+    width: 12%;
 }
 
 form.mo-inline {
@@ -475,7 +505,7 @@ form.mo-inline {
     margin: 1em auto;
 }
 
-a.mobutton {
+.mobutton {
     display: block;
     position: relative;
     width: 100%;

@@ -59,4 +59,25 @@ class OptinCampaignMeta
     {
         return get_metadata('optin_campaign', $campaign_id, $meta_key, $single);
     }
+
+    /**
+     * Get meta value by optin_campaign_id and meta key.
+     *
+     * @param string $meta_key
+     * @param int $parent_optin_id
+     */
+    public static function get_meta_value_by_key($meta_key, $parent_optin_id)
+    {
+        global $wpdb;
+
+        $table = $wpdb->prefix . 'mo_optin_campaignmeta';
+
+        return $wpdb->get_col(
+            $wpdb->prepare(
+                "SELECT optin_campaign_id FROM $table WHERE meta_key = %s AND meta_value = %s",
+                $meta_key,
+                $parent_optin_id
+            )
+        );
+    }
 }

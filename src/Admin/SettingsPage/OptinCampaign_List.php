@@ -96,7 +96,6 @@ class OptinCampaign_List extends \WP_List_Table
 
         $sql .= " ORDER BY id DESC";
 
-
         $args[] = $per_page;
 
         $sql .= " LIMIT %d";
@@ -371,17 +370,49 @@ class OptinCampaign_List extends \WP_List_Table
      */
     public function single_row($item)
     {
-        $optin_Campaign_id = absint($item['id']);
-        $class = [];
+        $optin_campaign_id = absint($item['id']);
 
-        OptinCampaignsRepository::is_test_mode($optin_Campaign_id) ? $class[] = 'mo-test-mode' : null;
-        OptinCampaignsRepository::is_split_test($optin_Campaign_id) ? $class[] = 'mo-is-split-test' : null;
+        OptinCampaignsRepository::is_test_mode($optin_campaign_id) ? $class = 'mo-test-mode' : null;
 
-        $class = implode(' ', $class);
+        // if this optin has a child optin as ab split test variant, add them beneath the parent.
+        $variant_ids = OptinCampaignsRepository::get_split_test_variant_ids($optin_campaign_id);
+
+        $class = '';
 
         echo "<tr class='$class'>";
         $this->single_row_columns($item);
         echo '</tr>';
+
+        if (!empty($variant_ids)) {
+            foreach ($variant_ids as $variant_id) {
+                $item = OptinCampaignsRepository::get_optin_campaign_by_id($variant_id);
+                echo "<tr class='$class mo-is-split-test'>";
+                $this->single_row_columns($item);
+                echo '</tr>';
+            }
+
+            $this->split_test_actions_row($optin_campaign_id);
+        }
+    }
+
+    public function split_test_actions_row($optin_campaign_id)
+    {
+        ?>
+        <tr class="mo-split-test-actions">
+            <td></td>
+            <td></td>
+            <td>
+                <a href="#" class="mo-split-test-pause" data-parent-id="<?php echo $optin_campaign_id; ?>"><?php _e('Pause Test', 'mailoptin'); ?></a>
+            </td>
+            <td>
+                <a href="#" class="mo-split-test-end" data-parent-id="<?php echo $optin_campaign_id; ?>"><?php _e('End & Pick Winner', 'mailoptin'); ?></a>
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <?php
     }
 
     /**
@@ -432,8 +463,6 @@ class OptinCampaign_List extends \WP_List_Table
         $customize_url = $this->_optin_campaign_customize_url($optin_campaign_id);
         $delete_url = $this->_optin_campaign_delete_url($optin_campaign_id);
 
-        $name = '<a href="' . $customize_url . '"><strong>' . $item['name'] . '</strong></a>';
-
         if (OptinCampaignsRepository::is_test_mode($optin_campaign_id)) {
             $url = $this->_optin_campaign_disable_test_mode($optin_campaign_id);
             $label = esc_attr__('Disable Test Mode', 'mailoptin');
@@ -447,21 +476,27 @@ class OptinCampaign_List extends \WP_List_Table
             'test_mode' => "<a href=\"$url\">$label</a>"
         );
 
+        $name = '<a href="' . $customize_url . '"><strong>' . $item['name'] . '</strong></a>';
+
+        if (OptinCampaignsRepository::is_split_test_parent($optin_campaign_id)) {
+            $name .= '<div class="mo-has-split-test-variant">A/B</div>';
+        }
+
         return $name . $this->row_actions($actions);
     }
 
     public function column_default($item, $column_name)
     {
-        $optin_Campaign_id = absint($item['id']);
+        $optin_campaign_id = absint($item['id']);
 
-        $stats = new OptinCampaignStat($optin_Campaign_id);
+        $stats = new OptinCampaignStat($optin_campaign_id);
         $impressions = $stats->get_impressions();
         $conversions = $stats->get_conversions();
 
         switch ($column_name) {
             case 'uuid' :
                 $value = $item['uuid'];
-                if (OptinCampaignsRepository::is_test_mode($optin_Campaign_id)) {
+                if (OptinCampaignsRepository::is_test_mode($optin_campaign_id)) {
                     $value .= '<br/><span class="mo-test-mode-title">' . __('Test Mode', 'mailoptin') . '</span>';
                 }
                 break;
@@ -491,21 +526,23 @@ class OptinCampaign_List extends \WP_List_Table
      */
     public function column_activated($item)
     {
-        $optin_Campaign_id = absint($item['id']);
+        $optin_campaign_id = absint($item['id']);
 
-        $input_value = OptinCampaignsRepository::is_activated($optin_Campaign_id) ? 'yes' : 'no';
+        if (OptinCampaignsRepository::is_split_test_variant($optin_campaign_id)) return '';
+
+        $input_value = OptinCampaignsRepository::is_activated($optin_campaign_id) ? 'yes' : 'no';
         $checked = ($input_value == 'yes') ? 'checked="checked"' : null;
 
         $switch = sprintf(
             '<input data-mo-optin-id="%1$s" id="mo-optin-activate-switch-%1$s" type="checkbox" class="mo-optin-activate-switch tgl tgl-light" value="%%3$s" %3$s />',
-            $optin_Campaign_id,
+            $optin_campaign_id,
             $input_value,
             $checked
         );
 
         $switch .= sprintf(
             '<label for="mo-optin-activate-switch-%1$s" style="margin:auto;" class="tgl-btn"></label>',
-            $optin_Campaign_id
+            $optin_campaign_id
         );
 
         return $switch;
@@ -523,7 +560,6 @@ class OptinCampaign_List extends \WP_List_Table
         $optin_campaign_id = absint($item['id']);
 
         $delete_url = $this->_optin_campaign_delete_url($optin_campaign_id);
-        $clone_url = $this->_optin_campaign_clone_url($optin_campaign_id);
         $customize_url = $this->_optin_campaign_customize_url($optin_campaign_id);
 
         $action = sprintf(
@@ -531,12 +567,6 @@ class OptinCampaign_List extends \WP_List_Table
             esc_url_raw($customize_url),
             __('Customize', 'mailoptin'),
             '<i class="fa fa-pencil" aria-hidden="true"></i>'
-        );
-        $action .= sprintf(
-            '<a class="mo-tooltipster button action" href="%s" title="%s">%s</a> &nbsp;',
-            $clone_url,
-            __('Clone', 'mailoptin'),
-            '<i class="fa fa-clone" aria-hidden="true"></i>'
         );
         $action .= sprintf(
             '<a class="mo-tooltipster button action mailoptin-btn-red" href="%s" title="%s">%s</a> &nbsp;',
@@ -559,6 +589,14 @@ class OptinCampaign_List extends \WP_List_Table
 
     public function popover_action_links($optin_campaign_id)
     {
+        if (OptinCampaignsRepository::is_test_mode($optin_campaign_id)) {
+            $test_mode_url = $this->_optin_campaign_disable_test_mode($optin_campaign_id);
+            $test_mode_label = esc_attr__('Disable Test Mode', 'mailoptin');
+        } else {
+            $test_mode_url = $this->_optin_campaign_enable_test_mode($optin_campaign_id);
+            $test_mode_label = esc_attr__('Enable Test Mode', 'mailoptin');
+        }
+
         $actions = apply_filters('mo_optin_popover_actions', [
             'split_test' => [
                 'title' => __('Create new split variation', 'mailoptin'),
@@ -570,6 +608,10 @@ class OptinCampaign_List extends \WP_List_Table
                 'title' => __('Duplicate optin', 'mailoptin'),
                 'href' => self::_optin_campaign_clone_url($optin_campaign_id),
                 'label' => __('Duplicate', 'mailoptin')
+            ],
+            'test_mode' => [
+                'href' => $test_mode_url,
+                'label' => $test_mode_label
             ],
             'reset_stat' => [
                 'title' => __('Reset optin campaign statistics', 'mailoptin'),
@@ -631,8 +673,6 @@ class OptinCampaign_List extends \WP_List_Table
         $actions = array(
             'bulk-delete' => __('Delete', 'mailoptin'),
             'bulk-clear-cookies' => __('Clear Local Cookies', 'mailoptin'),
-            'bulk-activate' => __('Activate', 'mailoptin'),
-            'bulk-deactivate' => __('Deactivate', 'mailoptin'),
         );
 
         return $actions;
@@ -661,7 +701,15 @@ class OptinCampaign_List extends \WP_List_Table
             )
         );
 
-        $this->items = $this->get_optin_campaign($per_page, $current_page, $optin_type);
+        $optin_campaigns = $this->get_optin_campaign($per_page, $current_page, $optin_type);
+
+        foreach ($optin_campaigns as $key => $optin_campaign) {
+            if (OptinCampaignsRepository::is_split_test_variant($optin_campaign['id'])) {
+                unset($optin_campaigns[$key]);
+            }
+        }
+
+        $this->items = $optin_campaigns;
     }
 
     public function process_actions()

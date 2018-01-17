@@ -24,7 +24,7 @@ function _manually_load_plugin()
     if (file_exists($composer_vendor_in_main_plugin)) {
         require dirname(dirname(dirname(__FILE__))) . '/vendor/autoload.php';
     } else {
-        require dirname(dirname(__FILE__)) . '/vendor/autoload.php';
+        require dirname(dirname(dirname(__FILE__))) . '/mailoptin.php';
     }
 }
 
