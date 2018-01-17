@@ -402,10 +402,10 @@ class OptinCampaign_List extends \WP_List_Table
             <td></td>
             <td></td>
             <td>
-                <a href="#" class="mo-split-test-pause" data-parent-id="<?php echo $optin_campaign_id; ?>"><?php _e('Pause Test', 'mailoptin'); ?></a>
+                <a href="#" class="mo-split-test-pause mo-split-test-action-button" data-parent-id="<?php echo $optin_campaign_id; ?>"><?php _e('Pause Test', 'mailoptin'); ?></a>
             </td>
             <td>
-                <a href="#" class="mo-split-test-end" data-parent-id="<?php echo $optin_campaign_id; ?>"><?php _e('End & Pick Winner', 'mailoptin'); ?></a>
+                <a href="#" class="mo-split-test-end mo-split-test-action-button" data-parent-id="<?php echo $optin_campaign_id; ?>"><?php _e('End & Pick Winner', 'mailoptin'); ?></a>
             </td>
             <td></td>
             <td></td>

@@ -420,6 +420,17 @@ tr.mo-test-mode {
     text-align: left;
 }
 
+/* remove alternative styling from optin form listing. */
+table.optin_forms.striped > tbody > :nth-child(odd),
+table.email_campaigns.striped > tbody > :nth-child(odd) {
+    background-color: #fff;
+}
+
+table.optin_forms th, table.optin_forms td,
+table.email_campaigns th, table.email_campaigns td {
+    border-bottom: 1px solid #eee;
+}
+
 /* split test styling */
 tr.mo-is-split-test .check-column input[type="checkbox"],
 tr.mo-is-split-test .column-name > a,
@@ -444,15 +455,32 @@ table.optin_forms .mo-has-split-test-variant {
     outline: 0;
 }
 
-/* remove alternative styling from optin form listing. */
-table.optin_forms.striped > tbody > :nth-child(odd),
-table.email_campaigns.striped > tbody > :nth-child(odd) {
-    background-color: #fff;
+table.optin_forms .mo-split-test-action-button {
+
+    padding: 3px 7px;
+    color: #fff;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    margin-left: 7px;
+    display: inline-block;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 13px;
+}
+table.optin_forms a.mo-split-test-action-button:hover {
+    color:#fff !important;
+}
+table.optin_forms .mo-split-test-pause {
+    background-color: #95c551;
 }
 
-table.optin_forms th, table.optin_forms td,
-table.email_campaigns th, table.email_campaigns td {
-    border-bottom: 1px solid #eee;
+table.optin_forms .mo-split-test-end {
+    background: #f45a4a;
+}
+
+table.optin_forms tr.mo-split-test-actions {
+    background-color: #f9f9f9;
 }
 
 table.optin_forms .mo-has-split-test-variant::after {
