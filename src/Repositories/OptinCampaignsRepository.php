@@ -561,6 +561,9 @@ class OptinCampaignsRepository extends AbstractRepository
         $optin_campaign_id = absint($optin_campaign_id);
         // update the "activate_optin" setting to true
         $all_settings = self::get_settings();
+
+        if ($all_settings[$optin_campaign_id]['activate_optin'] === true) return true;
+
         $all_settings[$optin_campaign_id]['activate_optin'] = true;
 
         return self::updateSettings($all_settings);

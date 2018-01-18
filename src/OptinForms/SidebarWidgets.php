@@ -31,12 +31,9 @@ class SidebarWidgets extends \WP_Widget
     {
         $sidebar_optin_id = isset($instance['sidebar_optin_id']) ? $instance['sidebar_optin_id'] : false;
         $title = isset($instance['title']) ? apply_filters('widget_title', $instance['title']) : false;
-        $is_activated = OCR::is_activated($sidebar_optin_id);
+
         $global_cookie_check = OCR::global_cookie_check_result($sidebar_optin_id);
-
-//         $optin_campaign_id = OCR::choose_split_test_variant($sidebar_optin_id);
-
-        var_dump($sidebar_optin_id); exit;
+        $sidebar_optin_id = OCR::choose_split_test_variant($sidebar_optin_id);
 
         do_action('mo_sidebar_optin_widget_before_output', $args, $instance);
 
@@ -44,7 +41,7 @@ class SidebarWidgets extends \WP_Widget
 
         do_action('mo_sidebar_optin_widget_before_optin_form', $args, $instance);
 
-        if (is_int($sidebar_optin_id) && true === $is_activated && true === $global_cookie_check) {
+        if (OCR::is_activated($sidebar_optin_id) && true === $global_cookie_check) {
 
             if ($title) echo $args['before_title'] . $title . $args['after_title'];
 
