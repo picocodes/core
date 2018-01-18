@@ -43,6 +43,11 @@ class InPost
 
             do_action('mailoptin_before_inpost_optin_display_determinant', $id, $optin_ids, $post_id);
 
+            // if it is a split test variant, skip
+            if (Repository::is_split_test_variant($id)) continue;
+
+            $id = Repository::choose_split_test_variant($id);
+
             $optin_position = Repository::get_merged_customizer_value($id, 'inpost_form_optin_position');
 
             // if optin is not enabled, pass.

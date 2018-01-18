@@ -3,6 +3,7 @@
 namespace MailOptin\Core\Admin\SettingsPage;
 
 use MailOptin\Core\Core;
+use MailOptin\Core\Repositories\OptinCampaignMeta;
 use MailOptin\Core\Repositories\OptinCampaignsRepository;
 use MailOptin\Core\Repositories\OptinCampaignStat;
 
@@ -125,6 +126,8 @@ class OptinCampaign_List extends \WP_List_Table
         );
 
         OptinCampaignsRepository::delete_settings_by_id($optin_campaign_id);
+
+        OptinCampaignMeta::delete_campaign_meta($optin_campaign_id, 'split_test_parent');
     }
 
     /**

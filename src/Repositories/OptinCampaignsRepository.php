@@ -569,7 +569,6 @@ class OptinCampaignsRepository extends AbstractRepository
         return self::updateSettings($all_settings);
     }
 
-
     /**
      * Deactivate optin campaign.
      *
