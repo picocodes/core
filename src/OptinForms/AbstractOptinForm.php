@@ -193,13 +193,11 @@ abstract class AbstractOptinForm extends AbstractCustomizer implements OptinForm
      */
     public function impression_tracker_js_script()
     {
-        return "<script type='text/javascript'>
-jQuery(function(){
-    if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_impression !== 'undefined') {
-        jQuery.MailOptin.track_impression('{$this->optin_campaign_uuid}');
-    }
-});
-</script>";
+        return "<script type='text/javascript'>jQuery(document.body).on('mo-mailoptinjs-loaded', function(){
+if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_impression !== 'undefined') {
+    jQuery.MailOptin.track_impression('{$this->optin_campaign_uuid}');
+  }
+});</script>";
     }
 
     /**
