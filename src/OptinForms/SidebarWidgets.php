@@ -34,6 +34,10 @@ class SidebarWidgets extends \WP_Widget
         $is_activated = OCR::is_activated($sidebar_optin_id);
         $global_cookie_check = OCR::global_cookie_check_result($sidebar_optin_id);
 
+//         $optin_campaign_id = OCR::choose_split_test_variant($sidebar_optin_id);
+
+        var_dump($sidebar_optin_id); exit;
+
         do_action('mo_sidebar_optin_widget_before_output', $args, $instance);
 
         echo $args['before_widget'];
@@ -81,6 +85,8 @@ class SidebarWidgets extends \WP_Widget
             <select id="<?php echo esc_attr($this->get_field_id('sidebar_optin_id')); ?>" name="<?php echo esc_attr($this->get_field_name('sidebar_optin_id')); ?>" style="width: 100%;">
                 <?php foreach (OCR::get_sidebar_optin_ids() as $optin_campaign_id) : ?>
                     <?php $is_activated = OCR::is_activated($optin_campaign_id); ?>
+                    <?php if (OCR::is_split_test_variant($optin_campaign_id)) continue; ?>
+
                     <?php $optin_campaign_id = absint($optin_campaign_id); ?>
                     <?php if (!$is_activated) : ?>
                         <option disabled="disabled" value="<?php echo $optin_campaign_id; ?>" <?php selected($optin_campaign_id, $saved_optin_id); ?> ><?php echo OCR::get_optin_campaign_name($optin_campaign_id) . sprintf(' (%s)', __('Not Activated', 'mailoptin')); ?></option>

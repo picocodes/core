@@ -466,7 +466,7 @@ table.optin_forms .mo-split-test-action-button {
     display: inline-block;
     text-transform: uppercase;
     font-weight: bold;
-    font-size: 13px;
+    font-size: 12px;
 }
 table.optin_forms a.mo-split-test-action-button:hover {
     color:#fff !important;
@@ -477,6 +477,11 @@ table.optin_forms .mo-split-test-pause {
 
 table.optin_forms .mo-split-test-end {
     background: #f45a4a;
+}
+
+table.optin_forms .mo-split-test-add-variant {
+    background: #939aaa;
+    float: left;
 }
 
 table.optin_forms tr.mo-split-test-actions {

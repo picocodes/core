@@ -49,6 +49,9 @@ class SplitTestOptinCampaign
         // save to DB
         OptinCampaignsRepository::updateSettings($all_optin_campaign_settings);
 
+        // activate the split test variant
+        OptinCampaignsRepository::activate_campaign($optin_campaign_id);
+
         return $optin_campaign_id;
     }
 }

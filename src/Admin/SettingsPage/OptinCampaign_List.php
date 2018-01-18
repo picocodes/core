@@ -400,7 +400,9 @@ class OptinCampaign_List extends \WP_List_Table
         ?>
         <tr class="mo-split-test-actions">
             <td></td>
-            <td></td>
+            <td>
+                <a href="#" class="mo-split-test-add-variant mo-split-test-action-button" data-parent-optin-id="<?php echo $optin_campaign_id; ?>"><?php _e('Add Variant', 'mailoptin'); ?></a>
+            </td>
             <td>
                 <a href="#" class="mo-split-test-pause mo-split-test-action-button" data-parent-id="<?php echo $optin_campaign_id; ?>"><?php _e('Pause Test', 'mailoptin'); ?></a>
             </td>
@@ -528,8 +530,6 @@ class OptinCampaign_List extends \WP_List_Table
     {
         $optin_campaign_id = absint($item['id']);
 
-        if (OptinCampaignsRepository::is_split_test_variant($optin_campaign_id)) return '';
-
         $input_value = OptinCampaignsRepository::is_activated($optin_campaign_id) ? 'yes' : 'no';
         $checked = ($input_value == 'yes') ? 'checked="checked"' : null;
 
@@ -624,6 +624,11 @@ class OptinCampaign_List extends \WP_List_Table
                 'label' => __('Clear Local Cookies', 'mailoptin')
             ],
         ], $optin_campaign_id);
+
+        if (OptinCampaignsRepository::is_split_test_variant($optin_campaign_id)) {
+            unset($actions['split_test']);
+            unset($actions['clone']);
+        }
 
         $structure = '<ul>';
         foreach ($actions as $action) {

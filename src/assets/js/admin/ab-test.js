@@ -1,5 +1,28 @@
 (function ($) {
 
+    var open_split_test_form = function (e, parent_optin_id) {
+        e.preventDefault();
+        // remove active popover
+        $('.mo-ellipsis-tooltipster').tooltipster('close');
+        $.fancybox.open({
+            href: '#mo-optin-add-split',
+            type: 'inline',
+            padding: 0
+        });
+
+        $('#mo-split-parent-id').val(parent_optin_id);
+    };
+
+    $(document.body).on('click', '.mo-split-test', function (e) {
+        var parent_optin_id = $(this).data('optin-id');
+        open_split_test_form(e, parent_optin_id);
+    });
+
+    $(document.body).on('click', '.mo-split-test-add-variant', function (e) {
+        var parent_optin_id = $(this).data('parent-optin-id');
+        open_split_test_form(e, parent_optin_id);
+    });
+
     $(document.body).on('click', '#mo-split-submit', function (e) {
         e.preventDefault();
         var _this = this;
