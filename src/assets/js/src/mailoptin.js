@@ -1,7 +1,7 @@
 /**
  * @var {object} mailoptin_globals
  */
-define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', 'moScrollTrigger', 'mc-groups-validation.js'],
+define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', 'moScrollTrigger', 'mc-groups-validation'],
     function ($, Cookies, mailoptin_globals) {
         "use strict";
 
@@ -988,6 +988,8 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                     _this.is_scheduled_for_display();
                     _this.initOptinForms();
                     _this.optin_conversion();
+
+                    $(document.body).trigger('mo-mailoptinjs-loaded')
                 });
             }
         };
