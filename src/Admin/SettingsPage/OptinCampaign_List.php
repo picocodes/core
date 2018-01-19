@@ -297,7 +297,7 @@ class OptinCampaign_List extends \WP_List_Table
         $clone_nonce = wp_create_nonce('mailoptin_clone_optin_campaign');
 
         return sprintf(
-            '?page=%s&action=%s&optin-form=%s&_wpnonce=%s"',
+            '?page=%s&action=%s&optin-form=%s&_wpnonce=%s',
             esc_attr($_REQUEST['page']), 'clone', absint($optin_campaign_id), $clone_nonce
         );
     }
@@ -533,6 +533,8 @@ class OptinCampaign_List extends \WP_List_Table
     {
         $optin_campaign_id = absint($item['id']);
 
+        if (OptinCampaignsRepository::is_split_test_variant($optin_campaign_id)) return '';
+
         $input_value = OptinCampaignsRepository::is_activated($optin_campaign_id) ? 'yes' : 'no';
         $checked = ($input_value == 'yes') ? 'checked="checked"' : null;
 
@@ -732,7 +734,7 @@ class OptinCampaign_List extends \WP_List_Table
         // Detect when a bulk action is being triggered...
         if ('delete' === $this->current_action()) {
             // In our file that handles the request, verify the nonce.
-            $nonce = esc_attr($_REQUEST['_wpnonce']);
+            $nonce = sanitize_text_field($_REQUEST['_wpnonce']);
             if (!wp_verify_nonce($nonce, 'mailoptin_delete_optin_campaign')) {
                 die('Go get a life script kiddies');
             } else {
@@ -750,7 +752,7 @@ class OptinCampaign_List extends \WP_List_Table
             if (apply_filters('mailoptin_add_optin_email_campaign_limit', true) && OptinCampaignsRepository::campaign_count() >= MO_LITE_OPTIN_CAMPAIGN_LIMIT) return;
 
             // In our file that handles the request, verify the nonce.
-            $nonce = esc_attr($_REQUEST['_wpnonce']);
+            $nonce = sanitize_text_field($_REQUEST['_wpnonce']);
             if (!wp_verify_nonce($nonce, 'mailoptin_clone_optin_campaign')) {
                 die('Go get a life script kiddies');
             } else {

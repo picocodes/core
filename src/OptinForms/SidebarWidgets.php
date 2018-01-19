@@ -32,27 +32,37 @@ class SidebarWidgets extends \WP_Widget
         $sidebar_optin_id = isset($instance['sidebar_optin_id']) ? $instance['sidebar_optin_id'] : false;
         $title = isset($instance['title']) ? apply_filters('widget_title', $instance['title']) : false;
 
-        $global_cookie_check = OCR::global_cookie_check_result($sidebar_optin_id);
-        $sidebar_optin_id = OCR::choose_split_test_variant($sidebar_optin_id);
-
         do_action('mo_sidebar_optin_widget_before_output', $args, $instance);
 
         echo $args['before_widget'];
 
         do_action('mo_sidebar_optin_widget_before_optin_form', $args, $instance);
 
-        if (OCR::is_activated($sidebar_optin_id) && true === $global_cookie_check) {
+        if ($title) echo $args['before_title'] . $title . $args['after_title'];
 
-            if ($title) echo $args['before_title'] . $title . $args['after_title'];
-
-            echo OptinFormFactory::build($sidebar_optin_id);
-        }
+        echo $this->get_sidebar_optin($sidebar_optin_id);
 
         do_action('mo_sidebar_optin_widget_after_optin_form', $args, $instance);
 
         echo $args['after_widget'];
 
         do_action('mo_sidebar_optin_widget_after_output', $args, $instance);
+    }
+
+    /**
+     * @param int $sidebar_optin_id
+     *
+     * @return string
+     */
+    public function get_sidebar_optin($sidebar_optin_id)
+    {
+        if (!OCR::is_activated($sidebar_optin_id)) return '';
+
+        $sidebar_optin_id = OCR::choose_split_test_variant($sidebar_optin_id);
+
+        if (!OCR::global_cookie_check_result($sidebar_optin_id)) return '';
+
+        return OptinFormFactory::build($sidebar_optin_id);
     }
 
     /**

@@ -468,9 +468,11 @@ table.optin_forms .mo-split-test-action-button {
     font-weight: bold;
     font-size: 12px;
 }
+
 table.optin_forms a.mo-split-test-action-button:hover {
-    color:#fff !important;
+    color: #fff !important;
 }
+
 table.optin_forms .mo-split-test-pause {
     background-color: #95c551;
 }
@@ -661,6 +663,11 @@ form.mo-inline {
     text-decoration: none;
     font-size: 14px;
     font-weight: 400;
+}
+
+.mo-popover-content li a:focus {
+    box-shadow: none;
+    color: #d9534f;
 }
 
 .mo-popover-content li:first-child a {

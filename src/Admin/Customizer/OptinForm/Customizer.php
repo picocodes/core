@@ -152,8 +152,13 @@ class Customizer
         }
     }
 
+    /**
+     * Add activation switch to optin customizer
+     */
     public function add_activate_switch()
     {
+        if (OptinCampaignsRepository::is_split_test_variant($this->optin_campaign_id)) return;
+
         $input_value = OptinCampaignsRepository::is_activated($this->optin_campaign_id) ? 'yes' : 'no';
         $checked = ($input_value == 'yes') ? 'checked="checked"' : null;
         $tooltip = __('Toggle to activate and deactivate optin.', 'mailoptin');

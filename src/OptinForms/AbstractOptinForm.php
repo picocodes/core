@@ -437,7 +437,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
             return $this->_get_optin_form_structure();
         }
 
-        // if cache is disable, fesh fresh optin structure.
+        // if cache is disable, fetch fresh optin structure.
         if (apply_filters('mailoptin_disable_optin_form_cache', false)) return $this->_get_optin_form_structure();
 
         $cache_key = "mo_get_optin_form_structure_{$this->optin_campaign_id}";

@@ -46,19 +46,15 @@ class InPost
             // if it is a split test variant, skip
             if (Repository::is_split_test_variant($id)) continue;
 
+            // if optin is not enabled, pass.
+            if (!Repository::is_activated($id)) continue;
+
             $id = Repository::choose_split_test_variant($id);
 
             $optin_position = Repository::get_merged_customizer_value($id, 'inpost_form_optin_position');
 
-            // if optin is not enabled, pass.
-            if (!Repository::is_activated($id)) {
-                continue;
-            }
-
             // if optin global exit/interaction and success cookie result fails, move to next.
-            if (!Repository::global_cookie_check_result($id)) {
-                continue;
-            }
+            if (!Repository::global_cookie_check_result($id)) continue;
 
             switch (Repository::get_customizer_value($id, 'who_see_optin')) {
                 case 'show_logged_in':

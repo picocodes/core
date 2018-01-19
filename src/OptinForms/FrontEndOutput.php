@@ -52,10 +52,11 @@ class FrontEndOutput
             // if it is a split test variant, skip
             if (Repository::is_split_test_variant($id)) continue;
 
-            $id = Repository::choose_split_test_variant($id);
-
-            // if optin is not enabled, pass.
+            // if optin is not enabled, pass. for split test, this ensure parent is active before choosing split test
+            // variant to display
             if (!Repository::is_activated($id)) continue;
+
+            $id = Repository::choose_split_test_variant($id);
 
             // if optin global exit/interaction and success cookie result fails, move to next.
             if (!Repository::global_cookie_check_result($id)) continue;

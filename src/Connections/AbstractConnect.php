@@ -113,6 +113,8 @@ abstract class AbstractConnect
      *
      * @param string $message error message
      * @param string $filename log file name.
+     *
+     * @return bool
      */
     public static function save_optin_error_log($message, $filename = 'error')
     {
@@ -123,7 +125,7 @@ abstract class AbstractConnect
             mkdir($error_log_folder, 0755);
         }
 
-        error_log($message . "\r\n", 3, "{$error_log_folder}{$filename}.log");
+        return error_log($message . "\r\n", 3, "{$error_log_folder}{$filename}.log");
     }
 
     /**
