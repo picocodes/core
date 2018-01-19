@@ -76,6 +76,30 @@
 
     });
 
+    // handle click of A/B test pause button
+    $('.mo-split-test-pause').click(function (e) {
+        e.preventDefault();
+        var _this = this;
+        var parent_optin_id = $(this).data('parent-id');
+        var split_test_action = $(this).data('split-test-action');
+
+        console.log(parent_optin_id);
+        $(_this).next('#mo-split-pause-spinner').show();
+
+        $.post(ajaxurl, {
+            action: 'mailoptin_pause_optin_split_test',
+            split_test_action: split_test_action,
+            parent_optin_id: parent_optin_id,
+            nonce: mailoptin_globals.nonce
+        }, function (response) {
+            if ('success' in response && response.success === true) {
+                $(_this).next('.mo-split-test-pause').text(mo_mailoptin_js_globals['split_test_' + split_test_action + '_label']);
+            }
+            $(_this).next('#mo-split-pause-spinner').hide();
+        });
+    });
+
+
     // handle click of A/B flag
 
 }(jQuery));

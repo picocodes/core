@@ -105,6 +105,20 @@ class OptinCampaignsRepository extends AbstractRepository
     }
 
     /**
+     * Check if the split test campaign is active. That is, it isn't paused.
+     *
+     * @param int $parent_optin_id
+     *
+     * @return bool
+     */
+    public static function is_split_test_active($parent_optin_id)
+    {
+        $variant_ids = self::get_split_test_variant_ids($parent_optin_id);
+        // from the array of returned variants, use the first to determine if split test is active.
+        return self::is_activated($variant_ids[0]);
+    }
+
+    /**
      * Pick a variant from group of variants including parent optin.
      *
      * @param $optin_campaign_id

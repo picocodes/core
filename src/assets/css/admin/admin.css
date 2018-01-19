@@ -501,11 +501,11 @@ table.optin_forms th#actions {
 }
 
 table.optin_forms th#name {
-    width: 26%;
+    width: 24%;
 }
 
 table.optin_forms th#uuid {
-    width: 12%;
+    width: 15%;
 }
 
 form.mo-inline {

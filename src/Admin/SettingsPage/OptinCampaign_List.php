@@ -400,6 +400,13 @@ class OptinCampaign_List extends \WP_List_Table
 
     public function split_test_actions_row($optin_campaign_id)
     {
+        if (OptinCampaignsRepository::is_split_test_active($optin_campaign_id)) {
+            $pause_start_label = __('Pause Test', 'mailoptin');
+            $pause_start_action = 'pause';
+        } else {
+            $pause_start_label = __('Start Test', 'mailoptin');
+            $pause_start_action = 'start';
+        }
         ?>
         <tr class="mo-split-test-actions">
             <td></td>
@@ -407,7 +414,8 @@ class OptinCampaign_List extends \WP_List_Table
                 <a href="#" class="mo-split-test-add-variant mo-split-test-action-button" data-parent-optin-id="<?php echo $optin_campaign_id; ?>"><?php _e('Add Variant', 'mailoptin'); ?></a>
             </td>
             <td>
-                <a href="#" class="mo-split-test-pause mo-split-test-action-button" data-parent-id="<?php echo $optin_campaign_id; ?>"><?php _e('Pause Test', 'mailoptin'); ?></a>
+                <a href="#" class="mo-split-test-pause mo-split-test-action-button" data-split-test-action="<?php echo $pause_start_action; ?>" data-parent-id="<?php echo $optin_campaign_id; ?>"><?php echo $pause_start_label; ?></a>
+                <img class="mo-spinner" id="mo-split-pause-spinner" style="margin-left:10px;display:none" src="<?php echo admin_url('images/spinner.gif'); ?>"/>
             </td>
             <td>
                 <a href="#" class="mo-split-test-end mo-split-test-action-button" data-parent-id="<?php echo $optin_campaign_id; ?>"><?php _e('End & Pick Winner', 'mailoptin'); ?></a>

@@ -35,6 +35,7 @@ class AjaxHandler
         add_action('wp_ajax_mailoptin_act_on_toggle_optin_activated', [$this, 'act_on_option_activation_actions']);
         add_action('wp_ajax_mailoptin_optin_type_selection', [$this, 'optin_type_selection']);
         add_action('wp_ajax_mailoptin_create_optin_split_test', [$this, 'create_optin_split_test']);
+        add_action('wp_ajax_mailoptin_pause_optin_split_test', [$this, 'pause_optin_split_test']);
 
         add_action('wp_ajax_mailoptin_track_impression', [$this, 'track_optin_impression']);
         add_action('wp_ajax_mailoptin_add_to_email_list', [$this, 'subscribe_to_email_list']);
@@ -205,9 +206,46 @@ class AjaxHandler
     }
 
     /**
+     * Pause optin slit test
+     */
+    public function pause_optin_split_test()
+    {
+        if (!current_user_can('administrator')) {
+            return;
+        }
+
+        check_ajax_referer('mailoptin-admin-nonce', 'nonce');
+
+        if (!isset($_POST['parent_optin_id'], $_POST['split_test_action'])) {
+            wp_send_json_error();
+        }
+
+        $parent_optin_id = absint($_POST['parent_optin_id']);
+        $split_test_action = sanitize_text_field($_POST['split_test_action']);
+
+        $variant_ids = OptinCampaignsRepository::get_split_test_variant_ids($parent_optin_id);
+
+        foreach ($variant_ids as $variant_id) {
+
+            if ('pause' === $split_test_action) {
+                OptinCampaignsRepository::deactivate_campaign($variant_id);
+            } else {
+                OptinCampaignsRepository::activate_campaign($variant_id);
+            }
+        }
+
+        $optin_campaign_id = (new SplitTestOptinCampaign($parent_optin_id, $variant_name, $split_note))->forge();
+
+        if (!$optin_campaign_id) wp_send_json_error();
+
+        wp_send_json_success();
+    }
+
+    /**
      * Create new optin campaign.
      */
-    public function create_optin_campaign()
+    public
+    function create_optin_campaign()
     {
         if (!current_user_can('administrator')) {
             return;
@@ -255,7 +293,8 @@ class AjaxHandler
     /**
      * Create new optin campaign.
      */
-    public function create_email_campaign()
+    public
+    function create_email_campaign()
     {
         if (!current_user_can('administrator')) {
             return;
@@ -304,7 +343,8 @@ class AjaxHandler
      *
      * @return string
      */
-    public static function generateUniqueId($length = 10)
+    public
+    static function generateUniqueId($length = 10)
     {
         $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
@@ -319,7 +359,8 @@ class AjaxHandler
     /**
      * fetch connect/email provider email list.
      */
-    public function customizer_fetch_email_list()
+    public
+    function customizer_fetch_email_list()
     {
         check_ajax_referer('customizer-fetch-email-list', 'security');
 
@@ -334,7 +375,8 @@ class AjaxHandler
         wp_die();
     }
 
-    public function toggle_optin_active_status()
+    public
+    function toggle_optin_active_status()
     {
         check_ajax_referer('customizer-fetch-email-list', 'security');
 
@@ -352,7 +394,8 @@ class AjaxHandler
         wp_die();
     }
 
-    public function optin_listing_activated_status_toggle()
+    public
+    function optin_listing_activated_status_toggle()
     {
         current_user_can('administrator') || exit;
 
@@ -364,7 +407,8 @@ class AjaxHandler
         wp_die();
     }
 
-    public function act_on_option_activation_actions()
+    public
+    function act_on_option_activation_actions()
     {
         global $wpdb;
         $table = $wpdb->options;
@@ -390,7 +434,8 @@ class AjaxHandler
     /**
      * Add subscriber to a connected service mailing list.
      */
-    public function subscribe_to_email_list()
+    public
+    function subscribe_to_email_list()
     {
         $builder = new ConversionDataBuilder();
         $builder->payload = $payload = apply_filters('mailoptin_optin_subscription_request_body', sanitize_data($_REQUEST['optin_data']));
@@ -412,7 +457,8 @@ class AjaxHandler
      * @param ConversionDataBuilder $conversion_data
      * @return array
      */
-    public static function do_optin_conversion(ConversionDataBuilder $conversion_data)
+    public
+    static function do_optin_conversion(ConversionDataBuilder $conversion_data)
     {
         if (!is_email($conversion_data->email)) {
             return AbstractConnect::ajax_failure(
@@ -505,7 +551,8 @@ class AjaxHandler
     /**
      * Track optin impression.
      */
-    public function track_optin_impression()
+    public
+    function track_optin_impression()
     {
         $payload = sanitize_data($_REQUEST['stat_data']);
         $optin_uuid = $payload['optin_uuid'];
@@ -519,7 +566,8 @@ class AjaxHandler
     /**
      * Handle search done on page target chosen field.
      */
-    public function page_targeting_search()
+    public
+    function page_targeting_search()
     {
         $q = sanitize_text_field($_REQUEST['q']);
         $search_type = sanitize_text_field($_REQUEST['search_type']);
@@ -546,7 +594,8 @@ class AjaxHandler
     /**
      * @return AjaxHandler
      */
-    public static function get_instance()
+    public
+    static function get_instance()
     {
         static $instance = null;
 

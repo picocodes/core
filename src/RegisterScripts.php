@@ -88,6 +88,8 @@ class RegisterScripts
                 'public_js' => MAILOPTIN_ASSETS_URL . 'js/src',
                 'nonce' => wp_create_nonce('mailoptin-admin-nonce'),
                 'ajaxurl' => admin_url('admin-ajax.php'),
+                'split_test_start_label' => __('Start Test', 'mailoptin'),
+                'split_test_pause_label' => __('Pause Test', 'mailoptin'),
                 'is_customize_preview' => is_customize_preview() ? 'true' : 'false',
                 'chosen_search_placeholder' => __('Type to search', 'mailoptin'),
                 'js_confirm_text' => __('Are you sure you want to do this?', 'mailoptin'),

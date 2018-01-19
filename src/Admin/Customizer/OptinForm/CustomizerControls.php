@@ -45,6 +45,8 @@ class CustomizerControls
         $this->customizerClassInstance = $customizerClassInstance;
         $this->option_prefix = $option_prefix;
         $this->optin_class_instance = $optin_class_instance;
+
+        $this->optin_campaign_id = $customizerClassInstance->optin_campaign_id;
     }
 
     public function design_controls()
@@ -868,6 +870,10 @@ class CustomizerControls
             $this->customizerClassInstance
         );
 
+        if (!OptinCampaignsRepository::is_split_test_variant($this->optin_campaign_id)) {
+            unset($content_control_args['split_test_note']);
+        }
+
         do_action('mailoptin_before_configuration_controls_addition');
 
         foreach ($content_control_args as $id => $args) {
@@ -885,9 +891,7 @@ class CustomizerControls
     {
         $email_providers = ConnectionsRepository::get_connections();
 
-        // saved optin campaign email provider
-        $optin_campaign_id = $this->customizerClassInstance->optin_campaign_id;
-        $saved_email_provider = OptinCampaignsRepository::get_customizer_value($optin_campaign_id, 'connection_service');
+        $saved_email_provider = OptinCampaignsRepository::get_customizer_value($this->optin_campaign_id, 'connection_service');
 
         // prepend 'Select...' to the array of email list.
         // because select control will be hidden if no choice is found.
@@ -978,7 +982,7 @@ class CustomizerControls
     {
         $success_message_config_link = sprintf(
             __("To customize the success message shown after user subscribe to this opt-in campaign, %sclick here%s.", 'mailoptin'),
-            '<a onclick="wp.customize.control(\'mo_optin_campaign[' . $this->customizerClassInstance->optin_campaign_id . '][success_message]\').focus()" href="#">',
+            '<a onclick="wp.customize.control(\'mo_optin_campaign[' . $this->optin_campaign_id . '][success_message]\').focus()" href="#">',
             '</a>'
         );
 
