@@ -346,7 +346,7 @@ class Columbine extends AbstractOptinTheme
 
                 function doAction() {
                     jQuery(function ($) {
-                        if ($('input#<?php echo $this->optin_campaign_uuid; ?>_inpost_name_field:visible').length == 0) {
+                        if ($('input#<?php echo $this->optin_campaign_uuid; ?>_inpost_name_field').css('display') === 'none') {
                             $('div#<?php echo $this->optin_campaign_uuid; ?>_inpost #columbine-email-field').removeClass().addClass('columbine-two-col1');
                             $('div#<?php echo $this->optin_campaign_uuid; ?>_inpost #columbine-submit-button').removeClass().addClass('columbine-two-col2');
                         }
