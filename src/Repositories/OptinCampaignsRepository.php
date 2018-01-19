@@ -409,7 +409,6 @@ class OptinCampaignsRepository extends AbstractRepository
      */
     public static function get_customizer_value($optin_campaign_id, $settings_name, $default = '')
     {
-        /** @todo consider caching this. */
         $settings = self::get_optin_saved_customizer_data();
         $value = isset($settings[$optin_campaign_id][$settings_name]) ? $settings[$optin_campaign_id][$settings_name] : null;
 
