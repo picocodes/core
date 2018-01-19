@@ -234,10 +234,6 @@ class AjaxHandler
             }
         }
 
-        $optin_campaign_id = (new SplitTestOptinCampaign($parent_optin_id, $variant_name, $split_note))->forge();
-
-        if (!$optin_campaign_id) wp_send_json_error();
-
         wp_send_json_success();
     }
 

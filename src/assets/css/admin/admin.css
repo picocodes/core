@@ -473,11 +473,12 @@ table.optin_forms a.mo-split-test-action-button:hover {
     color: #fff !important;
 }
 
-table.optin_forms .mo-split-test-pause {
+table.optin_forms .mo-split-test-pause-start {
     background-color: #95c551;
 }
 
-table.optin_forms .mo-split-test-end {
+table.optin_forms .mo-split-test-end,
+table.optin_forms .mo-split-test-action-paused {
     background: #f45a4a;
 }
 
