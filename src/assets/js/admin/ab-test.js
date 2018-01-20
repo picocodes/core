@@ -96,10 +96,10 @@
             if ('success' in response && response.success === true) {
                 if (split_test_action === 'pause') {
                     label = 'start';
-                    $(_this).removeClass('mo-split-test-action-paused');
+                    $(_this).addClass('mo-split-test-action-paused');
                 } else {
                     label = 'pause';
-                    $(_this).addClass('mo-split-test-action-paused');
+                    $(_this).removeClass('mo-split-test-action-paused');
                 }
                 $(_this).text(mailoptin_globals['split_test_' + label + '_label']);
             }
