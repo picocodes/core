@@ -36,6 +36,7 @@ class AjaxHandler
         add_action('wp_ajax_mailoptin_optin_type_selection', [$this, 'optin_type_selection']);
         add_action('wp_ajax_mailoptin_create_optin_split_test', [$this, 'create_optin_split_test']);
         add_action('wp_ajax_mailoptin_pause_optin_split_test', [$this, 'pause_optin_split_test']);
+        add_action('wp_ajax_mailoptin_end_optin_split_test_pick_winner', [$this, 'end_optin_split_test_pick_winner']);
 
         add_action('wp_ajax_mailoptin_track_impression', [$this, 'track_optin_impression']);
         add_action('wp_ajax_mailoptin_add_to_email_list', [$this, 'subscribe_to_email_list']);
@@ -206,7 +207,7 @@ class AjaxHandler
     }
 
     /**
-     * Pause optin slit test
+     * Pause and start optin slit test
      */
     public function pause_optin_split_test()
     {
@@ -238,10 +239,66 @@ class AjaxHandler
     }
 
     /**
+     * End ans select winning optin split test
+     */
+    public function end_optin_split_test_pick_winner()
+    {
+        if (!current_user_can('administrator')) {
+            return;
+        }
+
+        check_ajax_referer('mailoptin-admin-nonce', 'nonce');
+
+        if (!isset($_POST['parent_optin_id'])) {
+            wp_send_json_error();
+        }
+
+        $parent_optin_id = absint($_POST['parent_optin_id']);
+
+        $variant_ids = OptinCampaignsRepository::get_split_test_variant_ids($parent_optin_id);
+
+        ob_start();
+        ?>
+        <div class="mo-end-test-modal">
+        <div class="mo-end-test-conversion-rate">
+            <div class="mo-end-test-centered">
+                <h2><?php _e('Select a Winner', 'mailoptin'); ?></h2>
+                <div class="mo-end-test-first-section">
+                    <div class="mo-end-test-content-optin-name mo-end-test-th-header">
+                        <?php _e('Optin Name', 'mailoptin'); ?>
+                    </div>
+                    <div class="mo-end-test-content-conversion mo-end-test-th-header">
+                        <?php _e('Conversion Rate', 'mailoptin'); ?>
+                    </div>
+                </div>
+
+                <?php foreach ($variant_ids as $variant_id) : ?>
+                    <?php $variant_name = OptinCampaignsRepository::get_optin_campaign_name($variant_id); ?>
+                    <?php $variant_conversion_rate = (new OptinCampaignStat($variant_id))->get_conversion_rate(); ?>
+                    <div class="mo-end-test-first-section mo-end-test-tbody" data-parent-id="<?php echo $parent_optin_id; ?>" data-optin-id="<?php echo $variant_id; ?>">
+                        <div class="mo-end-test-content-optin-name"><?php echo $variant_name; ?></div>
+                        <div class="mo-end-test-content-conversion">
+                            <span class="mo-end-test-converted-rate"><?php echo $variant_conversion_rate; ?></span>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+
+                <div class="mo-end-test-cancel-button mo-end-test-centered">
+                    <a href="javascript:window.jQuery.fancybox.close();" class="mo-end-test-btn-converted">
+                        <?php _e('Cancel', 'mailoptin'); ?>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <?php
+        wp_send_json_success(ob_get_clean());
+    }
+
+    /**
      * Create new optin campaign.
      */
-    public
-    function create_optin_campaign()
+    public function create_optin_campaign()
     {
         if (!current_user_can('administrator')) {
             return;
@@ -289,8 +346,7 @@ class AjaxHandler
     /**
      * Create new optin campaign.
      */
-    public
-    function create_email_campaign()
+    public function create_email_campaign()
     {
         if (!current_user_can('administrator')) {
             return;
@@ -339,8 +395,7 @@ class AjaxHandler
      *
      * @return string
      */
-    public
-    static function generateUniqueId($length = 10)
+    public static function generateUniqueId($length = 10)
     {
         $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
@@ -355,8 +410,7 @@ class AjaxHandler
     /**
      * fetch connect/email provider email list.
      */
-    public
-    function customizer_fetch_email_list()
+    public function customizer_fetch_email_list()
     {
         check_ajax_referer('customizer-fetch-email-list', 'security');
 
@@ -371,8 +425,7 @@ class AjaxHandler
         wp_die();
     }
 
-    public
-    function toggle_optin_active_status()
+    public function toggle_optin_active_status()
     {
         check_ajax_referer('customizer-fetch-email-list', 'security');
 
@@ -403,8 +456,7 @@ class AjaxHandler
         wp_die();
     }
 
-    public
-    function act_on_option_activation_actions()
+    public function act_on_option_activation_actions()
     {
         global $wpdb;
         $table = $wpdb->options;
@@ -430,8 +482,7 @@ class AjaxHandler
     /**
      * Add subscriber to a connected service mailing list.
      */
-    public
-    function subscribe_to_email_list()
+    public function subscribe_to_email_list()
     {
         $builder = new ConversionDataBuilder();
         $builder->payload = $payload = apply_filters('mailoptin_optin_subscription_request_body', sanitize_data($_REQUEST['optin_data']));
@@ -547,8 +598,7 @@ class AjaxHandler
     /**
      * Track optin impression.
      */
-    public
-    function track_optin_impression()
+    public function track_optin_impression()
     {
         $payload = sanitize_data($_REQUEST['stat_data']);
         $optin_uuid = $payload['optin_uuid'];
@@ -562,8 +612,7 @@ class AjaxHandler
     /**
      * Handle search done on page target chosen field.
      */
-    public
-    function page_targeting_search()
+    public function page_targeting_search()
     {
         $q = sanitize_text_field($_REQUEST['q']);
         $search_type = sanitize_text_field($_REQUEST['search_type']);
@@ -590,8 +639,7 @@ class AjaxHandler
     /**
      * @return AjaxHandler
      */
-    public
-    static function get_instance()
+    public static function get_instance()
     {
         static $instance = null;
 

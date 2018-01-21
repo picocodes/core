@@ -477,7 +477,7 @@ table.optin_forms .mo-split-test-pause-start {
     background-color: #95c551;
 }
 
-table.optin_forms .mo-split-test-end,
+table.optin_forms .mo-split-test-end-select-winner,
 table.optin_forms .mo-split-test-action-paused {
     background: #f45a4a;
 }
@@ -718,4 +718,90 @@ form.mo-inline {
 #mo-optin-add-split .mo-split-content input#mo-split-submit {
     height: auto;
     padding: 5px 20px;
+}
+
+/* css for end and select winner split test modal */
+
+.mo-end-test-modal {
+    font-family: inherit;
+    font-weight: 600;
+    text-transform: uppercase;
+
+    box-sizing: border-box;
+}
+
+.mo-end-test-modal .mo-end-test-conversion-rate .mo-end-test-centered h2 {
+    font-weight: 900;
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+.mo-end-test-modal .mo-end-test-content-optin-name {
+    width: 50%;
+    float: left;
+    position: relative;
+    text-align: center;
+    word-break: break-all;
+}
+
+.mo-end-test-modal .mo-end-test-centered {
+    text-align: center;
+}
+
+.mo-end-test-modal .mo-end-test-th-header {
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+    text-transform: uppercase;
+}
+
+.mo-end-test-modal .mo-end-test-tbody {
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.mo-end-test-modal .mo-end-test-tbody:hover {
+    background: #f2f3f7;
+    cursor: pointer;
+}
+
+.mo-end-test-modal .mo-end-test-content-conversion {
+    text-align: center;
+}
+
+.mo-end-test-modal .mo-end-test-conversion-rate {
+    margin: 0 auto;
+    padding: 10px;
+    background: white;
+    border-radius: 5px;
+    min-width: 500px;
+}
+
+.mo-end-test-modal .mo-end-test-first-section {
+    padding: 15px 0;
+    border-bottom: 2px solid #ececec;
+}
+
+.mo-end-test-modal .mo-end-test-btn-converted {
+    padding: 10px 25px;
+    border-radius: 6px;
+    border: 0;
+    margin-top: 20px;
+    background: #188dfc;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 800;
+    font-family: inherit;
+}
+
+.mo-end-test-modal .mo-end-test-cancel-button {
+    margin: 20px 0 10px;
+}
+
+.mo-end-test-modal .mo-end-test-cancel-button a {
+    text-decoration: none;
+}
+
+.mo-end-test-modal .mo-end-test-converted-rate {
+    color: #77d1fb;
 }

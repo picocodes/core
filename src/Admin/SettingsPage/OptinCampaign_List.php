@@ -327,7 +327,6 @@ class OptinCampaign_List extends \WP_List_Table
         );
     }
 
-
     /**
      * Text displayed when no email optin form is available
      */
@@ -418,7 +417,8 @@ class OptinCampaign_List extends \WP_List_Table
                 <img class="mo-spinner" id="mo-split-pause-spinner" style="margin-left:10px;display:none" src="<?php echo admin_url('images/spinner.gif'); ?>"/>
             </td>
             <td>
-                <a href="#" class="mo-split-test-end mo-split-test-action-button" data-parent-id="<?php echo $optin_campaign_id; ?>"><?php _e('End & Pick Winner', 'mailoptin'); ?></a>
+                <a href="#" class="mo-split-test-end-select-winner mo-split-test-action-button" data-parent-id="<?php echo $optin_campaign_id; ?>"><?php _e('End & Pick Winner', 'mailoptin'); ?></a>
+                <img class="mo-spinner" id="mo-split-end-winner-spinner" style="margin-left:10px;display:none" src="<?php echo admin_url('images/spinner.gif'); ?>"/>
             </td>
             <td></td>
             <td></td>
@@ -503,8 +503,6 @@ class OptinCampaign_List extends \WP_List_Table
         $optin_campaign_id = absint($item['id']);
 
         $stats = new OptinCampaignStat($optin_campaign_id);
-        $impressions = $stats->get_impressions();
-        $conversions = $stats->get_conversions();
 
         switch ($column_name) {
             case 'uuid' :
@@ -514,13 +512,13 @@ class OptinCampaign_List extends \WP_List_Table
                 }
                 break;
             case 'impression' :
-                $value = $impressions;
+                $value = $stats->get_impressions();
                 break;
             case 'conversion' :
-                $value = $conversions;
+                $value = $stats->get_conversions();
                 break;
             case 'percent' :
-                $value = (0 == $conversions || 0 == $impressions) ? '0' : number_format(($conversions / $impressions) * 100, 2) . '&#37;';
+                $value = $stats->get_conversion_rate();
                 break;
             default:
                 $value = apply_filters('mo_optin_campaign_column_value', '', $item, $column_name);

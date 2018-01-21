@@ -92,7 +92,6 @@
             parent_optin_id: parent_optin_id,
             nonce: mailoptin_globals.nonce
         }, function (response) {
-
             if ('success' in response && response.success === true) {
                 if (split_test_action === 'pause') {
                     label = 'start';
@@ -107,6 +106,29 @@
             $(_this).next('#mo-split-pause-spinner').hide();
             $(_this).attr('data-split-test-action', label);
             $(_this).data('split-test-action', label);
+        });
+    });
+
+    // handle click of A/B test end_select_winner button
+    $('.mo-split-test-end-select-winner').click(function (e) {
+        e.preventDefault();
+        var label,
+            _this = this,
+            parent_optin_id = $(this).data('parent-id'),
+            spinner_obj = $(_this).next('#mo-split-end-winner-spinner');
+
+        spinner_obj.show();
+
+        $.post(ajaxurl, {
+            action: 'mailoptin_end_optin_split_test_pick_winner',
+            parent_optin_id: parent_optin_id,
+            nonce: mailoptin_globals.nonce
+        }, function (response) {
+            if ('success' in response && response.success === true && typeof response.data !== 'undefined') {
+                $.fancybox(response.data, {type: 'inline',padding:0});
+            }
+
+            spinner_obj.hide();
         });
     });
 
