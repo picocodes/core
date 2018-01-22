@@ -298,6 +298,9 @@ class AjaxHandler
 
         $variant_ids = OptinCampaignsRepository::get_split_test_variant_ids($parent_optin_id);
 
+        // merge parent optin with variants
+        array_unshift($variant_ids, $parent_optin_id);
+
         ob_start();
         ?>
         <div class="mo-end-test-modal">

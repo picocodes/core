@@ -451,7 +451,6 @@ table.optin_forms .mo-has-split-test-variant {
     font-size: 12px;
     line-height: normal;
     color: #0073aa;
-    cursor: pointer;
     outline: 0;
 }
 
@@ -489,11 +488,6 @@ table.optin_forms .mo-split-test-add-variant {
 
 table.optin_forms tr.mo-split-test-actions {
     background-color: #f9f9f9;
-}
-
-table.optin_forms .mo-has-split-test-variant::after {
-    content: "\f140";
-    font: 200 10px/2 dashicons;
 }
 
 /* optin wp listing column re-arrangement*/
