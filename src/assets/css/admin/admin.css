@@ -721,6 +721,15 @@ form.mo-inline {
 }
 
 /* css for end and select winner split test modal */
+.mo-end-test-clearfix::before, .mo-end-test-clearfix::after {
+    clear: both;
+    float: none;
+    display: table;
+}
+
+.mo-end-test-clearfix::after {
+    content: " ";
+}
 
 .mo-end-test-modal {
     font-family: inherit;
@@ -775,6 +784,7 @@ form.mo-inline {
     background: white;
     border-radius: 5px;
     min-width: 500px;
+    position: relative;
 }
 
 .mo-end-test-modal .mo-end-test-first-section {
@@ -804,4 +814,21 @@ form.mo-inline {
 
 .mo-end-test-modal .mo-end-test-converted-rate {
     color: #77d1fb;
+}
+
+.mo-end-test-modal .mo-end-test-preloader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    opacity: 1;
+    background: #fff;
+    display: none;
+}
+
+.mo-end-test-modal .mo-end-test-spinner {
+    left: 50%;
+    top: 50%;
+    position: absolute;
 }

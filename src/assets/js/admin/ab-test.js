@@ -81,8 +81,8 @@
         e.preventDefault();
         var label,
             _this = this,
-            parent_optin_id = $(this).data('parent-id'),
-            split_test_action = $(this).data('split-test-action');
+            split_test_action = $(this).data('split-test-action'),
+            parent_optin_id = $(this).data('parent-id');
 
         $(_this).next('#mo-split-pause-spinner').show();
 
@@ -112,23 +112,47 @@
     // handle click of A/B test end_select_winner button
     $('.mo-split-test-end-select-winner').click(function (e) {
         e.preventDefault();
-        var label,
-            _this = this,
-            parent_optin_id = $(this).data('parent-id'),
-            spinner_obj = $(_this).next('#mo-split-end-winner-spinner');
+        var spinner_obj = $(this).next('#mo-split-end-winner-spinner'),
+            parent_optin_id = $(this).data('parent-id');
 
         spinner_obj.show();
 
         $.post(ajaxurl, {
-            action: 'mailoptin_end_optin_split_test_pick_winner',
+            action: 'mailoptin_end_optin_split_modal',
             parent_optin_id: parent_optin_id,
             nonce: mailoptin_globals.nonce
         }, function (response) {
             if ('success' in response && response.success === true && typeof response.data !== 'undefined') {
-                $.fancybox(response.data, {type: 'inline',padding:0});
+                $.fancybox(response.data, {type: 'inline', padding: 0});
             }
 
             spinner_obj.hide();
+        });
+    });
+
+    // handle click of A/B test ultimate winner selection
+    $(document.body).on('click', '.mo-end-test-tbody', function (e) {
+        console.log('clicked')
+        e.preventDefault();
+        var parent_optin_id = $(this).data('parent-id'),
+            winner_optin_id = $(this).data('optin-id'),
+            preloader_obj = $('.mo-end-test-preloader');
+
+        preloader_obj.show();
+
+        $.post(ajaxurl, {
+            action: 'mailoptin_split_test_select_winner',
+            parent_optin_id: parent_optin_id,
+            winner_optin_id: winner_optin_id,
+            nonce: mailoptin_globals.nonce
+        }, function (response) {
+            if ('success' in response && response.success === true && typeof response.data.redirect !== 'undefined') {
+                window.location.assign(response.data.redirect);
+            }
+            else {
+                preloader_obj.hide();
+                $('#mo-select-winner-error').show();
+            }
         });
     });
 

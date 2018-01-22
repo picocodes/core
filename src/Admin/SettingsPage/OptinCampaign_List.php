@@ -111,25 +111,6 @@ class OptinCampaign_List extends \WP_List_Table
         );
     }
 
-
-    /**
-     * Delete a optin form record.
-     *
-     * @param int $optin_campaign_id optin_form ID
-     */
-    public function delete_optin_campaign($optin_campaign_id)
-    {
-        $this->wpdb->delete(
-            $this->table,
-            array('id' => $optin_campaign_id),
-            array('%d')
-        );
-
-        OptinCampaignsRepository::delete_settings_by_id($optin_campaign_id);
-
-        OptinCampaignMeta::delete_campaign_meta($optin_campaign_id, 'split_test_parent');
-    }
-
     /**
      * Returns the count of records in the database.
      *
@@ -744,7 +725,7 @@ class OptinCampaign_List extends \WP_List_Table
             if (!wp_verify_nonce($nonce, 'mailoptin_delete_optin_campaign')) {
                 die('Go get a life script kiddies');
             } else {
-                self::delete_optin_campaign($optin_campaign_id);
+                OptinCampaignsRepository::delete_optin_campaign($optin_campaign_id);
                 // esc_url_raw() is used to prevent converting ampersand in url to "#038;"
                 // add_query_arg() return the current url
                 wp_redirect(esc_url_raw(MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE));
@@ -852,7 +833,7 @@ class OptinCampaign_List extends \WP_List_Table
             $delete_ids = array_map('absint', $_POST['optin_campaign_id']);
             // loop over the array of record IDs and delete them
             foreach ($delete_ids as $id) {
-                self::delete_optin_campaign($id);
+                OptinCampaignsRepository::delete_optin_campaign($id);
             }
 
             do_action('mo_optin_after_bulk_delete', $delete_ids);

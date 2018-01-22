@@ -653,6 +653,25 @@ class OptinCampaignsRepository extends AbstractRepository
 
 
     /**
+     * Delete an optin campaign from record.
+     *
+     * @param int $optin_campaign_id optin_form ID
+     */
+    public static function delete_optin_campaign($optin_campaign_id)
+    {
+        parent::wpdb()->delete(
+            parent::campaigns_table(),
+            array('id' => $optin_campaign_id),
+            array('%d')
+        );
+
+        OptinCampaignsRepository::delete_settings_by_id($optin_campaign_id);
+
+        OptinCampaignMeta::delete_campaign_meta($optin_campaign_id, 'split_test_parent');
+    }
+
+
+    /**
      * Delete all settings data of an optin campaign.
      *
      * @param int $optin_campaign_id

@@ -14,6 +14,7 @@ use MailOptin\Core\OptinForms\ConversionDataBuilder;
 use MailOptin\Core\PluginSettings\Settings;
 use MailOptin\Core\Repositories\ConnectionsRepository;
 use MailOptin\Core\Repositories\EmailCampaignRepository;
+use MailOptin\Core\Repositories\OptinCampaignMeta;
 use MailOptin\Core\Repositories\OptinCampaignsRepository;
 use MailOptin\Core\Repositories\OptinCampaignStat;
 use MailOptin\Core\Repositories\OptinConversionsRepository;
@@ -34,9 +35,11 @@ class AjaxHandler
         add_action('wp_ajax_mailoptin_toggle_optin_activated', [$this, 'optin_listing_activated_status_toggle']);
         add_action('wp_ajax_mailoptin_act_on_toggle_optin_activated', [$this, 'act_on_option_activation_actions']);
         add_action('wp_ajax_mailoptin_optin_type_selection', [$this, 'optin_type_selection']);
+
         add_action('wp_ajax_mailoptin_create_optin_split_test', [$this, 'create_optin_split_test']);
         add_action('wp_ajax_mailoptin_pause_optin_split_test', [$this, 'pause_optin_split_test']);
-        add_action('wp_ajax_mailoptin_end_optin_split_test_pick_winner', [$this, 'end_optin_split_test_pick_winner']);
+        add_action('wp_ajax_mailoptin_end_optin_split_modal', [$this, 'end_optin_split_modal']);
+        add_action('wp_ajax_mailoptin_split_test_select_winner', [$this, 'split_test_select_winner']);
 
         add_action('wp_ajax_mailoptin_track_impression', [$this, 'track_optin_impression']);
         add_action('wp_ajax_mailoptin_add_to_email_list', [$this, 'subscribe_to_email_list']);
@@ -239,9 +242,47 @@ class AjaxHandler
     }
 
     /**
+     * Select winner of split test
+     */
+    public function split_test_select_winner()
+    {
+        if (!current_user_can('administrator')) {
+            return;
+        }
+
+        check_ajax_referer('mailoptin-admin-nonce', 'nonce');
+
+        if (!isset($_POST['parent_optin_id'], $_POST['winner_optin_id'])) {
+            wp_send_json_error();
+        }
+
+        $parent_optin_id = absint($_POST['parent_optin_id']);
+        $winner_optin_id = absint($_POST['winner_optin_id']);
+
+        $variant_ids = OptinCampaignsRepository::get_split_test_variant_ids($parent_optin_id);
+
+        // merge parent ID with variant IDs
+        $variant_ids[] = $parent_optin_id;
+
+        foreach ($variant_ids as $variant_id) {
+            $variant_id = absint($variant_id);
+            // skip deleting the winning optin.
+            if ($variant_id !== $winner_optin_id) {
+                OptinCampaignsRepository::delete_optin_campaign($variant_id);
+            }
+        }
+
+        // ensure the winning optin do not have split test meta so it is no longer consider a variant.
+        // useful if winner id was previously a variant.
+        OptinCampaignMeta::delete_campaign_meta($winner_optin_id, 'split_test_parent');
+
+        wp_send_json_success(['redirect' => MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE]);
+    }
+
+    /**
      * End ans select winning optin split test
      */
-    public function end_optin_split_test_pick_winner()
+    public function end_optin_split_modal()
     {
         if (!current_user_can('administrator')) {
             return;
@@ -271,11 +312,10 @@ class AjaxHandler
                         <?php _e('Conversion Rate', 'mailoptin'); ?>
                     </div>
                 </div>
-
                 <?php foreach ($variant_ids as $variant_id) : ?>
                     <?php $variant_name = OptinCampaignsRepository::get_optin_campaign_name($variant_id); ?>
                     <?php $variant_conversion_rate = (new OptinCampaignStat($variant_id))->get_conversion_rate(); ?>
-                    <div class="mo-end-test-first-section mo-end-test-tbody" data-parent-id="<?php echo $parent_optin_id; ?>" data-optin-id="<?php echo $variant_id; ?>">
+                    <div class="mo-end-test-first-section mo-end-test-tbody mo-end-test-clearfix" data-parent-id="<?php echo $parent_optin_id; ?>" data-optin-id="<?php echo $variant_id; ?>">
                         <div class="mo-end-test-content-optin-name"><?php echo $variant_name; ?></div>
                         <div class="mo-end-test-content-conversion">
                             <span class="mo-end-test-converted-rate"><?php echo $variant_conversion_rate; ?></span>
@@ -287,6 +327,12 @@ class AjaxHandler
                     <a href="javascript:window.jQuery.fancybox.close();" class="mo-end-test-btn-converted">
                         <?php _e('Cancel', 'mailoptin'); ?>
                     </a>
+                </div>
+                <div class="mo-end-test-preloader">
+                    <img class="mo-spinner mo-end-test-spinner" id="mo-split-end-test-spinner" src="<?php echo admin_url('images/spinner.gif'); ?>">
+                </div>
+                <div id="mo-select-winner-error" class="mailoptin-error" style="display:none;text-align:center;font-weight:normal;">
+                    <?php _e('An error occurred. Please try again.', 'mailoptin'); ?>
                 </div>
             </div>
         </div>
