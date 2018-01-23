@@ -68,19 +68,6 @@ class CustomizerControls
         $campaign_type = $this->customizerClassInstance->email_campaign_type;
 
         $campaign_settings_controls = array(
-            'activate_email_campaign' => new WP_Customize_Toggle_Control(
-                $this->wp_customize,
-                $this->option_prefix . '[activate_email_campaign]',
-                apply_filters('mailoptin_customizer_settings_campaign_activate_args', array(
-                        'label' => __('Activate Automation', 'mailoptin'),
-                        'section' => $this->customizerClassInstance->campaign_settings_section_id,
-                        'settings' => $this->option_prefix . '[activate_email_campaign]',
-                        'description' => __('Email automation will not be sent unless this setting is activated.', 'mailoptin'),
-                        'type' => 'light',
-                        'priority' => 10,
-                    )
-                )
-            ),
             'email_campaign_subject' => new WP_Customize_Custom_Input_Control(
                 $this->wp_customize,
                 'email_campaign_subject',

@@ -83,7 +83,7 @@ li#accordion-section-mailoptin_upsell_section {
     -moz-osx-font-smoothing: grayscale;
 }
 
-#mo-optin-active-switch {
+#mo-optin-active-switch, #mo-automation-active-switch {
     float: left;
     margin: 9px 0 0 40px;
 }

@@ -276,21 +276,22 @@ class Email_Campaign_List extends \WP_List_Table
     {
         $email_campaign_id = absint($item['id']);
 
-        if (EmailCampaignRepository::is_campaign_active($email_campaign_id)) {
-            $status = '<div class="mo_circle_green"></div>';
-            $url = $this->_email_campaign_deactivate_url($email_campaign_id);
-            $label = __('Deactivate', 'mailoptin');
-        } else {
-            $status = '<div class="mo_circle_red"></div>';
-            $url = $this->_email_campaign_activate_url($email_campaign_id);
-            $label = '&nbsp;&nbsp;' . __('Activate', 'mailoptin');
-        }
+        $input_value = EmailCampaignRepository::is_campaign_active($email_campaign_id) ? 'yes' : 'no';
+        $checked = ($input_value == 'yes') ? 'checked="checked"' : null;
 
-        $actions = array(
-            'activate' => "<a href=\"$url\">$label</a>",
+        $switch = sprintf(
+            '<input data-mo-optin-id="%1$s" id="mo-automation-activate-switch-%1$s" type="checkbox" class="mo-automation-activate-switch tgl tgl-light" value="%%3$s" %3$s />',
+            $email_campaign_id,
+            $input_value,
+            $checked
         );
 
-        return $status . $this->row_actions($actions);
+        $switch .= sprintf(
+            '<label for="mo-automation-activate-switch-%1$s" style="margin:auto;" class="tgl-btn"></label>',
+            $email_campaign_id
+        );
+
+        return $switch;
     }
 
     /**

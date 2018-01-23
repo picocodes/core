@@ -73,6 +73,19 @@
         });
     });
 
+    // handles activation and deactivation of email campaigns
+    $('.mo-automation-activate-switch').on('change', function () {
+        var _this = this;
+        $.post(ajaxurl, {
+            action: 'mailoptin_toggle_automation_activated',
+            id: $(_this).data('mo-optin-id'),
+            status: _this.checked
+        }, function () {
+            // trigger act on activation immediately.
+            $.post(ajaxurl, {action: 'mailoptin_act_on_toggle_automation_activated'});
+        });
+    });
+
     // handle sidebar nav tag menu.
     $(function () {
         // Switches option sections

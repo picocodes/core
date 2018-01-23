@@ -51,6 +51,8 @@ class Customizer
             add_action('customize_controls_enqueue_scripts', array($this, 'customizer_css'));
             add_action('customize_controls_enqueue_scripts', array($this, 'customizer_js'));
 
+            add_action('customize_controls_print_footer_scripts', [$this, 'add_activate_switch']);
+
             $this->email_campaign_id = absint($_REQUEST['mailoptin_email_campaign_id']);
 
             $this->email_campaign_type = EmailCampaignRepository::get_email_campaign_type(
@@ -112,6 +114,32 @@ class Customizer
         if (class_exists('Astra_Customizer') && method_exists('Astra_Customizer', 'print_footer_scripts')) {
             remove_action('customize_controls_print_footer_scripts', [\Astra_Customizer::get_instance(), 'print_footer_scripts']);
         }
+    }
+
+    /**
+     * Add activation switch to optin customizer
+     */
+    public function add_activate_switch()
+    {
+        $input_value = EmailCampaignRepository::is_campaign_active($this->email_campaign_id) ? 'yes' : 'no';
+        $checked = ($input_value == 'yes') ? 'checked="checked"' : null;
+        $tooltip = __('Toggle to activate and deactivate email automation.', 'mailoptin');
+
+        $switch = sprintf(
+            '<input id="mo-automation-activate-switch" type="checkbox" class="tgl tgl-light" value="%s" %s />',
+            $input_value,
+            $checked
+        );
+
+        $switch .= '<label id="mo-automation-active-switch" for="mo-automation-activate-switch" class="tgl-btn"></label>';
+        $switch .= '<span title="' . $tooltip . '" class="mo-tooltipster dashicons dashicons-editor-help" style="margin: 9px 5px;font-size: 18px;cursor: pointer;"></span>';
+        ?>
+        <script type="text/javascript">
+            jQuery(function () {
+                jQuery('#customize-header-actions').prepend(jQuery('<?php echo $switch; ?>'));
+            });
+        </script>
+        <?php
     }
 
     public function monkey_patch_customizer_payload()
