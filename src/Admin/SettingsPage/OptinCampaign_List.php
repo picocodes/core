@@ -473,7 +473,7 @@ class OptinCampaign_List extends \WP_List_Table
         $name = '<a href="' . $customize_url . '"><strong>' . $item['name'] . '</strong></a>';
 
         if (OptinCampaignsRepository::is_split_test_parent($optin_campaign_id)) {
-            $name .= '<div class="mo-has-split-test-variant">A/B</div>';
+            $name .= '<div class="mo-has-split-test-variant">' . __('A/B', 'mailoptin') . '</div>';
         }
 
         return $name . $this->row_actions($actions);
@@ -620,6 +620,10 @@ class OptinCampaign_List extends \WP_List_Table
         if (OptinCampaignsRepository::is_split_test_variant($optin_campaign_id)) {
             unset($actions['split_test']);
             unset($actions['clone']);
+        }
+
+        if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
+            unset($actions['split_test']);
         }
 
         $structure = '<ul>';

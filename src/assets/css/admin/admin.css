@@ -443,14 +443,14 @@ table.optin_forms .mo-has-split-test-variant {
     display: inline;
     padding: 2px 4px;
     text-decoration: none;
-    border: 1px solid #ccc;
+    border: 1px solid #0073aa;
     border-radius: 2px;
-    background: #f7f7f7;
+    background: #0073aa;
     text-shadow: none;
     font-weight: 600;
     font-size: 12px;
     line-height: normal;
-    color: #0073aa;
+    color: #f7f7f7;
     outline: 0;
 }
 
