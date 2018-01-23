@@ -36,13 +36,15 @@ class WP_Customize_Email_Schedule_Time_Fields_Control extends WP_Customize_Contr
             <?php if (!empty($this->label)) : ?>
                 <span class="customize-control-title"><?php echo esc_html($this->label); ?></span>
             <?php endif; ?>
-            <input type="<?php echo esc_attr($this->type); ?>" <?php $this->input_attrs(); ?> value="<?php echo esc_attr($this->value('schedule_digit')); ?>" <?php $this->link('schedule_digit'); ?> />
-            <select <?php $this->link('schedule_type'); ?> <?php $this->select_attrs(); ?> >
-                <?php
-                foreach ($this->select_choices as $value => $label)
-                    echo '<option value="' . esc_attr($value) . '"' . selected($this->value('schedule_type'), $value, false) . '>' . $label . '</option>';
-                ?>
-            </select>
+            <div>
+                <input type="<?php echo esc_attr($this->type); ?>" <?php $this->input_attrs(); ?> value="<?php echo esc_attr($this->value('schedule_digit')); ?>" <?php $this->link('schedule_digit'); ?> />
+                <select <?php $this->link('schedule_type'); ?> <?php $this->select_attrs(); ?> >
+                    <?php
+                    foreach ($this->select_choices as $value => $label)
+                        echo '<option value="' . esc_attr($value) . '"' . selected($this->value('schedule_type'), $value, false) . '>' . $label . '</option>';
+                    ?>
+                </select>
+            </div>
         </label>
 
         <?php if (!empty($this->description)) : ?>

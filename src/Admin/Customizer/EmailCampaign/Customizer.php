@@ -44,6 +44,9 @@ class Customizer
     public function __construct()
     {
         if (!empty($_REQUEST['mailoptin_email_campaign_id'])) {
+
+            add_action('init', [$this, 'clean_up_customizer'], 9999999999999);
+
             add_action('customize_controls_enqueue_scripts', array($this, 'monkey_patch_customizer_payload'));
             add_action('customize_controls_enqueue_scripts', array($this, 'customizer_css'));
             add_action('customize_controls_enqueue_scripts', array($this, 'customizer_js'));
@@ -89,6 +92,26 @@ class Customizer
             add_action('customize_register', array($this, 'register_campaign_customizer'));
         }
 
+    }
+
+    public function clean_up_customizer()
+    {
+        remove_all_actions('wp_head');
+        remove_all_actions('wp_print_styles');
+        remove_all_actions('wp_print_head_scripts');
+        remove_all_actions('wp_footer');
+
+        // Handle `wp_head`
+        add_action('wp_head', 'wp_enqueue_scripts', 1);
+        add_action('wp_head', 'wp_print_styles', 8);
+        add_action('wp_head', 'wp_print_head_scripts', 9);
+        add_action('wp_head', 'wp_site_icon');
+        // Handle `wp_footer`
+        add_action('wp_footer', 'wp_print_footer_scripts', 20);
+
+        if (class_exists('Astra_Customizer') && method_exists('Astra_Customizer', 'print_footer_scripts')) {
+            remove_action('customize_controls_print_footer_scripts', [\Astra_Customizer::get_instance(), 'print_footer_scripts']);
+        }
     }
 
     public function monkey_patch_customizer_payload()

@@ -152,7 +152,7 @@ class CustomizerControls
                     )
                 )
             ),
-            'campaign_schedule' => new WP_Customize_Email_Schedule_Time_Fields_Control(
+            'email_campaign_schedule' => new WP_Customize_Email_Schedule_Time_Fields_Control(
                 $this->wp_customize,
                 $this->option_prefix . '[email_campaign_schedule]',
                 apply_filters('mailoptin_customizer_settings_campaign_schedule_args', array(
@@ -176,7 +176,7 @@ class CustomizerControls
                             'hours' => __('Hours', 'mailoptin'),
                             'days' => __('Days', 'mailoptin'),
                         ],
-                        'description' => apply_filters('mailoptin_customizer_settings_email_campaign_schedule_description', __('Configure when email campaign will be sent out after post publication.', 'mailoptin'), $campaign_type),
+                        'description' => apply_filters('mailoptin_customizer_settings_email_campaign_schedule_description', __('Configure when email campaign will be sent out after post publication. Example: setting the input field to "5", and selecting "hours" will send the email 5 hours after post publication.', 'mailoptin'), $campaign_type),
                         'priority' => 80
                     )
                 )
