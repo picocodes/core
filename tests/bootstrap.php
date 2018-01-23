@@ -22,9 +22,9 @@ function _manually_load_plugin()
     $composer_vendor_in_main_plugin = dirname(dirname(dirname(__FILE__))) . '/vendor/autoload.php';
 
     if (file_exists($composer_vendor_in_main_plugin)) {
-        require dirname(dirname(dirname(__FILE__))) . '/vendor/autoload.php';
-    } else {
         require dirname(dirname(dirname(__FILE__))) . '/mailoptin.php';
+    } else {
+        require dirname(dirname(__FILE__)) . '/vendor/autoload.php';
     }
 }
 
@@ -36,9 +36,11 @@ require $_tests_dir . '/includes/bootstrap.php';
 global $current_user;
 $current_user = new WP_User(1);
 $current_user->set_role('administrator');
-wp_update_user( array( 'ID' => 1, 'first_name' => 'Admin', 'last_name' => 'User' ) );
+wp_update_user(array('ID' => 1, 'first_name' => 'Admin', 'last_name' => 'User'));
 
-define('MAILOPTIN_SYSTEM_FILE_PATH', __FILE__);
+if (!defined('MAILOPTIN_SYSTEM_FILE_PATH')) {
+    define('MAILOPTIN_SYSTEM_FILE_PATH', __FILE__);
+}
 
 MailOptin\Core\Core::get_instance();
 MailOptin\Core\RegisterActivation\Base::run_install();
