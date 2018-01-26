@@ -458,6 +458,18 @@ class CustomizerControls
                         )
                     )
                 ),
+                'name_field_background' => new \WP_Customize_Color_Control(
+                    $this->wp_customize,
+                    $this->option_prefix . '[name_field_background]',
+                    apply_filters('mo_optin_form_customizer_email_field_background_args', array(
+                            'label' => __('Name Background', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->fields_section_id,
+                            'settings' => $this->option_prefix . '[name_field_background]',
+                            'priority' => 37,
+                            'description' => __('The background color of the name field.', 'mailoptin'),
+                        )
+                    )
+                ),
                 'name_field_font' => new WP_Customize_Font_Stack_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[name_field_font]',
@@ -502,6 +514,18 @@ class CustomizerControls
                             'settings' => $this->option_prefix . '[email_field_color]',
                             'priority' => 60,
                             'description' => __('The text color for the email field.', 'mailoptin'),
+                        )
+                    )
+                ),
+                'email_field_background' => new \WP_Customize_Color_Control(
+                    $this->wp_customize,
+                    $this->option_prefix . '[email_field_background]',
+                    apply_filters('mo_optin_form_customizer_email_field_background_args', array(
+                            'label' => __('Email Background', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->fields_section_id,
+                            'settings' => $this->option_prefix . '[email_field_background]',
+                            'priority' => 67,
+                            'description' => __('The background color of the email field.', 'mailoptin'),
                         )
                     )
                 ),

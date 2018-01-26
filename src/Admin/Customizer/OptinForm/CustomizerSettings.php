@@ -246,6 +246,11 @@ class CustomizerSettings extends AbstractCustomizer
                     'type' => 'option',
                     'transport' => 'postMessage',
                 ),
+                'name_field_background' => array(
+                    'default' => $this->customizer_defaults['name_field_background'],
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
                 'name_field_font' => array(
                     'default' => $this->customizer_defaults['name_field_font'],
                     'type' => 'option',
@@ -261,6 +266,11 @@ class CustomizerSettings extends AbstractCustomizer
                 ),
                 'email_field_color' => array(
                     'default' => $this->customizer_defaults['email_field_color'],
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'email_field_background' => array(
+                    'default' => $this->customizer_defaults['email_field_background'],
                     'type' => 'option',
                     'transport' => 'postMessage',
                 ),
