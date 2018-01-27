@@ -63,8 +63,8 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
     {
         $style_arg = apply_filters('mo_optin_form_headline_styles',
             [
-                'color:' . $this->get_customizer_value('headline_font_color'),
-                'font-family:' . $this->_construct_font_family($this->get_customizer_value('headline_font')),
+                'color' => $this->get_customizer_value('headline_font_color'),
+                'font-family' => $this->_construct_font_family($this->get_customizer_value('headline_font')),
             ],
             $this->optin_campaign_id,
             $this->optin_campaign_type,
@@ -72,10 +72,18 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         );
 
         if ($this->get_customizer_value('hide_headline')) {
-            $style_arg[] = 'display: none';
+            $style_arg['display'] = 'none';
         }
 
-        return implode(';', $style_arg);
+        $style = '';
+
+        foreach ($style_arg as $key => $value) {
+            if (!empty($value)) {
+                $style .= "$key: $value;";
+            }
+        }
+
+        return $style;
     }
 
     /**
@@ -87,8 +95,8 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
     {
         $style_arg = apply_filters('mo_optin_form_description_styles',
             [
-                'color:' . $this->get_customizer_value('description_font_color'),
-                'font-family:' . $this->_construct_font_family($this->get_customizer_value('description_font'))
+                'color' => $this->get_customizer_value('description_font_color'),
+                'font-family' => $this->_construct_font_family($this->get_customizer_value('description_font'))
             ],
             $this->optin_campaign_id,
             $this->optin_campaign_type,
@@ -96,10 +104,17 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         );
 
         if ($this->get_customizer_value('hide_description')) {
-            $style_arg[] = 'display: none';
+            $style_arg['display'] = 'none';
         }
 
-        return implode(';', $style_arg);
+        $style = '';
+        foreach ($style_arg as $key => $value) {
+            if (!empty($value)) {
+                $style .= "$key: $value;";
+            }
+        }
+
+        return $style;
     }
 
     /**
@@ -110,21 +125,30 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
     public function note_styles()
     {
         $style = [
-            'color:' . $this->get_customizer_value('note_font_color'),
-            'font-family:' . $this->_construct_font_family($this->get_customizer_value('note_font'))
+            'color' => $this->get_customizer_value('note_font_color'),
+            'font-family' => $this->_construct_font_family($this->get_customizer_value('note_font'))
         ];
 
         if ($this->get_customizer_value('note_close_optin_onclick')) {
-            $style[] = 'text-decoration: underline; cursor:pointer';
+            $style['text-decoration'] = 'underline';
+            $style['cursor'] = 'pointer';
         }
 
         $style_arg = apply_filters('mo_optin_form_note_styles', $style, $this->optin_campaign_id, $this->optin_campaign_type, $this->optin_campaign_uuid);
 
         if ($this->get_customizer_value('hide_note')) {
-            $style_arg[] = 'display: none';
+            $style_arg['display'] = 'none';
         }
 
-        return implode(';', $style_arg);
+        $style = '';
+
+        foreach ($style_arg as $key => $value) {
+            if (!empty($value)) {
+                $style .= "$key: $value;";
+            }
+        }
+
+        return $style;
     }
 
     /**
@@ -136,10 +160,10 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
     {
         $style_arg = apply_filters('mo_optin_form_name_field_styles',
             [
-                'color:' . $this->get_customizer_value('name_field_color'),
-                'background-color:' . $this->get_customizer_value('name_field_background'),
-                'font-family:' . $this->get_customizer_value('name_field_font'),
-                'height: auto'
+                'color' => $this->get_customizer_value('name_field_color'),
+                'background-color' => $this->get_customizer_value('name_field_background'),
+                'font-family' => $this->get_customizer_value('name_field_font'),
+                'height' => 'auto'
             ],
             $this->optin_campaign_id,
             $this->optin_campaign_type,
@@ -147,10 +171,18 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         );
 
         if ($this->get_customizer_value('hide_name_field')) {
-            $style_arg[] = 'display: none';
+            $style_arg['display'] = 'none';
         }
 
-        return implode(';', $style_arg);
+        $style = '';
+
+        foreach ($style_arg as $key => $value) {
+            if (!empty($value)) {
+                $style .= "$key: $value;";
+            }
+        }
+
+        return $style;
     }
 
     /**
@@ -162,17 +194,26 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
     {
         $style_arg = apply_filters('mo_optin_form_email_field_styles',
             [
-                'color:' . $this->get_customizer_value('email_field_color'),
-                'background-color:' . $this->get_customizer_value('email_field_background'),
-                'font-family:' . $this->get_customizer_value('email_field_font'),
-                'height: auto'
+                'color' => $this->get_customizer_value('email_field_color'),
+                'background-color' => $this->get_customizer_value('email_field_background'),
+                'font-family' => $this->get_customizer_value('email_field_font'),
+                'height' => 'auto'
             ],
             $this->optin_campaign_id,
             $this->optin_campaign_type,
             $this->optin_campaign_uuid
         );
 
-        return implode(';', $style_arg);
+
+        $style = '';
+
+        foreach ($style_arg as $key => $value) {
+            if (!empty($value)) {
+                $style .= "$key: $value;";
+            }
+        }
+
+        return $style;
     }
 
     /**
@@ -184,18 +225,27 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
     {
         $style_arg = apply_filters('mo_optin_form_submit_button_styles',
             [
-                'background:' . $this->get_customizer_value('submit_button_background'),
-                'color:' . $this->get_customizer_value('submit_button_color'),
-                'font-family:' . $this->_construct_font_family($this->get_customizer_value('submit_button_font')),
-                'height: auto',
-                'text-shadow: none;'
+                'background' => $this->get_customizer_value('submit_button_background'),
+                'color' => $this->get_customizer_value('submit_button_color'),
+                'font-family' => $this->_construct_font_family($this->get_customizer_value('submit_button_font')),
+                'height' => 'auto',
+                'text-shadow' => 'none'
             ],
             $this->optin_campaign_id,
             $this->optin_campaign_type,
             $this->optin_campaign_uuid
         );
 
-        return implode(';', $style_arg);
+
+        $style = '';
+
+        foreach ($style_arg as $key => $value) {
+            if (!empty($value)) {
+                $style .= "$key: $value;";
+            }
+        }
+
+        return $style;
     }
 
     /**
@@ -206,15 +256,15 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
     public function cta_button_styles()
     {
         $style = [
-            'background:' . $this->get_customizer_value('cta_button_background'),
-            'color:' . $this->get_customizer_value('cta_button_color'),
-            'font-family:' . $this->_construct_font_family($this->get_customizer_value('cta_button_font')),
-            'height: auto',
-            'text-shadow: none;'
+            'background' => $this->get_customizer_value('cta_button_background'),
+            'color' => $this->get_customizer_value('cta_button_color'),
+            'font-family' => $this->_construct_font_family($this->get_customizer_value('cta_button_font')),
+            'height' => 'auto',
+            'text-shadow' => 'none'
         ];
 
         if ($this->get_customizer_value('display_only_button') !== true) {
-            $style[] = 'display:none';
+            $style['display'] = 'none';
         }
 
         $style_arg = apply_filters('mo_optin_form_cta_button_styles', $style,
@@ -223,7 +273,16 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
             $this->optin_campaign_uuid
         );
 
-        return implode(';', $style_arg);
+
+        $style = '';
+
+        foreach ($style_arg as $key => $value) {
+            if (!empty($value)) {
+                $style .= "$key: $value;";
+            }
+        }
+
+        return $style;
     }
 
     /**
@@ -235,19 +294,28 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
     {
         $style_arg = apply_filters('mo_optin_form_container_styles',
             [
-                'position: relative',
-                'margin-right: auto',
-                'margin-left: auto',
-                'background:' . $this->get_customizer_value('form_background_color'),
-                'border-color:' . $this->get_customizer_value('form_border_color'),
-                'line-height:normal'
+                'position' => 'relative',
+                'margin-right' => 'auto',
+                'margin-left' => 'auto',
+                'background' => $this->get_customizer_value('form_background_color'),
+                'border-color' => $this->get_customizer_value('form_border_color'),
+                'line-height' => 'normal'
             ],
             $this->optin_campaign_id,
             $this->optin_campaign_type,
             $this->optin_campaign_uuid
         );
 
-        return implode(';', $style_arg);
+
+        $style = '';
+
+        foreach ($style_arg as $key => $value) {
+            if (!empty($value)) {
+                $style .= "$key: $value;";
+            }
+        }
+
+        return $style;
     }
 
     /**
