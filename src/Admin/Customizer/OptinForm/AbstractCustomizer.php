@@ -34,6 +34,8 @@ class AbstractCustomizer
     public function register_customizer_defaults()
     {
         $defaults = [];
+        $defaults['remove_branding'] = apply_filters('mo_optin_form_remove_branding_default', false);
+
         $defaults['form_background_image'] = apply_filters('mo_optin_form_background_image_default', '');
         $defaults['form_image'] = apply_filters('mo_optin_form_image_default', '');
         $defaults['form_background_color'] = apply_filters('mo_optin_form_background_color_default', '');
@@ -57,11 +59,11 @@ class AbstractCustomizer
         $defaults['hide_name_field'] = apply_filters('mo_optin_form_hide_name_field_default', false);
         $defaults['name_field_placeholder'] = apply_filters('mo_optin_form_name_field_placeholder_default', __('Enter your name here...', 'mailoptin'));
         $defaults['name_field_color'] = apply_filters('mo_optin_form_name_field_color_default', '');
+        $defaults['name_field_background'] = apply_filters('mo_optin_form_name_field_background_default', '');
         $defaults['name_field_font'] = apply_filters('mo_optin_form_name_field_font_default', 'Consolas, Lucida Console, monospace');
         $defaults['email_field_placeholder'] = apply_filters('mo_optin_form_email_field_placeholder_default', __('Enter your email address here...', 'mailoptin'));
         $defaults['email_field_color'] = apply_filters('mo_optin_form_email_field_color_default', '');
         $defaults['email_field_background'] = apply_filters('mo_optin_form_email_field_background_default', '');
-        $defaults['name_field_background'] = apply_filters('mo_optin_form_name_field_background_default', '');
         $defaults['email_field_font'] = apply_filters('mo_optin_form_email_field_font_default', 'Consolas, Lucida Console, monospace');
         $defaults['submit_button'] = apply_filters('mo_optin_form_submit_button_default', __('Subscribe Now', 'mailoptin'));
         $defaults['submit_button_color'] = apply_filters('mo_optin_form_submit_button_color_default', '');
@@ -98,6 +100,7 @@ class AbstractCustomizer
         $defaults['schedule_timezone'] = apply_filters('mo_optin_form_schedule_timezone_default', 'visitors_local_time', $this->customizer_defaults);
 
         $defaults['modal_effects'] = apply_filters('mo_optin_form_modal_effects_default', '', $this->customizer_defaults);
+
         $defaults['success_action'] = apply_filters('mo_optin_form_success_action_default', 'success_message', $this->customizer_defaults);
         $defaults['pass_lead_data_redirect_url'] = apply_filters('mo_optin_form_pass_lead_data_redirect_url_default', false, $this->customizer_defaults);
         $defaults['state_after_conversion'] = apply_filters('mo_optin_form_state_after_conversion_default', 'success_message_shown', $this->customizer_defaults);

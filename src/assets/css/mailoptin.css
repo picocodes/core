@@ -111,7 +111,7 @@
     }
 }
 
-/* make slide-in optin form full width and full heigh on mobile/small screens */
+/* make slide-in optin form full width and full height on mobile/small screens */
 @media only screen and (max-width: 575px) {
     div.mo-optin-form-slidein .mo-optin-form-wrapper {
         max-width: 100% !important;

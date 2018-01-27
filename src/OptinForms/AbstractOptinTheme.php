@@ -137,6 +137,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         $style_arg = apply_filters('mo_optin_form_name_field_styles',
             [
                 'color:' . $this->get_customizer_value('name_field_color'),
+                'background-color:' . $this->get_customizer_value('name_field_background'),
                 'font-family:' . $this->get_customizer_value('name_field_font'),
                 'height: auto'
             ],
@@ -162,6 +163,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         $style_arg = apply_filters('mo_optin_form_email_field_styles',
             [
                 'color:' . $this->get_customizer_value('email_field_color'),
+                'background-color:' . $this->get_customizer_value('email_field_background'),
                 'font-family:' . $this->get_customizer_value('email_field_font'),
                 'height: auto'
             ],

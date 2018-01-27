@@ -52,6 +52,7 @@
                 api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][name_field_header]', linkSettingValueToControlActiveState);
                 api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][name_field_placeholder]', linkSettingValueToControlActiveState);
                 api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][name_field_color]', linkSettingValueToControlActiveState);
+                api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][name_field_background]', linkSettingValueToControlActiveState);
                 api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][name_field_font]', linkSettingValueToControlActiveState);
             });
         }
@@ -128,10 +129,12 @@
             api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][hide_name_field]', optinFieldsDisplayToggle);
             api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][name_field_placeholder]', optinFieldsDisplayToggle);
             api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][name_field_color]', optinFieldsDisplayToggle);
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][name_field_background]', optinFieldsDisplayToggle);
             api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][name_field_font]', optinFieldsDisplayToggle);
 
             api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][email_field_placeholder]', optinFieldsDisplayToggle);
             api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][email_field_color]', optinFieldsDisplayToggle);
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][email_field_background]', optinFieldsDisplayToggle);
             api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][email_field_font]', optinFieldsDisplayToggle);
 
             api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][submit_button]', optinFieldsDisplayToggle);

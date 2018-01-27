@@ -184,6 +184,12 @@
         });
     });
 
+    wp.customize(mailoptin_optin_option_prefix + '[' + mailoptin_optin_campaign_id + '][name_field_background]', function (value) {
+        value.bind(function (to) {
+            $('.mo-optin-form-name-field').css('background-color', to)
+        });
+    });
+
     wp.customize(mailoptin_optin_option_prefix + '[' + mailoptin_optin_campaign_id + '][email_field_placeholder]', function (value) {
         value.bind(function (to) {
             $('.mo-optin-form-email-field').attr('placeholder', to);
@@ -193,6 +199,12 @@
     wp.customize(mailoptin_optin_option_prefix + '[' + mailoptin_optin_campaign_id + '][email_field_color]', function (value) {
         value.bind(function (to) {
             $('.mo-optin-form-email-field').css('color', to)
+        });
+    });
+
+    wp.customize(mailoptin_optin_option_prefix + '[' + mailoptin_optin_campaign_id + '][email_field_background]', function (value) {
+        value.bind(function (to) {
+            $('.mo-optin-form-email-field').css('background-color', to)
         });
     });
 
