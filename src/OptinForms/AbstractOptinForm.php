@@ -78,6 +78,11 @@ abstract class AbstractOptinForm extends AbstractCustomizer implements OptinForm
         return [];
     }
 
+    public function init_config_filters($config)
+    {
+
+    }
+
     /**
      * Font with space are suppose to be enclose in double quote else, unquoted.
      *
@@ -660,7 +665,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         }
 
         $data['test_mode'] = OptinCampaignsRepository::is_test_mode($optin_campaign_id);
-        $icon_close_config = $this->optin_campaign_type == 'lightbox' ? apply_filters('mo_optin_campaign_icon_close', true, $this->optin_campaign_class) : false;
+        $icon_close_config = $this->optin_campaign_type == 'lightbox' ? apply_filters('mo_optin_campaign_icon_close', true, $this->optin_campaign_class, $this->optin_campaign_type) : false;
 
         // if close button is set to be hidden, return false for $icon_close_config.
         if ($icon_close_config) {
