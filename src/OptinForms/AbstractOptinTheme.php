@@ -588,10 +588,9 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
 
         $style = esc_attr($atts['style']);
 
-
         $src = $this->get_form_image_url($atts['default']);
 
-        return sprintf('<img src="%s" class="mo-optin-form-image" style="%s"/>', esc_url($src), $style);
+        return sprintf('<img src="%s" class="mo-optin-form-image" style="%s"/>', esc_url_raw($src), $style);
     }
 
     /**
