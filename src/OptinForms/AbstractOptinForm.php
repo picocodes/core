@@ -78,9 +78,32 @@ abstract class AbstractOptinForm extends AbstractCustomizer implements OptinForm
         return [];
     }
 
-    public function init_config_filters($config)
+    /**
+     * Ensure all optin class specific filters are run in the context of their instance and type.
+     *
+     * @param mixed $configs
+     */
+    public function init_config_filters($configs)
     {
+        foreach ($configs as $config) {
+            $filter_name = $config['name'];
+            $optin_class = isset($config['optin_class']) ? $config['optin_class'] : '';
+            $optin_type = isset($config['optin_type']) ? $config['optin_type'] : '';
+            $filter_value = $config['value'];
+            $priority = isset($config['priority']) ? $config['priority'] : 10;
+            $accepted_arg = isset($config['accepted_arg']) ? $config['accepted_arg'] : 1;
 
+            if (is_callable($filter_value)) {
+                add_filter($filter_name, $filter_value, $priority, $accepted_arg);
+            } else {
+                add_filter($filter_name, function ($value, $customizer_defaults, $optin_campaign_type, $optin_campaign_class) use ($optin_class, $optin_type, $filter_value) {
+                    if ($optin_campaign_class == $optin_class && $optin_campaign_type == $optin_type) {
+                        $value = $filter_value;
+                    }
+                    return $value;
+                }, 10, 4);
+            }
+        }
     }
 
     /**
