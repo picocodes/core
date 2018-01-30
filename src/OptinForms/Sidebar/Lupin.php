@@ -11,82 +11,139 @@ class Lupin extends AbstractOptinTheme
 
     public function __construct($optin_campaign_id, $wp_customize = '')
     {
-        // -- default for design sections -- //
-        add_filter('mo_optin_form_background_color_default', function () {
-            return '#1998d6';
-        });
+        $this->init_config_filters([
+                // -- default for design sections -- //
+                [
+                    'name' => 'mo_optin_form_background_color_default',
+                    'value' => '#1998d6',
+                    'optin_class' => 'Lupin',
+                    'optin_type' => 'sidebar'
+                ],
 
-        add_filter('mo_optin_form_email_field_placeholder_default', function () {
-            return __("Enter your email here...", 'mailoptin');
-        });
+                [
+                    'name' => 'mo_optin_form_email_field_placeholder_default',
+                    'value' => __("Enter your email here...", 'mailoptin'),
+                    'optin_class' => 'Lupin',
+                    'optin_type' => 'sidebar'
+                ],
 
-        // -- default for headline sections -- //
-        add_filter('mo_optin_form_headline_default', function () {
-            return __("Education Blogging Ideas!", 'mailoptin');
-        });
+                // -- default for headline sections -- //
+                [
+                    'name' => 'mo_optin_form_headline_default',
+                    'value' => __("Education Blogging Ideas!", 'mailoptin'),
+                    'optin_class' => 'Lupin',
+                    'optin_type' => 'sidebar'
+                ],
 
-        add_filter('mo_optin_form_headline_font_color_default', function () {
-            return '#ffffff';
-        });
+                [
+                    'name' => 'mo_optin_form_headline_font_color_default',
+                    'value' => '#ffffff',
+                    'optin_class' => 'Lupin',
+                    'optin_type' => 'sidebar'
+                ],
 
-        add_filter('mo_optin_form_headline_font_default', function () {
-            return 'Open+Sans';
-        });
+                [
+                    'name' => 'mo_optin_form_headline_font_default',
+                    'value' => 'Open+Sans',
+                    'optin_class' => 'Lupin',
+                    'optin_type' => 'sidebar'
+                ],
 
-        // -- default for description sections -- //
-        add_filter('mo_optin_form_description_font_default', function () {
-            return 'Open+Sans';
-        });
+                // -- default for description sections -- //
+                [
+                    'name' => 'mo_optin_form_description_font_default',
+                    'value' => 'Open+Sans',
+                    'optin_class' => 'Lupin',
+                    'optin_type' => 'sidebar'
+                ],
 
-        add_filter('mo_optin_form_description_default', function () {
-            return $this->_description_content();
-        });
+                [
+                    'name' => 'mo_optin_form_description_default',
+                    'value' => $this->_description_content(),
+                    'optin_class' => 'Lupin',
+                    'optin_type' => 'sidebar'
+                ],
 
-        add_filter('mo_optin_form_description_font_color_default', function () {
-            return '#ffffff';
-        });
+                [
+                    'name' => 'mo_optin_form_description_font_color_default',
+                    'value' => '#ffffff',
+                    'optin_class' => 'Lupin',
+                    'optin_type' => 'sidebar'
+                ],
 
-        // -- default for fields sections -- //
-        add_filter('mo_optin_form_name_field_color_default', function () {
-            return '#555555';
-        });
+                // -- default for fields sections -- //
+                [
+                    'name' => 'mo_optin_form_name_field_color_default',
+                    'value' => '#555555',
+                    'optin_class' => 'Lupin',
+                    'optin_type' => 'sidebar'
+                ],
 
-        add_filter('mo_optin_form_email_field_color_default', function () {
-            return '#555555';
-        });
+                [
+                    'name' => 'mo_optin_form_email_field_color_default',
+                    'value' => '#555555',
+                    'optin_class' => 'Lupin',
+                    'optin_type' => 'sidebar'
+                ],
 
-        add_filter('mo_optin_form_submit_button_color_default', function () {
-            return '#ffffff';
-        });
+                [
+                    'name' => 'mo_optin_form_submit_button_color_default',
+                    'value' => '#ffffff',
+                    'optin_class' => 'Lupin',
+                    'optin_type' => 'sidebar'
+                ],
 
-        add_filter('mo_optin_form_submit_button_background_default', function () {
-            return '#FEC32D';
-        });
+                [
+                    'name' => 'mo_optin_form_submit_button_background_default',
+                    'value' => '#FEC32D',
+                    'optin_class' => 'Lupin',
+                    'optin_type' => 'sidebar'
+                ],
 
-        add_filter('mo_optin_form_submit_button_font_default', function () {
-            return 'Open+Sans';
-        });
+                [
+                    'name' => 'mo_optin_form_submit_button_font_default',
+                    'value' => 'Open+Sans',
+                    'optin_class' => 'Lupin',
+                    'optin_type' => 'sidebar'
+                ],
 
-        add_filter('mo_optin_form_name_field_font_default', function () {
-            return 'Palatino Linotype, Book Antiqua, serif';
-        });
+                [
+                    'name' => 'mo_optin_form_name_field_font_default',
+                    'value' => 'Palatino Linotype, Book Antiqua, serif',
+                    'optin_class' => 'Lupin',
+                    'optin_type' => 'sidebar'
+                ],
 
-        add_filter('mo_optin_form_email_field_font_default', function () {
-            return 'Palatino Linotype, Book Antiqua, serif';
-        });
+                [
+                    'name' => 'mo_optin_form_email_field_font_default',
+                    'value' => 'Palatino Linotype, Book Antiqua, serif',
+                    'optin_class' => 'Lupin',
+                    'optin_type' => 'sidebar'
+                ],
 
-        // -- default for note sections -- //
-        add_filter('mo_optin_form_note_font_color_default', function () {
-            return '#ffffff';
-        });
+                // -- default for note sections -- //
+                [
+                    'name' => 'mo_optin_form_note_font_color_default',
+                    'value' => '#ffffff',
+                    'optin_class' => 'Lupin',
+                    'optin_type' => 'sidebar'
+                ],
 
-        add_filter('mo_optin_form_note_default', function () {
-            return '<em>' . __('We promise not to spam you. You can unsubscribe at any time.', 'mailoptin') . '</em>';
-        });
+                [
+                    'name' => 'mo_optin_form_note_default',
+                    'value' => '<em>' . __('We promise not to spam you. You can unsubscribe at any time.', 'mailoptin') . '</em>',
+                    'optin_class' => 'Lupin',
+                    'optin_type' => 'sidebar'
+                ],
 
-        add_filter('mo_optin_form_note_font_default', function () {
-            return 'Open+Sans';
-        });
+                [
+                    'name' => 'mo_optin_form_note_font_default',
+                    'value' => 'Open+Sans',
+                    'optin_class' => 'Lupin',
+                    'optin_type' => 'sidebar'
+                ]
+            ]
+        );
 
         add_filter('mailoptin_customizer_optin_campaign_MailChimpConnect_user_input_field_color', function () {
             return '#ffffff';

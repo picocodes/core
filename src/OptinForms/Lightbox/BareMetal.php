@@ -11,82 +11,139 @@ class BareMetal extends AbstractOptinTheme
 
     public function __construct($optin_campaign_id, $wp_customize = '')
     {
-        // -- default for design sections -- //
-        add_filter('mo_optin_form_background_color_default', function () {
-            return '#f0f0f0';
-        });
+        $this->init_config_filters([
+                // -- default for design sections -- //
+                [
+                    'name' => 'mo_optin_form_background_color_default',
+                    'value' => '#f0f0f0',
+                    'optin_class' => 'BareMetal',
+                    'optin_type' => 'lightbox'
+                ],
 
-        add_filter('mo_optin_form_border_color_default', function () {
-            return '#dd3333';
-        });
+                [
+                    'name' => 'mo_optin_form_border_color_default',
+                    'value' => '#dd3333',
+                    'optin_class' => 'BareMetal',
+                    'optin_type' => 'lightbox'
+                ],
 
-        // -- default for headline sections -- //
-        add_filter('mo_optin_form_headline_default', function () {
-            return __("Get a little acid in your inbox", 'mailoptin');
-        });
+                // -- default for headline sections -- //
+                [
+                    'name' => 'mo_optin_form_headline_default',
+                    'value' => __("Get a little acid in your inbox", 'mailoptin'),
+                    'optin_class' => 'BareMetal',
+                    'optin_type' => 'lightbox'
+                ],
 
-        add_filter('mo_optin_form_headline_font_color_default', function () {
-            return '#222222';
-        });
+                [
+                    'name' => 'mo_optin_form_headline_font_color_default',
+                    'value' => '#222222',
+                    'optin_class' => 'BareMetal',
+                    'optin_type' => 'lightbox'
+                ],
 
-        add_filter('mo_optin_form_headline_font_default', function () {
-            return 'Arimo';
-        });
+                [
+                    'name' => 'mo_optin_form_headline_font_default',
+                    'value' => 'Arimo',
+                    'optin_class' => 'BareMetal',
+                    'optin_type' => 'lightbox'
+                ],
 
-        // -- default for description sections -- //
-        add_filter('mo_optin_form_description_font_default', function () {
-            return 'Muli';
-        });
+                // -- default for description sections -- //
+                [
+                    'name' => 'mo_optin_form_description_font_default',
+                    'value' => 'Muli',
+                    'optin_class' => 'BareMetal',
+                    'optin_type' => 'lightbox'
+                ],
 
-        add_filter('mo_optin_form_description_default', function () {
-            return $this->_description_content();
-        });
+                [
+                    'name' => 'mo_optin_form_description_default',
+                    'value' => $this->_description_content(),
+                    'optin_class' => 'BareMetal',
+                    'optin_type' => 'lightbox'
+                ],
 
-        add_filter('mo_optin_form_description_font_color_default', function () {
-            return '#000000';
-        });
+                [
+                    'name' => 'mo_optin_form_description_font_color_default',
+                    'value' => '#000000',
+                    'optin_class' => 'BareMetal',
+                    'optin_type' => 'lightbox'
+                ],
 
-        // -- default for fields sections -- //
-        add_filter('mo_optin_form_name_field_color_default', function () {
-            return '#222222';
-        });
+                // -- default for fields sections -- //
+                [
+                    'name' => 'mo_optin_form_name_field_color_default',
+                    'value' => '#222222',
+                    'optin_class' => 'BareMetal',
+                    'optin_type' => 'lightbox'
+                ],
 
-        add_filter('mo_optin_form_email_field_color_default', function () {
-            return '#222222';
-        });
+                [
+                    'name' => 'mo_optin_form_email_field_color_default',
+                    'value' => '#222222',
+                    'optin_class' => 'BareMetal',
+                    'optin_type' => 'lightbox'
+                ],
 
-        add_filter('mo_optin_form_submit_button_color_default', function () {
-            return '#ffffff';
-        });
+                [
+                    'name' => 'mo_optin_form_submit_button_color_default',
+                    'value' => '#ffffff',
+                    'optin_class' => 'BareMetal',
+                    'optin_type' => 'lightbox'
+                ],
 
-        add_filter('mo_optin_form_submit_button_background_default', function () {
-            return '#0073b7';
-        });
+                [
+                    'name' => 'mo_optin_form_submit_button_background_default',
+                    'value' => '#0073b7',
+                    'optin_class' => 'BareMetal',
+                    'optin_type' => 'lightbox'
+                ],
 
-        add_filter('mo_optin_form_submit_button_font_default', function () {
-            return 'Helvetica+Neue';
-        });
+                [
+                    'name' => 'mo_optin_form_submit_button_font_default',
+                    'value' => 'Helvetica+Neue',
+                    'optin_class' => 'BareMetal',
+                    'optin_type' => 'lightbox'
+                ],
 
-        add_filter('mo_optin_form_name_field_font_default', function () {
-            return 'Consolas, Lucida Console, monospace';
-        });
+                [
+                    'name' => 'mo_optin_form_name_field_font_default',
+                    'value' => 'Consolas, Lucida Console, monospace',
+                    'optin_class' => 'BareMetal',
+                    'optin_type' => 'lightbox'
+                ],
 
-        add_filter('mo_optin_form_email_field_font_default', function () {
-            return 'Consolas, Lucida Console, monospace';
-        });
+                [
+                    'name' => 'mo_optin_form_email_field_font_default',
+                    'value' => 'Consolas, Lucida Console, monospace',
+                    'optin_class' => 'BareMetal',
+                    'optin_type' => 'lightbox'
+                ],
 
-        // -- default for note sections -- //
-        add_filter('mo_optin_form_note_font_color_default', function () {
-            return '#000000';
-        });
+                // -- default for note sections -- //
+                [
+                    'name' => 'mo_optin_form_note_font_color_default',
+                    'value' => '#000000',
+                    'optin_class' => 'BareMetal',
+                    'optin_type' => 'lightbox'
+                ],
 
-        add_filter('mo_optin_form_note_default', function () {
-            return '<em>' . __('We promise not to spam you. You can unsubscribe at any time', 'mailoptin') . '</em>';
-        });
+                [
+                    'name' => 'mo_optin_form_note_default',
+                    'value' => '<em>' . __('We promise not to spam you. You can unsubscribe at any time', 'mailoptin') . '</em>',
+                    'optin_class' => 'BareMetal',
+                    'optin_type' => 'lightbox'
+                ],
 
-        add_filter('mo_optin_form_note_font_default', function () {
-            return 'Source+Sans+Pro';
-        });
+                [
+                    'name' => 'mo_optin_form_note_font_default',
+                    'value' => 'Source+Sans+Pro',
+                    'optin_class' => 'BareMetal',
+                    'optin_type' => 'lightbox'
+                ]
+            ]
+        );
 
         add_filter('mailoptin_customizer_optin_campaign_MailChimpConnect_segment_display_style', function () {
             return 'inline';

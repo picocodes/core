@@ -12,95 +12,157 @@ class Columbine extends AbstractOptinTheme
 
     public function __construct($optin_campaign_id, $wp_customize = '')
     {
-        // -- default for design sections -- //
-        add_filter('mo_optin_form_background_color_default', function () {
-            return '#ffffff';
-        });
-        add_filter('mo_optin_form_border_color_default', function () {
-            return '#91a6bf';
-        });
+        $this->init_config_filters([
+                // -- default for design sections -- //
+                [
+                    'name' => 'mo_optin_form_background_color_default',
+                    'value' => '#ffffff',
+                    'optin_class' => 'Columbine',
+                    'optin_type' => 'inpost'
+                ],
+                [
+                    'name' => 'mo_optin_form_border_color_default',
+                    'value' => '#91a6bf',
+                    'optin_class' => 'Columbine',
+                    'optin_type' => 'inpost'
+                ],
 
-        add_filter('mo_optin_form_name_field_placeholder_default', function () {
-            return __("Enter your name...", 'mailoptin');
-        });
+                [
+                    'name' => 'mo_optin_form_name_field_placeholder_default',
+                    'value' => __("Enter your name...", 'mailoptin'),
+                    'optin_class' => 'Columbine',
+                    'optin_type' => 'inpost'
+                ],
 
-        add_filter('mo_optin_form_email_field_placeholder_default', function () {
-            return __("Enter your email...", 'mailoptin');
-        });
+                [
+                    'name' => 'mo_optin_form_email_field_placeholder_default',
+                    'value' => __("Enter your email...", 'mailoptin'),
+                    'optin_class' => 'Columbine',
+                    'optin_type' => 'inpost'
+                ],
 
-        // -- default for headline sections -- //
-        add_filter('mo_optin_form_headline_default', function () {
-            return __("Subscribe To Newsletter", 'mailoptin');
-        });
+                // -- default for headline sections -- //
+                [
+                    'name' => 'mo_optin_form_headline_default',
+                    'value' => __("Subscribe To Newsletter", 'mailoptin'),
+                    'optin_class' => 'Columbine',
+                    'optin_type' => 'inpost'
+                ],
 
-        add_filter('mo_optin_form_headline_font_color_default', function () {
-            return '#555555';
-        });
+                [
+                    'name' => 'mo_optin_form_headline_font_color_default',
+                    'value' => '#555555',
+                    'optin_class' => 'Columbine',
+                    'optin_type' => 'inpost'
+                ],
 
-        add_filter('mo_optin_form_headline_font_default', function () {
-            return 'Lora';
-        });
+                [
+                    'name' => 'mo_optin_form_headline_font_default',
+                    'value' => 'Lora',
+                    'optin_class' => 'Columbine',
+                    'optin_type' => 'inpost'
+                ],
 
-        // -- default for description sections -- //
-        add_filter('mo_optin_form_description_font_default', function () {
-            return 'Lora';
-        });
+                // -- default for description sections -- //
+                [
+                    'name' => 'mo_optin_form_description_font_default',
+                    'value' => 'Lora',
+                    'optin_class' => 'Columbine',
+                    'optin_type' => 'inpost'
+                ],
 
-        add_filter('mo_optin_form_description_default', function () {
-            return $this->_description_content();
-        });
+                [
+                    'name' => 'mo_optin_form_description_default',
+                    'value' => $this->_description_content(),
+                    'optin_class' => 'Columbine',
+                    'optin_type' => 'inpost'
+                ],
 
-        add_filter('mo_optin_form_description_font_color_default', function () {
-            return '#555555';
-        });
+                [
+                    'name' => 'mo_optin_form_description_font_color_default',
+                    'value' => '#555555',
+                    'optin_class' => 'Columbine',
+                    'optin_type' => 'inpost'
+                ],
 
-        // -- default for fields sections -- //
-        add_filter('mo_optin_form_name_field_color_default', function () {
-            return '#555555';
-        });
+                // -- default for fields sections -- //
+                [
+                    'name' => 'mo_optin_form_name_field_color_default',
+                    'value' => '#555555',
+                    'optin_class' => 'Columbine',
+                    'optin_type' => 'inpost'
+                ],
 
-        add_filter('mo_optin_form_email_field_color_default', function () {
-            return '#555555';
-        });
+                [
+                    'name' => 'mo_optin_form_email_field_color_default',
+                    'value' => '#555555',
+                    'optin_class' => 'Columbine',
+                    'optin_type' => 'inpost'
+                ],
 
-        add_filter('mo_optin_form_submit_button_color_default', function () {
-            return '#ffffff';
-        });
+                [
+                    'name' => 'mo_optin_form_submit_button_color_default',
+                    'value' => '#ffffff',
+                    'optin_class' => 'Columbine',
+                    'optin_type' => 'inpost'
+                ],
 
-        add_filter('mo_optin_form_submit_button_background_default', function () {
-            return '#54C3A5';
-        });
+                [
+                    'name' => 'mo_optin_form_submit_button_background_default',
+                    'value' => '#54C3A5',
+                    'optin_class' => 'Columbine',
+                    'optin_type' => 'inpost'
+                ],
 
-        add_filter('mo_optin_form_submit_button_font_default', function () {
-            return 'Lora';
-        });
+                [
+                    'name' => 'mo_optin_form_submit_button_font_default',
+                    'value' => 'Lora',
+                    'optin_class' => 'Columbine',
+                    'optin_type' => 'inpost'
+                ],
 
-        add_filter('mo_optin_form_name_field_font_default', function () {
-            return 'Palatino Linotype, Book Antiqua, serif';
-        });
+                [
+                    'name' => 'mo_optin_form_name_field_font_default',
+                    'value' => 'Palatino Linotype, Book Antiqua, serif',
+                    'optin_class' => 'Columbine',
+                    'optin_type' => 'inpost'
+                ],
 
-        add_filter('mo_optin_form_email_field_font_default', function () {
-            return 'Palatino Linotype, Book Antiqua, serif';
-        });
+                [
+                    'name' => 'mo_optin_form_email_field_font_default',
+                    'value' => 'Palatino Linotype, Book Antiqua, serif',
+                    'optin_class' => 'Columbine',
+                    'optin_type' => 'inpost'
+                ],
 
-        // -- default for note sections -- //
-        add_filter('mo_optin_form_note_font_color_default', function () {
-            return '#555555';
-        });
+                // -- default for note sections -- //
+                [
+                    'name' => 'mo_optin_form_note_font_color_default',
+                    'value' => '#555555',
+                    'optin_class' => 'Columbine',
+                    'optin_type' => 'inpost'
+                ],
 
-        add_filter('mo_optin_form_note_default', function () {
-            return '<em>' . __('Give it a try. You can unsubscribe at any time.', 'mailoptin') . '</em>';
-        });
+                [
+                    'name' => 'mo_optin_form_note_default',
+                    'value' => '<em>' . __('Give it a try. You can unsubscribe at any time.', 'mailoptin') . '</em>',
+                    'optin_class' => 'Columbine',
+                    'optin_type' => 'inpost'
+                ],
 
-        add_filter('mo_optin_form_note_font_default', function () {
-            return 'Lora';
-        });
+                [
+                    'name' => 'mo_optin_form_note_font_default',
+                    'value' => 'Lora',
+                    'optin_class' => 'Columbine',
+                    'optin_type' => 'inpost'
+                ]
+            ]
+        );
 
         add_filter('mo_get_optin_form_headline_font', function ($font, $font_type) {
             if ($font_type == 'headline_font' && $font == 'Lora') {
                 $font .= ':400,700,400italic';
             }
-
             return $font;
         }, 10, 2);
 
