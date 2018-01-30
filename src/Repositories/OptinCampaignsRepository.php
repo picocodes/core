@@ -45,18 +45,17 @@ class OptinCampaignsRepository extends AbstractRepository
         // in single request return previous value.
         $cache_key = 'is_split_test_' . $optin_campaign_id;
 
-        if (isset(self::$cache[$cache_key]) && !empty(self::$cache[$cache_key])) {
-            return true;
+        if (!is_customize_preview() && isset(self::$cache[$cache_key])) {
+            $parent_optin_id = self::$cache[$cache_key];
+        } else {
+            $parent_optin_id = self::$cache[$cache_key] = OptinCampaignMeta::get_campaign_meta(
+                $optin_campaign_id,
+                'split_test_parent',
+                true
+            );
         }
 
-        $parent_optin_id = OptinCampaignMeta::get_campaign_meta(
-            $optin_campaign_id,
-            'split_test_parent',
-            true
-        );
-
         if (!empty($parent_optin_id)) {
-            self::$cache[$cache_key] = $parent_optin_id;
             return true;
         }
 
@@ -74,14 +73,13 @@ class OptinCampaignsRepository extends AbstractRepository
     {
         $cache_key = 'is_split_test_parent_' . $parent_optin_id;
 
-        if (isset(self::$cache[$cache_key]) && !empty(self::$cache[$cache_key])) {
-            return true;
+        if (!is_customize_preview() && isset(self::$cache[$cache_key])) {
+            $response = self::$cache[$cache_key];
+        } else {
+            $response = self::$cache[$cache_key] = OptinCampaignMeta::get_meta_value_by_key('split_test_parent', $parent_optin_id);
         }
 
-        $response = OptinCampaignMeta::get_meta_value_by_key('split_test_parent', $parent_optin_id);
-
         if (!empty($response)) {
-            self::$cache[$cache_key] = $response;
             return true;
         }
 
@@ -97,11 +95,11 @@ class OptinCampaignsRepository extends AbstractRepository
     {
         $cache_key = 'get_split_test_variant_ids_' . $parent_optin_id;
 
-        if (isset(self::$cache[$cache_key])) {
+        if (!is_customize_preview() && isset(self::$cache[$cache_key])) {
             return self::$cache[$cache_key];
         }
 
-        return OptinCampaignMeta::get_meta_value_by_key('split_test_parent', $parent_optin_id);
+        return self::$cache[$cache_key] = OptinCampaignMeta::get_meta_value_by_key('split_test_parent', $parent_optin_id);
     }
 
     /**
@@ -236,9 +234,15 @@ class OptinCampaignsRepository extends AbstractRepository
      */
     public static function get_optin_campaign_class($optin_campaign_id)
     {
+        $cache_key = 'get_optin_campaign_class_' . $optin_campaign_id;
+
+        if (!is_customize_preview() && isset(self::$cache[$cache_key])) {
+            return self::$cache[$cache_key];
+        }
+
         $table = parent::campaigns_table();
 
-        return parent::wpdb()->get_var("SELECT optin_class FROM $table WHERE id = '$optin_campaign_id'");
+        return self::$cache[$cache_key] = parent::wpdb()->get_var("SELECT optin_class FROM $table WHERE id = '$optin_campaign_id'");
     }
 
     /**
@@ -264,16 +268,15 @@ class OptinCampaignsRepository extends AbstractRepository
      */
     public static function get_optin_campaign_type($optin_campaign_id)
     {
-
         $cache_key = 'get_optin_campaign_type_' . $optin_campaign_id;
 
-        if (isset(self::$cache[$cache_key])) {
+        if (!is_customize_preview() && isset(self::$cache[$cache_key])) {
             return self::$cache[$cache_key];
         }
 
         $table = parent::campaigns_table();
 
-        return parent::wpdb()->get_var("SELECT optin_type FROM $table WHERE id = '$optin_campaign_id'");
+        return self::$cache[$cache_key] = parent::wpdb()->get_var("SELECT optin_type FROM $table WHERE id = '$optin_campaign_id'");
     }
 
     /**
@@ -333,13 +336,13 @@ class OptinCampaignsRepository extends AbstractRepository
     {
         $cache_key = 'get_optin_campaigns';
 
-        if (isset(self::$cache[$cache_key])) {
+        if (!is_customize_preview() && isset(self::$cache[$cache_key])) {
             return self::$cache[$cache_key];
         }
 
         $table = parent::campaigns_table();
 
-        return parent::wpdb()->get_results("SELECT * FROM $table", 'ARRAY_A');
+        return self::$cache[$cache_key] = parent::wpdb()->get_results("SELECT * FROM $table", 'ARRAY_A');
     }
 
     /**
@@ -367,13 +370,13 @@ class OptinCampaignsRepository extends AbstractRepository
     {
         $cache_key = 'get_optin_campaign_by_uuid' . $optin_uuid;
 
-        if (isset(self::$cache[$cache_key])) {
+        if (!is_customize_preview() && isset(self::$cache[$cache_key])) {
             return self::$cache[$cache_key];
         }
 
         $table = parent::campaigns_table();
 
-        return parent::wpdb()->get_row("SELECT * FROM $table WHERE uuid = '$optin_uuid'", 'ARRAY_A');
+        return self::$cache[$cache_key] = parent::wpdb()->get_row("SELECT * FROM $table WHERE uuid = '$optin_uuid'", 'ARRAY_A');
     }
 
     /**
@@ -387,13 +390,13 @@ class OptinCampaignsRepository extends AbstractRepository
     {
         $cache_key = 'get_optin_campaign_id_by_uuid_' . $optin_uuid;
 
-        if (isset(self::$cache[$cache_key])) {
+        if (!is_customize_preview() && isset(self::$cache[$cache_key])) {
             return self::$cache[$cache_key];
         }
 
         $table = parent::campaigns_table();
 
-        return parent::wpdb()->get_var("SELECT id FROM $table WHERE uuid = '$optin_uuid'");
+        return self::$cache[$cache_key] = parent::wpdb()->get_var("SELECT id FROM $table WHERE uuid = '$optin_uuid'");
     }
 
     /**
@@ -405,11 +408,12 @@ class OptinCampaignsRepository extends AbstractRepository
     {
         $cache_key = 'get_optin_saved_customizer_data';
 
-        if (isset(self::$cache[$cache_key])) {
+        if (!is_customize_preview() && isset(self::$cache[$cache_key])) {
             return self::$cache[$cache_key];
         }
 
-        return get_option(MO_OPTIN_CAMPAIGN_WP_OPTION_NAME, []);
+        // disable cache for customizer interface
+        return self::$cache[$cache_key] = get_option(MO_OPTIN_CAMPAIGN_WP_OPTION_NAME, []);
     }
 
     /**
@@ -610,10 +614,10 @@ class OptinCampaignsRepository extends AbstractRepository
     {
         $cache_key = 'is_test_mode_' . $optin_campaign_id;
 
-        if (isset(self::$cache[$cache_key])) {
+        if (!is_customize_preview() && isset(self::$cache[$cache_key])) {
             $campaign_settings = self::$cache[$cache_key];
         } else {
-            $campaign_settings = self::get_settings_by_id($optin_campaign_id);
+            $campaign_settings = self::$cache[$cache_key] = self::get_settings_by_id($optin_campaign_id);
         }
 
         return isset($campaign_settings['test_mode']) && ($campaign_settings['test_mode'] === true);
