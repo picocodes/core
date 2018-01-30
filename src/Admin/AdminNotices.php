@@ -12,6 +12,7 @@ class AdminNotices
     public function __construct()
     {
         add_action('admin_init', array('PAnD', 'init'));
+        add_action('admin_init', array($this, 'dismiss_leave_review_notice_forever'));
         add_action('admin_notices', array($this, 'optin_campaigns_cache_cleared'));
         add_action('admin_notices', array($this, 'template_class_not_found'));
         add_action('admin_notices', array($this, 'optin_class_not_found'));
@@ -126,14 +127,24 @@ class AdminNotices
         echo '</div>';
     }
 
+    public function dismiss_leave_review_notice_forever()
+    {
+        if (!empty($_GET['mo_admin_action']) && $_GET['mo_admin_action'] == 'dismiss_leave_review_forever') {
+            update_option('mo_dismiss_leave_review_forever', true);
+
+            wp_redirect(esc_url_raw(remove_query_arg('mo_admin_action')));
+            exit;
+        }
+    }
+
     /**
      * Display one-time admin notice to review plugin at least 7 days after installation
      */
     public function review_plugin_notice()
     {
-        if (!PAnD::is_admin_notice_active('review-plugin-notice-forever')) {
-            return;
-        }
+        if (!PAnD::is_admin_notice_active('review-plugin-notice-forever')) return;
+
+        if (get_option('mo_dismiss_leave_review_forever', false)) return;
 
         $install_date = get_option('mo_install_date', '');
 
@@ -145,12 +156,19 @@ class AdminNotices
 
         $review_url = 'https://wordpress.org/support/plugin/mailoptin/reviews/?filter=5#new-post';
 
+        $dismiss_url = esc_url_raw(add_query_arg('mo_admin_action', 'dismiss_leave_review_forever'));
+
         $notice = sprintf(
             __('Hey, I noticed you have been using MailOptin for at least 7 days now - that\'s awesome! Could you please do me a BIG favor and give it a %1$s5-star rating on WordPress?%2$s This will help us spread the word and boost our motivation - thanks!', 'mailoptin'),
             '<a href="' . $review_url . '" target="_blank">',
             '</a>'
         );
-        $notice .= "<div style=\"margin:10px 0 0;\"><a href=\"$review_url\" target='_blank' class=\"button-primary\">Sure! I'd love to give a review</a></div>";
+        $label = __('Sure! I\'d love to give a review', 'mailoptin');
+
+        $dismiss_label = __('Dimiss Forever', 'mailoptin');
+
+        $notice .= "<div style=\"margin:10px 0 0;\"><a href=\"$review_url\" target='_blank' class=\"button-primary\">$label</a></div>";
+        $notice .= "<div style=\"margin:10px 0 0;\"><a href=\"$dismiss_url\">$dismiss_label</a></div>";
 
         echo '<div data-dismissible="review-plugin-notice-forever" class="update-nag notice notice-warning is-dismissible">';
         echo "<p>$notice</p>";
@@ -170,7 +188,7 @@ class AdminNotices
 
         if (OptinCampaignsRepository::campaign_count() < MO_LITE_OPTIN_CAMPAIGN_LIMIT) return;
 
-        if(strpos(\MailOptin\Core\current_url_with_query_string(), MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE) === false) return;
+        if (strpos(\MailOptin\Core\current_url_with_query_string(), MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE) === false) return;
 
         $upgrade_url = 'https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=optin_campaign_limit';
         $notice = sprintf(
@@ -196,7 +214,7 @@ class AdminNotices
 
         if (EmailCampaignRepository::campaign_count() < 1) return;
 
-        if(strpos(\MailOptin\Core\current_url_with_query_string(), MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE) === false) return;
+        if (strpos(\MailOptin\Core\current_url_with_query_string(), MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE) === false) return;
 
         $upgrade_url = 'https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=email_campaign_limit';
         $notice = sprintf(__('Upgrade to %s now to create multiple email campaigns with advance targeting and availability of your email list subscribers as recipients.', 'mailoptin'),
