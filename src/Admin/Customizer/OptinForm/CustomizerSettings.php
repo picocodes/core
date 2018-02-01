@@ -387,7 +387,7 @@ class CustomizerSettings extends AbstractCustomizer
                 'hide_close_button' => array(
                     'default' => $this->customizer_defaults['hide_close_button'],
                     'type' => 'option',
-                    'transport' => 'refresh',
+                    'transport' => 'postMessage',
                 ),
                 'hide_headline' => array(
                     'default' => $this->customizer_defaults['hide_headline'],

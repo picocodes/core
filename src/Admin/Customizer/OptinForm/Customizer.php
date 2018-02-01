@@ -429,7 +429,7 @@ class Customizer
                     unset($controls['slidein_position']);
                 }
 
-                if (!in_array($customizerClassInstance->optin_campaign_type, ['lightbox', 'slidein'])) {
+                if (!in_array($customizerClassInstance->optin_campaign_type, ['lightbox', 'slidein', 'bar'])) {
                     unset($controls['hide_close_button']);
                 }
 
@@ -455,8 +455,17 @@ class Customizer
 
                 return $controls;
             }, 10, 4);
-    }
 
+        add_filter('mo_optin_form_customizer_note_controls',
+            function ($controls, $wp_customize, $option_prefix, $customizerClassInstance) {
+                // restrict inpost_form_optin_position control to only inpost type
+                if ('inpost' != $customizerClassInstance->optin_campaign_type) {
+                    unset($controls['inpost_form_optin_position']);
+                }
+
+                return $controls;
+            }, 10, 4);
+    }
 
     /**
      * Customizer registration.
