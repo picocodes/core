@@ -357,13 +357,13 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
 
         $html .= $this->processing_success_structure();
 
-        if ($this->optin_campaign_type != 'lightbox') {
+        if (!$this->customizer_defaults['mo_optin_branding_outside_form'] && $this->optin_campaign_type != 'lightbox') {
             $html .= $this->branding_attribute();
         }
 
         $html .= "</div>";
 
-        if ($this->optin_campaign_type == 'lightbox') {
+        if ($this->customizer_defaults['mo_optin_branding_outside_form'] || $this->optin_campaign_type == 'lightbox') {
             $html .= $this->branding_attribute();
         }
 
@@ -492,7 +492,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
 
         return apply_filters(
             'mailoptin_branding_attribute',
-            "<div class=\"mo-optin-powered-by\" style='display:block !important;visibility:visible !important;position:static !important;top: 0 !important;left: 0 !important;text-align: center !important;height: auto !important;width: 60px !important;overflow: visible !important;opacity:1 !important;text-indent: 0 !important;clip: auto !important;clip-path: none !important;box-shadow:none !important'>" .
+            "<div class=\"mo-optin-powered-by\" style='display:block !important;visibility:visible !important;position:static !important;top: 0 !important;left: 0 !important;text-align: center !important;height: auto !important;width: 60px !important;overflow: visible !important;opacity:1 !important;text-indent: 0 !important;clip: auto !important;clip-path: none !important;box-shadow:none !important;line-height:normal'>" .
             "<a style='display:block !important;visibility:visible !important;position:static !important;top: 0 !important;left: 0 !important;text-align: center !important;height: auto !important;width: 60px !important;overflow: visible !important;opacity:1 !important;text-indent: 0 !important;clip: auto !important;clip-path: none !important;box-shadow:none !important' target=\"_blank\" rel='nofollow' href=\"$mailoptin_url\">" .
             '<img src="' . MAILOPTIN_ASSETS_URL . 'images/mo-optin-brand.png" style="height:auto !important;width:60px !important;display:inline !important;visibility:visible !important;position:static !important;top: 0 !important;left: 0 !important;text-align: center !important;overflow: visible !important;opacity:1 !important;text-indent: 0 !important;clip: auto !important;clip-path: none !important;box-shadow:none !important"/>' .
             '</a></div>'

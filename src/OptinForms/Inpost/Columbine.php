@@ -211,10 +211,10 @@ class Columbine extends AbstractOptinTheme
     public function customizer_headline_settings($settings, $CustomizerSettingsInstance)
     {
         $settings['mini_headline'] = array(
-            'default' => "DON'T MISS OUT!",
+            'default' => __('DON\'T MISS OUT!', 'mailoptin'),
             'type' => 'option',
             'transport' => 'refresh',
-            'sanitize_callback' => array($CustomizerSettingsInstance, '_remove_paragraph_from_headline'),
+            'sanitize_callback' => [$CustomizerSettingsInstance, '_remove_paragraph_from_headline'],
         );
 
         return $settings;
@@ -247,7 +247,6 @@ class Columbine extends AbstractOptinTheme
                 )
             )
         );
-
 
         return $controls;
     }

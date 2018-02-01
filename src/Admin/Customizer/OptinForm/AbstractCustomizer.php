@@ -110,6 +110,8 @@ class AbstractCustomizer
         $defaults['pass_lead_data_redirect_url'] = apply_filters('mo_optin_form_pass_lead_data_redirect_url_default', false, $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
         $defaults['state_after_conversion'] = apply_filters('mo_optin_form_state_after_conversion_default', 'success_message_shown', $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
 
+        $defaults['mo_optin_branding_outside_form'] = apply_filters('mo_optin_branding_outside_form', false, $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
+
         return $defaults;
     }
 }
