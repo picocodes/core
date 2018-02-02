@@ -423,7 +423,7 @@ class CustomizerSettings extends AbstractCustomizer
                 'remove_branding' => array(
                     'default' => $this->customizer_defaults['remove_branding'],
                     'type' => 'option',
-                    'transport' => 'refresh',
+                    'transport' => 'postMessage',
                 )
             ),
             $this

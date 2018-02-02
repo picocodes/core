@@ -132,6 +132,12 @@
         });
     });
 
+    wp.customize(mailoptin_optin_option_prefix + '[' + mailoptin_optin_campaign_id + '][remove_branding]', function (value) {
+        value.bind(function (to) {
+                $('div.mo-optin-powered-by').toggle(!to);
+        });
+    });
+
     wp.customize(mailoptin_optin_option_prefix + '[' + mailoptin_optin_campaign_id + '][hide_headline]', function (value) {
         value.bind(function (to) {
             if (to) {
