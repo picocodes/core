@@ -821,6 +821,14 @@ form.mo-inline {
     display: none;
 }
 
+.mo-end-test-modal .mo-end-test-warning-note {
+    text-transform: none;
+    font-weight: normal;
+    color: red;
+    font-size: 14px;
+    padding-top: 5px;
+}
+
 .mo-end-test-modal .mo-end-test-spinner {
     left: 50%;
     top: 50%;

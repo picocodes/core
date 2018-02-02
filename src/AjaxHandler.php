@@ -329,6 +329,9 @@ class AjaxHandler
                         </div>
                     </div>
                 <?php endforeach; ?>
+                <div class="mo-end-test-warning-note">
+                    <?php _e('Warning: selecting a winner will delete the other A/B test variants.', 'mailoptin'); ?>
+                </div>
 
                 <div class="mo-end-test-cancel-button mo-end-test-centered">
                     <a href="javascript:window.jQuery.fancybox.close();" class="mo-end-test-btn-converted">
