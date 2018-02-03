@@ -255,7 +255,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         $body_padding_top = in_array($this->optin_campaign_type, ['bar']) ? 0 : '10%';
         ob_start();
 
-        wp_head();
+//        wp_head();
 
         echo "<body style='background: #f3f3f3 !important;padding-top:$body_padding_top;'>";
 
@@ -297,7 +297,8 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
      */
     public function global_css($optin_css_id, $optin_campaign_uuid = '')
     {
-        $global_css = "div#{$optin_css_id}_container div.mo-optin-powered-by{margin:5px auto 2px;text-align:center;}";
+        $global_css = "div#{$optin_campaign_uuid} *, div#{$optin_campaign_uuid} *:before, div#{$optin_campaign_uuid} *:after {box-sizing: border-box;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;}";
+        $global_css .= "div#{$optin_css_id}_container div.mo-optin-powered-by{margin:5px auto 2px;text-align:center;}";
         $global_css .= "div#{$optin_css_id}_container div.mo-optin-powered-by a {font-size:16px !important; text-decoration: none !important;box-shadow:none !important;border-bottom-width:0px !important;cursor:pointer !important;}";
 
         if ($this->optin_campaign_type == 'bar') {

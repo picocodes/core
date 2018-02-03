@@ -13,18 +13,7 @@ final class Core
 
     public function __construct()
     {
-        add_action('init', [$this, 'load_plugin_textdomain'], 0);
-
         Base::get_instance();
-    }
-
-    function load_plugin_textdomain()
-    {
-        $locale = is_admin() && function_exists('get_user_locale') ? get_user_locale() : get_locale();
-        $locale = apply_filters('plugin_locale', $locale, 'mailoptin');
-
-        load_textdomain('mailoptin', WP_LANG_DIR . '/mailoptin/mailoptin-' . $locale . '.mo');
-        load_plugin_textdomain('mailoptin', false, plugin_basename(dirname(MAILOPTIN_SYSTEM_FILE_PATH)) . '/languages');
     }
 
     public static function get_instance()
