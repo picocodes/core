@@ -255,7 +255,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         $body_padding_top = in_array($this->optin_campaign_type, ['bar']) ? 0 : '10%';
         ob_start();
 
-//        wp_head();
+        wp_head();
 
         echo "<body style='background: #f3f3f3 !important;padding-top:$body_padding_top;'>";
 
