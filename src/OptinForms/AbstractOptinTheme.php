@@ -31,30 +31,6 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
     }
 
     /**
-     * Generate honeypot field for optin form.
-     *
-     * @return string
-     */
-    public function honeypot()
-    {
-        // Give ability to turn off honeypot.
-        if (apply_filters('mailoptin_disable_optin_honeypot', false)) {
-            return '';
-        }
-
-        $optin_css_id = $this->optin_css_id;
-
-        // Create honeypot fields and allow them to be filtered.
-        // Don't hange type from text to email to prevent "An invalid form control with name='text' is not focusable." error
-        $fields = "<input id='{$optin_css_id}_honeypot_email_field' type='text' name='email' value='' style='display:none'/>";
-        $fields .= '<input id="' . $optin_css_id . '_honeypot_website_field" type="text" name="website" value="" style="display:none" />';
-        $fields .= '<input id="' . $optin_css_id . '_honeypot_timestamp" type="hidden" name="mo-timestamp" value="' . time() . '" style="display:none" />';
-        $fields = apply_filters('mailoptin_optin_honeypot_fields', $fields, $this->optin_campaign_id);
-
-        return $fields;
-    }
-
-    /**
      * Headline styles.
      *
      * @return string
@@ -351,7 +327,12 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         $html .= apply_filters('mo_optin_form_before_form_tag', '', $this->optin_campaign_id, $this->optin_campaign_type, $optin_campaign_uuid, $optin_css_id);
         $html .= "<form method=\"post\" class='mo-optin-form' id='{$optin_css_id}_form' style='margin 0;'>";
         $html .= do_shortcode($content);
-        $html .= $this->honeypot();
+
+        // Don't change type from text to email to prevent "An invalid form control with name='text' is not focusable." error
+        $html .= "<input id='{$this->optin_css_id}_honeypot_email_field' type='text' name='email' value='' style='display:none'/>";
+        $html .= '<input id="' . $this->optin_css_id . '_honeypot_website_field" type="text" name="website" value="" style="display:none" />';
+
+        $html .= apply_filters('mo_optin_form_before_closing_form_tag', '', $this->optin_campaign_id, $this->optin_campaign_type, $optin_campaign_uuid, $optin_css_id);
         $html .= '</form>';
         $html .= apply_filters('mo_optin_form_after_form_tag', '', $this->optin_campaign_id, $this->optin_campaign_type, $optin_campaign_uuid, $optin_css_id);
 
