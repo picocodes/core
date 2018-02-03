@@ -454,6 +454,8 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
      */
     public function get_optin_form_structure()
     {
+        /* $this->timestamp_spam_combat() in this section ensure the timestamp is never cached. */
+
         if (is_customize_preview()) return $this->_get_optin_form_structure();
 
         // Bypass cache if this optin form has successfully received opt-in from visitor and 'state after conversion' is not set to still display optin form.
@@ -463,11 +465,11 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
             // if state after conversion is set to 'optin form hidden', return nothing.
             if ($this->state_after_conversion() == 'optin_form_hidden') return '';
 
-            return $this->_get_optin_form_structure();
+            return $this->_get_optin_form_structure() . $this->timestamp_spam_combat();
         }
 
         // if cache is disable, fetch fresh optin structure.
-        if (apply_filters('mailoptin_disable_optin_form_cache', false)) return $this->_get_optin_form_structure();
+        if (apply_filters('mailoptin_disable_optin_form_cache', false)) return $this->_get_optin_form_structure() . $this->timestamp_spam_combat();
 
         $cache_key = "mo_get_optin_form_structure_{$this->optin_campaign_id}";
         $optin_structure = get_transient($cache_key);
@@ -482,7 +484,21 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
             );
         }
 
-        return $optin_structure;
+        return $optin_structure . $this->timestamp_spam_combat();
+    }
+
+    /**
+     * Generate honeypot field for optin form.
+     *
+     * @return string
+     */
+    public function timestamp_spam_combat()
+    {
+        // Give ability to turn off honeypot.
+        if (apply_filters('mailoptin_disable_timestamp_spam_combat', false)) return '';
+
+        return '<input id="' . $this->optin_css_id . '_honeypot_timestamp" type="hidden" name="mo-timestamp" value="' . time() . '" style="display:none" />';
+
     }
 
     /**
