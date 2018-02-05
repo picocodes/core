@@ -325,7 +325,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
 
         $html = "<div id=\"$optin_css_id\" class=\"$class\" style=\"$style\">";
         $html .= apply_filters('mo_optin_form_before_form_tag', '', $this->optin_campaign_id, $this->optin_campaign_type, $optin_campaign_uuid, $optin_css_id);
-        $html .= "<form method=\"post\" class='mo-optin-form' id='{$optin_css_id}_form' style='margin 0;'>";
+        $html .= "<form method=\"post\" class='mo-optin-form' id='{$optin_css_id}_form' style='margin:0;'>";
         $html .= do_shortcode($content);
 
         // Don't change type from text to email to prevent "An invalid form control with name='text' is not focusable." error
