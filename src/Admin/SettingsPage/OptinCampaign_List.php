@@ -623,7 +623,13 @@ class OptinCampaign_List extends \WP_List_Table
         }
 
         if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
-            unset($actions['split_test']);
+            $actions['split_test'] =  [
+                'title' => __('This is a premium feature. Upgrade now!', 'mailoptin'),
+                'href' => 'https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=ab_test_popover',
+                'label' => __('A/B Split Test', 'mailoptin'),
+                'target' => '_blank',
+                'class' => 'mo-split-test-upgrade'
+            ];
         }
 
         $structure = '<ul>';
@@ -631,14 +637,16 @@ class OptinCampaign_List extends \WP_List_Table
             $action = wp_parse_args($action, [
                 'href' => '',
                 'title' => '',
+                'target' => '_self',
                 'label' => '',
                 'class' => '',
             ]);
 
             $structure .= sprintf(
-                '<li><a href="%s" class="%s" data-optin-id="%d" title="%s">%s</a></li>',
+                '<li><a href="%s" class="%s" target="%s" data-optin-id="%d" title="%s">%s</a></li>',
                 esc_attr($action['href']),
                 esc_attr($action['class']),
+                esc_attr($action['target']),
                 $optin_campaign_id,
                 esc_attr($action['title']),
                 esc_attr($action['label'])

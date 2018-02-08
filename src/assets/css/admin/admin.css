@@ -490,6 +490,10 @@ table.optin_forms tr.mo-split-test-actions {
     background-color: #f9f9f9;
 }
 
+a.mo-split-test-upgrade {
+    color: #e35950;
+}
+
 /* optin wp listing column re-arrangement*/
 table.optin_forms th#actions {
     width: 20% !important;
