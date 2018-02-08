@@ -425,7 +425,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
 
         $optin_form .= "<div class='mo-optin-form-container' id='{$optin_css_id}_container' style='position:relative;margin: 0 auto;'>";
         $optin_form .= $this->optin_script_and_styles();
-        $optin_form .= do_shortcode($this->optin_form());
+        $optin_form .= apply_filters('mo_optin_form_shortcode_structure', do_shortcode($this->optin_form()), $this->optin_campaign_id, $this->optin_campaign_uuid, $this->optin_form());
 
         $optin_form .= "</div>";
         $optin_form .= "</div>";
