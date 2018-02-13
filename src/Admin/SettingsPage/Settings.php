@@ -66,6 +66,7 @@ class Settings extends AbstractSettingsPage
         $clear_optin_cache_url = add_query_arg('clear-optin-cache', 'true', MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE);
         $args = array(
             'general_settings' => apply_filters('mailoptin_settings_general_settings_page', array(
+                    'tab_title' => __('General', 'mailoptin'),
                     'section_title' => __('General Settings', 'mailoptin'),
                     'remove_plugin_data' => array(
                         'type' => 'checkbox',
@@ -88,42 +89,46 @@ class Settings extends AbstractSettingsPage
                     )
                 )
             ),
-            'optin_campaign_settings' => apply_filters('mailoptin_settings_optin_campaign_settings_page', array(
-                    'section_title' => __('Optin Campaign Settings', 'mailoptin'),
-                    'clear_optin_cache' => array(
-                        'type' => 'custom_field_block',
-                        'label' => __('Clear Optin Cache', 'mailoptin'),
-                        'data' => "<a href='$clear_optin_cache_url' class='button action'>" . __('Clear Cache', 'mailoptin') . '</a>',
-                        'description' => '<p class="description">' .
-                            sprintf(
-                                __('Each time you create and make changes to your %soptin campaigns%s, MailOptin caches the designs so it doesn\'t hurt your website speed and performance. If for some reasons changes you made to your campaigns are not reflected on your website frontend, use this button to clear the cache.', 'mailoptin'),
-                                '<a href="' . MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE . '">',
-                                '</a>'
-                            ) .
-                            '</p>',
-                    ),
-                    'global_cookie' => array(
-                        'type' => 'number',
-                        'value' => 0,
-                        'label' => __('Global Interaction Cookie', 'mailoptin'),
-                        'description' => __(
-                            'Entering a number of days (e.g. 30) will set a global cookie once any optin is closed by a user or visitor.
+            'optin_campaign_settings' => apply_filters('mailoptin_settings_optin_campaign_settings_page', [
+                    'tab_title' => __('Optin Campaign', 'mailoptin'),
+                    [
+                        'section_title' => __('Optin Campaign Settings', 'mailoptin'),
+                        'clear_optin_cache' => [
+                            'type' => 'custom_field_block',
+                            'label' => __('Clear Optin Cache', 'mailoptin'),
+                            'data' => "<a href='$clear_optin_cache_url' class='button action'>" . __('Clear Cache', 'mailoptin') . '</a>',
+                            'description' => '<p class="description">' .
+                                sprintf(
+                                    __('Each time you create and make changes to your %soptin campaigns%s, MailOptin caches the designs so it doesn\'t hurt your website speed and performance. If for some reasons changes you made to your campaigns are not reflected on your website frontend, use this button to clear the cache.', 'mailoptin'),
+                                    '<a href="' . MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE . '">',
+                                    '</a>'
+                                ) .
+                                '</p>',
+                        ],
+                        'global_cookie' => [
+                            'type' => 'number',
+                            'value' => 0,
+                            'label' => __('Global Interaction Cookie', 'mailoptin'),
+                            'description' => __(
+                                'Entering a number of days (e.g. 30) will set a global cookie once any optin is closed by a user or visitor.
                             This global cookie will prevent any other optins from loading on your site for that visitor until the cookie expires. Defaults to 0 (no global interaction cookie).',
-                            'mailoptin'
-                        ),
-                    ),
-                    'global_success_cookie' => array(
-                        'type' => 'number',
-                        'value' => 0,
-                        'label' => __('Global Success Cookie', 'mailoptin'),
-                        'description' => __(
-                            'Entering a number of days (e.g. 30) will set a global cookie once any optin has resulted in a successful conversion. This global cookie will prevent any other optins from loading on your site for that visitor until the cookie expires. Defaults to 0 (no global success cookie).',
-                            'mailoptin'
-                        ),
-                    ),
-                )
+                                'mailoptin'
+                            ),
+                        ],
+                        'global_success_cookie' => [
+                            'type' => 'number',
+                            'value' => 0,
+                            'label' => __('Global Success Cookie', 'mailoptin'),
+                            'description' => __(
+                                'Entering a number of days (e.g. 30) will set a global cookie once any optin has resulted in a successful conversion. This global cookie will prevent any other optins from loading on your site for that visitor until the cookie expires. Defaults to 0 (no global success cookie).',
+                                'mailoptin'
+                            ),
+                        ],
+                    ]
+                ]
             ),
             'email_campaign_settings' => apply_filters('mailoptin_settings_email_campaign_settings_page', array(
+                    'tab_title' => __('Email Campaign', 'mailoptin'),
                     'section_title' => __('Email Campaign Settings', 'mailoptin'),
                     'from_name' => array(
                         'type' => 'text',
@@ -178,9 +183,56 @@ class Settings extends AbstractSettingsPage
             unset($args['optin_campaign_settings']);
         }
 
-        $instance = Custom_Settings_Page_Api::instance($args, MAILOPTIN_SETTINGS_DB_OPTION_NAME, __('MailOptin - Settings', 'mailoptin'));
-        $this->register_core_settings($instance);
-        $instance->build();
+        do_action('mailoptin_before_settings_page', MAILOPTIN_SETTINGS_DB_OPTION_NAME);
+        $settings_args = apply_filters('mailoptin_settings_page', $args);
+        $nav_tabs = '';
+        $tab_content_area = '';
+
+        if (!empty($settings_args)) {
+            $instance = Custom_Settings_Page_Api::instance([], MAILOPTIN_SETTINGS_DB_OPTION_NAME, __('MailOptin - Settings', 'mailoptin'));
+            foreach ($settings_args as $key => $settings_arg) {
+                $tab_title = $settings_arg['tab_title'];
+                $section_title = $settings_arg['tab_title'];
+                unset($settings_arg['tab_title']);
+                unset($settings_arg['section_title']);
+                $nav_tabs .= sprintf('<a href="#%1$s" class="nav-tab" id="%1$s-tab"><span class="dashicons dashicons-admin-generic"></span> %2$s</a>', $key, $tab_title);
+
+                if (isset($settings_arg[0]['section_title'])) {
+                    $tab_content_area .= sprintf('<div id="%s" class="mailoptin-group-wrapper">', $key);
+                    foreach ($settings_arg as $single_arg) {
+                        $tab_content_area .= $instance->metax_box_instance($single_arg);
+                    }
+                    $tab_content_area .= '</div>';
+                } else {
+                    $settings_arg['section_title'] = $section_title;
+                    $tab_content_area .= sprintf('<div id="%s" class="mailoptin-group-wrapper">', $key);
+                    $tab_content_area .= $instance->metax_box_instance($settings_arg);
+                    $tab_content_area .= '</div>';
+                }
+            }
+
+            $this->register_core_settings($instance, true);
+            $instance->persist_plugin_settings();
+
+            echo '<div class="wrap">';
+            $instance->settings_page_heading();
+            $instance->do_settings_errors();
+            settings_errors('wp_csa_notice');
+            $instance->settings_page_tab();
+
+            echo '<div class="mailoptin-settings-wrap" data-option-name="' . MAILOPTIN_SETTINGS_DB_OPTION_NAME . '">';
+            echo '<h2 class="nav-tab-wrapper">' . $nav_tabs . '</h2>';
+            echo '<div class="metabox-holder mailoptin-tab-settings">';
+            echo '<form method="post">';
+            $instance->nonce_field();
+            echo $tab_content_area;
+            echo '</form>';
+            echo '</div>';
+            echo '</div>';
+            echo '</div>';
+
+            do_action('mailoptin_after_settings_page', MAILOPTIN_SETTINGS_DB_OPTION_NAME);
+        }
     }
 
     /**

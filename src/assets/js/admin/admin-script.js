@@ -91,9 +91,10 @@
         // Switches option sections
         $('.mailoptin-group-wrapper').hide();
         var active_tab = '';
+        var option_name = $('div.mailoptin-settings-wrap').data('option-name');
 
         if (typeof(localStorage) !== 'undefined') {
-            active_tab = localStorage.getItem("active-tab");
+            active_tab = localStorage.getItem(option_name+"_active-tab");
         }
         if (active_tab !== '' && $(active_tab).length) {
             $(active_tab).fadeIn();
@@ -113,7 +114,7 @@
             $(this).addClass('nav-tab-active').blur();
             var clicked_group = $(this).attr('href');
             if (typeof(localStorage) !== 'undefined') {
-                localStorage.setItem("active-tab", $(this).attr('href'));
+                localStorage.setItem(option_name+"_active-tab", $(this).attr('href'));
             }
             $('.mailoptin-group-wrapper').hide();
             $(clicked_group).fadeIn();

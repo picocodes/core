@@ -600,7 +600,7 @@ form.mo-inline {
     flex: 1;
     border-bottom: none;
     padding: 0;
-    background: #f1f1f1;
+    background: #f7f8fa;
     border-right: 1px solid #c8d7e1;
 }
 
@@ -610,7 +610,7 @@ form.mo-inline {
     margin: 0;
     border: none;
     padding: 15px;
-    background: #f1f1f1;
+    background: #f7f8fa;
     font-weight: 500;
     border-bottom: 1px solid #c8d7e1;
 }
@@ -628,6 +628,9 @@ form.mo-inline {
     padding-right: 10px;
     background: #fff;
 }
+.metabox-holder.mailoptin-tab-settings textarea{
+    width: 25em;
+}
 
 .mailoptin-settings-wrap .mailoptin-tab-settings .postbox {
     border: none;
@@ -637,6 +640,12 @@ form.mo-inline {
 .mailoptin-settings-wrap .metabox-holder h3.hndle {
     padding: 12px;
     cursor: default;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+
+.mailoptin-settings-wrap .postbox:first-child h3.hndle {
+    border-top: none !important;
 }
 
 .mo-field-header {

@@ -1005,7 +1005,7 @@ class CustomizerControls
     public function after_conversion_controls()
     {
         $success_message_config_link = sprintf(
-            __("To customize the success message shown after user subscribe to this opt-in campaign, %sclick here%s.", 'mailoptin'),
+            __("To customize the success message shown after a user subscribes, %sclick here%s.", 'mailoptin'),
             '<a onclick="wp.customize.control(\'mo_optin_campaign[' . $this->optin_campaign_id . '][success_message]\').focus()" href="#">',
             '</a>'
         );

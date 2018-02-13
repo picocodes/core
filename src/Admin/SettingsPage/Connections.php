@@ -60,13 +60,13 @@ class Connections extends AbstractSettingsPage
             $instance = Custom_Settings_Page_Api::instance([], MAILOPTIN_CONNECTIONS_DB_OPTION_NAME, __('Connections', 'mailoptin'));
             foreach ($connection_args as $connection_arg) {
                 $section_title = $connection_arg['section_title'];
-                // remove "Connection" + connected status from section ttle
+                // remove "Connection" + connected status from section title
                 $section_title_without_status = preg_replace('/[\s]?Connection.+<\/span>/', '', $connection_arg['section_title']);
                 unset($connection_arg['section_title']);
                 $key = key($connection_arg);
                 // re-add section title after we've gotten key.
                 $connection_arg['section_title'] = $section_title;
-                $nav_tabs .= sprintf('<a href="#%1$s" class="nav-tab" id="%1$s-tab"><span class="dashicons dashicons-admin-generic"></span> %2$s</a>', $key, $section_title_without_status);
+                $nav_tabs .= sprintf('<a href="#%1$s" class="nav-tab" id="%1$s-tab"><span class="dashicons dashicons-admin-settings"></span> %2$s</a>', $key, $section_title_without_status);
                 $tab_content_area .= sprintf('<div id="%s" class="mailoptin-group-wrapper">', $key);
                 $tab_content_area .= $instance->metax_box_instance($connection_arg);
                 $tab_content_area .= '</div>';
@@ -81,7 +81,7 @@ class Connections extends AbstractSettingsPage
             settings_errors('wp_csa_notice');
             $instance->settings_page_tab();
 
-            echo '<div class="mailoptin-settings-wrap">';
+            echo '<div class="mailoptin-settings-wrap" data-option-name="' . MAILOPTIN_CONNECTIONS_DB_OPTION_NAME . '">';
             echo '<h2 class="nav-tab-wrapper">' . $nav_tabs . '</h2>';
             echo '<div class="metabox-holder mailoptin-tab-settings">';
             echo '<form method="post">';
