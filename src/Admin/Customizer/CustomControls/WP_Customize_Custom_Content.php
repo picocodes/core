@@ -6,6 +6,8 @@ use WP_Customize_Control;
 
 class WP_Customize_Custom_Content extends WP_Customize_Control
 {
+    public $type = 'mailoptin_custom_content';
+
     // Whitelist content parameter
     public $content = '';
 

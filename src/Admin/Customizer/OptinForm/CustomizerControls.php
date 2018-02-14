@@ -1005,7 +1005,7 @@ class CustomizerControls
     public function after_conversion_controls()
     {
         $success_message_config_link = sprintf(
-            __("To customize the success message shown after a user subscribes, %sclick here%s.", 'mailoptin'),
+            '<br>' . __("To customize success message, %sclick here%s.", 'mailoptin'),
             '<a onclick="wp.customize.control(\'mo_optin_campaign[' . $this->optin_campaign_id . '][success_message]\').focus()" href="#">',
             '</a>'
         );
@@ -1031,7 +1031,7 @@ class CustomizerControls
                         'label' => __('Success Action', 'mailoptin'),
                         'section' => $this->customizerClassInstance->success_section_id,
                         'settings' => $this->option_prefix . '[success_action]',
-                        'description' => __('What to do after user has successfully subscribe or opt-in to this campaign.'),
+                        'description' => __('What to do after users subscribe.', 'mailoptin') . $success_message_config_link,
                         'priority' => 10,
                     )
                 ),
@@ -1042,17 +1042,6 @@ class CustomizerControls
                         'settings' => $this->option_prefix . '[redirect_url_value]',
                         'priority' => 20,
                         'description' => __('Specify a URL to redirect users to after opt-in. Must begin with http or https.', 'mailoptin')
-                    )
-                ),
-                'success_message_config_link' => new WP_Customize_Custom_Content(
-                    $this->wp_customize,
-                    $this->option_prefix . '[success_message_config_link]',
-                    apply_filters('mo_optin_form_customizer_success_message_config_link_args', array(
-                            'content' => $success_message_config_link,
-                            'section' => $this->customizerClassInstance->success_section_id,
-                            'settings' => $this->option_prefix . '[success_message_config_link]',
-                            'priority' => 21,
-                        )
                     )
                 )
             ),
