@@ -157,20 +157,20 @@ class Custom_Settings_Page_Api
     public static function sanitize_data($data)
     {
         if (is_string($data)) {
-            return sanitize_text_field($data);
+            return esc_html($data);
         }
+
         $sanitized_data = array();
         foreach ($data as $key => $value) {
             if (is_array($data[$key])) {
                 $sanitized_data[$key] = self::sanitize_data($data[$key]);
             } else {
-                $sanitized_data[$key] = sanitize_text_field($data[$key]);
+                $sanitized_data[$key] = esc_html($data[$key]);
             }
         }
 
         return $sanitized_data;
     }
-
 
     /**
      * Persist the form data to database.
@@ -698,7 +698,7 @@ class Custom_Settings_Page_Api
         $rows = !empty($args['rows']) ? $args['rows'] : 5;
         $cols = !empty($args['column']) ? $args['column'] : '';
         $option_name = $this->option_name;
-        $value = !empty($db_options[$key]) ? stripslashes([$key]) : @$args['value'];
+        $value = !empty($db_options[$key]) ? stripslashes($db_options[$key]) : @$args['value'];
         ob_start();
         ?>
         <tr id="<?php echo $tr_id; ?>">
