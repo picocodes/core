@@ -25,7 +25,6 @@ class AjaxHandler
 {
     public function __construct()
     {
-        add_action('admin_init', [$this, 'act_on_optin_activation_actions']);
         add_action('admin_init', [$this, 'act_on_automation_activation_actions']);
 
         add_action('wp_ajax_mailoptin_send_test_email', array($this, 'send_test_email'));
@@ -36,7 +35,6 @@ class AjaxHandler
         add_action('wp_ajax_mailoptin_automation_toggle_active', [$this, 'toggle_automation_active_status']);
         add_action('wp_ajax_mailoptin_toggle_optin_activated', [$this, 'optin_listing_activated_status_toggle']);
         add_action('wp_ajax_mailoptin_toggle_automation_activated', [$this, 'automation_listing_activated_status_toggle']);
-        add_action('wp_ajax_mailoptin_act_on_toggle_optin_activated', [$this, 'act_on_optin_activation_actions']);
         add_action('wp_ajax_mailoptin_act_on_toggle_automation_activated', [$this, 'act_on_automation_activation_actions']);
         add_action('wp_ajax_mailoptin_optin_type_selection', [$this, 'optin_type_selection']);
 
@@ -524,7 +522,11 @@ class AjaxHandler
         $optin_campaign_id = absint($_POST['id']);
         $status = sanitize_text_field($_POST['status']);
 
-        update_option("mo_optin_campaign_activation_task_$optin_campaign_id", $status);
+        if ($status == 'true') {
+            OptinCampaignsRepository::activate_campaign($optin_campaign_id);
+        } else {
+            OptinCampaignsRepository::deactivate_campaign($optin_campaign_id);
+        }
 
         wp_die();
     }
@@ -539,29 +541,6 @@ class AjaxHandler
         update_option("mo_automation_campaign_activation_task_$email_campaign_id", $status);
 
         wp_die();
-    }
-
-    public function act_on_optin_activation_actions()
-    {
-        global $wpdb;
-        $table = $wpdb->options;
-
-        $tasks = $wpdb->get_results("SELECT option_name, option_value FROM $table WHERE option_name LIKE 'mo_optin_campaign_activation_task%'");
-
-        if (!empty($tasks)) {
-            foreach ($tasks as $task) {
-                $optin_campaign_id = filter_var($task->option_name, FILTER_SANITIZE_NUMBER_INT);
-                $status = $task->option_value;
-
-                if ($status == 'true') {
-                    OptinCampaignsRepository::activate_campaign($optin_campaign_id);
-                } else {
-                    OptinCampaignsRepository::deactivate_campaign($optin_campaign_id);
-                }
-
-                delete_option($task->option_name);
-            }
-        }
     }
 
     public function act_on_automation_activation_actions()
