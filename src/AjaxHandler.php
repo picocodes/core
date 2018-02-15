@@ -606,6 +606,34 @@ class AjaxHandler
         wp_send_json($response);
     }
 
+    public static function send_optin_error_email($optin_campaign_id, $error_message)
+    {
+        $email = get_option('admin_email');
+
+        sprintf(
+            __("%s\n\n -- \n\nThis e-mail was sent by %s plugin on %s (%s)", 'mailoptin'), '[LEAD_DATA]', 'MailOptin', get_bloginfo('name'), site_url()
+        );
+
+        $optin_campaign_name = OptinCampaignsRepository::get_optin_campaign_name($optin_campaign_id);
+
+        $subject = apply_filters('mo_optin_form_email_error_email_subject', sprintf(__('Warning! %s Optin Form Is Not Working', 'mailoptin'), $optin_campaign_name), $optin_campaign_id, $error_message);
+
+        $message = apply_filters(
+            'mo_optin_form_email_error_email_message',
+            sprintf(
+                __('The optin campaign "%s" is failing to convert leads due to the following error "%s". %6$s -- %6$sThis e-mail was sent by %s plugin on %s (%s)', 'mailoptin'),
+                $optin_campaign_name,
+                $error_message,
+                'MailOptin',
+                get_bloginfo('name'),
+                site_url(),
+                "\r\n\n"
+            )
+        );
+
+        @wp_mail($email, $subject, $message);
+    }
+
     /**
      * Accept wide range of optin conversion data and save the lead.
      *
@@ -614,6 +642,8 @@ class AjaxHandler
      */
     public static function do_optin_conversion(ConversionDataBuilder $conversion_data)
     {
+        $optin_campaign_id = absint(OptinCampaignsRepository::get_optin_campaign_id_by_uuid($conversion_data->optin_uuid));
+
         if (!is_email($conversion_data->email)) {
             return AbstractConnect::ajax_failure(
                 apply_filters('mo_subscription_invalid_email_error', __('Email address is invalid. Try again.', 'mailoptin'))
@@ -635,12 +665,12 @@ class AjaxHandler
 
         // flag to stop subscription if number of optin subscriber limit is exceeded or reached.
         if (!defined('MAILOPTIN_DETACH_LIBSODIUM') && OptinConversionsRepository::month_conversion_count() >= MO_LITE_OPTIN_CONVERSION_LIMIT) {
+            self::send_optin_error_email($optin_campaign_id, 'mo_subscription_limit_exceeded_error');
             return AbstractConnect::ajax_failure(
                 apply_filters('mo_subscription_limit_exceeded_error', __('You cannot be added to our email list at this time. Please try again later.', 'mailoptin'))
             );
         }
 
-        $optin_campaign_id = absint(OptinCampaignsRepository::get_optin_campaign_id_by_uuid($conversion_data->optin_uuid));
         $optin_campaign_type = isset($conversion_data->optin_campaign_type) ? $conversion_data->optin_campaign_type : OptinCampaignsRepository::get_optin_campaign_type($optin_campaign_id);
 
         $lead_bank_only = OptinCampaignsRepository::get_customizer_value($optin_campaign_id, 'lead_bank_only');
@@ -676,6 +706,7 @@ class AjaxHandler
 
         // !$lead_bank_only ensures error is not thrown if lead_bank_only is checked or true.
         if (empty($connection_service) || empty($connection_email_list)) {
+            self::send_optin_error_email($optin_campaign_id, 'No email provider or list has been set for this optin.');
             $response = AbstractConnect::ajax_failure(__('No email provider or list has been set for this optin. Please try again', 'mailoptin'));
         } else {
             $extras = $conversion_data->payload;
