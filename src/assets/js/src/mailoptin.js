@@ -20,7 +20,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
              */
             track_impression: function (optin_uuid) {
                 // bail if this is customizer preview
-                if ($.MailOptin.is_customize_preview === true) return;
+                if ($.MailOptin.is_customize_preview === true || mailoptin_globals.disable_impression_tracking === 'true') return;
 
                 var stat_data = {
                     optin_uuid: optin_uuid,
@@ -257,19 +257,19 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                     switch (x_page_views_condition) {
                         // for each condition, do the inverse return false if comparison is true.
                         case 'equals':
-                            if (self.get_page_views() !== x_page_views_value)  return;
+                            if (self.get_page_views() !== x_page_views_value) return;
                             break;
                         case 'more_than':
                             if (self.get_page_views() <= x_page_views_value) return;
                             break;
                         case 'less_than':
-                            if (self.get_page_views() >= x_page_views_value)  return;
+                            if (self.get_page_views() >= x_page_views_value) return;
                             break;
                         case 'at_least':
-                            if (self.get_page_views() < x_page_views_value)  return;
+                            if (self.get_page_views() < x_page_views_value) return;
                             break;
                         case 'not_more_than':
-                            if (self.get_page_views() > x_page_views_value)  return;
+                            if (self.get_page_views() > x_page_views_value) return;
                             break;
                     }
                 }
