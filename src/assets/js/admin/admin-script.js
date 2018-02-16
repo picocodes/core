@@ -60,61 +60,60 @@
         $('#post-body-content').find('div.postbox').removeClass('closed');
     });
 
-    var optin_activation_locked = false;
-    var optin_email_activation_queue = [];
-    var optin_email_activation_queue_checker = function () {
+    var optin_automation_activation_locked = false;
+    var optin_automation_activation_queue = [];
+    var optin_automation_activation_queue_checker = function () {
         var job;
-        if (optin_activation_locked === true || optin_email_activation_queue.length === 0) return;
-        job = optin_email_activation_queue.shift();
-        optin_email_activation_ajax(job.id, job.status);
+        if (optin_automation_activation_locked === true || optin_automation_activation_queue.length === 0) return;
+        job = optin_automation_activation_queue.shift();
+        optin_automation_activation_ajax(job.id, job.status, job.activation_type);
     };
 
-    var optin_email_activation_ajax = function (id, status) {
-        optin_activation_locked = true;
+    var optin_automation_activation_ajax = function (id, status, activation_type) {
+        if (optin_automation_activation_locked === true) {
+            return optin_automation_activation_queue.push({
+                id: id,
+                status: status,
+                activation_type: activation_type
+            });
+        }
+
+        if (typeof activation_type === 'undefined') return;
+
+        optin_automation_activation_locked = true;
+
         $.post(ajaxurl, {
-            action: 'mailoptin_toggle_optin_activated',
+            action: 'mailoptin_toggle_' + activation_type + '_activated',
             id: id,
             status: status
         }, function () {
-            optin_activation_locked = false;
-            optin_email_activation_queue_checker();
+            optin_automation_activation_locked = false;
+            optin_automation_activation_queue_checker();
         });
     };
 
     $(window).on('beforeunload', function () {
-        if (optin_activation_locked === true) {
+        if (optin_automation_activation_locked === true) {
             return 'stop';
         }
     });
 
     // handles activation and deactivation of optin
     $('.mo-optin-activate-switch').on('change', function () {
-        var _this = this;
-        var id = $(_this).data('mo-optin-id');
-        var status = _this.checked;
+        var _this = this,
+            id = $(_this).data('mo-optin-id'),
+            status = _this.checked;
 
-        if (optin_activation_locked === true) {
-            return optin_email_activation_queue.push({
-                id: id,
-                status: status
-            });
-        }
-
-        optin_email_activation_ajax(id, status);
-
+        optin_automation_activation_ajax(id, status, 'optin');
     });
 
     // handles activation and deactivation of email campaigns
     $('.mo-automation-activate-switch').on('change', function () {
-        var _this = this;
-        $.post(ajaxurl, {
-            action: 'mailoptin_toggle_automation_activated',
-            id: $(_this).data('mo-optin-id'),
-            status: _this.checked
-        }, function () {
-            // trigger act on activation immediately.
-            $.post(ajaxurl, {action: 'mailoptin_act_on_toggle_automation_activated'});
-        });
+        var _this = this,
+            id = $(_this).data('mo-automation-id'),
+            status = _this.checked;
+
+        optin_automation_activation_ajax(id, status, 'automation');
     });
 
     // handle sidebar nav tag menu.
