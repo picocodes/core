@@ -1206,10 +1206,23 @@ class CustomizerControls
                             'label' => __('Load optin exclusively on:'),
                             'section' => $this->customizerClassInstance->page_filter_display_rule_section_id,
                             'settings' => $this->option_prefix . '[exclusive_post_types_posts_load]',
-                            'description' => __('Loads the optin only on the selected "post types" posts.', 'mailoptin'),
+                            'description' => __('Loads the optin only on the selected posts and pages.', 'mailoptin'),
                             'search_type' => 'exclusive_post_types_posts_load',
                             'choices' => ControlsHelpers::get_all_post_types_posts(),
                             'priority' => 35
+                        )
+                    )
+                ),
+                'post_categories_load' => new WP_Customize_Chosen_Select_Control(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_categories_load]',
+                    apply_filters('mo_optin_form_customizer_post_categories_load_args', array(
+                            'label' => __('Load on post categories:'),
+                            'section' => $this->customizerClassInstance->page_filter_display_rule_section_id,
+                            'settings' => $this->option_prefix . '[post_categories_load]',
+                            'description' => __('Loads the optin on posts that are in one of the selected categories.', 'mailoptin'),
+                            'choices' => ControlsHelpers::get_categories(),
+                            'priority' => 40
                         )
                     )
                 ),
@@ -1222,7 +1235,7 @@ class CustomizerControls
                             'settings' => $this->option_prefix . '[exclusive_post_types_load]',
                             'description' => __('Loads the optin only on the selected "post types".', 'mailoptin'),
                             'choices' => ControlsHelpers::get_post_types(),
-                            'priority' => 38
+                            'priority' => 50
                         )
                     )
                 ),
@@ -1236,7 +1249,7 @@ class CustomizerControls
                             'description' => __('Select the posts this optin should never be loaded on.', 'mailoptin'),
                             'search_type' => 'posts_never_load',
                             'choices' => ControlsHelpers::get_post_type_posts('post'),
-                            'priority' => 40
+                            'priority' => 60
                         )
                     )
                 ),
@@ -1250,7 +1263,7 @@ class CustomizerControls
                             'description' => __('Select the pages this optin should never be loaded on.', 'mailoptin'),
                             'search_type' => 'pages_never_load',
                             'choices' => ControlsHelpers::get_post_type_posts('page'),
-                            'priority' => 50
+                            'priority' => 70
                         )
                     )
                 ),
@@ -1264,20 +1277,7 @@ class CustomizerControls
                             'description' => __('Select "custom post type" posts this optin should never be loaded on.', 'mailoptin'),
                             'search_type' => 'cpt_never_load',
                             'choices' => ControlsHelpers::get_all_post_types_posts(array('post', 'page')),
-                            'priority' => 60
-                        )
-                    )
-                ),
-                'post_categories_load' => new WP_Customize_Chosen_Select_Control(
-                    $this->wp_customize,
-                    $this->option_prefix . '[post_categories_load]',
-                    apply_filters('mo_optin_form_customizer_post_categories_load_args', array(
-                            'label' => __('Load on post categories:'),
-                            'section' => $this->customizerClassInstance->page_filter_display_rule_section_id,
-                            'settings' => $this->option_prefix . '[post_categories_load]',
-                            'description' => __('Loads the optin on posts that are in one of the selected categories.', 'mailoptin'),
-                            'choices' => ControlsHelpers::get_categories(),
-                            'priority' => 70
+                            'priority' => 80
                         )
                     )
                 ),
