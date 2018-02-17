@@ -28,23 +28,6 @@ class AjaxHandler
         add_action('init', array($this, 'define_ajax'), 0);
         add_action('template_redirect', array($this, 'do_mailoptin_ajax'), 0);
 
-//        add_action('wp_ajax_mailoptin_send_test_email', array($this, 'send_test_email'));
-//        add_action('wp_ajax_mailoptin_create_optin_campaign', [$this, 'create_optin_campaign']);
-//        add_action('wp_ajax_mailoptin_create_email_campaign', [$this, 'create_email_campaign']);
-//        add_action('wp_ajax_mailoptin_customizer_fetch_email_list', [$this, 'customizer_fetch_email_list']);
-//        add_action('wp_ajax_mailoptin_optin_toggle_active', [$this, 'optin_toggle_active']);
-//        add_action('wp_ajax_mailoptin_automation_toggle_active', [$this, 'automation_toggle_active']);
-//        add_action('wp_ajax_mailoptin_toggle_optin_activated', [$this, 'toggle_optin_activated']);
-//        add_action('wp_ajax_mailoptin_toggle_automation_activated', [$this, 'toggle_automation_activated']);
-//        add_action('wp_ajax_mailoptin_optin_type_selection', [$this, 'optin_type_selection']);
-//
-//        add_action('wp_ajax_mailoptin_create_optin_split_test', [$this, 'create_optin_split_test']);
-//        add_action('wp_ajax_mailoptin_pause_optin_split_test', [$this, 'pause_optin_split_test']);
-//        add_action('wp_ajax_mailoptin_end_optin_split_modal', [$this, 'end_optin_split_modal']);
-//        add_action('wp_ajax_mailoptin_split_test_select_winner', [$this, 'split_test_select_winner']);
-//
-//        add_action('wp_ajax_mailoptin_page_targeting_search', [$this, 'page_targeting_search']);
-
         // MailOptin_event => nopriv
         $ajax_events = array(
             'track_optin_impression' => true,
