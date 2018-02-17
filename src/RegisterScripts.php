@@ -87,6 +87,7 @@ class RegisterScripts
                 'admin_url' => admin_url(),
                 'public_js' => MAILOPTIN_ASSETS_URL . 'js/src',
                 'nonce' => wp_create_nonce('mailoptin-admin-nonce'),
+                'mailoptin_ajaxurl' => AjaxHandler::get_endpoint(),
                 'ajaxurl' => admin_url('admin-ajax.php'),
                 'split_test_start_label' => __('Start Test', 'mailoptin'),
                 'split_test_pause_label' => __('Pause Test', 'mailoptin'),

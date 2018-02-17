@@ -25,28 +25,139 @@ class AjaxHandler
 {
     public function __construct()
     {
-        add_action('wp_ajax_mailoptin_send_test_email', array($this, 'send_test_email'));
-        add_action('wp_ajax_mailoptin_create_optin_campaign', [$this, 'create_optin_campaign']);
-        add_action('wp_ajax_mailoptin_create_email_campaign', [$this, 'create_email_campaign']);
-        add_action('wp_ajax_mailoptin_customizer_fetch_email_list', [$this, 'customizer_fetch_email_list']);
-        add_action('wp_ajax_mailoptin_optin_toggle_active', [$this, 'toggle_optin_active_status']);
-        add_action('wp_ajax_mailoptin_automation_toggle_active', [$this, 'toggle_automation_active_status']);
-        add_action('wp_ajax_mailoptin_toggle_optin_activated', [$this, 'optin_listing_activated_status_toggle']);
-        add_action('wp_ajax_mailoptin_toggle_automation_activated', [$this, 'automation_listing_activated_status_toggle']);
-        add_action('wp_ajax_mailoptin_optin_type_selection', [$this, 'optin_type_selection']);
+        add_action('init', array($this, 'define_ajax'), 0);
+        add_action('template_redirect', array($this, 'do_mailoptin_ajax'), 0);
 
-        add_action('wp_ajax_mailoptin_create_optin_split_test', [$this, 'create_optin_split_test']);
-        add_action('wp_ajax_mailoptin_pause_optin_split_test', [$this, 'pause_optin_split_test']);
-        add_action('wp_ajax_mailoptin_end_optin_split_modal', [$this, 'end_optin_split_modal']);
-        add_action('wp_ajax_mailoptin_split_test_select_winner', [$this, 'split_test_select_winner']);
+//        add_action('wp_ajax_mailoptin_send_test_email', array($this, 'send_test_email'));
+//        add_action('wp_ajax_mailoptin_create_optin_campaign', [$this, 'create_optin_campaign']);
+//        add_action('wp_ajax_mailoptin_create_email_campaign', [$this, 'create_email_campaign']);
+//        add_action('wp_ajax_mailoptin_customizer_fetch_email_list', [$this, 'customizer_fetch_email_list']);
+//        add_action('wp_ajax_mailoptin_optin_toggle_active', [$this, 'optin_toggle_active']);
+//        add_action('wp_ajax_mailoptin_automation_toggle_active', [$this, 'automation_toggle_active']);
+//        add_action('wp_ajax_mailoptin_toggle_optin_activated', [$this, 'toggle_optin_activated']);
+//        add_action('wp_ajax_mailoptin_toggle_automation_activated', [$this, 'toggle_automation_activated']);
+//        add_action('wp_ajax_mailoptin_optin_type_selection', [$this, 'optin_type_selection']);
+//
+//        add_action('wp_ajax_mailoptin_create_optin_split_test', [$this, 'create_optin_split_test']);
+//        add_action('wp_ajax_mailoptin_pause_optin_split_test', [$this, 'pause_optin_split_test']);
+//        add_action('wp_ajax_mailoptin_end_optin_split_modal', [$this, 'end_optin_split_modal']);
+//        add_action('wp_ajax_mailoptin_split_test_select_winner', [$this, 'split_test_select_winner']);
+//
+//        add_action('wp_ajax_mailoptin_page_targeting_search', [$this, 'page_targeting_search']);
 
-        add_action('wp_ajax_mailoptin_track_impression', [$this, 'track_optin_impression']);
-        add_action('wp_ajax_mailoptin_add_to_email_list', [$this, 'subscribe_to_email_list']);
-        add_action('wp_ajax_nopriv_mailoptin_add_to_email_list', [$this, 'subscribe_to_email_list']);
-        add_action('wp_ajax_nopriv_mailoptin_track_impression', [$this, 'track_optin_impression']);
+        // MailOptin_event => nopriv
+        $ajax_events = array(
+            'track_optin_impression' => true,
+            'subscribe_to_email_list' => true,
+            'send_test_email' => false,
+            'create_optin_campaign' => false,
+            'create_email_campaign' => false,
+            'customizer_fetch_email_list' => false,
+            'optin_toggle_active' => false,
+            'automation_toggle_active' => false,
+            'toggle_optin_activated' => false,
+            'toggle_automation_activated' => false,
+            'optin_type_selection' => false,
+            'create_optin_split_test' => false,
+            'pause_optin_split_test' => false,
+            'end_optin_split_modal' => false,
+            'split_test_select_winner' => false,
+            'page_targeting_search' => false,
+        );
 
-        add_action('wp_ajax_mailoptin_page_targeting_search', [$this, 'page_targeting_search']);
-        add_action('wp_ajax_nopriv_mailoptin_page_targeting_search', [$this, 'page_targeting_search']);
+        foreach ($ajax_events as $ajax_event => $nopriv) {
+            add_action('wp_ajax_mailoptin_' . $ajax_event, array($this, $ajax_event));
+
+            if ($nopriv) {
+                // backward compat.
+                add_action('wp_ajax_nopriv_mailoptin_' . $ajax_event, array($this, $ajax_event));
+
+                // MailOptin AJAX can be used for frontend ajax requests.
+                add_action('mailoptin_ajax_' . $ajax_event, array($this, $ajax_event));
+            }
+        }
+    }
+
+    public static function define_ajax()
+    {
+        if (!empty($_GET['mailoptin-ajax'])) {
+            if (!defined('DOING_AJAX')) {
+                define('DOING_AJAX', true);
+            }
+
+            if (!WP_DEBUG || (WP_DEBUG && !WP_DEBUG_DISPLAY)) {
+                @ini_set('display_errors', 0); // Turn off display_errors during AJAX events to prevent malformed JSON
+            }
+            $GLOBALS['wpdb']->hide_errors();
+        }
+    }
+
+    /**
+     * Get MailOptin Ajax Endpoint.
+     *
+     * @param  string $request Optional
+     *
+     * @return string
+     */
+    public static function get_endpoint()
+    {
+        return esc_url_raw(add_query_arg('mailoptin-ajax', '%%endpoint%%'));
+    }
+
+    public function do_mailoptin_ajax()
+    {
+        global $wp_query;
+
+        if (!empty($_GET['mailoptin-ajax'])) {
+            $wp_query->set('mailoptin-ajax', sanitize_text_field($_GET['mailoptin-ajax']));
+        }
+
+        if ($action = $wp_query->get('mailoptin-ajax')) {
+            $this->mo_ajax_headers();
+            do_action('mailoptin_ajax_' . sanitize_text_field($action));
+            wp_die();
+        }
+    }
+
+    /**
+     * Send headers for MailOptin Ajax Requests.
+     *
+     * @since 2.5.0
+     */
+    private static function mo_ajax_headers()
+    {
+        send_origin_headers();
+        @header('Content-Type: text/html; charset=' . get_option('blog_charset'));
+        @header('X-Robots-Tag: noindex');
+        send_nosniff_header();
+        self::do_not_cache();
+        status_header(200);
+    }
+
+    public static function do_not_cache()
+    {
+        if (!defined('DONOTCACHEPAGE')) {
+            define('DONOTCACHEPAGE', true);
+        }
+
+        if (!defined('DONOTCACHEDB')) {
+            define('DONOTCACHEDB', true);
+        }
+
+        if (!defined('DONOTMINIFY')) {
+            define('DONOTMINIFY', true);
+        }
+
+        if (!defined('DONOTCDN')) {
+            define('DONOTCDN', true);
+        }
+
+        if (!defined('DONOTCACHCEOBJECT')) {
+            define('DONOTCACHCEOBJECT', true);
+        }
+
+        // Set the headers to prevent caching for the different browsers.
+        nocache_headers();
     }
 
     /**
@@ -476,7 +587,7 @@ class AjaxHandler
         wp_die();
     }
 
-    public function toggle_optin_active_status()
+    public function optin_toggle_active()
     {
         check_ajax_referer('customizer-fetch-email-list', 'security');
 
@@ -494,7 +605,7 @@ class AjaxHandler
         wp_die();
     }
 
-    public function toggle_automation_active_status()
+    public function automation_toggle_active()
     {
         check_ajax_referer('customizer-fetch-email-list', 'security');
 
@@ -512,7 +623,10 @@ class AjaxHandler
         wp_die();
     }
 
-    public function optin_listing_activated_status_toggle()
+    /**
+     * Toggle activation of optin camapigns in WP List
+     */
+    public function toggle_optin_activated()
     {
         current_user_can('administrator') || exit;
 
@@ -528,7 +642,7 @@ class AjaxHandler
         wp_die();
     }
 
-    public function automation_listing_activated_status_toggle()
+    public function toggle_automation_activated()
     {
         current_user_can('administrator') || exit;
 
