@@ -354,7 +354,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         $schedule_end = $this->get_customizer_value('schedule_end');
         $schedule_timezone = $this->get_customizer_value('schedule_timezone');
 
-        return (!empty($schedule_status) && !empty($schedule_start) && !empty($schedule_end) && !empty($schedule_timezone));
+        return (!is_customize_preview() && !empty($schedule_status) && !empty($schedule_start) && !empty($schedule_end) && !empty($schedule_timezone));
     }
 
     /**

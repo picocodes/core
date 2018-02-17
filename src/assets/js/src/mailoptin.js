@@ -7,6 +7,8 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
 
         $.MailOptin = {
 
+            // flag to detect if we've already loaded showads.js file to detect adblock
+            is_adblock_script_loaded: false,
             /**
              * Is the current screen customizer preview?
              * @return {boolean}
@@ -53,6 +55,13 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                     $optin_type = this.attr('data-optin-type');
                     $optin_css_id = $optin_uuid + '_' + $optin_type;
                     optin_js_config = self.optin_js_config($optin_css_id);
+
+                    if ($.MailOptin.is_adblock_script_loaded === false &&
+                        optin_js_config.adblock_status === true
+                    ) {
+                        self.load_adblock_detect_script();
+                        $.MailOptin.is_adblock_script_loaded = true;
+                    }
 
                     if (typeof optin_js_config === 'undefined') return;
 
@@ -961,6 +970,23 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                         }
                     }
                 });
+            },
+
+            load_adblock_detect_script: function () {
+                var ad = document.createElement('script');
+                ad.src = mailoptin_globals.public_js + '/showads.js';
+                ad.async = true;
+
+                // Attempt to append it to the <head>, otherwise append to the document.
+                (document.getElementsByTagName('head')[0] || document.documentElement).appendChild(ad);
+            },
+
+            isAdblockEnabled: function () {
+                return typeof mailoptin_no_adblock_detected === 'undefined';
+            },
+
+            isAdblockDisabled: function () {
+                return typeof mailoptin_no_adblock_detected !== 'undefined';
             },
 
             /**
