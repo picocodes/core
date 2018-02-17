@@ -683,7 +683,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
             subscribe_to_email_list: function (optin_data, optin_container, optin_js_config, $optin_type) {
                 var self = this;
 
-                $.post(mailoptin_globals.mailoptin_ajaxurl.toString().replace('%%endpoint%%', 'subscribe_to_email_list'),
+                $.post(mailoptin_globals.mailoptin_ajaxurl.toString().replace('%%endpoint%%', 'add_to_email_list'),
                     {
                         optin_data: optin_data
                     },
@@ -955,6 +955,9 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
 
                         if (result === false) {
                             $(this).remove();
+                        }
+                        else {
+                            $(this).show();
                         }
                     }
                 });

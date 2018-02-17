@@ -347,6 +347,16 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         return $script_styles;
     }
 
+    public function is_schedule_display_rule_active()
+    {
+        $schedule_status = $this->get_customizer_value('schedule_status');
+        $schedule_start = $this->get_customizer_value('schedule_start');
+        $schedule_end = $this->get_customizer_value('schedule_end');
+        $schedule_timezone = $this->get_customizer_value('schedule_timezone');
+
+        return (!empty($schedule_status) && !empty($schedule_start) && !empty($schedule_end) && !empty($schedule_timezone));
+    }
+
     /**
      * HTML and CSS structure of an optin form.
      */
@@ -357,6 +367,8 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         $optin_form = '';
         $name_email_class_indicator = $this->get_customizer_value('hide_name_field') === true ? 'mo-has-email' : 'mo-has-name-email';
         $display_only_button_class_indicator = $this->get_customizer_value('display_only_button') === true ? ' mo-cta-button-display' : '';
+        // set optin to display:none when schedule is active then allow mailoptinjs to decide whether to show it or not.
+        $is_schedule_style = $this->is_schedule_display_rule_active() ? ' style="display:none"' : null;
 
         if ($this->optin_campaign_type == 'lightbox') {
             $modalWrapperStyle = implode(';', [
@@ -416,11 +428,11 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         }
 
         if ($this->optin_campaign_type == 'sidebar') {
-            $optin_form .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type} {$name_email_class_indicator}{$display_only_button_class_indicator}\" data-optin-type='{$this->optin_campaign_type}'>";
+            $optin_form .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type} {$name_email_class_indicator}{$display_only_button_class_indicator}\"{$is_schedule_style} data-optin-type='{$this->optin_campaign_type}'>";
         }
 
         if ($this->optin_campaign_type == 'inpost') {
-            $optin_form .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type} {$name_email_class_indicator}{$display_only_button_class_indicator}\" data-optin-type='{$this->optin_campaign_type}'>";
+            $optin_form .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type} {$name_email_class_indicator}{$display_only_button_class_indicator}\"{$is_schedule_style} data-optin-type='{$this->optin_campaign_type}'>";
         }
 
         $optin_form .= "<div class='mo-optin-form-container' id='{$optin_css_id}_container' style='position:relative;margin: 0 auto;'>";
