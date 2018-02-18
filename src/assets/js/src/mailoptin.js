@@ -56,9 +56,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                     $optin_css_id = $optin_uuid + '_' + $optin_type;
                     optin_js_config = self.optin_js_config($optin_css_id);
 
-                    if ($.MailOptin.is_adblock_script_loaded === false &&
-                        optin_js_config.adblock_status === true
-                    ) {
+                    if ($.MailOptin.is_adblock_script_loaded === false && self.is_adblock_rule_active(optin_js_config) === true) {
                         self.load_adblock_detect_script();
                         $.MailOptin.is_adblock_script_loaded = true;
                     }
@@ -118,7 +116,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                         // merge modal specific object with that of optin js config
                         optin_js_config = $.extend({}, modal_options, optin_js_config);
 
-                        self.rule_base_show_optin_form.call(this, optin_js_config, 'lightbox', skip_display_checks);
+                        self.process_optin_form_display.call(this, optin_js_config, 'lightbox', skip_display_checks);
                     }
 
                     /** Notification bar */
@@ -126,14 +124,14 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                         // only one instance of top bar can show at a time.
                         if ($.MailOptin['isActiveMOBar_' + optin_js_config.bar_position] === true) return;
 
-                        self.rule_base_show_optin_form.call(this, optin_js_config, 'bar', skip_display_checks);
+                        self.process_optin_form_display.call(this, optin_js_config, 'bar', skip_display_checks);
                     }
 
                     /** Slide INs */
                     if (this.hasClass('mo-optin-form-slidein')) {
                         // only one instance of slidein type can shown at a time.
                         if ($.MailOptin['isActiveMOSlidein_' + optin_js_config.slidein_position] === true) return;
-                        self.rule_base_show_optin_form.call(this, optin_js_config, 'slidein', skip_display_checks);
+                        self.process_optin_form_display.call(this, optin_js_config, 'slidein', skip_display_checks);
                     }
 
                     // handle CTA button click if activated
@@ -214,6 +212,36 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 return optin_config.exit_intent_status === true;
             },
 
+            load_adblock_detect_script: function () {
+                var ad = document.createElement('script');
+                ad.src = mailoptin_globals.public_js + '/showads.js';
+                ad.async = true;
+
+                // Attempt to append it to the <head>, otherwise append to the document.
+                (document.getElementsByTagName('head')[0] || document.documentElement).appendChild(ad);
+            },
+
+            isAdblockEnabled: function () {
+                return typeof mailoptin_no_adblock_detected === 'undefined';
+            },
+
+            isAdblockDisabled: function () {
+                return typeof mailoptin_no_adblock_detected !== 'undefined';
+            },
+
+            /**
+             * Is Adblock rule active?
+             *
+             * @param {object} optin_config
+             * @returns {boolean}
+             */
+            is_adblock_rule_active: function (optin_config) {
+                // no need checking if optin_config.adblock_settings is not empty because
+                // adblock_status and adblock_settings config are only exposed if the former is true
+                // and latter not empty.
+                return optin_config.adblock_status === true;
+            },
+
             /**
              * Determine if optin should display or not.
              *
@@ -236,6 +264,29 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
 
             /**
              * Handle display/showing of optin form.
+             *
+             * @param {object} optin_js_config for lightbox, this is modal_options.  others is optin_js_config
+             * @param {string} optin_type type of optin
+             * @param {boolean} skip_display_checks skip any display/cookie check
+             */
+            process_optin_form_display: function (optin_js_config, optin_type, skip_display_checks) {
+                var self = mailoptin_optin;
+                // we did this becos 'this' inside $(window).load will be wrong.
+                var _this = this;
+
+                if (mailoptin_optin.is_adblock_rule_active(optin_js_config) === true) {
+                    // we're gonna wait until page is loaded so we can detect if adblock is enabled or not
+                    $(window).load(function () {
+                        self.rule_base_show_optin_form.call(_this, optin_js_config, optin_type, skip_display_checks);
+                    });
+                }
+                else {
+                    self.rule_base_show_optin_form.call(_this, optin_js_config, optin_type, skip_display_checks);
+                }
+            },
+
+            /**
+             * Run through display ruleset and determine which to display
              *
              * @param {object} optin_config for lightbox, this is modal_options.  others is optin_js_config
              * @param {string} optin_type type of optin
@@ -281,6 +332,10 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                     }
                 }
 
+                if (self.is_adblock_rule_active(optin_config) === true) {
+                    if (optin_config.adblock_settings === "adblock_enabled" && self.isAdblockDisabled()) return;
+                    if (optin_config.adblock_settings === "adblock_disabled" && self.isAdblockEnabled()) return;
+                }
 
                 var wait_seconds = optin_config.x_seconds_value * 1000;
                 var optin_scroll_percent = optin_config.x_scroll_value;
@@ -692,7 +747,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
             subscribe_to_email_list: function (optin_data, optin_container, optin_js_config, $optin_type) {
                 var self = this;
 
-                $.post(mailoptin_globals.mailoptin_ajaxurl.toString().replace('%%endpoint%%', 'add_to_email_list'),
+                $.post(mailoptin_globals.mailoptin_ajaxurl.toString().replace('%%endpoint%%', 'subscribe_to_email_list'),
                     {
                         optin_data: optin_data
                     },
@@ -970,23 +1025,6 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                         }
                     }
                 });
-            },
-
-            load_adblock_detect_script: function () {
-                var ad = document.createElement('script');
-                ad.src = mailoptin_globals.public_js + '/showads.js';
-                ad.async = true;
-
-                // Attempt to append it to the <head>, otherwise append to the document.
-                (document.getElementsByTagName('head')[0] || document.documentElement).appendChild(ad);
-            },
-
-            isAdblockEnabled: function () {
-                return typeof mailoptin_no_adblock_detected === 'undefined';
-            },
-
-            isAdblockDisabled: function () {
-                return typeof mailoptin_no_adblock_detected !== 'undefined';
             },
 
             /**
