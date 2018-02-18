@@ -56,7 +56,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                     $optin_css_id = $optin_uuid + '_' + $optin_type;
                     optin_js_config = self.optin_js_config($optin_css_id);
 
-                    if ($.MailOptin.is_adblock_script_loaded === false && self.is_adblock_rule_active(optin_js_config) === true) {
+                    if (!$.MailOptin.is_customize_preview && self.is_adblock_rule_active(optin_js_config) === true && $.MailOptin.is_adblock_script_loaded === false) {
                         self.load_adblock_detect_script();
                         $.MailOptin.is_adblock_script_loaded = true;
                     }
@@ -335,6 +335,10 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 if (self.is_adblock_rule_active(optin_config) === true) {
                     if (optin_config.adblock_settings === "adblock_enabled" && self.isAdblockDisabled()) return;
                     if (optin_config.adblock_settings === "adblock_disabled" && self.isAdblockEnabled()) return;
+
+                    // optin with adblock activated are by default hidden (display:none). Restore their visibility since
+                    // they pass the above adblock rule.
+                    console.log(_this);
                 }
 
                 var wait_seconds = optin_config.x_seconds_value * 1000;
