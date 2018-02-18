@@ -229,6 +229,9 @@ class Customizer
                                 query.mailoptin_optin_campaign_id = "' . $this->optin_campaign_id . '";
                                 return query;
                             };
+                        // needed to ensure save button is publising changes and not saving draft.
+                        // esp for wp.com business hosting with save button set to draft by default.
+                        api.state("selectedChangesetStatus").set("publish");
                         });
                     })( wp.customize );'
         );
