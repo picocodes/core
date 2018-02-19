@@ -276,7 +276,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
 
                 if (mailoptin_optin.is_adblock_rule_active(optin_js_config) === true) {
                     // we're gonna wait until page is loaded so we can detect if adblock is enabled or not
-                    $(window).load(function () {
+                    $(window).on('load', function () {
                         self.rule_base_show_optin_form.call(_this, optin_js_config, optin_type, skip_display_checks);
                     });
                 }
