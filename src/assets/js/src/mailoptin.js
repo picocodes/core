@@ -335,10 +335,6 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 if (self.is_adblock_rule_active(optin_config) === true) {
                     if (optin_config.adblock_settings === "adblock_enabled" && self.isAdblockDisabled()) return;
                     if (optin_config.adblock_settings === "adblock_disabled" && self.isAdblockEnabled()) return;
-
-                    // optin with adblock activated are by default hidden (display:none). Restore their visibility since
-                    // they pass the above adblock rule.
-                    console.log(_this);
                 }
 
                 var wait_seconds = optin_config.x_seconds_value * 1000;
