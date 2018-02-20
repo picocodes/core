@@ -443,7 +443,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         $optin_form .= "</div>";
         $optin_form .= "</div>";
 
-        $output = apply_filters('mo_optin_form_attribution_start', '<!-- This site converts visitors into subscribers and customers with the MailOptin WordPress plugin v' . MAILOPTIN_VERSION_NUMBER . ' - https://mailoptin.io -->' . PHP_EOL);
+        $output = PHP_EOL . apply_filters('mo_optin_form_attribution_start', '<!-- This site converts visitors into subscribers and customers with the MailOptin WordPress plugin v' . MAILOPTIN_VERSION_NUMBER . ' - https://mailoptin.io -->' . PHP_EOL);
         $output .= minify_html($optin_form);
         $output .= "<!-- / MailOptin WordPress plugin. -->" . PHP_EOL;
 

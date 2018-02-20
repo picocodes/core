@@ -107,6 +107,10 @@ class AbstractCustomizer
         $defaults['adblock_status'] = apply_filters('mo_optin_form_adblock_status_default', false, $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
         $defaults['adblock_settings'] = apply_filters('mo_optin_form_adblock_settings_default', 'adblock_enabled', $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
 
+
+        $defaults['newvsreturn_status'] = apply_filters('mo_optin_form_newvsreturn_status_default', false, $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
+        $defaults['newvsreturn_settings'] = apply_filters('mo_optin_form_newvsreturn_settings_default', 'is_new', $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
+
         $defaults['modal_effects'] = apply_filters('mo_optin_form_modal_effects_default', '', $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
 
         $defaults['success_action'] = apply_filters('mo_optin_form_success_action_default', 'success_message', $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);

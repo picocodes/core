@@ -230,6 +230,19 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
             },
 
             /**
+             * Is New vs Returning rule active?
+             *
+             * @param {object} optin_config
+             * @returns {boolean}
+             */
+            is_newvsreturn_rule_active: function (optin_config) {
+                // no need checking if optin_config.newvsreturn_status_settings is not empty because
+                // newvsreturn_status and newvsreturn_settings config are only exposed if the former is true
+                // and latter not empty.
+                return optin_config.newvsreturn_status === true;
+            },
+
+            /**
              * Is Adblock rule active?
              *
              * @param {object} optin_config
@@ -330,6 +343,11 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                             if (self.get_page_views() > x_page_views_value) return;
                             break;
                     }
+                }
+
+                if (self.is_newvsreturn_rule_active(optin_config) === true) {
+                    if (optin_config.newvsreturn_settings === "is_new" && self.visitor_is_returning()) return;
+                    if (optin_config.newvsreturn_settings === "is_returning" && self.visitor_is_new()) return;
                 }
 
                 if (self.is_adblock_rule_active(optin_config) === true) {
@@ -1066,8 +1084,6 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 // don't wait for dom to be loaded first. start tracking asap.
                 _this.track_page_views();
                 _this.set_visitor_cookies();
-                console.log(_this.visitor_is_new())
-                console.log(_this.visitor_is_returning())
                 $(function () {
                     _this.eventSubscription();
                     _this.mailoptin_jq_plugin();
