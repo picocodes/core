@@ -572,6 +572,26 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 Cookies.set('mo_page_views_counter', ++count);
             },
 
+            set_visitor_cookies: function () {
+                // Set two cookies: persistent visitor and session visitor.
+                // If persistent visitor already exists, don't set anything.
+                // This is how we determine new vs. returning visitors.
+                // basically the session cookie is to keep identifying the visitor until session expires
+                // then next visit, they become a returning visitor.
+                if (!Cookies.get('mo_has_visited')) {
+                    Cookies.set('mo_is_new', 'true');
+                    Cookies.set('mo_has_visited', 'true', {expires: 3999});
+                }
+            },
+
+            visitor_is_new: function () {
+                return Cookies.get('mo_has_visited') === 'true' && Cookies.get('mo_is_new') === 'true';
+            },
+
+            visitor_is_returning: function () {
+                return Cookies.get('mo_has_visited') === 'true' && !Cookies.get('mo_is_new');
+            },
+
             /**
              * Get number of page views.
              */
@@ -1045,6 +1065,9 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 var _this = this;
                 // don't wait for dom to be loaded first. start tracking asap.
                 _this.track_page_views();
+                _this.set_visitor_cookies();
+                console.log(_this.visitor_is_new())
+                console.log(_this.visitor_is_returning())
                 $(function () {
                     _this.eventSubscription();
                     _this.mailoptin_jq_plugin();
