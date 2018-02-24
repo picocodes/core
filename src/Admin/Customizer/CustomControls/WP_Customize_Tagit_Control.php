@@ -14,8 +14,6 @@ class WP_Customize_Tagit_Control extends WP_Customize_Control
 
     public function enqueue()
     {
-        wp_enqueue_script('jquery-ui-core');
-
         wp_enqueue_script(
             'mailoptin-tagit',
             MAILOPTIN_ASSETS_URL . 'js/customizer-controls/tagit/tag-it.min.js',
@@ -47,6 +45,7 @@ class WP_Customize_Tagit_Control extends WP_Customize_Control
 
     public function render_content()
     {
+        $saved_values = $this->value();
         ?>
         <label>
             <?php if (!empty($this->label)) : ?>
@@ -57,20 +56,12 @@ class WP_Customize_Tagit_Control extends WP_Customize_Control
                 <span class="description customize-control-description"><?php echo $this->description; ?></span>
             <?php endif; ?>
 
-
-            <!--            <div id="--><?php //echo $this->input_id;
-            ?><!--" data-block-type="ace" data-ace-lang="--><?php //echo $this->language;
-            ?><!--" data-ace-theme="--><?php //echo $this->theme;
-            ?><!--" style="position:relative;width:100%;height:400px;"></div>-->
-            <!---->
-            <!--            <textarea id="--><?php //echo $this->input_id;
-            ?><!---textarea" --><?php //$this->link();
-            ?><!-- style="display:none;">-->
-            <!--                --><?php //$this->value();
-            ?>
-            <!--            </textarea>-->
-
             <ul data-block-type="tagit" id="<?php echo $this->field_id; ?>" data-tagit-options="<?php echo esc_attr(wp_json_encode($this->options)); ?>">
+                <?php if (is_array($saved_values) && !empty($saved_values)) : ?>
+                    <?php foreach ($saved_values as $saved_value) : ?>
+                        <li><?php echo $saved_value; ?></li>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </ul>
         </label>
         <?php

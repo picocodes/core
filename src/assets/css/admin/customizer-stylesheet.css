@@ -3,6 +3,10 @@
     padding-top: 10px;
 }
 
+.customize-control-title {
+     margin-top: 0 !important;
+}
+
 .customize-control.customize-control-mailoptin_custom_content {
     border: 0 !important;
 }
@@ -60,7 +64,10 @@ li[id*="ajax_nonce"] {
     height: 24px;
 }
 
-#sub-accordion-section-mo_wp_page_filter_display_rule_section, #sub-accordion-section-mo_wp_schedule_display_rule_section {
+#sub-accordion-section-mo_wp_page_filter_display_rule_section,
+#sub-accordion-section-mo_wp_schedule_display_rule_section,
+#sub-accordion-section-mo_wp_referrer_detection_display_rule_section
+{
     height: 100% !important;
 }
 

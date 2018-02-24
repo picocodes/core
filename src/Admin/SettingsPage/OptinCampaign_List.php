@@ -380,6 +380,7 @@ class OptinCampaign_List extends \WP_List_Table
 
     public function split_test_actions_row($optin_campaign_id)
     {
+        $pause_class = '';
         if (OptinCampaignsRepository::is_split_test_active($optin_campaign_id)) {
             $pause_start_label = __('Pause Test', 'mailoptin');
             $pause_start_action = 'pause';
@@ -395,7 +396,7 @@ class OptinCampaign_List extends \WP_List_Table
                 <a href="#" class="mo-split-test-add-variant mo-split-test-action-button" data-parent-optin-id="<?php echo $optin_campaign_id; ?>"><?php _e('Add Variant', 'mailoptin'); ?></a>
             </td>
             <td>
-                <a href="#" class="mo-split-test-pause-start mo-split-test-action-button<?php echo $pause_class;?>" data-split-test-action="<?php echo $pause_start_action; ?>" data-parent-id="<?php echo $optin_campaign_id; ?>"><?php echo $pause_start_label; ?></a>
+                <a href="#" class="mo-split-test-pause-start mo-split-test-action-button<?php echo $pause_class; ?>" data-split-test-action="<?php echo $pause_start_action; ?>" data-parent-id="<?php echo $optin_campaign_id; ?>"><?php echo $pause_start_label; ?></a>
                 <img class="mo-spinner" id="mo-split-pause-spinner" style="margin-left:10px;display:none" src="<?php echo admin_url('images/spinner.gif'); ?>"/>
             </td>
             <td>
@@ -624,7 +625,7 @@ class OptinCampaign_List extends \WP_List_Table
         }
 
         if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
-            $actions['split_test'] =  [
+            $actions['split_test'] = [
                 'title' => __('This is a premium feature. Upgrade now!', 'mailoptin'),
                 'href' => 'https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=ab_test_popover',
                 'label' => __('A/B Split Test', 'mailoptin'),

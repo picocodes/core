@@ -56,11 +56,6 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                     $optin_css_id = $optin_uuid + '_' + $optin_type;
                     optin_js_config = self.optin_js_config($optin_css_id);
 
-                    if (!$.MailOptin.is_customize_preview && self.is_adblock_rule_active(optin_js_config) === true && $.MailOptin.is_adblock_script_loaded === false) {
-                        self.load_adblock_detect_script();
-                        $.MailOptin.is_adblock_script_loaded = true;
-                    }
-
                     if (typeof optin_js_config === 'undefined') return;
 
                     test_mode = ($.MailOptin.is_customize_preview === true) ? true : optin_js_config.test_mode;
@@ -158,6 +153,11 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                             return false;
                         });
                     }
+
+                    if (!$.MailOptin.is_customize_preview && self.is_adblock_rule_active(optin_js_config) === true && $.MailOptin.is_adblock_script_loaded === false) {
+                        self.load_adblock_detect_script();
+                        $.MailOptin.is_adblock_script_loaded = true;
+                    }
                 };
 
                 $.fn.extend({
@@ -221,14 +221,6 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 (document.getElementsByTagName('head')[0] || document.documentElement).appendChild(ad);
             },
 
-            isAdblockEnabled: function () {
-                return typeof mailoptin_no_adblock_detected === 'undefined';
-            },
-
-            isAdblockDisabled: function () {
-                return typeof mailoptin_no_adblock_detected !== 'undefined';
-            },
-
             /**
              * Is New vs Returning rule active?
              *
@@ -240,6 +232,16 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 // newvsreturn_status and newvsreturn_settings config are only exposed if the former is true
                 // and latter not empty.
                 return optin_config.newvsreturn_status === true;
+            },
+
+            /**
+             * Is referrer detection active?
+             *
+             * @param {object} optin_config
+             * @returns {boolean}
+             */
+            is_referrer_detection_rule_active: function (optin_config) {
+                return optin_config.referrer_detection_status === true;
             },
 
             /**
@@ -287,7 +289,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 // we did this becos 'this' inside $(window).load will be wrong.
                 var _this = this;
 
-                if (mailoptin_optin.is_adblock_rule_active(optin_js_config) === true) {
+                if (self.is_adblock_rule_active(optin_js_config) === true) {
                     // we're gonna wait until page is loaded so we can detect if adblock is enabled or not
                     $(window).on('load', function () {
                         self.rule_base_show_optin_form.call(_this, optin_js_config, optin_type, skip_display_checks);
@@ -343,6 +345,47 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                             if (self.get_page_views() > x_page_views_value) return;
                             break;
                     }
+                }
+
+                if (self.is_referrer_detection_rule_active(optin_config) === true) {
+                    var remove_trailing_slash = function (url) {
+                        return url.replace(/\/+$/, "");
+                    };
+
+                    var actual_referrer_url = document.referrer || false;
+
+                    if (!actual_referrer_url) return;
+
+                    var display_type = optin_config.referrer_detection_settings;
+                    var referrers = optin_config.referrer_detection_values;
+
+                    if (display_type === 'show_to') {
+                        var is_display = false;
+                        $.each(referrers, function (index, referrer) {
+                            referrer = remove_trailing_slash(referrer);
+                            // if list of referrer entered by admin in MailOptin matches actual referral.
+                            if (actual_referrer_url.indexOf(referrer) !== -1) {
+                                is_display = true;
+                                // return false to stop loop.
+                                return false;
+                            }
+                        });
+                    }
+
+                    if (display_type === 'hide_from') {
+                        var is_display = true;
+                        $.each(referrers, function (index, referrer) {
+                            referrer = remove_trailing_slash(referrer);
+                            // if list of referrer entered by admin in MailOptin matches actual referral.
+                            if (actual_referrer_url.indexOf(referrer) !== -1) {
+                                is_display = false;
+                                // return false to stop loop.
+                                return false;
+                            }
+                        });
+                    }
+
+                    if (!is_display) return;
                 }
 
                 if (self.is_newvsreturn_rule_active(optin_config) === true) {
@@ -600,6 +643,14 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                     Cookies.set('mo_is_new', 'true');
                     Cookies.set('mo_has_visited', 'true', {expires: 3999});
                 }
+            },
+
+            isAdblockEnabled: function () {
+                return typeof mailoptin_no_adblock_detected === 'undefined';
+            },
+
+            isAdblockDisabled: function () {
+                return typeof mailoptin_no_adblock_detected !== 'undefined';
             },
 
             visitor_is_new: function () {
