@@ -352,7 +352,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                         return url.replace(/\/+$/, "");
                     };
 
-                    var actual_referrer_url = document.referrer || false;
+                    var actual_referrer_url = document.referrer.toLowerCase() || false;
 
                     if (!actual_referrer_url) return;
 
@@ -362,7 +362,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                     if (display_type === 'show_to') {
                         var is_display = false;
                         $.each(referrers, function (index, referrer) {
-                            referrer = remove_trailing_slash(referrer);
+                            referrer = remove_trailing_slash(referrer).toLowerCase();
                             // if list of referrer entered by admin in MailOptin matches actual referral.
                             if (actual_referrer_url.indexOf(referrer) !== -1) {
                                 is_display = true;
