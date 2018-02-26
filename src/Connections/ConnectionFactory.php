@@ -2,9 +2,6 @@
 
 namespace MailOptin\Core\Connections;
 
-
-use MailOptin\Core\Repositories\EmailCampaignRepository;
-
 class ConnectionFactory
 {
     /**
@@ -17,9 +14,19 @@ class ConnectionFactory
     public static function make($connection)
     {
         /** @var ConnectionInterface $connectClass */
-        $connectClass = "MailOptin\\$connection\\Connect";
+        $connectClass = self::get_fqn_class($connection);
 
         return $connectClass::get_instance();
+    }
+
+    /**
+     * @param $connection
+     *
+     * @return ConnectionInterface|string
+     */
+    public static function get_fqn_class($connection)
+    {
+        return "MailOptin\\$connection\\Connect";
     }
 
 }

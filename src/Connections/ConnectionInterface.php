@@ -8,7 +8,8 @@ interface ConnectionInterface
     const connectionName = '';
 
     /**
-     * Connections must return array of features (e.g optin_campaign, email_campaign) they support.
+     * Connections must return array of features (e.g optin_campaign, email_campaign, non_email_list_support) they support.
+     * non_email_list_support indicate the connection work without having to specify an email list during optin
      *
      * @return array
      */

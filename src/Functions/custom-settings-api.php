@@ -554,7 +554,7 @@ class Custom_Settings_Page_Api
     public function _custom_field_block($db_options, $key, $args)
     {
         $key = sanitize_key($key);
-        $label = esc_attr($args['label']);
+        $label = esc_attr(@$args['label']);
         $description = @$args['description'];
         $tr_id = isset($args['tr_id']) ? $args['tr_id'] : "{$key}_row";
         $option_name = $this->option_name;
