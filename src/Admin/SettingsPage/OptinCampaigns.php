@@ -40,18 +40,8 @@ class OptinCampaigns extends AbstractSettingsPage
         add_action("load-$hook", array($this, 'screen_option'));
 
         add_action("load-$hook", function () {
-            add_action('admin_enqueue_scripts', array($this, 'fancybox_scripts'));
+            add_action('admin_enqueue_scripts', array('MailOptin\Core\RegisterScripts', 'fancybox_scripts'));
         });
-    }
-
-    public function fancybox_scripts()
-    {
-        if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) return;
-
-        wp_enqueue_script('mailoptin-fancybox');
-        wp_enqueue_script('mailoptin-init-fancybox');
-        wp_enqueue_style('mailoptin-fancybox');
-        wp_enqueue_style('mailoptin-activate-fancybox');
     }
 
     /**
