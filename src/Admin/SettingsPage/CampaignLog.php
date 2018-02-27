@@ -3,6 +3,7 @@
 namespace MailOptin\Core\Admin\SettingsPage;
 
 // Exit if accessed directly
+use MailOptin\Core\RegisterScripts;
 use W3Guy\Custom_Settings_Page_Api;
 
 if (!defined('ABSPATH')) {
@@ -37,19 +38,11 @@ class CampaignLog extends AbstractSettingsPage
         add_action("load-$hook", array($this, 'screen_option'));
 
         add_action("load-$hook", function () {
-            add_action('admin_enqueue_scripts', array($this, 'fancybox_scripts'));
+            add_action('admin_enqueue_scripts', array('MailOptin\Core\RegisterScripts', 'fancybox_scripts'));
         });
 
         // Hook the Email_Template_List table to Custom_Settings_Page_Api main content filter.
         add_action('wp_cspa_main_content_area', array($this, 'wp_list_table'), 10, 2);
-    }
-
-    public function fancybox_scripts()
-    {
-        wp_enqueue_script('mailoptin-fancybox');
-        wp_enqueue_script('mailoptin-init-fancybox');
-        wp_enqueue_style('mailoptin-fancybox');
-        wp_enqueue_style('mailoptin-activate-fancybox');
     }
 
     /**

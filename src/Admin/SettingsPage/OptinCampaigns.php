@@ -46,6 +46,8 @@ class OptinCampaigns extends AbstractSettingsPage
 
     public function fancybox_scripts()
     {
+        if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) return;
+
         wp_enqueue_script('mailoptin-fancybox');
         wp_enqueue_script('mailoptin-init-fancybox');
         wp_enqueue_style('mailoptin-fancybox');
