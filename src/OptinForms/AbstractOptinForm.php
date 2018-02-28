@@ -330,21 +330,22 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
     public function optin_script_and_styles()
     {
         $custom_css = $this->get_customizer_value('form_custom_css');
-        $script_styles = '';
-        $script_styles .= "<script type=\"text/javascript\">{$this->optin_js_config()}</script>";
-        $script_styles .= '<style id="mo-optin-form-stylesheet" type="text/css">';
-        $script_styles .= minify_css($this->optin_form_css() . $this->global_css($this->optin_css_id, $this->optin_campaign_uuid));
-        $script_styles .= '</style>';
+        $script = '';
+        $script .= "<script type=\"text/javascript\">{$this->optin_js_config()}</script>";
+
+        $styles = '<style id="mo-optin-form-stylesheet" type="text/css">';
+        $styles .= minify_css($this->optin_form_css() . $this->global_css($this->optin_css_id, $this->optin_campaign_uuid));
+        $styles .= '</style>';
+        $styles = apply_filters('mo_optin_form_css', $styles, $this->optin_campaign_uuid, $this->optin_campaign_id);
 
         if (!empty($custom_css)) {
-            $script_styles .= '<style id="mo-optin-form-custom-css" type="text/css">';
-            $script_styles .= minify_css($custom_css);
-            $script_styles .= '</style>';
+            $custom_styles = '<style id="mo-optin-form-custom-css" type="text/css">';
+            $custom_styles .= minify_css($custom_css);
+            $custom_styles .= '</style>';
+            $custom_styles = apply_filters('mo_optin_form_custom_css', $custom_styles, $this->optin_campaign_uuid, $this->optin_campaign_id);
         }
 
-        $script_styles .= $this->optin_script();
-
-        return $script_styles;
+        return $script . $styles . $custom_styles . $this->optin_script();
     }
 
     public function is_schedule_display_rule_active()
