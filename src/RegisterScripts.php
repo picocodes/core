@@ -19,7 +19,7 @@ class RegisterScripts
         if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) return;
 
         wp_register_script('mailoptin-fancybox', MAILOPTIN_LIBSODIUM_ASSETS_URL . 'fancybox/jquery.fancybox.min.js', ['jquery'], false, true);
-        wp_register_script('mailoptin-init-fancybox', MAILOPTIN_LIBSODIUM_ASSETS_URL . 'js/admin/fancybox-init.js', ['jquery'], false, true);
+        wp_register_script('mailoptin-init-fancybox', MAILOPTIN_ASSETS_URL . 'js/admin/fancybox-init.js', ['jquery'], false, true);
         wp_register_style('mailoptin-fancybox', MAILOPTIN_LIBSODIUM_ASSETS_URL . 'fancybox/jquery.fancybox.min.css', false, true);
         wp_register_style('mailoptin-activate-fancybox', MAILOPTIN_ASSETS_URL . 'css/admin/fancybox.css', false, true);
     }
