@@ -6,7 +6,7 @@ use WP_Customize_Control;
 
 class WP_Customize_Autocomplete_Input_Control extends WP_Customize_Control
 {
-    public $type = 'mailoptin_autocomplete_input';
+    public $type = 'mailoptin_autocomplete';
 
     public $field_id = 'mo-autocomplete';
 
@@ -18,10 +18,19 @@ class WP_Customize_Autocomplete_Input_Control extends WP_Customize_Control
 
     public function enqueue()
     {
+        wp_deregister_script('jquery-ui-core');
+        wp_dequeue_script('jquery-ui-core');
         wp_enqueue_script(
-            'mailoptin-tagit',
+            'mailoptin-jqueryui',
+            'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js',
+            array('jquery'),
+            false,
+            true
+        );
+        wp_enqueue_script(
+            'mailoptin-autocomplete-init',
             MAILOPTIN_ASSETS_URL . 'js/customizer-controls/autocomplete-init.js',
-            array('jquery', 'jquery-ui-autocomplete'),
+            array('jquery', 'customize-base', 'mailoptin-jqueryui'),
             false,
             true
         );

@@ -330,8 +330,9 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
     public function optin_script_and_styles()
     {
         $custom_css = $this->get_customizer_value('form_custom_css');
-        $script = '';
-        $script .= "<script type=\"text/javascript\">{$this->optin_js_config()}</script>";
+        $custom_styles = '';
+
+        $script = "<script type=\"text/javascript\">{$this->optin_js_config()}</script>";
 
         $styles = '<style id="mo-optin-form-stylesheet" type="text/css">';
         $styles .= minify_css($this->optin_form_css() . $this->global_css($this->optin_css_id, $this->optin_campaign_uuid));

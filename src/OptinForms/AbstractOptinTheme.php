@@ -100,10 +100,15 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
      */
     public function note_styles()
     {
-        $style = [
-            'color' => $this->get_customizer_value('note_font_color'),
-            'font-family' => $this->_construct_font_family($this->get_customizer_value('note_font'))
-        ];
+        $style = apply_filters('mo_optin_form_note_styles',
+            [
+                'color' => $this->get_customizer_value('note_font_color'),
+                'font-family' => $this->_construct_font_family($this->get_customizer_value('note_font'))
+            ],
+            $this->optin_campaign_id,
+            $this->optin_campaign_type,
+            $this->optin_campaign_uuid
+        );
 
         if ($this->get_customizer_value('note_close_optin_onclick')) {
             $style['text-decoration'] = 'underline';

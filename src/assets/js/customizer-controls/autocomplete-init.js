@@ -1,4 +1,4 @@
-wp.customize.controlConstructor.mailoptin_autocomplete = wp.customize.Control.extend({
+wp.customize.controlConstructor['mailoptin_autocomplete'] = wp.customize.Control.extend({
     ready: function () {
         var control = this;
 
@@ -16,11 +16,11 @@ wp.customize.controlConstructor.mailoptin_autocomplete = wp.customize.Control.ex
                 return split(term).pop();
             }
 
-            $("#"+id)
+            jQuery("#" + id)
             // don't navigate away from the field on tab when selecting an item
                 .on("keydown", function (event) {
-                    if (event.keyCode === $.ui.keyCode.TAB &&
-                        $(this).autocomplete("instance").menu.active) {
+                    if (event.keyCode === jQuery.ui.keyCode.TAB &&
+                        jQuery(this).autocomplete("instance").menu.active) {
                         event.preventDefault();
                     }
                 })
@@ -28,7 +28,7 @@ wp.customize.controlConstructor.mailoptin_autocomplete = wp.customize.Control.ex
                     minLength: 0,
                     source: function (request, response) {
                         // delegate back to autocomplete, but extract the last term
-                        response($.ui.autocomplete.filter(
+                        response(jQuery.ui.autocomplete.filter(
                             availableTags, extractLast(request.term)));
                     },
                     focus: function () {

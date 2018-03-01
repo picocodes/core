@@ -66,7 +66,8 @@ li[id*="ajax_nonce"] {
 
 #sub-accordion-section-mo_wp_page_filter_display_rule_section,
 #sub-accordion-section-mo_wp_schedule_display_rule_section,
-#sub-accordion-section-mo_wp_referrer_detection_display_rule_section
+#sub-accordion-section-mo_wp_referrer_detection_display_rule_section,
+#sub-accordion-section-mo_integration_section
 {
     height: 100% !important;
 }

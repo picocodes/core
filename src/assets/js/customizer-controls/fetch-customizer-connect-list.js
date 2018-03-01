@@ -27,7 +27,7 @@
                     if (_.isObject(response) && 'success' in response && 'data' in response) {
                         var data = response.data;
 
-                        if (_.size(data) >= 1) {
+                        if (_.size(data) >= 1 || connect_service === 'ConvertFoxConnect') {
 
                             // clear out the select options before appending.
                             $("select[data-customize-setting-link*='connection_email_list'] option").remove();
@@ -49,8 +49,10 @@
 
                             connection_email_list.trigger('change');
 
-                            // show email list field.
-                            $("div#customize-theme-controls li[id*='connection_email_list']").show();
+                            if (connect_service !== 'ConvertFoxConnect') {
+                                // show email list field.
+                                $("div#customize-theme-controls li[id*='connection_email_list']").show();
+                            }
 
                             toggle_connect_service_connected_fields();
 
