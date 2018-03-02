@@ -4,6 +4,7 @@ namespace MailOptin\Core\OptinForms;
 
 use MailOptin\Core\Admin\Customizer\OptinForm\OptinFormFactory;
 use MailOptin\Core\Repositories\OptinCampaignsRepository as OCR;
+use MailOptin\Core\Repositories\OptinCampaignsRepository;
 
 class SidebarWidgets extends \WP_Widget
 {
@@ -30,7 +31,19 @@ class SidebarWidgets extends \WP_Widget
     public function widget($args, $instance)
     {
         $sidebar_optin_id = isset($instance['sidebar_optin_id']) ? $instance['sidebar_optin_id'] : false;
+        $sidebar_optin_uuid = OptinCampaignsRepository::get_optin_campaign_uuid($sidebar_optin_id);
         $title = isset($instance['title']) ? apply_filters('widget_title', $instance['title']) : false;
+
+        if (!OCR::global_cookie_check_result($sidebar_optin_id)) return '';
+
+        // we are adding this check to prevent sidebar <aside tag> from being included in markup when state after conversion
+        // is optin form hidden.
+        if (OptinCampaignsRepository::get_merged_customizer_value($sidebar_optin_id, 'state_after_conversion') == 'optin_form_hidden' &&
+            OptinCampaignsRepository::user_has_successful_optin($sidebar_optin_uuid)
+        ) {
+            // if state after conversion is set to 'optin form hidden', return nothing.
+            return '';
+        }
 
         do_action('mo_sidebar_optin_widget_before_output', $args, $instance);
 
@@ -59,8 +72,6 @@ class SidebarWidgets extends \WP_Widget
         if (!OCR::is_activated($sidebar_optin_id)) return '';
 
         $sidebar_optin_id = OCR::choose_split_test_variant($sidebar_optin_id);
-
-        if (!OCR::global_cookie_check_result($sidebar_optin_id)) return '';
 
         return OptinFormFactory::build($sidebar_optin_id);
     }
