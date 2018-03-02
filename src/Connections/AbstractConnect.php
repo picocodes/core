@@ -70,6 +70,30 @@ abstract class AbstractConnect
     }
 
     /**
+     * Check if HTTP status code is not successful.
+     *
+     * @param int $code
+     * @return bool
+     */
+    public static function is_http_code_not_success($code)
+    {
+        $code = absint($code);
+        return $code < 200 || $code > 299;
+    }
+
+    /**
+     * Check if HTTP status code is successful.
+     *
+     * @param int $code
+     * @return bool
+     */
+    public static function is_http_code_success($code)
+    {
+        $code = absint($code);
+        return $code >= 200 && $code <= 299;
+    }
+
+    /**
      * Helper to return failed error.
      *
      * @param string $error
