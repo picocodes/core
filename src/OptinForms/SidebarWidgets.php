@@ -15,7 +15,7 @@ class SidebarWidgets extends \WP_Widget
         parent::__construct(
             'mo_optin_widgets',
             esc_html__('MailOptin', 'mailoptin'),
-            array('description' => esc_html__('Place a MailOptin sidebar optin form into a widgetized area.', 'mailoptin')) // Args
+            array('description' => esc_html__('Display a MailOptin sidebar/widget optin form in a widget area.', 'mailoptin')) // Args
         );
     }
 
