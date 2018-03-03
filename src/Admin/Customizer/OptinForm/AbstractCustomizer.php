@@ -76,7 +76,8 @@ class AbstractCustomizer
         $defaults['submit_button_font'] = apply_filters('mo_optin_form_submit_button_font_default', '', $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
         $defaults['cta_button'] = apply_filters('mo_optin_form_cta_button_default', __('Subscribe Now', 'mailoptin'), $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
 
-        $defaults['cta_button_action'] = apply_filters('mo_optin_form_cta_button_action_default', 'reveal_optin_form', $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
+        $cta_button_action_default_val = defined('MAILOPTIN_DETACH_LIBSODIUM') ? 'reveal_optin_form' : 'navigate_to_url';
+        $defaults['cta_button_action'] = apply_filters('mo_optin_form_cta_button_action_default', $cta_button_action_default_val, $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
         $defaults['cta_button_navigation_url'] = apply_filters('mo_optin_form_cta_button_navigation_url_default', '', $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
         $defaults['cta_button'] = apply_filters('mo_optin_form_cta_button_default', __('Take Action Now!', 'mailoptin'), $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
         $defaults['cta_button_color'] = apply_filters('mo_optin_form_cta_button_color_default', $defaults['submit_button_color'], $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);

@@ -45,7 +45,8 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 $.fn.mailoptin = function (skip_display_checks) {
                     skip_display_checks = typeof skip_display_checks !== 'undefined' ? skip_display_checks : false;
 
-                    var modal_options, $optin_uuid,
+                    var modal_options,
+                        $optin_uuid,
                         $optin_type,
                         $optin_css_id,
                         optin_js_config,
@@ -134,6 +135,8 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                         // if cta action is to navigate
                         $('#' + $optin_css_id + '_cta_button').on('click', function (e) {
                             e.preventDefault();
+                            var optin_container = $(this).parents('.moOptinForm');
+
                             if (optin_js_config.cta_action === 'navigate_to_url' && self.is_defined_not_empty(optin_js_config.cta_navigate_url)) {
                                 // bail if we are in customizer preview.
                                 if ($.MailOptin.is_customize_preview === true) return;
@@ -146,6 +149,15 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                                 cache.find('.mo-optin-form-cta-button, .mo-optin-form-cta-wrapper').hide();
                                 cache.find('.mo-optin-fields-wrapper').show();
                                 cache.find('.mo-optin-form-submit-button').show();
+                            }
+
+                            else if ($.inArray(optin_js_config.cta_action, ['close_optin', 'close_optin_reload_page'] !== -1)) {
+                                $.MoModalBox.close();
+                                mailoptin_optin._close_optin(optin_container);
+
+                                if (optin_js_config.cta_action === 'close_optin_reload_page') {
+                                    window.location.reload();
+                                }
                             }
                             else {
                                 console.log('something went wrong.');

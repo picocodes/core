@@ -394,18 +394,26 @@ class CustomizerControls
     {
         $cta_button_action_description = '';
         $cta_button_action_choices = [
+            'reveal_optin_form' => __('Reveal Optin Form', 'mailoptin'),
             'navigate_to_url' => __('Navigate to URL', 'mailoptin'),
-            'reveal_optin_form' => __('Reveal Optin Form', 'mailoptin')
         ];
 
+        if (!in_array($this->customizerClassInstance->optin_campaign_type, ['sidebar', 'inpost'])) {
+            $cta_button_action_choices['close_optin'] = __('Close optin', 'mailoptin');
+            $cta_button_action_choices['close_optin_reload_page'] = __('Close optin and reload page', 'mailoptin');
+        }
+
         if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
+
             $cta_button_action_description = sprintf(
-                __('Upgrade to %sMailOptin Premium%s to have the option to reveal optin form when CTA button is clicked.', 'mailoptin'),
+                __('Upgrade to %sMailOptin Premium%s to have the option to close, close and reload or reveal optin form when CTA button is clicked.', 'mailoptin'),
                 '<a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=cta_button_action">',
                 '</a>'
             );
 
             unset($cta_button_action_choices['reveal_optin_form']);
+            unset($cta_button_action_choices['close_optin']);
+            unset($cta_button_action_choices['close_optin_reload_page']);
         }
 
         $field_controls_args = apply_filters(
