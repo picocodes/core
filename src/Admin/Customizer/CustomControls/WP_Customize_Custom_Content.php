@@ -11,6 +11,8 @@ class WP_Customize_Custom_Content extends WP_Customize_Control
     // Whitelist content parameter
     public $content = '';
 
+    public $no_wrapper_div = false;
+
     public $block_class = 'mo-custom-content-block';
 
     /**
@@ -23,12 +25,18 @@ class WP_Customize_Custom_Content extends WP_Customize_Control
      */
     public function render_content()
     {
+        if (!isset($this->content)) return;
+
         if (isset($this->label)) {
             echo '<span class="customize-control-title">' . $this->label . '</span>';
         }
-        if (isset($this->content)) {
+
+        if (!$this->no_wrapper_div) {
             echo "<div class=\"customize-{$this->block_class}\">" . $this->content . '</div>';
+        } else {
+            echo $this->content;
         }
+
         if (isset($this->description)) {
             echo '<span class="description customize-control-description">' . $this->description . '</span>';
         }

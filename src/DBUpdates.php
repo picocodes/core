@@ -12,14 +12,14 @@ class DBUpdates
 
     public function init_options()
     {
-        add_site_option('mo_db_ver', 0);
+        add_option('mo_db_ver', 0);
     }
 
     public function maybe_update()
     {
         $this->init_options();
 
-        if (get_site_option('mo_db_ver') >= self::DB_VER) {
+        if (get_option('mo_db_ver') >= self::DB_VER) {
             return;
         }
 
@@ -33,7 +33,7 @@ class DBUpdates
         set_time_limit(0);
 
         // this is the current database schema version number
-        $current_db_ver = get_site_option('mo_db_ver');
+        $current_db_ver = get_option('mo_db_ver');
 
         // this is the target version that we need to reach
         $target_db_ver = self::DB_VER;
@@ -53,7 +53,7 @@ class DBUpdates
 
             // update the option in the database, so that this process can always
             // pick up where it left off
-            update_site_option('mo_db_ver', $current_db_ver);
+            update_option('mo_db_ver', $current_db_ver);
         }
     }
 

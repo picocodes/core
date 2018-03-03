@@ -193,3 +193,16 @@ input, select {
 .customize-control-checkbox input[type=checkbox]:checked:before {
     font-size: 22px;
 }
+
+.mo-optin-customizer-doc {
+    margin: 5px auto;
+    padding: 5px;
+    background: #d9534f;
+    text-align: center;
+}
+
+.mo-optin-customizer-doc a {
+    margin: auto;
+    color: #fff;
+    text-decoration: underline;
+}
