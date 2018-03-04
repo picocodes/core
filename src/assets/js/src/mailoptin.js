@@ -130,6 +130,16 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                         self.process_optin_form_display.call(this, optin_js_config, 'slidein', skip_display_checks);
                     }
 
+                    /** Sidebar */
+                    if (this.hasClass('mo-optin-form-sidebar')) {
+                        self.process_optin_form_display.call(this, optin_js_config, 'sidebar', skip_display_checks);
+                    }
+
+                    /** Inpost */
+                    if (this.hasClass('mo-optin-form-inpost')) {
+                        self.process_optin_form_display.call(this, optin_js_config, 'inpost', skip_display_checks);
+                    }
+
                     // handle CTA button click if activated
                     if (self.is_defined_not_empty(optin_js_config.cta_display) && optin_js_config.cta_display === true && self.is_defined_not_empty(optin_js_config.cta_action)) {
                         // if cta action is to navigate
@@ -321,6 +331,8 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
              */
             rule_base_show_optin_form: function (optin_config, optin_type, skip_display_checks) {
 
+                console.log(optin_type);
+
                 var self = mailoptin_optin;
                 // we did this becos 'this' inside setTimeout() will be wrong.
                 var _this = this;
@@ -408,6 +420,10 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 if (self.is_adblock_rule_active(optin_config) === true) {
                     if (optin_config.adblock_settings === "adblock_enabled" && self.isAdblockDisabled()) return;
                     if (optin_config.adblock_settings === "adblock_disabled" && self.isAdblockEnabled()) return;
+
+                    console.log('hi', _this);
+                    // if we are here, the rules above pass, so set the optin to be visible
+                    _this.show();
                 }
 
                 var wait_seconds = optin_config.x_seconds_value * 1000;

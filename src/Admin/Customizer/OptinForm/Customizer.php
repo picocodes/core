@@ -703,6 +703,8 @@ class Customizer
                         'title' => __('Quick Setup', 'mailoptin')
                     )
                 );
+
+                do_action('mo_optin_after_setup_display_rule_section', $wp_customize, $this);
             }
 
         } else {

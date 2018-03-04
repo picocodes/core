@@ -359,6 +359,14 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         return (!is_customize_preview() && !empty($schedule_status) && !empty($schedule_start) && !empty($schedule_end) && !empty($schedule_timezone));
     }
 
+    public function is_adblock_rule_active()
+    {
+        $adblock_status = $this->get_customizer_value('adblock_status');
+        $adblock_settings = $this->get_customizer_value('adblock_settings');
+
+        return (!is_customize_preview() && !empty($adblock_status) && !empty($adblock_settings));
+    }
+
     /**
      * HTML and CSS structure of an optin form.
      */
@@ -370,7 +378,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         $name_email_class_indicator = $this->get_customizer_value('hide_name_field') === true ? 'mo-has-email' : 'mo-has-name-email';
         $display_only_button_class_indicator = $this->get_customizer_value('display_only_button') === true ? ' mo-cta-button-display' : '';
         // set optin to display:none when schedule is active then allow mailoptinjs to decide whether to show it or not.
-        $is_hidden_style = $this->is_schedule_display_rule_active() ? 'display: none' : '';
+        $is_hidden_style = $this->is_schedule_display_rule_active() || $this->is_adblock_rule_active() ? 'display: none' : '';
 
         if ($this->optin_campaign_type == 'lightbox') {
             $modalWrapperStyle = implode(';', [
