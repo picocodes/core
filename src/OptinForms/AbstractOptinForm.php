@@ -367,6 +367,32 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         return (!is_customize_preview() && !empty($adblock_status) && !empty($adblock_settings));
     }
 
+    public function is_referral_detection_rule_active()
+    {
+        $referrer_detection_status = $this->get_customizer_value('referrer_detection_status');
+        $referrer_detection_settings = $this->get_customizer_value('referrer_detection_settings');
+        $referrer_detection_values = $this->get_customizer_value('referrer_detection_values');
+
+        return (!is_customize_preview() && !empty($referrer_detection_status) && !empty($referrer_detection_settings) && !empty($referrer_detection_values));
+    }
+
+    public function is_x_page_views_rule_active()
+    {
+        $x_page_views_status = $this->get_customizer_value('x_page_views_status');
+        $x_page_views_condition = $this->get_customizer_value('x_page_views_condition');
+        $x_page_views_value = $this->get_customizer_value('x_page_views_value');
+
+        return (!is_customize_preview() && !empty($x_page_views_status) && !empty($x_page_views_condition) && !empty($x_page_views_value));
+    }
+
+    public function is_newvsreturn_rule_active()
+    {
+        $newvsreturn_status = $this->get_customizer_value('newvsreturn_status');
+        $newvsreturn_settings = $this->get_customizer_value('newvsreturn_settings');
+
+        return (!is_customize_preview() && !empty($newvsreturn_status) && !empty($newvsreturn_settings));
+    }
+
     /**
      * HTML and CSS structure of an optin form.
      */
@@ -378,7 +404,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         $name_email_class_indicator = $this->get_customizer_value('hide_name_field') === true ? 'mo-has-email' : 'mo-has-name-email';
         $display_only_button_class_indicator = $this->get_customizer_value('display_only_button') === true ? ' mo-cta-button-display' : '';
         // set optin to display:none when schedule is active then allow mailoptinjs to decide whether to show it or not.
-        $is_hidden_style = $this->is_schedule_display_rule_active() || $this->is_adblock_rule_active() ? 'display: none' : '';
+        $is_hidden_style = $this->is_schedule_display_rule_active() || $this->is_adblock_rule_active() || $this->is_referral_detection_rule_active() || $this->is_newvsreturn_rule_active() || $this->is_x_page_views_rule_active() ? 'display: none' : '';
 
         if ($this->optin_campaign_type == 'lightbox') {
             $modalWrapperStyle = implode(';', [
