@@ -331,8 +331,6 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
              */
             rule_base_show_optin_form: function (optin_config, optin_type, skip_display_checks) {
 
-                console.log(optin_type);
-
                 var self = mailoptin_optin;
                 // we did this becos 'this' inside setTimeout() will be wrong.
                 var _this = this;
@@ -420,10 +418,6 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 if (self.is_adblock_rule_active(optin_config) === true) {
                     if (optin_config.adblock_settings === "adblock_enabled" && self.isAdblockDisabled()) return;
                     if (optin_config.adblock_settings === "adblock_disabled" && self.isAdblockEnabled()) return;
-
-                    console.log('hi', _this);
-                    // if we are here, the rules above pass, so set the optin to be visible
-                    _this.show();
                 }
 
                 var wait_seconds = optin_config.x_seconds_value * 1000;
@@ -567,17 +561,9 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                     return;
                 }
 
-                if (optin_config.effects !== undefined) {
-                    self.animate_optin_display.call(this, optin_config.effects);
-                    self.flag_optin_type_displayed(optin_config, optin_type);
-                    this.show();
-                    $(this).trigger('moOptin:show', [optin_config.optin_uuid]);
-                    return;
-                }
-
+                self.animate_optin_display.call(this, optin_config.effects);
                 self.flag_optin_type_displayed(optin_config, optin_type);
-                this.fadeIn();
-                // trigger optin show event.
+                this.show();
                 $(this).trigger('moOptin:show', [optin_config.optin_uuid]);
             },
 

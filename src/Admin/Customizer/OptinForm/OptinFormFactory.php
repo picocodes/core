@@ -43,11 +43,10 @@ class OptinFormFactory
      * Build or make optin form (HTML) structure.
      *
      * @param int $optin_campaign_id
-     * @param bool $exclude_impression_tracker whether to exclude impression tracker
      *
      * @return string
      */
-    public static function build($optin_campaign_id, $exclude_impression_tracker = false)
+    public static function build($optin_campaign_id)
     {
         $optinInstance = self::make($optin_campaign_id);
 
@@ -55,9 +54,6 @@ class OptinFormFactory
 
         $optin_form = $optinInstance->get_optin_form_structure();
         $optin_form .= $optinInstance->webfont_loader_js_script();
-        if ($exclude_impression_tracker === false) {
-            $optin_form .= $optinInstance->impression_tracker_js_script();
-        }
         return $optin_form;
     }
 

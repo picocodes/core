@@ -75,7 +75,7 @@ class FrontEndOutput
 
             // if lite, set display rule to load globally
             if (!defined('MAILOPTIN_DETACH_LIBSODIUM') || Repository::get_customizer_value($id, 'click_launch_status') || Repository::get_customizer_value($id, 'load_optin_globally')) {
-                echo OptinFormFactory::build($id, true);
+                echo OptinFormFactory::build($id);
             } else {
                 $load_optin_index = Repository::get_customizer_value($id, 'load_optin_index');
                 $posts_never_load = Repository::get_customizer_value($id, 'posts_never_load');
@@ -139,7 +139,7 @@ class FrontEndOutput
                     continue;
                 }
 
-                echo OptinFormFactory::build($id, true);
+                echo OptinFormFactory::build($id);
 
                 do_action('mailoptin_after_footer_optin_display', $id, $optin_ids, $post_id);
             }
