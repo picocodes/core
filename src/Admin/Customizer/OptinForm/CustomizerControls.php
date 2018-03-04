@@ -286,7 +286,7 @@ class CustomizerControls
                     $this->wp_customize,
                     $this->option_prefix . '[description_font]',
                     apply_filters('mo_optin_form_customizer_description_font_args', array(
-                            'label' => __('Font Family'),
+                            'label' => __('Font Family', 'mailoptin'),
                             'section' => $this->customizerClassInstance->description_section_id,
                             'settings' => $this->option_prefix . '[description_font]',
                             'count' => 200,
@@ -347,7 +347,7 @@ class CustomizerControls
                     $this->wp_customize,
                     $this->option_prefix . '[note_font]',
                     apply_filters('mo_optin_form_customizer_note_font_args', array(
-                            'label' => __('Font Family'),
+                            'label' => __('Font Family', 'mailoptin'),
                             'section' => $this->customizerClassInstance->note_section_id,
                             'settings' => $this->option_prefix . '[note_font]',
                             'count' => 200,
