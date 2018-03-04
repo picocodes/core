@@ -206,3 +206,8 @@ input, select {
     color: #fff;
     text-decoration: underline;
 }
+
+.mo-optin-customizer-doc a:focus {
+    border:0 !important;
+    box-shadow: none;
+}
