@@ -197,6 +197,18 @@ class CustomizerControls
         $headline_control_args = apply_filters(
             "mo_optin_form_customizer_headline_controls",
             array(
+                'hide_headline' => new WP_Customize_Toggle_Control(
+                    $this->wp_customize,
+                    $this->option_prefix . '[hide_headline]',
+                    apply_filters('mo_optin_form_customizer_hide_headline_args', array(
+                            'label' => __('Hide Headline', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->headline_section_id,
+                            'settings' => $this->option_prefix . '[hide_headline]',
+                            'type' => 'light',
+                            'priority' => 5,
+                        )
+                    )
+                ),
                 'headline' => new WP_Customize_Tinymce_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[headline]',
@@ -259,6 +271,18 @@ class CustomizerControls
         $description_controls_args = apply_filters(
             "mo_optin_form_customizer_description_controls",
             array(
+                'hide_description' => new WP_Customize_Toggle_Control(
+                    $this->wp_customize,
+                    $this->option_prefix . '[hide_description]',
+                    apply_filters('mo_optin_form_customizer_hide_description_args', array(
+                            'label' => __('Hide Description', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->description_section_id,
+                            'settings' => $this->option_prefix . '[hide_description]',
+                            'type' => 'light',
+                            'priority' => 10,
+                        )
+                    )
+                ),
                 'description' => new WP_Customize_Tinymce_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[description]',
@@ -267,7 +291,7 @@ class CustomizerControls
                             'section' => $this->customizerClassInstance->description_section_id,
                             'settings' => $this->option_prefix . '[description]',
                             'editor_id' => 'description',
-                            'priority' => 1
+                            'priority' => 20
                         )
                     )
                 ),
@@ -278,7 +302,7 @@ class CustomizerControls
                             'label' => __('Color', 'mailoptin'),
                             'section' => $this->customizerClassInstance->description_section_id,
                             'settings' => $this->option_prefix . '[description_font_color]',
-                            'priority' => 3
+                            'priority' => 30
                         )
                     )
                 ),
@@ -290,7 +314,7 @@ class CustomizerControls
                             'section' => $this->customizerClassInstance->description_section_id,
                             'settings' => $this->option_prefix . '[description_font]',
                             'count' => 200,
-                            'priority' => 2
+                            'priority' => 15
                         )
                     )
                 ),
@@ -319,6 +343,18 @@ class CustomizerControls
         $note_controls_args = apply_filters(
             "mo_optin_form_customizer_note_controls",
             array(
+                'hide_note' => new WP_Customize_Toggle_Control(
+                    $this->wp_customize,
+                    $this->option_prefix . '[hide_note]',
+                    apply_filters('mo_optin_form_customizer_hide_note_args', array(
+                            'label' => __('Hide Note', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->note_section_id,
+                            'settings' => $this->option_prefix . '[hide_note]',
+                            'type' => 'light',
+                            'priority' => 5,
+                        )
+                    )
+                ),
                 'note' => new WP_Customize_Tinymce_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[note]',
@@ -808,42 +844,6 @@ class CustomizerControls
                             'settings' => $this->option_prefix . '[hide_close_button]',
                             'type' => 'light',
                             'priority' => 45,
-                        )
-                    )
-                ),
-                'hide_headline' => new WP_Customize_Toggle_Control(
-                    $this->wp_customize,
-                    $this->option_prefix . '[hide_headline]',
-                    apply_filters('mo_optin_form_customizer_hide_headline_args', array(
-                            'label' => __('Hide Headline', 'mailoptin'),
-                            'section' => $this->customizerClassInstance->configuration_section_id,
-                            'settings' => $this->option_prefix . '[hide_headline]',
-                            'type' => 'light',
-                            'priority' => 50,
-                        )
-                    )
-                ),
-                'hide_description' => new WP_Customize_Toggle_Control(
-                    $this->wp_customize,
-                    $this->option_prefix . '[hide_description]',
-                    apply_filters('mo_optin_form_customizer_hide_description_args', array(
-                            'label' => __('Hide Description', 'mailoptin'),
-                            'section' => $this->customizerClassInstance->configuration_section_id,
-                            'settings' => $this->option_prefix . '[hide_description]',
-                            'type' => 'light',
-                            'priority' => 60,
-                        )
-                    )
-                ),
-                'hide_note' => new WP_Customize_Toggle_Control(
-                    $this->wp_customize,
-                    $this->option_prefix . '[hide_note]',
-                    apply_filters('mo_optin_form_customizer_hide_note_args', array(
-                            'label' => __('Hide Note', 'mailoptin'),
-                            'section' => $this->customizerClassInstance->configuration_section_id,
-                            'settings' => $this->option_prefix . '[hide_note]',
-                            'type' => 'light',
-                            'priority' => 70,
                         )
                     )
                 ),
