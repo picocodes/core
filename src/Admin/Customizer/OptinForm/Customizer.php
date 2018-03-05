@@ -70,8 +70,8 @@ class Customizer
     /** @var string ID of "WordPress page filter display rule" customizer section. */
     public $page_filter_display_rule_section_id = 'mo_wp_page_filter_display_rule_section';
 
-    /** @var string ID of "URL filter display rule" customizer section. */
-    public $url_filter_display_rule_section_id = 'mo_url_filter_display_rule_section';
+    /** @var string ID of "user targeting" customizer section. */
+    public $user_targeting_display_rule_section_id = 'mo_wp_user_filter_display_rule_section';
 
     /**
      * Customizer constructor.
@@ -134,20 +134,20 @@ class Customizer
 
     public function clean_up_customizer()
     {
-        remove_all_actions( 'wp_head' );
-        remove_all_actions( 'wp_print_styles' );
-        remove_all_actions( 'wp_print_head_scripts' );
-        remove_all_actions( 'wp_footer' );
+        remove_all_actions('wp_head');
+        remove_all_actions('wp_print_styles');
+        remove_all_actions('wp_print_head_scripts');
+        remove_all_actions('wp_footer');
 
         // Handle `wp_head`
-        add_action( 'wp_head', 'wp_enqueue_scripts', 1 );
-        add_action( 'wp_head', 'wp_print_styles', 8 );
-        add_action( 'wp_head', 'wp_print_head_scripts', 9 );
-        add_action( 'wp_head', 'wp_site_icon' );
+        add_action('wp_head', 'wp_enqueue_scripts', 1);
+        add_action('wp_head', 'wp_print_styles', 8);
+        add_action('wp_head', 'wp_print_head_scripts', 9);
+        add_action('wp_head', 'wp_site_icon');
         // Handle `wp_footer`
-        add_action( 'wp_footer', 'wp_print_footer_scripts', 20 );
+        add_action('wp_footer', 'wp_print_footer_scripts', 20);
 
-        if(class_exists('Astra_Customizer') && method_exists('Astra_Customizer', 'print_footer_scripts')) {
+        if (class_exists('Astra_Customizer') && method_exists('Astra_Customizer', 'print_footer_scripts')) {
             remove_action('customize_controls_print_footer_scripts', [\Astra_Customizer::get_instance(), 'print_footer_scripts']);
         }
     }
@@ -319,12 +319,14 @@ class Customizer
                 $this->description_section_id,
                 $this->note_section_id,
                 $this->setup_display_rule_section_id,
+                $this->user_targeting_display_rule_section_id,
                 $this->click_launch_display_rule_section_id,
                 $this->exit_intent_display_rule_section_id,
                 $this->x_seconds_display_rule_section_id,
                 $this->x_scroll_display_rule_section_id,
                 $this->x_page_views_display_rule_section_id,
                 $this->page_filter_display_rule_section_id,
+                $this->user_targeting_display_rule_section_id,
                 $this->schedule_display_rule_section_id,
                 $this->success_section_id
             )
@@ -397,17 +399,6 @@ class Customizer
             return $status;
         });
 
-        add_filter('mo_optin_form_customizer_setup_display_rule_controls',
-            function ($controls, $wp_customize, $option_prefix, $customizerClassInstance) {
-                // do not display these controls if optin type is sidebar.
-                if ($customizerClassInstance->optin_campaign_type == 'sidebar') {
-                    unset($controls['load_optin_globally']);
-                    unset($controls['who_see_optin']);
-                }
-
-                return $controls;
-            }, 10, 4);
-
         add_filter('mo_optin_form_customizer_configuration_controls',
             function ($controls, $wp_customize, $option_prefix, $customizerClassInstance) {
                 // do not display these controls if optin type is sidebar.
@@ -441,7 +432,7 @@ class Customizer
 
         add_filter('mo_optin_form_customizer_page_filter_controls',
             function ($controls, $wp_customize, $option_prefix, $customizerClassInstance) {
-                // do not display these controls if optin type is sidebar.
+                // do not display these controls if optin type is inpost.
                 if ($customizerClassInstance->optin_campaign_type == 'inpost') {
                     unset($controls['load_optin_index']);
                 }
@@ -676,46 +667,30 @@ class Customizer
      */
     public function display_rules_sections($wp_customize)
     {
-        do_action('mo_optin_before_setup_display_rule_section', $wp_customize, $this);
+        do_action('mo_optin_before_core_display_rules_section', $wp_customize, $this);
 
-        // only display if we are not in a lite version.
         if (defined('MAILOPTIN_DETACH_LIBSODIUM')) {
+            $wp_customize->add_section($this->page_filter_display_rule_section_id, array(
+                    'title' => __('Page Targeting', 'mailoptin'),
+                    'panel' => $this->display_rules_panel_id
+                )
+            );
 
-            if ('sidebar' != $this->optin_campaign_type) {
-                $wp_customize->add_section($this->setup_display_rule_section_id, array(
-                        'title' => __('Quick Setup', 'mailoptin'),
-                        'panel' => $this->display_rules_panel_id
-                    )
-                );
+            $wp_customize->add_section($this->user_targeting_display_rule_section_id, array(
+                    'title' => __('User Targeting', 'mailoptin'),
+                    'panel' => $this->display_rules_panel_id
+                )
+            );
 
-                do_action('mo_optin_after_setup_display_rule_section', $wp_customize, $this);
-
-                $wp_customize->add_section($this->page_filter_display_rule_section_id, array(
-                        'title' => __('Page Targeting', 'mailoptin'),
-                        'panel' => $this->display_rules_panel_id
-                    )
-                );
-            }
-
-            // if sidebar, move Quick Setup from being a panel in "Display Rules" section to stand-alone section.
-            if ('sidebar' == $this->optin_campaign_type) {
-                $wp_customize->add_section($this->setup_display_rule_section_id, array(
-                        'title' => __('Quick Setup', 'mailoptin')
-                    )
-                );
-
-                do_action('mo_optin_after_setup_display_rule_section', $wp_customize, $this);
-            }
-
+            do_action('mo_optin_after_page_user_targeting_display_rule_section', $wp_customize, $this);
         } else {
-
-            $wp_customize->add_section($this->setup_display_rule_section_id, array(
+            $wp_customize->add_section($this->page_filter_display_rule_section_id, array(
                     'title' => __('Display Rules', 'mailoptin')
                 )
             );
         }
 
-        do_action('mo_optin_after_page_filter_display_rule_section', $wp_customize, $this);
+        do_action('mo_optin_after_core_display_rules_section', $wp_customize, $this);
     }
 
 
@@ -759,8 +734,8 @@ class Customizer
         $instance->configuration_controls();
         $instance->integration_controls();
         $instance->after_conversion_controls();
-        $instance->setup_display_rule_controls();
         $instance->page_filter_display_rule_controls();
+        $instance->user_filter_display_rule_controls();
 
         do_action('mo_optin_after_customizer_controls', $instance, $wp_customize, $option_prefix, $this, $optin_class_instance);
     }

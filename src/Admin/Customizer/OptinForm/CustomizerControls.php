@@ -1097,40 +1097,128 @@ class CustomizerControls
     }
 
     /**
-     * Controls for "(Quick) setup" display rules panel section.
+     * Page filter display rule.
+     *
+     * @param \WP_Customize_Manager $wp_customize
+     * @param string $option_prefix
+     * @param Customizer $customizerClassInstance
      */
-    public function setup_display_rule_controls()
+    public function page_filter_display_rule_controls()
     {
-        $setup_display_control_args = [];
-
-        if (defined('MAILOPTIN_DETACH_LIBSODIUM')) {
-
-            $setup_display_control_args['load_optin_globally'] = new WP_Customize_Toggle_Control(
+        $page_filter_control_args = array(
+            'load_optin_globally' => new WP_Customize_Toggle_Control(
                 $this->wp_customize,
                 $this->option_prefix . '[load_optin_globally]',
                 apply_filters('mo_optin_form_customizer_load_optin_globally_args', array(
                         'label' => __('Globally load optin', 'mailoptin'),
-                        'section' => $this->customizerClassInstance->setup_display_rule_section_id,
+                        'section' => $this->customizerClassInstance->page_filter_display_rule_section_id,
                         'settings' => $this->option_prefix . '[load_optin_globally]',
-                        'description' => __('The optin will be loaded on all pages of your website if checked.', 'mailoptin'),
+                        'description' => sprintf(
+                            __('The optin will be loaded on all pages of your website if activated. %sDo not activate%s if you want to load optin on specific areas of your site using the settings below.', 'mailoptin'),
+                            '<strong>',
+                            '</strong>'
+                        ),
                         'type' => 'light',
                         'priority' => 20
                     )
                 )
-            );
+            ),
+            'exclusive_post_types_posts_load' => new WP_Customize_Chosen_Select_Control(
+                $this->wp_customize,
+                $this->option_prefix . '[exclusive_post_types_posts_load]',
+                apply_filters('mo_optin_form_customizer_exclusive_post_types_posts_load_args', array(
+                        'label' => __('Load optin exclusively on:'),
+                        'section' => $this->customizerClassInstance->page_filter_display_rule_section_id,
+                        'settings' => $this->option_prefix . '[exclusive_post_types_posts_load]',
+                        'description' => __('Loads the optin only on the selected posts and pages.', 'mailoptin'),
+                        'search_type' => 'exclusive_post_types_posts_load',
+                        'choices' => ControlsHelpers::get_all_post_types_posts(),
+                        'priority' => 35
+                    )
+                )
+            )
+        );
 
-            $setup_display_control_args['who_see_optin'] = apply_filters('mo_optin_form_customizer_who_see_optin_args', array(
-                    'type' => 'select',
-                    'label' => __('Who should see this optin?', 'mailoptin'),
-                    'section' => $this->customizerClassInstance->setup_display_rule_section_id,
-                    'settings' => $this->option_prefix . '[who_see_optin]',
-                    'description' => __('Decide who are able to see this optin.', 'mailoptin'),
-                    'choices' => [
-                        'show_all' => __('Show optin to all visitors and users', 'mailoptin'),
-                        'show_logged_in' => __('Show optin to only logged-in users', 'mailoptin'),
-                        'show_non_logged_in' => __('Show optin to only users not logged-in', 'mailoptin'),
-                    ],
-                    'priority' => 25,
+        if (defined('MAILOPTIN_DETACH_LIBSODIUM')) {
+            $page_filter_control_args['load_optin_index'] = new WP_Customize_Toggle_Control(
+                $this->wp_customize,
+                $this->option_prefix . '[load_optin_index]',
+                apply_filters('mo_optin_form_customizer_load_optin_index_args', array(
+                        'label' => __('Front Page, Archive and Search Pages', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->page_filter_display_rule_section_id,
+                        'settings' => $this->option_prefix . '[load_optin_index]',
+                        'description' => __('Loads the optin on home front page, archive and search pages', 'mailoptin'),
+                        'priority' => 30,
+                        'type' => 'light',
+                    )
+                )
+            );
+            $page_filter_control_args['post_categories_load'] = new WP_Customize_Chosen_Select_Control(
+                $this->wp_customize,
+                $this->option_prefix . '[post_categories_load]',
+                apply_filters('mo_optin_form_customizer_post_categories_load_args', array(
+                        'label' => __('Load on post categories:'),
+                        'section' => $this->customizerClassInstance->page_filter_display_rule_section_id,
+                        'settings' => $this->option_prefix . '[post_categories_load]',
+                        'description' => __('Loads the optin on posts that are in one of the selected categories.', 'mailoptin'),
+                        'choices' => ControlsHelpers::get_categories(),
+                        'priority' => 40
+                    )
+                )
+            );
+            $page_filter_control_args['exclusive_post_types_load'] = new WP_Customize_Chosen_Select_Control(
+                $this->wp_customize,
+                $this->option_prefix . '[exclusive_post_types_load]',
+                apply_filters('mo_optin_form_customizer_exclusive_post_types_load_args', array(
+                        'label' => __('Load optin only on "post types":'),
+                        'section' => $this->customizerClassInstance->page_filter_display_rule_section_id,
+                        'settings' => $this->option_prefix . '[exclusive_post_types_load]',
+                        'description' => __('Loads the optin only on the selected "post types".', 'mailoptin'),
+                        'choices' => ControlsHelpers::get_post_types(),
+                        'priority' => 50
+                    )
+                )
+            );
+            $page_filter_control_args['posts_never_load'] = new WP_Customize_Chosen_Select_Control(
+                $this->wp_customize,
+                $this->option_prefix . '[posts_never_load]',
+                apply_filters('mo_optin_form_customizer_posts_never_load_args', array(
+                        'label' => __('Never load optin on these posts:'),
+                        'section' => $this->customizerClassInstance->page_filter_display_rule_section_id,
+                        'settings' => $this->option_prefix . '[posts_never_load]',
+                        'description' => __('Select the posts this optin should never be loaded on.', 'mailoptin'),
+                        'search_type' => 'posts_never_load',
+                        'choices' => ControlsHelpers::get_post_type_posts('post'),
+                        'priority' => 60
+                    )
+                )
+            );
+            $page_filter_control_args['pages_never_load'] = new WP_Customize_Chosen_Select_Control(
+                $this->wp_customize,
+                $this->option_prefix . '[pages_never_load]',
+                apply_filters('mo_optin_form_customizer_pages_never_load_args', array(
+                        'label' => __('Never load optin on these pages:'),
+                        'section' => $this->customizerClassInstance->page_filter_display_rule_section_id,
+                        'settings' => $this->option_prefix . '[pages_never_load]',
+                        'description' => __('Select the pages this optin should never be loaded on.', 'mailoptin'),
+                        'search_type' => 'pages_never_load',
+                        'choices' => ControlsHelpers::get_post_type_posts('page'),
+                        'priority' => 70
+                    )
+                )
+            );
+            $page_filter_control_args['cpt_never_load'] = new WP_Customize_Chosen_Select_Control(
+                $this->wp_customize,
+                $this->option_prefix . '[cpt_never_load]',
+                apply_filters('mo_optin_form_customizer_cpt_never_load_args', array(
+                        'label' => __('Never load optin on these CPT posts:'),
+                        'section' => $this->customizerClassInstance->page_filter_display_rule_section_id,
+                        'settings' => $this->option_prefix . '[cpt_never_load]',
+                        'description' => __('Select "custom post type" posts this optin should never be loaded on.', 'mailoptin'),
+                        'search_type' => 'cpt_never_load',
+                        'choices' => ControlsHelpers::get_all_post_types_posts(array('post', 'page')),
+                        'priority' => 80
+                    )
                 )
             );
         } else {
@@ -1140,7 +1228,7 @@ class CustomizerControls
             );
 
             $content .= sprintf(
-                __('Upgrade to %sMailOptin Premium%s to get optin triggers such as %3$sExit Intent%4$s, %3$sPage views%4$s, %3$sTime on Site%4$s and %3$sScroll trigger%4$s as well as powerful display rules proven to boost conversions.', 'mailoptin'),
+                __('Upgrade to %sMailOptin Premium%s to get optin triggers such as %3$sExit Intent%4$s, %3$sPage views%4$s, %3$sTime on Site%4$s, %3$sAdBlock detection%4$s, %3$sReferral Detection%4$s, %3$sScroll trigger%4$s and other powerful display rules proven to boost conversions.', 'mailoptin'),
                 '<a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=quick_setup_panel">',
                 '</a>',
                 '<strong>',
@@ -1148,12 +1236,12 @@ class CustomizerControls
             );
 
             // always prefix with the name of the connect/connection service.
-            $setup_display_control_args['optin_trigger_notice'] = new WP_Customize_Custom_Content(
+            $page_filter_control_args['optin_trigger_notice'] = new WP_Customize_Custom_Content(
                 $this->wp_customize,
                 $this->option_prefix . '[optin_trigger_notice]',
                 apply_filters('mo_optin_form_customizer_optin_trigger_notice_args', array(
                         'content' => $content,
-                        'section' => $this->customizerClassInstance->setup_display_rule_section_id,
+                        'section' => $this->customizerClassInstance->page_filter_display_rule_section_id,
                         'settings' => $this->option_prefix . '[optin_trigger_notice]',
                         'priority' => 199,
                     )
@@ -1161,135 +1249,9 @@ class CustomizerControls
             );
         }
 
-        $setup_display_control_args = apply_filters(
-            "mo_optin_form_customizer_setup_display_rule_controls",
-            $setup_display_control_args,
-            $this->wp_customize,
-            $this->option_prefix,
-            $this->customizerClassInstance
-        );
-
-        do_action('mailoptin_before_setup_display_rule_controls_addition');
-
-        foreach ($setup_display_control_args as $id => $args) {
-            if (is_object($args)) {
-                $this->wp_customize->add_control($args);
-            } else {
-                $this->wp_customize->add_control($this->option_prefix . '[' . $id . ']', $args);
-            }
-        }
-
-        do_action('mailoptin_after_setup_display_rule_controls_addition');
-    }
-
-    /**
-     * Page filter display rule.
-     *
-     * @param \WP_Customize_Manager $wp_customize
-     * @param string $option_prefix
-     * @param Customizer $customizerClassInstance
-     */
-    public function page_filter_display_rule_controls()
-    {
         $page_filter_control_args = apply_filters(
             "mo_optin_form_customizer_page_filter_controls",
-            array(
-                'load_optin_index' => new WP_Customize_Toggle_Control(
-                    $this->wp_customize,
-                    $this->option_prefix . '[load_optin_index]',
-                    apply_filters('mo_optin_form_customizer_load_optin_index_args', array(
-                            'label' => __('Front Page, Archive and Search Pages', 'mailoptin'),
-                            'section' => $this->customizerClassInstance->page_filter_display_rule_section_id,
-                            'settings' => $this->option_prefix . '[load_optin_index]',
-                            'description' => __('Loads the optin on home front page, archive and search pages', 'mailoptin'),
-                            'priority' => 30,
-                            'type' => 'light',
-                        )
-                    )
-                ),
-                'exclusive_post_types_posts_load' => new WP_Customize_Chosen_Select_Control(
-                    $this->wp_customize,
-                    $this->option_prefix . '[exclusive_post_types_posts_load]',
-                    apply_filters('mo_optin_form_customizer_exclusive_post_types_posts_load_args', array(
-                            'label' => __('Load optin exclusively on:'),
-                            'section' => $this->customizerClassInstance->page_filter_display_rule_section_id,
-                            'settings' => $this->option_prefix . '[exclusive_post_types_posts_load]',
-                            'description' => __('Loads the optin only on the selected posts and pages.', 'mailoptin'),
-                            'search_type' => 'exclusive_post_types_posts_load',
-                            'choices' => ControlsHelpers::get_all_post_types_posts(),
-                            'priority' => 35
-                        )
-                    )
-                ),
-                'post_categories_load' => new WP_Customize_Chosen_Select_Control(
-                    $this->wp_customize,
-                    $this->option_prefix . '[post_categories_load]',
-                    apply_filters('mo_optin_form_customizer_post_categories_load_args', array(
-                            'label' => __('Load on post categories:'),
-                            'section' => $this->customizerClassInstance->page_filter_display_rule_section_id,
-                            'settings' => $this->option_prefix . '[post_categories_load]',
-                            'description' => __('Loads the optin on posts that are in one of the selected categories.', 'mailoptin'),
-                            'choices' => ControlsHelpers::get_categories(),
-                            'priority' => 40
-                        )
-                    )
-                ),
-                'exclusive_post_types_load' => new WP_Customize_Chosen_Select_Control(
-                    $this->wp_customize,
-                    $this->option_prefix . '[exclusive_post_types_load]',
-                    apply_filters('mo_optin_form_customizer_exclusive_post_types_load_args', array(
-                            'label' => __('Load optin only on "post types":'),
-                            'section' => $this->customizerClassInstance->page_filter_display_rule_section_id,
-                            'settings' => $this->option_prefix . '[exclusive_post_types_load]',
-                            'description' => __('Loads the optin only on the selected "post types".', 'mailoptin'),
-                            'choices' => ControlsHelpers::get_post_types(),
-                            'priority' => 50
-                        )
-                    )
-                ),
-                'posts_never_load' => new WP_Customize_Chosen_Select_Control(
-                    $this->wp_customize,
-                    $this->option_prefix . '[posts_never_load]',
-                    apply_filters('mo_optin_form_customizer_posts_never_load_args', array(
-                            'label' => __('Never load optin on these posts:'),
-                            'section' => $this->customizerClassInstance->page_filter_display_rule_section_id,
-                            'settings' => $this->option_prefix . '[posts_never_load]',
-                            'description' => __('Select the posts this optin should never be loaded on.', 'mailoptin'),
-                            'search_type' => 'posts_never_load',
-                            'choices' => ControlsHelpers::get_post_type_posts('post'),
-                            'priority' => 60
-                        )
-                    )
-                ),
-                'pages_never_load' => new WP_Customize_Chosen_Select_Control(
-                    $this->wp_customize,
-                    $this->option_prefix . '[pages_never_load]',
-                    apply_filters('mo_optin_form_customizer_pages_never_load_args', array(
-                            'label' => __('Never load optin on these pages:'),
-                            'section' => $this->customizerClassInstance->page_filter_display_rule_section_id,
-                            'settings' => $this->option_prefix . '[pages_never_load]',
-                            'description' => __('Select the pages this optin should never be loaded on.', 'mailoptin'),
-                            'search_type' => 'pages_never_load',
-                            'choices' => ControlsHelpers::get_post_type_posts('page'),
-                            'priority' => 70
-                        )
-                    )
-                ),
-                'cpt_never_load' => new WP_Customize_Chosen_Select_Control(
-                    $this->wp_customize,
-                    $this->option_prefix . '[cpt_never_load]',
-                    apply_filters('mo_optin_form_customizer_cpt_never_load_args', array(
-                            'label' => __('Never load optin on these CPT posts:'),
-                            'section' => $this->customizerClassInstance->page_filter_display_rule_section_id,
-                            'settings' => $this->option_prefix . '[cpt_never_load]',
-                            'description' => __('Select "custom post type" posts this optin should never be loaded on.', 'mailoptin'),
-                            'search_type' => 'cpt_never_load',
-                            'choices' => ControlsHelpers::get_all_post_types_posts(array('post', 'page')),
-                            'priority' => 80
-                        )
-                    )
-                ),
-            ),
+            $page_filter_control_args,
             $this->wp_customize,
             $this->option_prefix,
             $this->customizerClassInstance
@@ -1306,6 +1268,52 @@ class CustomizerControls
         }
 
         do_action('mailoptin_after_page_filter_controls_addition');
+
+    }
+
+    /**
+     * Page filter display rule.
+     *
+     * @param \WP_Customize_Manager $wp_customize
+     * @param string $option_prefix
+     * @param Customizer $customizerClassInstance
+     */
+    public function user_filter_display_rule_controls()
+    {
+        $user_filter_control_args = apply_filters(
+            "mo_optin_form_customizer_user_filter_controls",
+            array(
+                'who_see_optin' => apply_filters('mo_optin_form_customizer_who_see_optin_args', array(
+                        'type' => 'select',
+                        'label' => __('Who should see this optin?', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->user_targeting_display_rule_section_id,
+                        'settings' => $this->option_prefix . '[who_see_optin]',
+                        'description' => __('Decide who are able to see this optin.', 'mailoptin'),
+                        'choices' => [
+                            'show_all' => __('Show optin to all visitors and users', 'mailoptin'),
+                            'show_logged_in' => __('Show optin to only logged-in users', 'mailoptin'),
+                            'show_non_logged_in' => __('Show optin to only users not logged-in', 'mailoptin'),
+                        ],
+                        'priority' => 10,
+                    )
+                )
+            ),
+            $this->wp_customize,
+            $this->option_prefix,
+            $this->customizerClassInstance
+        );
+
+        do_action('mailoptin_before_user_filter_controls_addition');
+
+        foreach ($user_filter_control_args as $id => $args) {
+            if (is_object($args)) {
+                $this->wp_customize->add_control($args);
+            } else {
+                $this->wp_customize->add_control($this->option_prefix . '[' . $id . ']', $args);
+            }
+        }
+
+        do_action('mailoptin_after_user_filter_controls_addition');
 
     }
 }
