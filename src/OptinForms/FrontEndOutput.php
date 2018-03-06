@@ -7,7 +7,7 @@ use MailOptin\Core\Repositories\OptinCampaignsRepository as Repository;
 
 class FrontEndOutput
 {
-    use PageTargetingRuleTrait;
+    use PageTargetingRuleTrait, UserTargetingRuleTrait;
 
     public function __construct()
     {
@@ -46,16 +46,8 @@ class FrontEndOutput
             // if optin global exit/interaction and success cookie result fails, move to next.
             if (!Repository::global_cookie_check_result($id)) continue;
 
-            switch (Repository::get_customizer_value($id, 'who_see_optin')) {
-                case 'show_logged_in':
-                    if (!is_user_logged_in()) continue 2;
-                    break;
-                case 'show_non_logged_in':
-                    if (is_user_logged_in()) continue 2;
-                    break;
-                case 'show_all':
-                    // do nothing
-                    break;
+            if (!$this->user_targeting_rule_checker($id)) {
+                continue;
             }
 
             if (!$this->page_level_targeting_rule_checker($id)) {

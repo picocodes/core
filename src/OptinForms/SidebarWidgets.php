@@ -8,7 +8,7 @@ use MailOptin\Core\Repositories\OptinCampaignsRepository;
 
 class SidebarWidgets extends \WP_Widget
 {
-    use PageTargetingRuleTrait;
+    use PageTargetingRuleTrait, UserTargetingRuleTrait;
 
     /**
      * Register widget with WordPress.
@@ -49,6 +49,10 @@ class SidebarWidgets extends \WP_Widget
             OptinCampaignsRepository::user_has_successful_optin($sidebar_optin_uuid)
         ) {
             // if state after conversion is set to 'optin form hidden', return nothing.
+            return '';
+        }
+
+        if (!$this->user_targeting_rule_checker($sidebar_optin_id)) {
             return '';
         }
 

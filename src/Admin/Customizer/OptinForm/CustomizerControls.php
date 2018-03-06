@@ -1290,9 +1290,9 @@ class CustomizerControls
                         'settings' => $this->option_prefix . '[who_see_optin]',
                         'description' => __('Decide who are able to see this optin.', 'mailoptin'),
                         'choices' => [
-                            'show_all' => __('Show optin to all visitors and users', 'mailoptin'),
-                            'show_logged_in' => __('Show optin to only logged-in users', 'mailoptin'),
-                            'show_non_logged_in' => __('Show optin to only users not logged-in', 'mailoptin'),
+                            'show_all' => __('Show to all visitors and users', 'mailoptin'),
+                            'show_logged_in' => __('Show to only logged-in users', 'mailoptin'),
+                            'show_non_logged_in' => __('Show to only users not logged-in', 'mailoptin'),
                         ],
                         'priority' => 10,
                     )
