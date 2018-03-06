@@ -104,6 +104,11 @@ class CustomizerSettings extends AbstractCustomizer
     {
         $headline_settings_args = apply_filters("mo_optin_form_customizer_headline_settings",
             array(
+                'hide_headline' => array(
+                    'default' => $this->customizer_defaults['hide_headline'],
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
                 'headline' => array(
                     'default' => $this->customizer_defaults['headline'],
                     'type' => 'option',
@@ -138,6 +143,11 @@ class CustomizerSettings extends AbstractCustomizer
     {
         $description_settings_args = apply_filters("mo_optin_form_customizer_description_settings",
             array(
+                'hide_description' => array(
+                    'default' => $this->customizer_defaults['hide_description'],
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
                 'description' => array(
                     'default' => $this->customizer_defaults['description'],
                     'type' => 'option',
@@ -171,6 +181,11 @@ class CustomizerSettings extends AbstractCustomizer
     {
         $note_settings_args = apply_filters("mo_optin_form_customizer_note_settings",
             array(
+                'hide_note' => array(
+                    'default' => $this->customizer_defaults['hide_note'],
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
                 'note' => array(
                     'default' => $this->customizer_defaults['note'],
                     'type' => 'option',
@@ -388,21 +403,6 @@ class CustomizerSettings extends AbstractCustomizer
                     'default' => $this->customizer_defaults['hide_close_button'],
                     'type' => 'option',
                     'transport' => 'refresh',
-                ),
-                'hide_headline' => array(
-                    'default' => $this->customizer_defaults['hide_headline'],
-                    'type' => 'option',
-                    'transport' => 'postMessage',
-                ),
-                'hide_description' => array(
-                    'default' => $this->customizer_defaults['hide_description'],
-                    'type' => 'option',
-                    'transport' => 'postMessage',
-                ),
-                'hide_note' => array(
-                    'default' => $this->customizer_defaults['hide_note'],
-                    'type' => 'option',
-                    'transport' => 'postMessage',
                 ),
                 'success_message' => array(
                     'default' => $this->customizer_defaults['success_message'],
