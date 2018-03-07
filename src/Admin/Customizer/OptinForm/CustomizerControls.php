@@ -1064,7 +1064,7 @@ class CustomizerControls
                 __('Premium Version Available', 'mailoptin')
             );
             $content .= sprintf(
-                __('Upgrade to %sMailOptin Premium%s to pass lead data to redirect URL, trigger success script after conversion and specify the state of optin form to subscribed users.', 'mailoptin'),
+                __('Upgrade to %sMailOptin Premium%s to pass lead data to redirect URL, send email notification and trigger success script after conversion.', 'mailoptin'),
                 '<a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=quick_setup_panel">',
                 '</a>'
             );
