@@ -134,6 +134,8 @@ class Customizer
 
     public function clean_up_customizer()
     {
+        // remove all custom media button added by plugins and core.
+        remove_all_actions('media_buttons');
         remove_all_actions('wp_head');
         remove_all_actions('wp_print_styles');
         remove_all_actions('wp_print_head_scripts');
@@ -144,6 +146,8 @@ class Customizer
         add_action('wp_head', 'wp_print_styles', 8);
         add_action('wp_head', 'wp_print_head_scripts', 9);
         add_action('wp_head', 'wp_site_icon');
+        // add core media button back.
+        add_action('media_buttons', 'media_buttons');
         // Handle `wp_footer`
         add_action('wp_footer', 'wp_print_footer_scripts', 20);
 
