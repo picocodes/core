@@ -302,6 +302,8 @@ class CustomizerControls
                             'label' => __('Logo', 'mailoptin'),
                             'section' => $this->customizerClassInstance->campaign_header_section_id,
                             'settings' => $this->option_prefix . '[header_logo]',
+                            'flex_width' => true,
+                            'flex_height' => true,
                             'button_labels' => array(
                                 'select' => __('Select Logo', 'mailoptin'),
                                 'change' => __('Change Logo', 'mailoptin'),

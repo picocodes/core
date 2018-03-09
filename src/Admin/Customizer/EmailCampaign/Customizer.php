@@ -332,7 +332,7 @@ class Customizer
 
         $wp_customize->add_section($this->campaign_settings_section_id, array(
                 'title' => __('Automation Settings', 'mailoptin'),
-                'priority' => 10,
+                'priority' => 55,
             )
         );
 
