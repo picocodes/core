@@ -538,7 +538,7 @@ class CustomizerSettings extends AbstractCustomizer
                     'transport' => 'postMessage',
                 ),
                 'load_optin_globally' => array(
-                    'default' => apply_filters('mo_optin_form_load_optin_globally', ''),
+                    'default' => $this->customizer_defaults['load_optin_globally'],
                     'type' => 'option',
                     'transport' => 'postMessage',
                 ),
