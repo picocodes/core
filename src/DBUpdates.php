@@ -8,7 +8,7 @@ class DBUpdates
 {
     public static $instance;
 
-    const DB_VER = 4;
+    const DB_VER = 5;
 
     public function init_options()
     {
@@ -98,6 +98,23 @@ class DBUpdates
             foreach ($sidebar_ids as $sidebar_id) {
                 $all_optin_settings[$sidebar_id]['load_optin_globally'] = true;
             }
+            OptinCampaignsRepository::updateSettings($all_optin_settings);
+        }
+    }
+
+    public function update_routine_5()
+    {
+        // All previous optin with global load empty (which means false) should explicitly be false.
+        if (defined('MAILOPTIN_DETACH_LIBSODIUM')) {
+
+            $all_optin_settings = OptinCampaignsRepository::get_settings();
+
+            foreach ($all_optin_settings as $optin_campaign_id => $setting) {
+                if (!isset($all_optin_settings[$optin_campaign_id]['load_optin_globally']) || $all_optin_settings[$optin_campaign_id]['load_optin_globally'] === '') {
+                    $all_optin_settings[$optin_campaign_id]['load_optin_globally'] = false;
+                }
+            }
+
             OptinCampaignsRepository::updateSettings($all_optin_settings);
         }
     }
