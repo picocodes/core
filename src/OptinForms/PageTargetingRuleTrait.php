@@ -32,7 +32,7 @@ trait PageTargetingRuleTrait
         /** @var string $post_post_type post type of current post */
         $post_post_type = get_post_type($post_id);
 
-        if (OCR::get_customizer_value($id, 'click_launch_status') || OCR::get_customizer_value($id, 'load_optin_globally')) {
+        if (OCR::get_customizer_value($id, 'click_launch_status') || OCR::get_merged_customizer_value($id, 'load_optin_globally')) {
             return true;
         } else {
             $load_optin_index = OCR::get_customizer_value($id, 'load_optin_index');
