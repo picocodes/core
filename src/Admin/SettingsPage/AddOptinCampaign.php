@@ -15,7 +15,6 @@ use W3Guy\Custom_Settings_Page_Api;
 
 class AddOptinCampaign extends AbstractSettingsPage
 {
-
     /**
      * Build the settings page structure. I.e tab, sidebar.
      */

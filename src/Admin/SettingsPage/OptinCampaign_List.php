@@ -293,16 +293,17 @@ class OptinCampaign_List extends \WP_List_Table
     public static function _optin_campaign_customize_url($optin_campaign_id)
     {
         return add_query_arg(
-            array(
-                'url' => urlencode(
-                    add_query_arg(
-                        '_wpnonce',
-                        wp_create_nonce('mailoptin-preview-optin-form'),
-                        sprintf(home_url('/?mailoptin_optin_campaign_id=%d'), $optin_campaign_id)
-                    )
-                ),
-                'return' => MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE,
-                'mailoptin_optin_campaign_id' => $optin_campaign_id,
+            apply_filters('mo_optin_campaign_customize_url', array(
+                    'url' => urlencode(
+                        add_query_arg(
+                            '_wpnonce',
+                            wp_create_nonce('mailoptin-preview-optin-form'),
+                            sprintf(home_url('/?mailoptin_optin_campaign_id=%d'), $optin_campaign_id)
+                        )
+                    ),
+                    'return' => MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE,
+                    'mailoptin_optin_campaign_id' => $optin_campaign_id,
+                )
             ),
             admin_url('customize.php')
         );

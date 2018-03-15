@@ -136,16 +136,17 @@ class Email_Campaign_List extends \WP_List_Table
     public static function _campaign_customize_url($item_id)
     {
         return add_query_arg(
-            array(
-                'url' => urlencode(
-                    add_query_arg(
-                        '_wpnonce',
-                        wp_create_nonce('mailoptin-preview-email-campaign'),
-                        sprintf(home_url('/?mailoptin_email_campaign_id=%d'), $item_id)
-                    )
-                ),
-                'return' => MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE,
-                'mailoptin_email_campaign_id' => $item_id,
+            apply_filters('mo_email_campaign_customize_url', array(
+                    'url' => urlencode(
+                        add_query_arg(
+                            '_wpnonce',
+                            wp_create_nonce('mailoptin-preview-email-campaign'),
+                            sprintf(home_url('/?mailoptin_email_campaign_id=%d'), $item_id)
+                        )
+                    ),
+                    'return' => MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE,
+                    'mailoptin_email_campaign_id' => $item_id,
+                )
             ),
             admin_url('customize.php')
         );
