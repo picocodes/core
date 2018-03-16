@@ -80,56 +80,85 @@ class Customizer
     {
         if (!empty($_REQUEST['mailoptin_optin_campaign_id'])) {
 
-            add_action('init', [$this, 'clean_up_customizer'], 9999999999999);
-
-            add_action('customize_controls_enqueue_scripts', array($this, 'monkey_patch_customizer_payload'));
-            add_action('customize_controls_enqueue_scripts', array($this, 'customizer_js'));
-            add_action('customize_controls_enqueue_scripts', [$this, 'customizer_css']);
-
-            add_action('customize_controls_print_footer_scripts', [$this, 'add_activate_switch']);
-
-            $this->optin_campaign_id = absint($_REQUEST['mailoptin_optin_campaign_id']);
-            $this->optin_campaign_type = OptinCampaignsRepository::get_optin_campaign_type($this->optin_campaign_id);
-
-            add_action('customize_controls_init', function () {
-                echo '<script type="text/javascript">';
-                echo "var mailoptin_optin_campaign_id = $this->optin_campaign_id;";
-                echo '</script>';
-            });
-
-            add_filter('gettext', function ($translations, $text, $domain) {
-                if ($domain == 'default' && $text == 'Publish') {
-                    $translations = 'Save Changes';
-                }
-                if ($domain == 'default' && $text == 'Published') {
-                    $translations = 'Saved';
-                }
-
-                return $translations;
-            }, 10, 3);
-
-            add_filter('template_include', array($this, 'include_optin_form_customizer_template'));
-
-            add_filter('gettext', array($this, 'rewrite_customizer_panel_description'), 10, 3);
-            add_filter('gettext', array($this, 'rewrite_customizer_save_publish_label'), 10, 3);
-
-            // remove all sections other han that of template customizer.
-            add_action('customize_section_active', array($this, 'remove_sections'), 10, 2);
-
-            // Remove all customizer panels.
-            add_action('customize_panel_active', array($this, 'remove_panels'), 10, 2);
-
-            add_action('customize_register', array($this, 'register_optin_form_customizer'));
-
-            // save edited optin campaign title
-            add_action('customize_save', array($this, 'save_optin_campaign_title'));
-
-            // save edited optin campaign title
-            add_action('customize_save_after', array($this, 'burst_cache_after_customizer_save'));
-
-            // Disable admin bar.
-            add_filter('show_admin_bar', '__return_false');
+            add_action('init', [$this, 'init'], 9999999999999);
         }
+    }
+
+    public function init()
+    {
+        add_action('customize_controls_enqueue_scripts', function () {
+
+            $cache = wp_get_theme();
+            $child_theme = wp_get_theme()->get_stylesheet();
+            $parent_theme = $cache->get_template();
+
+            $wp_styles = wp_styles();
+            $wp_scripts = wp_scripts();
+
+            foreach ($wp_scripts->registered as $key => $value) {
+                $src = $value->src;
+                if (strpos($src, $child_theme) !== false || strpos($src, $parent_theme) !== false) {
+                    wp_deregister_script($key);
+                    wp_dequeue_script($key);
+                }
+            }
+
+            foreach ($wp_styles->registered as $key => $value) {
+                $src = $value->src;
+                if (strpos($src, $child_theme) !== false || strpos($src, $parent_theme) !== false) {
+                    wp_deregister_style($key);
+                    wp_dequeue_style($key);
+                }
+            }
+
+        }, 999999999999999999999999999999);
+
+        add_action('init', [$this, 'clean_up_customizer']);
+        add_action('customize_controls_enqueue_scripts', array($this, 'customizer_css_js'));
+
+        add_action('customize_controls_print_footer_scripts', [$this, 'add_activate_switch']);
+
+        $this->optin_campaign_id = absint($_REQUEST['mailoptin_optin_campaign_id']);
+        $this->optin_campaign_type = OptinCampaignsRepository::get_optin_campaign_type($this->optin_campaign_id);
+
+        add_action('customize_controls_init', function () {
+            echo '<script type="text/javascript">';
+            echo "var mailoptin_optin_campaign_id = $this->optin_campaign_id;";
+            echo '</script>';
+        });
+
+        add_filter('gettext', function ($translations, $text, $domain) {
+            if ($domain == 'default' && $text == 'Publish') {
+                $translations = __('Save Changes', 'mailptin');
+            }
+            if ($domain == 'default' && $text == 'Published') {
+                $translations = __('Saved', 'mailptin');
+            }
+
+            return $translations;
+        }, 10, 3);
+
+        add_filter('template_include', array($this, 'include_optin_form_customizer_template'));
+
+        add_filter('gettext', array($this, 'rewrite_customizer_panel_description'), 10, 3);
+        add_filter('gettext', array($this, 'rewrite_customizer_save_publish_label'), 10, 3);
+
+        // remove all sections other han that of template customizer.
+        add_action('customize_section_active', array($this, 'remove_sections'), 10, 2);
+
+        // Remove all customizer panels.
+        add_action('customize_panel_active', array($this, 'remove_panels'), 10, 2);
+
+        add_action('customize_register', array($this, 'register_optin_form_customizer'));
+
+        // save edited optin campaign title
+        add_action('customize_save', array($this, 'save_optin_campaign_title'));
+
+        // save edited optin campaign title
+        add_action('customize_save_after', array($this, 'burst_cache_after_customizer_save'));
+
+        // Disable admin bar.
+        add_filter('show_admin_bar', '__return_false');
     }
 
     public function clean_up_customizer()
@@ -196,35 +225,20 @@ class Customizer
     }
 
     /**
-     * customizer enqueued CSS
+     * Enqueue CSS / JavaScript for optin form customizer controls.
      */
-    public function customizer_css()
+    public function customizer_css_js()
     {
-        wp_enqueue_style('mailoptin-customizer', MAILOPTIN_ASSETS_URL . 'css/admin/customizer-stylesheet.css');
-    }
+//        $a = wp_scripts();
+//        $b = wp_styles();
+//
+//        var_dump($a);
+//        exit;
 
-    /**
-     * Enqueue JavaScript for optin form customizer controls.
-     */
-    public function customizer_js()
-    {
-        wp_enqueue_script(
-            'mailoptin-optin-form-contextual-customizer-controls',
-            MAILOPTIN_ASSETS_URL . 'js/customizer-controls/contextual-customizer-controls.js',
-            array('customize-controls'),
-            MAILOPTIN_VERSION_NUMBER
-        );
 
-        wp_enqueue_script(
-            'mailoptin-optin-form-fetch-customizer-connect-list-controls',
-            MAILOPTIN_ASSETS_URL . 'js/customizer-controls/fetch-customizer-connect-list.js',
-            array('customize-controls'),
-            MAILOPTIN_VERSION_NUMBER
-        );
-    }
+//        wp_deregister_style('hu-customizer-controls-style');
+//        wp_deregister_script('hu-customizer-controls');
 
-    public function monkey_patch_customizer_payload()
-    {
         wp_add_inline_script('customize-controls', '(function ( api ) {
                     api.bind( "ready", function () {
                         var _query = api.previewer.query;
@@ -239,6 +253,22 @@ class Customizer
                         });
                     })( wp.customize );'
         );
+
+        wp_enqueue_script(
+            'mailoptin-optin-form-contextual-customizer-controls',
+            MAILOPTIN_ASSETS_URL . 'js/customizer-controls/contextual-customizer-controls.js',
+            array('customize-controls'),
+            MAILOPTIN_VERSION_NUMBER
+        );
+
+        wp_enqueue_script(
+            'mailoptin-optin-form-fetch-customizer-connect-list-controls',
+            MAILOPTIN_ASSETS_URL . 'js/customizer-controls/fetch-customizer-connect-list.js',
+            array('customize-controls'),
+            MAILOPTIN_VERSION_NUMBER
+        );
+
+        wp_enqueue_style('mailoptin-customizer', MAILOPTIN_ASSETS_URL . 'css/admin/customizer-stylesheet.css');
     }
 
 
