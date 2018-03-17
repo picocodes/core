@@ -3,11 +3,14 @@
 namespace MailOptin\Core\Admin\Customizer\EmailCampaign;
 
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Submit_Button_Control;
+use MailOptin\Core\Admin\Customizer\CustomizerTrait;
 use MailOptin\Core\Admin\Customizer\UpsellCustomizerSection;
 use MailOptin\Core\Repositories\EmailCampaignRepository;
 
 class Customizer
 {
+    use CustomizerTrait;
+
     /** @var string email campaign database option name */
     public $campaign_settings = MO_EMAIL_CAMPAIGNS_WP_OPTION_NAME;
 
@@ -45,7 +48,8 @@ class Customizer
     {
         if (!empty($_REQUEST['mailoptin_email_campaign_id'])) {
 
-            add_action('init', [$this, 'clean_up_customizer'], 9999999999999);
+            $this->clean_up_customizer();
+            $this->modify_customizer_publish_button();
 
             add_action('customize_controls_enqueue_scripts', array($this, 'monkey_patch_customizer_payload'));
             add_action('customize_controls_enqueue_scripts', array($this, 'customizer_css'));
@@ -66,17 +70,6 @@ class Customizer
                 echo '</script>';
             });
 
-            add_filter('gettext', function ($translations, $text, $domain) {
-                if ($domain == 'default' && $text == 'Publish') {
-                    $translations = 'Save Changes';
-                }
-                if ($domain == 'default' && $text == 'Published') {
-                    $translations = 'Saved';
-                }
-
-                return $translations;
-            }, 10, 3);
-
             add_action('customize_controls_enqueue_scripts', function () {
                 wp_enqueue_script('mailoptin-send-test-email', MAILOPTIN_ASSETS_URL . 'js/admin/send-test-email.js');
             });
@@ -94,30 +87,6 @@ class Customizer
             add_action('customize_register', array($this, 'register_campaign_customizer'));
         }
 
-    }
-
-    public function clean_up_customizer()
-    {
-        // remove all custom media button added by plugins and core.
-        remove_all_actions('media_buttons');
-        remove_all_actions('wp_head');
-        remove_all_actions('wp_print_styles');
-        remove_all_actions('wp_print_head_scripts');
-        remove_all_actions('wp_footer');
-
-        // Handle `wp_head`
-        add_action('wp_head', 'wp_enqueue_scripts', 1);
-        add_action('wp_head', 'wp_print_styles', 8);
-        add_action('wp_head', 'wp_print_head_scripts', 9);
-        add_action('wp_head', 'wp_site_icon');
-        // add core media button back.
-        add_action('media_buttons', 'media_buttons');
-        // Handle `wp_footer`
-        add_action('wp_footer', 'wp_print_footer_scripts', 20);
-
-        if (class_exists('Astra_Customizer') && method_exists('Astra_Customizer', 'print_footer_scripts')) {
-            remove_action('customize_controls_print_footer_scripts', [\Astra_Customizer::get_instance(), 'print_footer_scripts']);
-        }
     }
 
     /**
