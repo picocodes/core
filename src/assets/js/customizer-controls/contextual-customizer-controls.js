@@ -208,10 +208,10 @@
 
         // contextual display of redirect_url in success panel/section.
         api('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][success_action]', function (setting) {
-                var is_redirect_url_value_displayed, is_success_message_config_link_displayed,
+                var is_redirect_url_value_displayed, is_success_message_displayed,
                     linkSettingValueToControlActiveState1, linkSettingValueToControlActiveState2;
 
-                is_success_message_config_link_displayed = function () {
+            is_success_message_displayed = function () {
                     return setting.get() === 'success_message';
                 };
 
@@ -233,10 +233,10 @@
 
                 linkSettingValueToControlActiveState2 = function (control) {
                     var setActiveState = function () {
-                        control.active.set(is_success_message_config_link_displayed());
+                        control.active.set(is_success_message_displayed());
                     };
 
-                    control.active.validate = is_success_message_config_link_displayed;
+                    control.active.validate = is_success_message_displayed;
                     // Set initial active state.
                     setActiveState();
 
@@ -245,7 +245,7 @@
 
                 api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][redirect_url_value]', linkSettingValueToControlActiveState1);
                 api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][pass_lead_data_redirect_url]', linkSettingValueToControlActiveState1);
-                api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][success_message_config_link]', linkSettingValueToControlActiveState2);
+                api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][success_message]', linkSettingValueToControlActiveState2);
             }
         );
 

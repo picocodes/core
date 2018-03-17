@@ -871,14 +871,6 @@ class CustomizerControls
                         )
                     )
                 ),
-                'success_message' => apply_filters('mo_optin_form_customizer_success_message_args', array(
-                        'type' => 'textarea',
-                        'label' => __('Optin Success Message', 'mailoptin'),
-                        'section' => $this->customizerClassInstance->configuration_section_id,
-                        'settings' => $this->option_prefix . '[success_message]',
-                        'priority' => 100,
-                    )
-                ),
                 'remove_branding' => new WP_Customize_Toggle_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[remove_branding]',
@@ -1012,12 +1004,6 @@ class CustomizerControls
      */
     public function after_conversion_controls()
     {
-        $success_message_config_link = sprintf(
-            '<br>' . __("To customize success message, %sclick here%s.", 'mailoptin'),
-            '<a onclick="wp.customize.control(\'mo_optin_campaign[' . $this->optin_campaign_id . '][success_message]\').focus()" href="#">',
-            '</a>'
-        );
-
         $success_control_choices = [
             'success_message' => __('Display success message.', 'mailoptin'),
             'close_optin' => __('Close optin', 'mailoptin'),
@@ -1039,8 +1025,17 @@ class CustomizerControls
                         'label' => __('Success Action', 'mailoptin'),
                         'section' => $this->customizerClassInstance->success_section_id,
                         'settings' => $this->option_prefix . '[success_action]',
-                        'description' => __('What to do after users subscribe.', 'mailoptin') . $success_message_config_link,
+                        'description' => __('What to do after users subscribe.', 'mailoptin'),
                         'priority' => 10,
+                    )
+                ),
+
+                'success_message' => apply_filters('mo_optin_form_customizer_success_message_args', array(
+                        'type' => 'textarea',
+                        'label' => __('Optin Success Message', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->success_section_id,
+                        'settings' => $this->option_prefix . '[success_message]',
+                        'priority' => 15,
                     )
                 ),
                 'redirect_url_value' => apply_filters('mo_optin_form_customizer_redirect_url_value_args', array(
