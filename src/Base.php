@@ -8,6 +8,7 @@ if (!defined('ABSPATH')) {
 
 use MailOptin\Core\Admin\AdminNotices;
 use MailOptin\Core\Admin\SettingsPage\ConversionExport;
+use MailOptin\Core\Admin\SettingsPage\LibsodiumSettingsPage;
 use MailOptin\Core\Admin\SettingsPage\ProUpgrade;
 use MailOptin\Core\Admin\SettingsPage\UsageTracking;
 use MailOptin\Core\EmailCampaign\PreviewCampaignLog;
@@ -111,6 +112,8 @@ class Base
         if (!is_admin()) {
             return;
         }
+
+        LibsodiumSettingsPage::get_instance();
 
         Admin\SettingsPage\Settings::get_instance();
         Admin\SettingsPage\Connections::get_instance();
