@@ -512,8 +512,8 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         );
 
         $tag = sanitize_text_field($atts['tag']);
-        $class = esc_attr($atts['class']);
-        $class = "mo-optin-form-headline $class";
+
+        $class = "mo-optin-form-headline " . esc_attr($atts['class']);
 
         $style = esc_attr($atts['style']);
         $style = "$headline_styles $style";
@@ -522,7 +522,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
             $style .= "padding: 0;";
         }
 
-        $html = "<$tag class=\"mo-optin-form-headline $class\" style=\"$style\">$headline</$tag>";
+        $html = "<$tag class=\"$class\" style=\"$style\">$headline</$tag>";
 
         return $html;
     }
@@ -546,9 +546,11 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
             )
         );
 
-        $title = __('Close optin form');
+        $title = __('Close optin form', 'mailoptin');
 
-        $close_button = "<a href='#' rel=\"moOptin:close\" title=\"$title\" class='" . $atts['class'] . "' style='" . $atts['style'] . "'>";
+        $class = "mo-optin-form-close-icon " . esc_attr($atts['class']);
+
+        $close_button = "<a href='#' rel=\"moOptin:close\" title=\"$title\" class=\"$class\" style='" . $atts['style'] . "'>";
         $close_button .= $content;
         $close_button .= '</a>';
 

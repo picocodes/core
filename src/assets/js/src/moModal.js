@@ -52,7 +52,7 @@ define(["jquery"], function ($) {
 
             //to bind close event
             if ('iconClose' in option && option.iconClose === true) {
-                var closeButton = $('<a href="#" rel="moOptin:close" class="mo-close-modal ' + option.closeClass + '">' + option.closeText + '</a>');
+                var closeButton = $('<a href="#" rel="moOptin:close" class="mo-optin-form-close-icon mo-close-modal ' + option.closeClass + '">' + option.closeText + '</a>');
                 elm.find('.mo-optin-form-wrapper').append(closeButton);
             }
 

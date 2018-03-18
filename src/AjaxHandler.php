@@ -767,7 +767,7 @@ class AjaxHandler
         // !$lead_bank_only ensures error is not thrown if lead_bank_only is checked or true.
         if (empty($connection_service) ||
             // useful for service such as convertfox and in future customer.io that doesnt require an email list to be specified.
-            (!in_array('non_email_list_support', $connection_fqn_class::features_support()) && empty($connection_email_list))
+            (!in_array('non_email_list_support', $connection_fqn_class::features_support($connection_service)) && empty($connection_email_list))
         ) {
             self::send_optin_error_email($optin_campaign_id, 'No email provider or list has been set for this optin.');
             $response = AbstractConnect::ajax_failure(__('No email provider or list has been set for this optin. Please try again', 'mailoptin'));

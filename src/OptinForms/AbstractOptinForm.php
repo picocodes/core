@@ -335,7 +335,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         $script = "<script type=\"text/javascript\">{$this->optin_js_config()}</script>";
 
         $styles = '<style id="mo-optin-form-stylesheet" type="text/css">';
-        $styles .= minify_css($this->optin_form_css() . $this->global_css($this->optin_css_id, $this->optin_campaign_uuid));
+        $styles .= mo_minify_css($this->optin_form_css() . $this->global_css($this->optin_css_id, $this->optin_campaign_uuid));
         $styles .= '</style>';
         $styles = apply_filters('mo_optin_form_css', $styles, $this->optin_campaign_uuid, $this->optin_campaign_id);
 
@@ -480,7 +480,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         $optin_form .= "</div>";
 
         $output = PHP_EOL . apply_filters('mo_optin_form_attribution_start', '<!-- This site converts visitors into subscribers and customers with the MailOptin WordPress plugin v' . MAILOPTIN_VERSION_NUMBER . ' - https://mailoptin.io -->' . PHP_EOL);
-        $output .= minify_html($optin_form);
+        $output .= mo_minify_html($optin_form);
         $output .= "<!-- / MailOptin WordPress plugin. -->" . PHP_EOL;
 
         return $output;

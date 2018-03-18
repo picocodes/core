@@ -151,6 +151,122 @@ class Customizer
         <?php
     }
 
+    public function selector_mapping_scripts_styles()
+    {
+        $mappings = apply_filters('mo_optin_selectors_mapping', [
+            [
+                'selector' => '.mo-optin-form-headline',
+                'type' => 'section',
+                'value' => $this->headline_section_id
+            ],
+            [
+                'selector' => '.mo-optin-form-description',
+                'type' => 'section',
+                'value' => $this->description_section_id
+            ],
+            [
+                'selector' => '.mo-optin-form-note',
+                'type' => 'section',
+                'value' => $this->note_section_id
+            ],
+            [
+                'selector' => '.mo-optin-form-close-icon',
+                'type' => 'control',
+                'value' => 'hide_close_button'
+            ],
+            [
+                'selector' => '.mo-optin-form-name-field',
+                'type' => 'control',
+                'value' => 'name_field_placeholder'
+            ],
+            [
+                'selector' => '.mo-optin-form-email-field',
+                'type' => 'control',
+                'value' => 'email_field_placeholder'
+            ],
+            [
+                'selector' => '.mo-optin-form-submit-button',
+                'type' => 'control',
+                'value' => 'submit_button'
+            ],
+            [
+                'selector' => '.mo-optin-form-image',
+                'type' => 'control',
+                'value' => 'form_image'
+            ],
+            [
+                'selector' => '.mo-optin-form-background-image',
+                'type' => 'control',
+                'value' => 'form_background_image'
+            ],
+            [
+                'selector' => '.mo-optin-form-cta-button',
+                'type' => 'control',
+                'value' => 'input[type="submit].cta_button_action'
+            ],
+            [
+                'selector' => '.rescript_miniHeader',
+                'type' => 'control',
+                'value' => 'mini_headline'
+            ],
+            [
+                'selector' => '.gridgum_header2',
+                'type' => 'control',
+                'value' => 'mini_headline'
+            ],
+            [
+                'selector' => '.columbine-miniText',
+                'type' => 'control',
+                'value' => 'mini_headline'
+            ]
+        ]);
+
+        if (defined('MAILOPTIN_DETACH_LIBSODIUM')) {
+            $mappings[] =
+                [
+                    'selector' => '.mo-optin-powered-by',
+                    'type' => 'control',
+                    'value' => 'remove_branding'
+                ];
+        }
+
+        // source: https://stackoverflow.com/a/35957563/2648410
+        $last_mapping = array_values(array_slice($mappings, -1))[0];
+        $css_selectors = '';
+        foreach ($mappings as $mapping) {
+            $css_selectors .= $mapping['selector'] . ':hover';
+            // do not add comma to trailing/last selector
+            if ($mapping != $last_mapping) {
+                $css_selectors .= ',';
+            }
+        }
+        $css_selectors .= '{background: rgba(255, 185, 0, 0.52) !important;border: 1px dashed #ffb900 !important;cursor: pointer !important;}';
+        ?>
+
+        <style type="text/css"><?php echo $css_selectors; ?></style>
+        <script type="text/javascript">
+            var mailoptin_option_mapping = <?php echo wp_json_encode($mappings); ?>;
+            (function ($) {
+                $(function () {
+                    $.each(mailoptin_option_mapping, function (key, value) {
+                        $(document).on('click', value.selector, function (e) {
+                            e.preventDefault();
+                            e.stopImmediatePropagation();
+                            if (value.type === 'section') {
+                                parent.wp.customize.section(value.value).focus()
+                            }
+                            if (value.type === 'control') {
+                                parent.wp.customize.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][' + value.value + ']').focus()
+                            }
+
+                        });
+                    });
+                });
+            })(jQuery);
+        </script>
+        <?php
+    }
+
     /**
      * Burst / clear optin cache after changes in customizer.
      */
@@ -167,6 +283,7 @@ class Customizer
      */
     public function customizer_css_js()
     {
+        // monkey patch
         wp_add_inline_script('customize-controls', '(function ( api ) {
                     api.bind( "ready", function () {
                         var _query = api.previewer.query;
@@ -438,6 +555,8 @@ class Customizer
 
         $optin_class_instance = OptinFormFactory::make($optin_campaign_id);
 
+        add_action('wp_head', [$this, 'selector_mapping_scripts_styles']);
+
         // $result is false of optin form class do not exist.
         if (!$optin_class_instance) {
             wp_redirect(add_query_arg('optin-error', 'class-not-found', MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE));
@@ -455,12 +574,7 @@ class Customizer
         $this->add_controls($wp_customize, $option_prefix, $optin_class_instance);
 
         // rewrite panel name from blog name to template name.
-        add_filter('pre_option_blogname',
-            array(
-                $this,
-                'rewrite_customizer_panel_title',
-            )
-        );
+        add_filter('pre_option_blogname', [$this, 'rewrite_customizer_panel_title']);
     }
 
     /**

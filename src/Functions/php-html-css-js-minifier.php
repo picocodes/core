@@ -31,18 +31,18 @@ function __minify_v($input) {
  * =======================================================
  * -- CODE: ----------------------------------------------
  *
- *    echo minify_html(file_get_contents('test.html'));
+ *    echo mo_minify_html(file_get_contents('test.html'));
  *
  * -------------------------------------------------------
  */
 
-function _minify_html($input) {
+function _mo_minify_html($input) {
     return preg_replace_callback('#<\s*([^\/\s]+)\s*(?:>|(\s[^<>]+?)\s*>)#', function($m) {
         if(isset($m[2])) {
             // Minify inline CSS declaration(s)
             if(stripos($m[2], ' style=') !== false) {
                 $m[2] = preg_replace_callback('#( style=)([\'"]?)(.*?)\2#i', function($m) {
-                    return $m[1] . $m[2] . minify_css($m[3]) . $m[2];
+                    return $m[1] . $m[2] . mo_minify_css($m[3]) . $m[2];
                 }, $m[2]);
             }
             return '<' . $m[1] . preg_replace(
@@ -68,7 +68,7 @@ function _minify_html($input) {
     }, $input);
 }
 
-function minify_html($input) {
+function mo_minify_html($input) {
     if( ! $input = trim($input)) return $input;
     global $CH;
     // Keep important white-space(s) after self-closing HTML tag(s)
@@ -84,7 +84,7 @@ function minify_html($input) {
                 if(substr($v, -12) !== '<![endif]-->') continue;
                 $output .= $v;
             } else {
-                $output .= __minify_x(_minify_html($v));
+                $output .= __minify_x(_mo_minify_html($v));
             }
         } else {
             // Force line-break with `&#10;` or `&#xa;`
@@ -122,12 +122,12 @@ function minify_html($input) {
  * =======================================================
  * -- CODE: ----------------------------------------------
  *
- *    echo minify_css(file_get_contents('test.css'));
+ *    echo mo_minify_css(file_get_contents('test.css'));
  *
  * -------------------------------------------------------
  */
 
-function _minify_css($input) {
+function _mo_minify_css($input) {
     // Keep important white-space(s) in `calc()`
     if(stripos($input, 'calc(') !== false) {
         $input = preg_replace_callback('#\b(calc\()\s*(.*?)\s*\)#i', function($m) {
@@ -191,7 +191,7 @@ function _minify_css($input) {
         $input);
 }
 
-function minify_css($input) {
+function mo_minify_css($input) {
     if( ! $input = trim($input)) return $input;
     global $SS, $CC;
     // Keep important white-space(s) between comment(s)
@@ -210,7 +210,7 @@ function minify_css($input) {
             if($v[0] === '/' && strpos($v, '/*!') !== 0) continue;
             $output .= $v; // String or comment ...
         } else {
-            $output .= _minify_css($v);
+            $output .= _mo_minify_css($v);
         }
     }
     // Remove quote(s) where possible ...
