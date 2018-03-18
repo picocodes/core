@@ -258,7 +258,9 @@ class Customizer
                             if (value.type === 'control') {
                                 parent.wp.customize.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][' + value.value + ']').focus()
                             }
-
+                            if (value.type === 'panel') {
+                                parent.wp.customize.panel(value.value).focus()
+                            }
                         });
                     });
                 });
