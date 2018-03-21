@@ -190,11 +190,11 @@ class UsageTracking
     public function act_on_tracking_decision()
     {
         if (isset($_GET['edd_action'])) {
-            if ($_GET['edd_action'] == 'opt_into_tracking') {
+            if ($_GET['edd_action'] == 'mo_opt_into_tracking') {
                 $this->check_for_optin();
             }
 
-            if ($_GET['edd_action'] == 'opt_out_of_tracking') {
+            if ($_GET['edd_action'] == 'mo_opt_out_of_tracking') {
                 $this->check_for_optout();
             }
 
@@ -268,7 +268,7 @@ class UsageTracking
             return;
         }
 
-        if (\MailOptin\Core\plugin_settings()->allow_tracking(false)) {
+        if (self::tracking_allowed()) {
             return;
         }
 
@@ -284,8 +284,8 @@ class UsageTracking
         } else {
 
 
-            $optin_url = add_query_arg('edd_action', 'opt_into_tracking');
-            $optout_url = add_query_arg('edd_action', 'opt_out_of_tracking');
+            $optin_url = add_query_arg('edd_action', 'mo_opt_into_tracking');
+            $optout_url = add_query_arg('edd_action', 'mo_opt_out_of_tracking');
 
             $source         = substr( md5( get_bloginfo( 'name' ) ), 0, 10 );
             $store_url = 'https://mailoptin.io/pricing/?utm_source=' . $source . '&utm_medium=admin&utm_term=notice&utm_campaign=MailOptinUsageTracking';

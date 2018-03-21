@@ -22,6 +22,7 @@ use MailOptin\Core\Repositories\EmailCampaignRepository;
  * @method string content_alignment()
  * @method string content_ellipsis_button_alignment()
  * @method string content_ellipsis_button_label()
+ * @method string content_remove_ellipsis_button()
  * @method string header_removal()
  * @method string footer_removal()
  * @method string footer_background_color()
@@ -113,8 +114,12 @@ abstract class AbstractEmailCampaign extends AbstractCustomizer implements Email
      */
     public function footer_description()
     {
-        return apply_filters('mailoptin_email_template_footer_description',
-            nl2br($this->get_customizer_value('footer_description')));
+        return apply_filters(
+            'mailoptin_email_template_footer_description',
+            nl2br($this->get_customizer_value('footer_description')),
+            $this->email_campaign_id,
+            $this
+        );
     }
 
     /**
@@ -122,8 +127,12 @@ abstract class AbstractEmailCampaign extends AbstractCustomizer implements Email
      */
     public function footer_unsubscribe_line()
     {
-        return apply_filters('mailoptin_email_template_footer_unsubscribe_line',
-            nl2br($this->get_customizer_value('footer_unsubscribe_line')));
+        return apply_filters(
+            'mailoptin_email_template_footer_unsubscribe_line',
+            nl2br($this->get_customizer_value('footer_unsubscribe_line')),
+            $this->email_campaign_id,
+            $this
+        );
     }
 
     /**
@@ -131,8 +140,12 @@ abstract class AbstractEmailCampaign extends AbstractCustomizer implements Email
      */
     public function footer_unsubscribe_link_label()
     {
-        return apply_filters('mailoptin_email_template_footer_unsubscribe_link_label',
-            nl2br($this->get_customizer_value('footer_unsubscribe_link_label')));
+        return apply_filters(
+            'mailoptin_email_template_footer_unsubscribe_link_label',
+            nl2br($this->get_customizer_value('footer_unsubscribe_link_label')),
+            $this->email_campaign_id,
+            $this
+        );
     }
 
     /**
@@ -243,7 +256,7 @@ abstract class AbstractEmailCampaign extends AbstractCustomizer implements Email
         $footer_unsubscribe_link_color = $this->footer_unsubscribe_link_color();
 
 
-        return <<<CSS
+        $css = <<<CSS
     .mo-page-bg-color {background-color: $page_background_color;}
     .mo-header-bg-color {background-color: $header_background_color;}
     .mo-header-text-color {color: $header_text_color;}
@@ -267,6 +280,7 @@ abstract class AbstractEmailCampaign extends AbstractCustomizer implements Email
     .mo-footer-font-size {font-size: {$footer_font_size}px;}
     .mo-footer-unsubscribe-link-color {color: $footer_unsubscribe_link_color;}
 CSS;
+        return apply_filters('mailoptin_email_template_core_style', $css, $this->email_campaign_id, $this);
     }
 
     /**
@@ -340,7 +354,11 @@ CSS;
      */
     public function get_template_logo_header_text()
     {
-        $logo_alt = apply_filters('mailoptin_email_template_logo_alt', \MailOptin\Core\site_title());
+        $logo_alt = apply_filters(
+            'mailoptin_email_template_logo_alt', \MailOptin\Core\site_title(),
+            $this->email_campaign_id,
+            $this
+        );
         $logo_url = $this->get_template_logo();
 
         return !$logo_url ? $this->header_text() : "<img src=\"$logo_url\" alt='$logo_alt'>";
@@ -364,7 +382,8 @@ CSS;
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
         <style type="text/css">
-            <?php echo do_shortcode($this->get_styles() . "\r\n". $this->get_template_core_css()); ?>
+            <?php $template_style = apply_filters($this->get_styles(), $this->email_campaign_id, $this); ?>
+            <?php echo apply_filters('mailoptin_email_template_style', do_shortcode($template_style . "\r\n". $this->get_template_core_css(), $this->email_campaign_id, $this)); ?>
         </style>
     </head>
     <body>

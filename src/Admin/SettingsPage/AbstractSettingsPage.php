@@ -17,6 +17,9 @@ abstract class AbstractSettingsPage
     {
         add_action('admin_menu', array($this, 'register_core_menu'));
 
+        /**
+         * @todo consider removing since it's not used. investigate first though.
+         */
         add_action('wp_cspa_after_settings_tab', [$this, 'toggle_buttons']);
     }
 

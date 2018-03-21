@@ -686,7 +686,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
              * Animate optin form display
              */
             animate_optin_display: function (effects) {
-                if ((effects != '') || (effects !== undefined)) {
+                if ((effects !== '') || (typeof effects !== 'undefined')) {
                     this.find('.mo-optin-form-wrapper').animateOptin(effects);
                 }
             },

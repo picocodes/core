@@ -308,6 +308,62 @@ class Custom_Settings_Page_Api
         <?php
     }
 
+    /**
+     * For building settings page with vertical sidebar tab menus.
+     */
+    public function build_sidebar_tab_style()
+    {
+        $settings_args = $this->main_content_config;
+        $option_name = $this->option_name;
+
+        do_action('pp_before_settings_page', $option_name);
+        $nav_tabs         = '';
+        $tab_content_area = '';
+
+        if ( ! empty($settings_args)) {
+            foreach ($settings_args as $key => $settings_arg) {
+                $tab_title     = $settings_arg['tab_title'];
+                $section_title = $settings_arg['section_title'];
+                unset($settings_arg['tab_title']);
+                unset($settings_arg['section_title']);
+                $nav_tabs .= sprintf('<a href="#%1$s" class="nav-tab" id="%1$s-tab"><span class="dashicons dashicons-admin-generic"></span> %2$s</a>', $key, $tab_title);
+
+                if (isset($settings_arg[0]['section_title'])) {
+                    $tab_content_area .= sprintf('<div id="%s" class="pp-group-wrapper">', $key);
+                    foreach ($settings_arg as $single_arg) {
+                        $tab_content_area .= $this->metax_box_instance($single_arg);
+                    }
+                    $tab_content_area .= '</div>';
+                } else {
+                    $settings_arg['section_title'] = $section_title;
+                    $tab_content_area              .= sprintf('<div id="%s" class="pp-group-wrapper">', $key);
+                    $tab_content_area              .= $this->metax_box_instance($settings_arg);
+                    $tab_content_area              .= '</div>';
+                }
+            }
+
+            $this->persist_plugin_settings();
+
+            echo '<div class="wrap ppview">';
+            $this->settings_page_heading();
+            $this->do_settings_errors();
+            settings_errors('wp_csa_notice');
+            $this->settings_page_tab();
+
+            echo '<div class="pp-settings-wrap" data-option-name="' . $option_name . '">';
+            echo '<h2 class="nav-tab-wrapper">' . $nav_tabs . '</h2>';
+            echo '<div class="metabox-holder pp-tab-settings">';
+            echo '<form method="post">';
+            $this->nonce_field();
+            echo $tab_content_area;
+            echo '</form>';
+            echo '</div>';
+            echo '</div>';
+            echo '</div>';
+
+            do_action('pp_after_settings_page', $option_name);
+        }
+    }
 
     /**
      * Get current page URL.
