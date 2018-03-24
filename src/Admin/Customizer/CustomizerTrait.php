@@ -40,7 +40,6 @@ trait CustomizerTrait
                     $src = $value->src;
                     if (strpos($src, $child_theme) !== false || strpos($src, $parent_theme) !== false) {
                         wp_deregister_script($key);
-                        wp_dequeue_script($key);
                     }
                 }
 
@@ -48,7 +47,6 @@ trait CustomizerTrait
                     $src = $value->src;
                     if (strpos($src, $child_theme) !== false || strpos($src, $parent_theme) !== false) {
                         wp_deregister_style($key);
-                        wp_dequeue_style($key);
                     }
                 }
 

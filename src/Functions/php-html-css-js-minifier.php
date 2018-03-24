@@ -234,7 +234,7 @@ function mo_minify_css($input) {
  * =======================================================
  * -- CODE: ----------------------------------------------
  *
- *    echo minify_js(file_get_contents('test.js'));
+ *    echo mo_minify_js(file_get_contents('test.js'));
  *
  * -------------------------------------------------------
  */
@@ -264,7 +264,7 @@ function _minify_js($input) {
         $input);
 }
 
-function minify_js($input) {
+function mo_minify_js($input) {
     if( ! $input = trim($input)) return $input;
     // Create chunk(s) of string(s), comment(s), regex(es) and text
     global $SS, $CC;

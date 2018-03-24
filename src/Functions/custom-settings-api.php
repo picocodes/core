@@ -162,6 +162,12 @@ class Custom_Settings_Page_Api
 
         $sanitized_data = array();
         foreach ($data as $key => $value) {
+            // skip sanitation. useful for fields that expects html
+            if ($a = apply_filters('wp_cspa_sanitize_skip', false, $key, $value)) {
+                $sanitized_data[$key] = $data[$key];
+                continue;
+            }
+
             if (is_array($data[$key])) {
                 $sanitized_data[$key] = self::sanitize_data($data[$key]);
             } else {
@@ -202,7 +208,7 @@ class Custom_Settings_Page_Api
             return;
         }
 
-        $sanitize_callable = apply_filters('wp_cspa_santize_callback', 'self::sanitize_data');
+        $sanitize_callable = apply_filters('wp_cspa_sanitize_callback', 'self::sanitize_data');
 
         $sanitized_data = apply_filters(
             'wp_cspa_santized_data',
@@ -308,62 +314,6 @@ class Custom_Settings_Page_Api
         <?php
     }
 
-    /**
-     * For building settings page with vertical sidebar tab menus.
-     */
-    public function build_sidebar_tab_style()
-    {
-        $settings_args = $this->main_content_config;
-        $option_name = $this->option_name;
-
-        do_action('pp_before_settings_page', $option_name);
-        $nav_tabs         = '';
-        $tab_content_area = '';
-
-        if ( ! empty($settings_args)) {
-            foreach ($settings_args as $key => $settings_arg) {
-                $tab_title     = $settings_arg['tab_title'];
-                $section_title = $settings_arg['section_title'];
-                unset($settings_arg['tab_title']);
-                unset($settings_arg['section_title']);
-                $nav_tabs .= sprintf('<a href="#%1$s" class="nav-tab" id="%1$s-tab"><span class="dashicons dashicons-admin-generic"></span> %2$s</a>', $key, $tab_title);
-
-                if (isset($settings_arg[0]['section_title'])) {
-                    $tab_content_area .= sprintf('<div id="%s" class="pp-group-wrapper">', $key);
-                    foreach ($settings_arg as $single_arg) {
-                        $tab_content_area .= $this->metax_box_instance($single_arg);
-                    }
-                    $tab_content_area .= '</div>';
-                } else {
-                    $settings_arg['section_title'] = $section_title;
-                    $tab_content_area              .= sprintf('<div id="%s" class="pp-group-wrapper">', $key);
-                    $tab_content_area              .= $this->metax_box_instance($settings_arg);
-                    $tab_content_area              .= '</div>';
-                }
-            }
-
-            $this->persist_plugin_settings();
-
-            echo '<div class="wrap ppview">';
-            $this->settings_page_heading();
-            $this->do_settings_errors();
-            settings_errors('wp_csa_notice');
-            $this->settings_page_tab();
-
-            echo '<div class="pp-settings-wrap" data-option-name="' . $option_name . '">';
-            echo '<h2 class="nav-tab-wrapper">' . $nav_tabs . '</h2>';
-            echo '<div class="metabox-holder pp-tab-settings">';
-            echo '<form method="post">';
-            $this->nonce_field();
-            echo $tab_content_area;
-            echo '</form>';
-            echo '</div>';
-            echo '</div>';
-            echo '</div>';
-
-            do_action('pp_after_settings_page', $option_name);
-        }
-    }
 
     /**
      * Get current page URL.
@@ -391,6 +341,7 @@ class Custom_Settings_Page_Api
 
     /**
      * Main settings page markup.
+     *
      * @param bool $return_output
      */
     public function _settings_page_main_content_area($return_output = false)
@@ -406,13 +357,16 @@ class Custom_Settings_Page_Api
             }
         }
 
-        if ($return_output) return $html;
+        if ($return_output) {
+            return $html;
+        }
 
         echo $html;
     }
 
     /**
      * @param $args
+     *
      * @return string
      */
     public function metax_box_instance($args)
@@ -540,6 +494,7 @@ class Custom_Settings_Page_Api
 
     /**
      * Useful if u wanna use any text/html in the settings page.
+     *
      * @param mixed $data
      *
      * @return string
@@ -595,6 +550,7 @@ class Custom_Settings_Page_Api
         $length = strlen($string);
         $obfuscated_length = ceil($length / 2);
         $string = str_repeat('*', $obfuscated_length) . substr($string, $obfuscated_length);
+
         return $string;
     }
 
@@ -735,7 +691,6 @@ class Custom_Settings_Page_Api
         return ob_get_clean();
     }
 
-
     /**
      * Renders the textarea field
      *
@@ -764,6 +719,42 @@ class Custom_Settings_Page_Api
                 <textarea rows="<?php echo $rows; ?>" cols="<?php echo $cols; ?>"
                           name="<?php echo $option_name, '[', $key, ']'; ?>"
                           id="<?php echo $key; ?>"><?php echo $value; ?></textarea>
+                <?php do_action('wp_cspa_after_textarea_field', $db_options, $option_name, $key, $args); ?>
+
+                <p class="description"><?php echo $description; ?></p>
+            </td>
+        </tr>
+        <?php
+        return ob_get_clean();
+    }
+
+    /**
+     * Renders the textarea field
+     *
+     * @param array $db_options addons DB options
+     * @param string $key array key of class argument
+     * @param array $args class args
+     *
+     * @return string
+     */
+    public function _wp_editor($db_options, $key, $args)
+    {
+        $key = esc_attr($key);
+        $label = esc_attr($args['label']);
+        $description = @$args['description'];
+        $tr_id = isset($args['tr_id']) ? $args['tr_id'] : "{$key}_row";
+        $option_name = $this->option_name;
+        $value = !empty($db_options[$key]) ? stripslashes($db_options[$key]) : @$args['value'];
+        $settings = !empty($args['settings']) ? $args['settings'] : [];
+
+        $settings = array_replace(['textarea_name' => $option_name . '[' . $key . ']'], $settings);
+        ob_start();
+        ?>
+        <tr id="<?php echo $tr_id; ?>">
+            <th scope="row"><label for="<?php echo $key; ?>"><?php echo $label; ?></label></th>
+            <td>
+                <?php do_action('wp_cspa_before_textarea_field', $db_options, $option_name, $key, $args); ?>
+                <?php wp_editor($value, $key, $settings); ?>
                 <?php do_action('wp_cspa_after_textarea_field', $db_options, $option_name, $key, $args); ?>
 
                 <p class="description"><?php echo $description; ?></p>
@@ -813,7 +804,6 @@ class Custom_Settings_Page_Api
         <?php
         return ob_get_clean();
     }
-
 
     /**
      * Renders the checkbox field
@@ -914,6 +904,63 @@ public function _header($section_title)
         return '</table>
 	</div>
 </div>';
+    }
+
+    /**
+     * For building settings page with vertical sidebar tab menus.
+     */
+    public function build_sidebar_tab_style()
+    {
+        $settings_args = $this->main_content_config;
+        $option_name = $this->option_name;
+
+        do_action('mailoptin_before_settings_page', $option_name);
+        $nav_tabs = '';
+        $tab_content_area = '';
+
+        if (!empty($settings_args)) {
+            foreach ($settings_args as $key => $settings_arg) {
+                $tab_title = @$settings_arg['tab_title'];
+                $section_title = @$settings_arg['section_title'];
+                unset($settings_arg['tab_title']);
+                unset($settings_arg['section_title']);
+                $nav_tabs .= sprintf('<a href="#%1$s" class="nav-tab" id="%1$s-tab"><span class="dashicons dashicons-admin-generic"></span> %2$s</a>', $key, $tab_title);
+
+                if (isset($settings_arg[0]['section_title'])) {
+                    $tab_content_area .= sprintf('<div id="%s" class="mailoptin-group-wrapper">', $key);
+                    foreach ($settings_arg as $single_arg) {
+                        $tab_content_area .= $this->metax_box_instance($single_arg);
+                    }
+                    $tab_content_area .= '</div>';
+                } else {
+                    $settings_arg['section_title'] = $section_title;
+                    $tab_content_area .= sprintf('<div id="%s" class="mailoptin-group-wrapper">', $key);
+                    $tab_content_area .= $this->metax_box_instance($settings_arg);
+                    $tab_content_area .= '</div>';
+                }
+            }
+
+            $this->persist_plugin_settings();
+
+            echo '<div class="wrap moview">';
+            $this->settings_page_heading();
+            $this->do_settings_errors();
+            settings_errors('wp_csa_notice');
+            $this->settings_page_tab();
+
+            echo '<div class="mailoptin-settings-wrap" data-option-name="' . $option_name . '">';
+            echo '<h2 class="nav-tab-wrapper">' . $nav_tabs . '</h2>';
+            echo '<div class="metabox-holder mailoptin-tab-settings">';
+            echo '<form method="post">';
+            $this->nonce_field();
+            echo $tab_content_area;
+            echo '</form>';
+            echo '</div>';
+            echo '</div>';
+            echo '</div>';
+
+            do_action('mailoptin_after_settings_page', $option_name);
+        }
     }
 
     /**

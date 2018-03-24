@@ -341,7 +341,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
 
         if (!empty($custom_css)) {
             $custom_styles = '<style id="mo-optin-form-custom-css" type="text/css">';
-            $custom_styles .= minify_css($custom_css);
+            $custom_styles .= mo_minify_css($custom_css);
             $custom_styles .= '</style>';
             $custom_styles = apply_filters('mo_optin_form_custom_css', $custom_styles, $this->optin_campaign_uuid, $this->optin_campaign_id);
         }
