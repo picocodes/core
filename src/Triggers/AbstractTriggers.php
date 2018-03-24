@@ -2,8 +2,8 @@
 
 namespace MailOptin\Core\Triggers;
 
-use MailOptin\Core\EmailCampaign\CampaignLog;
-use MailOptin\Core\EmailCampaign\CampaignLogRepository;
+use MailOptin\Core\Logging\CampaignLog;
+use MailOptin\Core\Logging\CampaignLogRepository;
 use MailOptin\Core\Repositories\EmailCampaignRepository as ER;
 
 /**

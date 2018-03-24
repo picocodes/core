@@ -1122,7 +1122,7 @@ class CustomizerControls
                 $this->wp_customize,
                 $this->option_prefix . '[exclusive_post_types_posts_load]',
                 apply_filters('mo_optin_form_customizer_exclusive_post_types_posts_load_args', array(
-                        'label' => __('Load optin exclusively on:'),
+                        'label' => __('Load optin exclusively on:', 'mailoptin'),
                         'section' => $this->customizerClassInstance->page_filter_display_rule_section_id,
                         'settings' => $this->option_prefix . '[exclusive_post_types_posts_load]',
                         'description' => __('Loads the optin only on the selected posts and pages.', 'mailoptin'),
@@ -1165,7 +1165,7 @@ class CustomizerControls
                 $this->wp_customize,
                 $this->option_prefix . '[exclusive_post_types_load]',
                 apply_filters('mo_optin_form_customizer_exclusive_post_types_load_args', array(
-                        'label' => __('Load optin only on "post types":'),
+                        'label' => __('Load optin only on "post types":', 'mailoptin'),
                         'section' => $this->customizerClassInstance->page_filter_display_rule_section_id,
                         'settings' => $this->option_prefix . '[exclusive_post_types_load]',
                         'description' => __('Loads the optin only on the selected "post types".', 'mailoptin'),

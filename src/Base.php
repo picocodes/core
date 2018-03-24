@@ -9,9 +9,9 @@ if (!defined('ABSPATH')) {
 use MailOptin\Core\Admin\AdminNotices;
 use MailOptin\Core\Admin\SettingsPage\ConversionExport;
 use MailOptin\Core\Admin\SettingsPage\LibsodiumSettingsPage;
+use MailOptin\Core\Admin\SettingsPage\PreviewCampaignLog;
 use MailOptin\Core\Admin\SettingsPage\ProUpgrade;
 use MailOptin\Core\Admin\SettingsPage\UsageTracking;
-use MailOptin\Core\EmailCampaign\PreviewCampaignLog;
 use MailOptin\Core\OptinForms\FrontEndOutput;
 use MailOptin\Core\OptinForms\InPost;
 use MailOptin\Core\Triggers\NewPublishPost;
@@ -42,6 +42,7 @@ define('MO_LITE_OPTIN_CONVERSION_LIMIT', 100);
 define('MO_LITE_OPTIN_CAMPAIGN_LIMIT', 3);
 
 define('MAILOPTIN_SRC', dirname(__FILE__) . '/');
+define('MAILOPTIN_SETTINGS_PAGE_FOLDER', dirname(__FILE__) . '/Admin/SettingsPage/');
 
 
 define('MAILOPTIN_CAMPAIGN_ERROR_LOG', WP_CONTENT_DIR . "/uploads/mailoptin-campaign-log/");

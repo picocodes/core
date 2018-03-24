@@ -7,7 +7,6 @@ use MailOptin\Core\Admin\Customizer\EmailCampaign\SolitaryDummyContent;
 use MailOptin\Core\Admin\SettingsPage\Email_Campaign_List;
 use MailOptin\Core\Admin\SettingsPage\OptinCampaign_List;
 use MailOptin\Core\Admin\SettingsPage\SplitTestOptinCampaign;
-use MailOptin\Core\EmailCampaign\TemplatifyNewPostPublish;
 use MailOptin\Core\Connections\AbstractConnect;
 use MailOptin\Core\Connections\ConnectionFactory;
 use MailOptin\Core\OptinForms\ConversionDataBuilder;
@@ -20,6 +19,7 @@ use MailOptin\Core\Repositories\OptinCampaignStat;
 use MailOptin\Core\Repositories\OptinConversionsRepository;
 use MailOptin\Core\Repositories\OptinThemesRepository;
 use MailOptin\Core\Triggers\NewPublishPost;
+use MailOptin\Core\Triggers\TemplatifyNewPostPublish;
 
 class AjaxHandler
 {

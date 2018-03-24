@@ -1,6 +1,6 @@
 <?php
 
-namespace MailOptin\Core\EmailCampaign;
+namespace MailOptin\Core\Logging;
 
 
 class CampaignLogRepository

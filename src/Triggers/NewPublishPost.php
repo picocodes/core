@@ -2,7 +2,6 @@
 
 namespace MailOptin\Core\Triggers;
 
-use MailOptin\Core\EmailCampaign\TemplatifyNewPostPublish;
 use MailOptin\Core\Connections\ConnectionFactory;
 use MailOptin\Core\Repositories\EmailCampaignRepository as ER;
 use WP_Post;
@@ -33,9 +32,24 @@ class NewPublishPost extends AbstractTriggers
 
             foreach ($new_publish_post_campaigns as $npp_campaign) {
                 $email_campaign_id = absint($npp_campaign['id']);
-                $is_activated = ER::is_campaign_active($email_campaign_id);
+                if (ER::is_campaign_active($email_campaign_id) === false) continue;
 
-                if ($is_activated === false) continue;
+                $npp_categories = ER::get_customizer_value($email_campaign_id, 'post_categories', []);
+                $npp_tags = ER::get_customizer_value($email_campaign_id, 'post_tags', []);
+                $post_categories = wp_get_post_categories($post->ID, ['fields' => 'ids']);
+                $post_tags = wp_get_post_tags($post->ID, ['fields' => 'ids']);
+
+                if (is_array($npp_categories) && is_array($post_categories) && !empty($npp_categories) && !empty($post_categories)) {
+                    // use intersect to check if categories match.
+                    $result = array_intersect($post_categories, $npp_categories);
+                    if (empty($result)) continue;
+                }
+
+                if (is_array($npp_tags) && is_array($post_tags) && !empty($npp_tags) && !empty($post_tags)) {
+                    // use intersect to check if categories match.
+                    $result = array_intersect($post_tags, $npp_tags);
+                    if (empty($result)) continue;
+                }
 
                 $send_immediately_active = $this->send_immediately($email_campaign_id);
                 $email_subject = ER::get_customizer_value($email_campaign_id, 'email_campaign_subject');

@@ -2,8 +2,9 @@
 
 namespace MailOptin\Core\Admin\Customizer\EmailCampaign;
 
-use MailOptin\Core\EmailCampaign\TemplatifyNewPostPublish;
-use MailOptin\Core\EmailCampaign\EmailCampaignTrait;
+
+use MailOptin\Core\Triggers\EmailCampaignTrait;
+use MailOptin\Core\Triggers\TemplatifyNewPostPublish;
 
 class TemplatePreview extends TemplatifyNewPostPublish
 {

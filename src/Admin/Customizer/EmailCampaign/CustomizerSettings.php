@@ -49,6 +49,16 @@ class CustomizerSettings extends AbstractCustomizer
                     'transport' => 'refresh',
                     'sanitize_callback' => 'absint',
                 ),
+                'post_categories' => array(
+                    'default' => $this->customizer_defaults['post_categories'],
+                    'type' => 'option',
+                    'transport' => 'postMessage'
+                ),
+                'post_tags' => array(
+                    'default' => $this->customizer_defaults['post_tags'],
+                    'type' => 'option',
+                    'transport' => 'postMessage'
+                ),
                 'connection_service' => array(
                     'default' => $this->customizer_defaults['connection_service'],
                     'type' => 'option',

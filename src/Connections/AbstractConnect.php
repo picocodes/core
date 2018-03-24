@@ -2,8 +2,8 @@
 
 namespace MailOptin\Core\Connections;
 
-use MailOptin\Core\EmailCampaign\EmailCampaignTrait;
 use MailOptin\Core\Repositories\EmailCampaignRepository;
+use MailOptin\Core\Triggers\EmailCampaignTrait;
 
 abstract class AbstractConnect
 {

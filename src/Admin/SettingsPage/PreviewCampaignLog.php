@@ -1,6 +1,6 @@
 <?php
 
-namespace MailOptin\Core\EmailCampaign;
+namespace MailOptin\Core\Admin\SettingsPage;
 
 class PreviewCampaignLog
 {
@@ -21,7 +21,7 @@ class PreviewCampaignLog
     {
         if (current_user_can('administrator')) {
             if (isset($_GET['mailoptin']) && isset($_GET['type']) && isset($_GET['id']) && 'preview-campaign' == $_GET['mailoptin']) {
-                $template = MAILOPTIN_SRC . 'EmailCampaign/include.preview-campaign-log.php';
+                $template = MAILOPTIN_SETTINGS_PAGE_FOLDER . 'include.preview-campaign-log.php';
             }
         }
 

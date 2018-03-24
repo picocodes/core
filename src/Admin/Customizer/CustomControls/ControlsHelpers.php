@@ -100,14 +100,35 @@ class ControlsHelpers
 
         if (empty($data) || false === $data) {
 
-            $cat = get_categories();
-
-            $data = array_reduce($cat, function ($carry, \WP_Term $item) {
-                $carry[$item->term_id] = $item->name;
-                return $carry;
-            });
+            $data = get_categories([
+                'fields' => 'id=>name'
+            ]);
 
             set_transient('mo_get_categories', $data, apply_filters('mo_get_categories_cache_expiration', HOUR_IN_SECONDS));
+        }
+
+        return $data;
+    }
+
+    /**
+     * Array of post tags.
+     *
+     * @return mixed
+     */
+    public static function get_tags()
+    {
+        $data = get_transient('mo_get_tags');
+
+        if (empty($data) || false === $data) {
+
+            $data = get_tags([
+                'orderby' => 'count',
+                'order' => 'DESC',
+                'fields' => 'id=>name'
+
+            ]);
+
+            set_transient('mo_get_tags', $data, apply_filters('mo_get_tags_cache_expiration', HOUR_IN_SECONDS));
         }
 
         return $data;

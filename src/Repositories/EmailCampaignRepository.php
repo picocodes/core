@@ -213,7 +213,7 @@ class EmailCampaignRepository extends AbstractRepository
      */
     public static function get_customizer_value($email_campaign_id, $settings_name, $default = '')
     {
-        $abstract_customizer = new AbstractCustomizer();
+        $abstract_customizer = new AbstractCustomizer($email_campaign_id);
         $customizer_defaults = isset($abstract_customizer->customizer_defaults[$settings_name]) && $abstract_customizer->customizer_defaults[$settings_name] !== null ? $abstract_customizer->customizer_defaults[$settings_name] : '';
         $default = !empty($default) ? $default : $customizer_defaults;
         $settings = self::get_settings();

@@ -1,6 +1,6 @@
 <?php
 
-namespace MailOptin\Core\EmailCampaign;
+namespace MailOptin\Core\Triggers;
 
 use MailOptin\Core\PluginSettings\Settings;
 

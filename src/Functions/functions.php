@@ -3,8 +3,8 @@
 namespace MailOptin\Core;
 
 use Html2Text\Html2Text;
-use MailOptin\Core\EmailCampaign\CampaignLogRepository;
-use MailOptin\Core\EmailCampaign\CampaignLogPersistence;
+use MailOptin\Core\Logging\CampaignLogPersistence;
+use MailOptin\Core\Logging\CampaignLogRepository;
 use MailOptin\Core\PluginSettings\Settings;
 use W3Guy\Custom_Settings_Page_Api;
 
@@ -25,11 +25,11 @@ function persistence()
 /**
  * @param array $data
  *
- * @return EmailCampaign\CampaignLog
+ * @return Logging\CampaignLog
  */
 function campaign($data)
 {
-    return (new EmailCampaign\CampaignLog($data));
+    return (new Logging\CampaignLog($data));
 }
 
 /**

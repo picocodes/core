@@ -58,12 +58,9 @@ abstract class AbstractEmailCampaign extends AbstractCustomizer implements Email
             add_filter('mailoptin_template_customizer_footer_settings', array($this, 'customizer_footer_settings'));
 
             add_filter('mailoptin_template_customizer_page_controls', array($this, 'customizer_page_controls'), 10, 4);
-            add_filter('mailoptin_template_customizer_header_controls', array($this, 'customizer_header_controls'), 10,
-                4);
-            add_filter('mailoptin_template_customizer_content_controls', array($this, 'customizer_content_controls'),
-                10, 4);
-            add_filter('mailoptin_template_customizer_footer_controls', array($this, 'customizer_footer_controls'), 10,
-                4);
+            add_filter('mailoptin_template_customizer_header_controls', array($this, 'customizer_header_controls'), 10, 4);
+            add_filter('mailoptin_template_customizer_content_controls', array($this, 'customizer_content_controls'), 10, 4);
+            add_filter('mailoptin_template_customizer_footer_controls', array($this, 'customizer_footer_controls'), 10, 4);
 
             add_action('customize_preview_init', array($this, 'email_template_customizer_javascript'), 99);
         }
@@ -262,7 +259,7 @@ abstract class AbstractEmailCampaign extends AbstractCustomizer implements Email
     .mo-header-text-color {color: $header_text_color;}
     .mo-header-web-version-color {color: $header_web_version_link_color;}
     .mo-content-background-color {background-color: $content_background_color;}
-    .mo-content-title-font-size {font-size: $content_title_font_size;}
+    .mo-content-title-font-size {font-size: {$content_title_font_size}px;}
     .mo-content-body-font-size {font-size: {$content_body_font_size}px;}
     .mo-content-text-color {color: $content_text_color;}
     .mo-content-button-background-color {background-color: $content_ellipsis_button_background_color;}
@@ -382,8 +379,8 @@ CSS;
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
         <style type="text/css">
-            <?php $template_style = apply_filters($this->get_styles(), $this->email_campaign_id, $this); ?>
-            <?php echo apply_filters('mailoptin_email_template_style', do_shortcode($template_style . "\r\n". $this->get_template_core_css(), $this->email_campaign_id, $this)); ?>
+            <?php $template_style = apply_filters('mailoptin_email_template_css', $this->get_styles(), $this->email_campaign_id, $this); ?>
+            <?php echo apply_filters('mailoptin_email_template_style', do_shortcode($template_style) . "\r\n". $this->get_template_core_css(), $this->email_campaign_id, $this); ?>
         </style>
     </head>
     <body>

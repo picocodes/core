@@ -126,6 +126,6 @@ class AbstractCustomizer
 
         $defaults['mo_optin_branding_outside_form'] = apply_filters('mo_optin_branding_outside_form', false, $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
 
-        return $defaults;
+        return apply_filters('mo_optin_form_customizer_defaults',$defaults, $this->optin_campaign_type, $this->optin_campaign_class);
     }
 }

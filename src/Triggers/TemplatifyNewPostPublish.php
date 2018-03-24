@@ -1,6 +1,6 @@
 <?php
 
-namespace MailOptin\Core\EmailCampaign;
+namespace MailOptin\Core\Triggers;
 
 use MailOptin\Core\Admin\Customizer\EmailCampaign\EmailCampaignFactory;
 use MailOptin\Core\Repositories\EmailCampaignRepository as ER;

@@ -2,6 +2,8 @@
 
 namespace MailOptin\Core\Admin\Customizer\EmailCampaign;
 
+use MailOptin\Core\Admin\Customizer\CustomControls\ControlsHelpers;
+use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Chosen_Select_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Custom_Content;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Custom_Input_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Email_Schedule_Time_Fields_Control;
@@ -101,6 +103,30 @@ class CustomizerControls
                     'settings' => $this->option_prefix . '[post_content_length]',
                     'description' => __('Enter the number of words to limit the post content to. Set to "0" for full post content. Default is 150.', 'mailoptin'),
                     'priority' => 40
+                )
+            ),
+            'post_categories' => new WP_Customize_Chosen_Select_Control(
+                $this->wp_customize,
+                $this->option_prefix . '[post_categories]',
+                apply_filters('mo_optin_form_customizer_post_categories_args', array(
+                        'label' => __('Restrict to selected categories', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->campaign_settings_section_id,
+                        'settings' => $this->option_prefix . '[post_categories]',
+                        'choices' => ControlsHelpers::get_categories(),
+                        'priority' => 45
+                    )
+                )
+            ),
+            'post_tags' => new WP_Customize_Chosen_Select_Control(
+                $this->wp_customize,
+                $this->option_prefix . '[post_tags]',
+                apply_filters('mo_optin_form_customizer_post_tags_args', array(
+                        'label' => __('Restrict to selected tags', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->campaign_settings_section_id,
+                        'settings' => $this->option_prefix . '[post_tags]',
+                        'choices' => ControlsHelpers::get_tags(),
+                        'priority' => 48
+                    )
                 )
             ),
             'connection_service' => apply_filters('mailoptin_customizer_settings_campaign_connection_service_args',
