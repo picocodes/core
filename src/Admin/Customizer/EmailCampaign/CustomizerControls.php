@@ -205,8 +205,10 @@ class CustomizerControls
         );
 
         if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
+            unset($campaign_settings_controls['post_categories']);
+            unset($campaign_settings_controls['post_tags']);
             $content = sprintf(
-                __('Upgrade to %sMailOptin Premium%s to send email campaigns directly to your email list on MailChimp, Campaign Monitor, Aweber, Constant Contact, Drip, MailerLite, ConvertKit etc.', 'mailoptin'),
+                __('Upgrade to %sMailOptin Premium%s to restrict by post categories, tags and to send email campaigns directly to your list in MailChimp, Campaign Monitor, Aweber, Constant Contact, Drip, MailerLite, ConvertKit etc.', 'mailoptin'),
                 '<a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=new_post_campaign_settings">',
                 '</a>',
                 '<strong>',
@@ -221,7 +223,7 @@ class CustomizerControls
                         'content' => $content,
                         'section' => $this->customizerClassInstance->campaign_settings_section_id,
                         'settings' => $this->option_prefix . '[email_campaign_settings_notice]',
-                        'priority' => 80,
+                        'priority' => 45,
                     )
                 )
             );

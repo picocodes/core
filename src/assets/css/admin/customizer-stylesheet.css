@@ -7,6 +7,10 @@
      margin-top: 0 !important;
 }
 
+.chosen-choices li.search-field input {
+    width: 100% !important;
+}
+
 .customize-control.customize-control-mailoptin_custom_content {
     border: 0 !important;
 }

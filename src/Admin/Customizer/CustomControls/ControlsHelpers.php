@@ -110,6 +110,21 @@ class ControlsHelpers
         return $data;
     }
 
+    public static function get_roles()
+    {
+        $all_roles = wp_roles()->roles;
+
+        $editable_roles = apply_filters( 'editable_roles', $all_roles );
+
+        $result = [];
+        foreach ($editable_roles as $key => $value) {
+            $result[$key] = $value['name'];
+        }
+
+        return $result;
+    }
+
+
     /**
      * Array of post tags.
      *

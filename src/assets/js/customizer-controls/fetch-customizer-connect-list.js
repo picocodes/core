@@ -27,7 +27,7 @@
                     if (_.isObject(response) && 'success' in response && 'data' in response) {
                         var data = response.data;
 
-                        if (_.size(data) >= 1 || connect_service === 'ConvertFoxConnect') {
+                        if (_.size(data) >= 1 || $.inArray(connect_service, ['ConvertFoxConnect', 'RegisteredUsersConnect'] !== -1)) {
 
                             // clear out the select options before appending.
                             $("select[data-customize-setting-link*='connection_email_list'] option").remove();
@@ -49,7 +49,7 @@
 
                             connection_email_list.trigger('change');
 
-                            if (connect_service !== 'ConvertFoxConnect') {
+                            if ($.inArray(connect_service, ['ConvertFoxConnect', 'RegisteredUsersConnect']) === -1) {
                                 // show email list field.
                                 $("div#customize-theme-controls li[id*='connection_email_list']").show();
                             }
@@ -98,10 +98,10 @@
             // the code below apparently wont work for fields such as radio, checkbox
             var selected_connection_service = connection_service || $("select[data-customize-setting-link*='connection_service']").val();
 
-            if (selected_connection_service != '' &&
+            if (selected_connection_service !== '' &&
                 selected_connection_service !== null &&
-                selected_connection_service != '..' &&
-                selected_connection_service != '...'
+                selected_connection_service !== '..' &&
+                selected_connection_service !== '...'
             ) {
                 // hide any shown connection service fields before showing that of selected one.
                 $('li[id*="Connect"]').hide();
