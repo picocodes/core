@@ -88,7 +88,7 @@ class Customizer
 
             add_action('customize_controls_enqueue_scripts', array($this, 'customizer_css_js'));
 
-            add_action('customize_controls_print_footer_scripts', [$this, 'add_activate_switch']);
+            add_action('customize_controls_print_footer_scripts', [$this, 'customizer_footer_scripts']);
 
             $this->optin_campaign_id = absint($_REQUEST['mailoptin_optin_campaign_id']);
             $this->optin_campaign_type = OptinCampaignsRepository::get_optin_campaign_type($this->optin_campaign_id);
@@ -124,7 +124,7 @@ class Customizer
     }
 
     /**
-     * Add activation switch to optin customizer
+     * Add activation switch to optin customizer.
      */
     public function add_activate_switch()
     {
@@ -149,6 +149,15 @@ class Customizer
             });
         </script>
         <?php
+    }
+
+    /**
+     * Add activation switch to optin customizer
+     */
+    public function customizer_footer_scripts()
+    {
+        $this->add_activate_switch();
+        do_action('mo_optin_customizer_footer_scripts', $this);
     }
 
     public function selector_mapping_scripts_styles()
@@ -287,18 +296,18 @@ class Customizer
     {
         // monkey patch
         wp_add_inline_script('customize-controls', '(function ( api ) {
-                    api.bind( "ready", function () {
-                        var _query = api.previewer.query;
-                            api.previewer.query = function () {
-                                var query = _query.call( this );
-                                query.mailoptin_optin_campaign_id = "' . $this->optin_campaign_id . '";
-                                return query;
-                            };
-                        // needed to ensure save button is publising changes and not saving draft.
-                        // esp for wp.com business hosting with save button set to draft by default.
-                        api.state("selectedChangesetStatus").set("publish");
-                        });
-                    })( wp.customize );'
+              api.bind( "ready", function () {
+                  var _query = api.previewer.query;
+                      api.previewer.query = function () {
+                          var query = _query.call( this );
+                          query.mailoptin_optin_campaign_id = "' . $this->optin_campaign_id . '";
+                          return query;
+                      };
+                  // needed to ensure save button is publising changes and not saving draft.
+                  // esp for wp.com business hosting with save button set to draft by default.
+                  api.state("selectedChangesetStatus").set("publish");
+                  });
+              })( wp.customize );'
         );
 
         wp_enqueue_script(
@@ -316,6 +325,8 @@ class Customizer
         );
 
         wp_enqueue_style('mailoptin-customizer', MAILOPTIN_ASSETS_URL . 'css/admin/customizer-stylesheet.css');
+
+        do_action('mo_optin_customizer_css_js_enqueue', $this);
     }
 
 
