@@ -219,7 +219,7 @@ input, select {
 .mo-autoresponder-modal-overlay {
     display: none;
     position: fixed;
-    z-index: 99999999;
+    z-index: 999999;
     left: 0;
     top: 0;
     width: 100%;
@@ -267,7 +267,6 @@ input, select {
     min-height: 500px;
     border-radius: 3px;
     position: relative;
-    z-index: 999999999999999999;
     margin: 5% auto;
 }
 
