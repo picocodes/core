@@ -81,6 +81,9 @@ trait CustomizerTrait
 
             // remove all custom media button added by plugins and core.
             remove_all_actions('media_buttons');
+            remove_all_filters( 'mce_buttons', 10 );
+            remove_all_filters( 'mce_external_plugins', 10 );
+
             remove_all_actions('wp_head');
             remove_all_actions('wp_print_styles');
             remove_all_actions('wp_print_head_scripts');
