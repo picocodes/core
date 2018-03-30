@@ -244,7 +244,7 @@ HTML;
       font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
       -webkit-box-sizing: border-box;
       box-sizing: border-box;
-      width: 100% !important;
+      width: 100%;
       height: 100%;
       margin: 0;
       line-height: 1.4;

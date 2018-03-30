@@ -259,7 +259,7 @@ input, select {
 
 .mo-autoresponder-modal-overlay #mo_autoresponder_message_ifr,
 .mo-autoresponder-modal-overlay #mo_autoresponder_message {
-    min-height: 400px;
+    min-height: 300px;
 }
 
 .mo-autoresponder-modal {
@@ -268,7 +268,7 @@ input, select {
     border-radius: 3px;
     position: relative;
     z-index: 999999999999999999;
-    margin: 10% auto;
+    margin: 5% auto;
 }
 
 .mo-autoresponder-modal-main-section {
@@ -336,6 +336,20 @@ input, select {
 .mo-autoresponder-modal-close {
     padding: 2px 4px;
     font-size: 25px;
+    text-decoration: none;
+}
+
+.mo-autoresponder-modal-float-right {
+    float: left;
+    margin-top: 10px;
+}
+
+.mo-autoresponder-modal-view-tags {
+    margin: 20px 0 20px 20px;
+    font-size: 14px;
+}
+
+.mo-autoresponder-modal-view-tags, .mo-autoresponder-modal-view-tags:hover {
     text-decoration: none;
 }
 
