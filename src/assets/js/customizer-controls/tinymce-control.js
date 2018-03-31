@@ -8,21 +8,19 @@
                 $('textarea.wp-editor-area').each(function(){
                     var tArea = $(this),
                         id = tArea.attr('id'),
-                        editor = tinyMCE.get(id),
+                        editor = tinymce.get(id),
                         content;
 
                     if(editor) {
-                        editor.on('change', function (e) {
+                        editor.on('keyup change undo redo SetContent', function () {
                             editor.save();
                             content = editor.getContent();
                             tArea.val(content).trigger('change');
                         });
                     }
-
                 });
             });
         }
-
     };
 
     Tinymce_Customize_Control.init();

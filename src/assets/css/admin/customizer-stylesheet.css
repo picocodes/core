@@ -215,6 +215,14 @@ input, select {
     box-shadow: none;
 }
 
+input.button.mo-autoresponder-btn {
+    margin-right: 10px;
+}
+
+.mo-visible {
+    visibility: visible !important;
+}
+
 /* autoresponder modal */
 .mo-autoresponder-modal-overlay {
     display: none;
@@ -346,6 +354,11 @@ input, select {
 .mo-autoresponder-modal-view-tags {
     margin: 20px 0 20px 20px;
     font-size: 14px;
+}
+
+a.mo-autoresponder-modal-view-tags {
+    box-shadow: none;
+    border: 0;
 }
 
 .mo-autoresponder-modal-view-tags, .mo-autoresponder-modal-view-tags:hover {

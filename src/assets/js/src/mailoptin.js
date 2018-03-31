@@ -170,7 +170,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                                 }
                             }
                             else {
-                                console.log('something went wrong.');
+                                console.warn('something went wrong.');
                             }
                             return false;
                         });
