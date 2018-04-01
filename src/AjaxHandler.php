@@ -793,6 +793,7 @@ class AjaxHandler
                 do_action('mailoptin_track_conversions', $lead_data, $optin_campaign_id);
             }
         }
+
         return $response;
     }
 
