@@ -274,6 +274,7 @@ class CustomizerControls
                             'label' => __('Background Color', 'mailoptin'),
                             'section' => $this->customizerClassInstance->campaign_page_section_id,
                             'settings' => $this->option_prefix . '[page_background_color]',
+                            'priority' => 10
                         )
                     )
                 ),
