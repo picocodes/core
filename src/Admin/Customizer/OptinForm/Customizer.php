@@ -578,9 +578,9 @@ class Customizer
 
         $this->contextual_section_panel_settings_control();
 
-        $wp_customize->register_section_type('MailOptin\Core\Admin\Customizer\UpsellCustomizerSection');
-
+        $this->register_custom_section($wp_customize);
         $this->register_control_type($wp_customize);
+
         $this->add_sections($wp_customize);
         $this->add_panels($wp_customize);
         $this->add_settings($wp_customize, $option_prefix);
@@ -623,24 +623,6 @@ class Customizer
         );
 
         do_action('mo_optin_after_display_rules_panel', $wp_customize, $this);
-    }
-
-    /**
-     * Registered customize control as eligible to be rendered via JS and created dynamically.
-     *
-     * @param \WP_Customize_Manager $wp_customize
-     */
-    public function register_control_type($wp_customize)
-    {
-        $controls = apply_filters('mo_optin_registered_control_types', [
-            'MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Button_Set_Control'
-        ]);
-
-        foreach ($controls as $control) {
-            $wp_customize->register_control_type($control);
-        }
-
-        do_action('mo_optin_register_control_type', $wp_customize, $this);
     }
 
     /**

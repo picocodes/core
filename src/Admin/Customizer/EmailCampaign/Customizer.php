@@ -268,7 +268,8 @@ class Customizer
             exit;
         }
 
-        $wp_customize->register_section_type('MailOptin\Core\Admin\Customizer\UpsellCustomizerSection');
+        $this->register_custom_section($wp_customize);
+        $this->register_control_type($wp_customize);
 
         $this->add_sections($wp_customize);
         $this->add_settings($wp_customize, $option_prefix);

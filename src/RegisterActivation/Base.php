@@ -9,6 +9,9 @@ class Base
         global $wpdb;
 
         if (is_multisite()) {
+            /**
+             * @todo consider changing to get_sites()
+             */
             foreach ($wpdb->get_col("SELECT blog_id FROM $wpdb->blogs LIMIT 100") as $blog_id) {
                 switch_to_blog($blog_id);
                 self::mo_install();

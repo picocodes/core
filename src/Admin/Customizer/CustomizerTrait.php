@@ -24,6 +24,32 @@ trait CustomizerTrait
         }, 10, 3);
     }
 
+    /**
+     * @param \WP_Customize_Manager $wp_customize
+     */
+    public function register_custom_section($wp_customize)
+    {
+        $wp_customize->register_section_type('MailOptin\Core\Admin\Customizer\UpsellCustomizerSection');
+    }
+
+    /**
+     * Registered customize control as eligible to be rendered via JS and created dynamically.
+     *
+     * @param \WP_Customize_Manager $wp_customize
+     */
+    public function register_control_type($wp_customize)
+    {
+        $controls = apply_filters('mo_optin_registered_control_types', [
+            'MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Button_Set_Control'
+        ]);
+
+        foreach ($controls as $control) {
+            $wp_customize->register_control_type($control);
+        }
+
+        do_action('mo_customizer_register_control_type', $wp_customize);
+    }
+
     public function clean_up_customizer()
     {
         add_action('init', function () {
