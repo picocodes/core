@@ -575,6 +575,7 @@ form.mo-inline {
 .mobtnPush:hover {
     margin-top: 15px;
     margin-bottom: 5px;
+    color: #fff;
 }
 
 .mobtnGreen.mobtnPush:hover {
@@ -583,6 +584,11 @@ form.mo-inline {
 
 .mobtnPurple.mobtnPush:hover {
     box-shadow: 0px 0px 0px 0px #6D184B;
+}
+
+.mobtnUpgrade {
+    margin: 0 auto;
+    padding: 0;
 }
 
 .mailoptin-settings-wrap {
@@ -628,7 +634,8 @@ form.mo-inline {
     padding-right: 10px;
     background: #fff;
 }
-.metabox-holder.mailoptin-tab-settings textarea{
+
+.metabox-holder.mailoptin-tab-settings textarea {
     width: 25em;
 }
 
@@ -846,4 +853,50 @@ form.mo-inline {
     left: 50%;
     top: 50%;
     position: absolute;
+}
+
+.mo-settings-page-disabled img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.mo-upgrade-plan {
+    background: rgba(255, 255, 255, 0.5);
+    padding: 50px 50px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.mo-text-center {
+    max-width: 600px;
+    margin: auto;
+    text-align: center;
+}
+
+.mo-settings-page-disabled img {
+    -webkit-filter: blur(5px);
+    -moz-filter: blur(5px);
+    -o-filter: blur(5px);
+    -ms-filter: blur(5px);
+    filter: blur(5px);
+}
+
+.mo-settings-page-disabled {
+    position: relative;
+}
+
+.mo-upgrade-plan .mo-lock-icon {
+    width: 128px;
+    height: 128px;
+    background: url(../../images/lockicon.png);
+    margin: 0 auto
+}
+
+.mo-upgrade-plan h1 {
+    font-weight: bold
 }

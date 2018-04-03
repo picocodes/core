@@ -102,6 +102,7 @@ abstract class AbstractSettingsPage
             20 => array('url' => MAILOPTIN_SETTINGS_SETTINGS_PAGE, 'label' => __('Settings', 'mailoptin')),
             40 => array('url' => MAILOPTIN_CONNECTIONS_SETTINGS_PAGE, 'label' => __('Connections', 'mailoptin')),
             60 => array('url' => MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE, 'label' => __('Optin Campaigns', 'mailoptin')),
+            63 => array('url' => MAILOPTIN_LEAD_BANK_SETTINGS_PAGE, 'label' => __('Lead Bank', 'mailoptin')),
             80 => array('url' => MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE, 'label' => __('Email Automations', 'mailoptin')),
             100 => array('url' => MAILOPTIN_CAMPAIGN_LOG_SETTINGS_PAGE, 'label' => __('Email Log', 'mailoptin')),
         ));
