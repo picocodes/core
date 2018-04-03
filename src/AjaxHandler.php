@@ -9,6 +9,8 @@ use MailOptin\Core\Admin\SettingsPage\OptinCampaign_List;
 use MailOptin\Core\Admin\SettingsPage\SplitTestOptinCampaign;
 use MailOptin\Core\Connections\AbstractConnect;
 use MailOptin\Core\Connections\ConnectionFactory;
+use MailOptin\Core\EmailCampaigns\NewPublishPost\NewPublishPost;
+use MailOptin\Core\EmailCampaigns\NewPublishPost\TemplatifyNewPostPublish;
 use MailOptin\Core\OptinForms\ConversionDataBuilder;
 use MailOptin\Core\PluginSettings\Settings;
 use MailOptin\Core\Repositories\ConnectionsRepository;
@@ -18,8 +20,6 @@ use MailOptin\Core\Repositories\OptinCampaignsRepository;
 use MailOptin\Core\Repositories\OptinCampaignStat;
 use MailOptin\Core\Repositories\OptinConversionsRepository;
 use MailOptin\Core\Repositories\OptinThemesRepository;
-use MailOptin\Core\Triggers\NewPublishPost;
-use MailOptin\Core\Triggers\TemplatifyNewPostPublish;
 
 class AjaxHandler
 {

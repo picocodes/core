@@ -1,9 +1,9 @@
 <?php
 
-namespace MailOptin\Core\EmailCampaignTemplates;
+namespace MailOptin\Core\EmailCampaigns;
 
 
-interface EmailCampaignInterface
+interface TemplateInterface
 {
     /**
      * Default customizer values of a template.

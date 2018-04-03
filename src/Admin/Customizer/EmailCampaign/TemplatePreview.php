@@ -3,12 +3,12 @@
 namespace MailOptin\Core\Admin\Customizer\EmailCampaign;
 
 
-use MailOptin\Core\Triggers\EmailCampaignTrait;
-use MailOptin\Core\Triggers\TemplatifyNewPostPublish;
+use MailOptin\Core\EmailCampaigns\NewPublishPost\TemplatifyNewPostPublish;
+use MailOptin\Core\EmailCampaigns\TemplateTrait;
 
 class TemplatePreview extends TemplatifyNewPostPublish
 {
-    use EmailCampaignTrait;
+    use TemplateTrait;
 
     public function __construct($post, $email_campaign_id = null, $template_class = null)
     {

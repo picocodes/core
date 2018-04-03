@@ -1,6 +1,6 @@
 <?php
 
-namespace MailOptin\Core\Triggers;
+namespace MailOptin\Core\EmailCampaigns;
 
 use MailOptin\Core\Logging\CampaignLog;
 use MailOptin\Core\Logging\CampaignLogRepository;

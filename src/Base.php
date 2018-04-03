@@ -12,9 +12,9 @@ use MailOptin\Core\Admin\SettingsPage\LibsodiumSettingsPage;
 use MailOptin\Core\Admin\SettingsPage\PreviewCampaignLog;
 use MailOptin\Core\Admin\SettingsPage\ProUpgrade;
 use MailOptin\Core\Admin\SettingsPage\UsageTracking;
+use MailOptin\Core\EmailCampaigns\NewPublishPost\NewPublishPost;
 use MailOptin\Core\OptinForms\FrontEndOutput;
 use MailOptin\Core\OptinForms\InPost;
-use MailOptin\Core\Triggers\NewPublishPost;
 
 define('MAILOPTIN_OAUTH_URL', 'https://auth.mailoptin.io');
 

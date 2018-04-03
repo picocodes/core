@@ -5,7 +5,6 @@
 
 namespace MailOptin\Tests\Core\Triggers;
 
-use MailOptin\Core\Triggers\NewPublishPost;
 use WP_UnitTestCase;
 
 class NewPublishPostTest extends WP_UnitTestCase

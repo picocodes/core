@@ -121,6 +121,10 @@ class CustomizerSettings extends AbstractCustomizer
                     'sanitize_callback' => 'sanitize_hex_color',
                     'transport' => 'postMessage',
                 ),
+                'custom_css_upgrade_notice' => array(
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
             )
         );
 

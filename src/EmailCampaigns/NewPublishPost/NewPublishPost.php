@@ -1,8 +1,9 @@
 <?php
 
-namespace MailOptin\Core\Triggers;
+namespace MailOptin\Core\EmailCampaigns\NewPublishPost;
 
 use MailOptin\Core\Connections\ConnectionFactory;
+use MailOptin\Core\EmailCampaigns\AbstractTriggers;
 use MailOptin\Core\Repositories\EmailCampaignRepository as ER;
 use WP_Post;
 

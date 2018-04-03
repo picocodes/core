@@ -2,7 +2,7 @@
 
 namespace MailOptin\Core\Admin\Customizer\EmailCampaign;
 
-use MailOptin\Core\EmailCampaignTemplates\AbstractEmailCampaign;
+use MailOptin\Core\EmailCampaigns\AbstractTemplate;
 use MailOptin\Core\Repositories\EmailCampaignRepository;
 
 /**
@@ -16,7 +16,7 @@ class EmailCampaignFactory
      * @param int $optin_campaign_id
      * @param null|\WP_Customize_Manager $wp_customize
      *
-     * @return false|AbstractEmailCampaign
+     * @return false|AbstractTemplate
      */
     public static function make($email_campaign_id, $wp_customize = null)
     {
@@ -31,7 +31,7 @@ class EmailCampaignFactory
         // first $template_class is the template class namespace.
         $email_campaign_class = apply_filters(
             'mailoptin_register_template_class',
-            "\\MailOptin\\Core\\EmailCampaignTemplates\\$email_campaign_type_namespace\\$db_email_template_class",
+            "\\MailOptin\\Core\\EmailCampaigns\\$email_campaign_type_namespace\\Templates\\$db_email_template_class",
             $email_campaign_id,
             $db_email_template_class
         );

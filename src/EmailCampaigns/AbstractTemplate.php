@@ -1,6 +1,6 @@
 <?php
 
-namespace MailOptin\Core\EmailCampaignTemplates;
+namespace MailOptin\Core\EmailCampaigns;
 
 use \MailOptin\Core\Admin\Customizer\EmailCampaign\Customizer;
 use MailOptin\Core\Admin\Customizer\EmailCampaign\AbstractCustomizer;
@@ -31,7 +31,7 @@ use MailOptin\Core\Repositories\EmailCampaignRepository;
  * @method string footer_copyright_line()
  * @method string footer_unsubscribe_link_color()
  */
-abstract class AbstractEmailCampaign extends AbstractCustomizer implements EmailCampaignInterface
+abstract class AbstractTemplate extends AbstractCustomizer implements TemplateInterface
 {
     /** @var int ID of email campaign. */
     protected $email_campaign_id;
@@ -361,6 +361,12 @@ CSS;
         return !$logo_url ? $this->header_text() : "<img src=\"$logo_url\" alt='$logo_alt'>";
     }
 
+    protected function customizer_custom_css()
+    {
+        return EmailCampaignRepository::get_customizer_value($this->email_campaign_id, 'custom_css');
+
+    }
+
 
     /**
      * Full HTML doctype markup preview of a template.
@@ -380,7 +386,9 @@ CSS;
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
         <style type="text/css">
             <?php $template_style = apply_filters('mailoptin_email_template_css', $this->get_styles(), $this->email_campaign_id, $this); ?>
-            <?php echo apply_filters('mailoptin_email_template_style', do_shortcode($template_style) . "\r\n". $this->get_template_core_css(), $this->email_campaign_id, $this); ?>
+            <?php $custom_css_style = apply_filters('mailoptin_email_template_custom_css', $this->customizer_custom_css(), $this->email_campaign_id, $this); ?>
+            <?php $combined_style = $template_style . "\r\n". $this->get_template_core_css() . "\r\n" . $custom_css_style; ?>
+            <?php echo apply_filters('mailoptin_email_template_style', $combined_style, $this->email_campaign_id, $this); ?>
         </style>
     </head>
     <body>

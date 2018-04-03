@@ -2,12 +2,12 @@
 
 namespace MailOptin\Core\Connections;
 
+use MailOptin\Core\EmailCampaigns\TemplateTrait;
 use MailOptin\Core\Repositories\EmailCampaignRepository;
-use MailOptin\Core\Triggers\EmailCampaignTrait;
 
 abstract class AbstractConnect
 {
-    use EmailCampaignTrait;
+    use TemplateTrait;
 
     public function __construct()
     {

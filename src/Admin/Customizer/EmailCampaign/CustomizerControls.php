@@ -284,6 +284,31 @@ class CustomizerControls
             $this->customizerClassInstance
         );
 
+
+
+        if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
+            $content = sprintf(
+                __('Upgrade to %sMailOptin Premium%s to access the Custom CSS feature that will allow you customize this template to your heart content.', 'mailoptin'),
+                '<a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=email_automation_custom_css_upgrade">',
+                '</a>',
+                '<strong>',
+                '</strong>'
+            );
+
+            // always prefix with the name of the connect/connection service.
+            $page_control_args['custom_css_upgrade_notice'] = new WP_Customize_Custom_Content(
+                $this->wp_customize,
+                $this->option_prefix . '[custom_css_upgrade_notice]',
+                apply_filters('mo_optin_form_customizer_custom_css_upgrade_notice_args', array(
+                        'content' => $content,
+                        'section' => $this->customizerClassInstance->campaign_page_section_id,
+                        'settings' => $this->option_prefix . '[custom_css_upgrade_notice]',
+                        'priority' => 20,
+                    )
+                )
+            );
+        }
+
         do_action('mailoptin_before_page_controls_addition',
             $page_control_args,
             $this->wp_customize,

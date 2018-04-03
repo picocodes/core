@@ -1,10 +1,10 @@
 <?php
 
-namespace MailOptin\Core\Triggers;
+namespace MailOptin\Core\EmailCampaigns;
 
 use MailOptin\Core\PluginSettings\Settings;
 
-trait EmailCampaignTrait
+trait TemplateTrait
 {
     /**
      * Replace placeholders in email template's footer description with their contact details saved values.

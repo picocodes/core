@@ -11,7 +11,7 @@ $template_preview_instance = new TemplatePreview('', $email_campaign_id, $db_tem
 
 echo $template_preview_instance->replace_footer_placeholder_tags($template_preview_instance->forge());
 
-// this is not in AbstractEmailCampaign as in AbstractOptinForm so it doesn't get templatified/emogrified along with the email template
+// this is not in AbstractTemplate as in AbstractOptinForm so it doesn't get templatified/emogrified along with the email template
 // on customizer preview.
 // hide any element that might have been injected to footer by any plugin.
 echo '<div style="display:none">';

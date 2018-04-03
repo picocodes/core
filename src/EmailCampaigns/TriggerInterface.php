@@ -1,6 +1,6 @@
 <?php
 
-namespace MailOptin\Core\Triggers;
+namespace MailOptin\Core\EmailCampaigns;
 
 
 interface TriggerInterface

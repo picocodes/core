@@ -6,9 +6,9 @@
 namespace MailOptin\Core\Admin\SettingsPage;
 
 use MailOptin\Core\Core;
+use MailOptin\Core\EmailCampaigns\NewPublishPost\NewPublishPost;
 use MailOptin\Core\Repositories\EmailCampaignRepository as ER;
 use MailOptin\Core\Repositories\EmailCampaignRepository;
-use MailOptin\Core\Triggers\NewPublishPost;
 
 if (!class_exists('WP_List_Table')) {
     require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');

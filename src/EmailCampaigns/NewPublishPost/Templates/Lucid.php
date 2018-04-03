@@ -1,10 +1,11 @@
 <?php
 
-namespace MailOptin\Core\EmailCampaignTemplates\NewPublishPost;
+namespace MailOptin\Core\EmailCampaigns\NewPublishPost\Templates;
 
-use MailOptin\Core\EmailCampaignTemplates\AbstractEmailCampaign;
 
-class Lucid extends AbstractEmailCampaign
+use MailOptin\Core\EmailCampaigns\AbstractTemplate;
+
+class Lucid extends AbstractTemplate
 {
     public $template_name = 'Lucid';
 
