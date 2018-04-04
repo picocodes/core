@@ -121,7 +121,11 @@ class Custom_Settings_Page_Api
      *
      */
     public function setting_page_sidebar()
-    { ?>
+    {
+        $custom = apply_filters('wp_cspa_setting_page_sidebar', '', $this->option_name);
+
+        if (!empty($custom)) return $custom;
+        ?>
         <div id="postbox-container-1" class="postbox-container">
             <div class="meta-box-sortables" style="text-align: center; margin: auto">
                 <?php if (!empty($this->sidebar_config)): ?>

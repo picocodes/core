@@ -151,12 +151,44 @@ class Customizer
         <?php
     }
 
+    public function standard_plan_upsell()
+    {
+        if (defined('MAILOPTIN_PRO_PLUGIN_TYPE')) return;
+
+        $content = sprintf(
+            '<div class="mo-pro"><a href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=display_rules_panel_standard" target="_blank">%s</a></div>',
+            __('Upgrade Available', 'mailoptin')
+        );
+
+        $content .= sprintf(
+            __('Upgrade to %sPro plan%s or higher to unlock display scheduling and advance triggers such as %3$sAdBlock Detection%4$s, %3$sNew vs Returning Visitors%4$s, %3$sReferral Detection%4$s.', 'mailoptin'),
+            '<a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=display_rules_panel_standard2">',
+            '</a>',
+            '<strong>',
+            '</strong>'
+        );
+        ?>
+        <script type="text/html" id="tmpl-mo-optin-trigger-upsell">
+            <div class="customize-mo-custom-content-block" style="margin:0">
+                <?php echo $content; ?>
+            </div>
+        </script>
+        <script type="text/javascript">
+            jQuery(function () {
+                var template = wp.template('mo-optin-trigger-upsell');
+                $('#sub-accordion-panel-mo_display_rules_panel_section').append(template());
+            });
+        </script>
+        <?php
+    }
+
     /**
      * Add activation switch to optin customizer
      */
     public function customizer_footer_scripts()
     {
         $this->add_activate_switch();
+        $this->standard_plan_upsell();
         do_action('mo_optin_customizer_footer_scripts', $this);
     }
 

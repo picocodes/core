@@ -37,7 +37,7 @@ abstract class AbstractSettingsPage
 
     public function toggle_buttons($option_name)
     {
-        if(!in_array($option_name, [MAILOPTIN_SETTINGS_DB_OPTION_NAME])) return;
+        if (!in_array($option_name, [MAILOPTIN_SETTINGS_DB_OPTION_NAME])) return;
         ?>
         <div style="margin: 10px">
             <a href="#" id="mo-metabox-expand" class="button"><?php _e('Expand All', 'mailoptin'); ?></a>
@@ -103,6 +103,7 @@ abstract class AbstractSettingsPage
             40 => array('url' => MAILOPTIN_CONNECTIONS_SETTINGS_PAGE, 'label' => __('Connections', 'mailoptin')),
             60 => array('url' => MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE, 'label' => __('Optin Campaigns', 'mailoptin')),
             63 => array('url' => MAILOPTIN_LEAD_BANK_SETTINGS_PAGE, 'label' => __('Lead Bank', 'mailoptin')),
+            65 => array('url' => MAILOPTIN_ADVANCE_ANALYTICS_SETTINGS_PAGE, 'label' => __('Optin Analytics', 'mailoptin')),
             80 => array('url' => MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE, 'label' => __('Email Automations', 'mailoptin')),
             100 => array('url' => MAILOPTIN_CAMPAIGN_LOG_SETTINGS_PAGE, 'label' => __('Email Log', 'mailoptin')),
         ));

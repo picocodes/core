@@ -863,8 +863,7 @@ form.mo-inline {
 .mo-upgrade-plan {
     background: rgba(255, 255, 255, 0.5);
     padding: 50px 50px;
-    position: absolute;
-    top: 0;
+    position: fixed;
     left: 0;
     right: 0;
     z-index: 100;
@@ -879,11 +878,11 @@ form.mo-inline {
 }
 
 .mo-settings-page-disabled img {
-    -webkit-filter: blur(5px);
-    -moz-filter: blur(5px);
-    -o-filter: blur(5px);
-    -ms-filter: blur(5px);
-    filter: blur(5px);
+    -webkit-filter: blur(4px);
+    -moz-filter: blur(4px);
+    -o-filter: blur(4px);
+    -ms-filter: blur(4px);
+    filter: blur(4px);
 }
 
 .mo-settings-page-disabled {

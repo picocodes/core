@@ -122,6 +122,7 @@ class Base
         Admin\SettingsPage\CampaignLog::get_instance();
         Admin\SettingsPage\OptinCampaigns::get_instance();
         Admin\SettingsPage\LeadBank::get_instance();
+        Admin\SettingsPage\AdvanceAnalytics::get_instance();
         AdminNotices::get_instance();
         ConversionExport::get_instance();
         ProUpgrade::get_instance();

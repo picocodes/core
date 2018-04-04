@@ -2,11 +2,11 @@
 
 namespace MailOptin\Core\Admin\SettingsPage;
 
+use MailOptin\AdvanceAnalytics\SettingsPage;
 use W3Guy\Custom_Settings_Page_Api;
 
-class LeadBank extends AbstractSettingsPage
+class AdvanceAnalytics extends AbstractSettingsPage
 {
-
     public function __construct()
     {
         add_action('admin_menu', array($this, 'register_settings_page'));
@@ -16,14 +16,14 @@ class LeadBank extends AbstractSettingsPage
     {
         $hook = add_submenu_page(
             MAILOPTIN_SETTINGS_SETTINGS_SLUG,
-            __('Lead Bank - MailOptin', 'mailoptin'),
-            __('Lead Bank', 'mailoptin'),
+            __('Optin Analytics - MailOptin', 'mailoptin'),
+            __('Optin Analytics', 'mailoptin'),
             'manage_options',
-            MAILOPTIN_LEAD_BANK_SETTINGS_SLUG,
+            MAILOPTIN_ADVANCE_ANALYTICS_SETTINGS_SLUG,
             array($this, 'settings_admin_page_callback')
         );
 
-        do_action("mailoptin_leadbank_settings_page", $hook);
+        do_action("mailoptin_advance_analytics_settings_page", $hook);
 
         if (!defined('MAILOPTIN_PRO_PLUGIN_TYPE')) {
             add_filter('wp_cspa_main_content_area', array($this, 'upsell_settings_page'), 10, 2);
@@ -32,7 +32,7 @@ class LeadBank extends AbstractSettingsPage
 
     public function upsell_settings_page($content, $option_name)
     {
-        if ($option_name != 'mo_leads') {
+        if ($option_name != 'mo_analytics') {
             return $content;
         }
 
@@ -42,13 +42,13 @@ class LeadBank extends AbstractSettingsPage
             <div class="mo-upgrade-plan">
                 <div class="mo-text-center">
                     <div class="mo-lock-icon"></div>
-                    <h1><?php _e('Lead Bank Locked', 'mailoptin'); ?></h1>
+                    <h1><?php _e('Advance Analytics Locked', 'mailoptin'); ?></h1>
                     <p>
                         <?php printf(
-                            __('LeadBank saves backup of all leads and conversions that happen on your site locally.', 'mailoptin'),
+                            __('Get important metrics and insights to improve your lead-generation strategy and make data-driven decisions.', 'mailoptin'),
                             '<strong>',
-                            '</strong>');
-                        ?>
+                            '</strong>'
+                        ); ?>
                     </p>
                     <p>
                         <?php printf(
@@ -58,13 +58,13 @@ class LeadBank extends AbstractSettingsPage
                         ?>
                     </p>
                     <div class="moBtncontainer mobtnUpgrade">
-                        <a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=leadbank_btn" class="mobutton mobtnPush mobtnGreen">
+                        <a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=advanceanalytics_btn" class="mobutton mobtnPush mobtnGreen">
                             <?php _e('Upgrade to Unlock', 'mailoptin'); ?>
                         </a>
                     </div>
                 </div>
             </div>
-            <img src="<?php echo MAILOPTIN_ASSETS_URL; ?>images/leadbankscreenshot.png">
+            <img src="<?php echo MAILOPTIN_ASSETS_URL; ?>images/advanceanalytics.png">
         </div>
         <?php
 
@@ -77,14 +77,17 @@ class LeadBank extends AbstractSettingsPage
     public function settings_admin_page_callback()
     {
         $instance = Custom_Settings_Page_Api::instance();
-        $instance->option_name('mo_leads');
-        $instance->page_header(__('Lead Bank', 'mailoptin'));
+        $instance->option_name('mo_analytics');
+        $instance->page_header(__('Optin Analytics', 'mailoptin'));
         $this->register_core_settings($instance, true);
-        $instance->build(true);
+        if (defined('MAILOPTIN_PRO_PLUGIN_TYPE') && method_exists(SettingsPage::get_instance(), 'analytic_chart_sidebar')) {
+            $instance->sidebar(SettingsPage::get_instance()->analytic_chart_sidebar());
+        }
+        $instance->build(!defined('MAILOPTIN_PRO_PLUGIN_TYPE'));
     }
 
     /**
-     * @return LeadBank
+     * @return AdvanceAnalytics
      */
     public static function get_instance()
     {
