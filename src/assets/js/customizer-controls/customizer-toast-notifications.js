@@ -59,7 +59,6 @@
                     },
 
                     onCloseClick: function () {
-                        nt.integrationControlFocus();
                         nt.dismiss_ajax();
                     }
                 };

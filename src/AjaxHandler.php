@@ -846,7 +846,7 @@ class AjaxHandler
     public function dismiss_toastr_is_optin_activated()
     {
         $optin_campaign_id = sanitize_text_field($_POST['optin_id']);
-        (new StateRepository())->set('integration_not_set', $optin_campaign_id);
+        (new StateRepository())->set('integration_not_set', absint($optin_campaign_id));
     }
 
     /**
