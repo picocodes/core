@@ -20,6 +20,7 @@ use MailOptin\Core\Repositories\OptinCampaignsRepository;
 use MailOptin\Core\Repositories\OptinCampaignStat;
 use MailOptin\Core\Repositories\OptinConversionsRepository;
 use MailOptin\Core\Repositories\OptinThemesRepository;
+use MailOptin\Core\Repositories\StateRepository;
 
 class AjaxHandler
 {
@@ -46,6 +47,7 @@ class AjaxHandler
             'end_optin_split_modal' => false,
             'split_test_select_winner' => false,
             'page_targeting_search' => false,
+            'dismiss_toastr_is_optin_activated' => false,
         );
 
         foreach ($ajax_events as $ajax_event => $nopriv) {
@@ -836,6 +838,15 @@ class AjaxHandler
         }
 
         wp_send_json($response);
+    }
+
+    /**
+     * Save state of dismissible toastr notification.
+     */
+    public function dismiss_toastr_is_optin_activated()
+    {
+        $optin_campaign_id = sanitize_text_field($_POST['optin_id']);
+        (new StateRepository())->set('integration_not_set', $optin_campaign_id);
     }
 
     /**

@@ -6,6 +6,7 @@ use MailOptin\Core\Admin\Customizer\CustomizerTrait;
 use MailOptin\Core\Admin\Customizer\UpsellCustomizerSection;
 use MailOptin\Core\OptinForms\AbstractOptinForm;
 use MailOptin\Core\Repositories\OptinCampaignsRepository;
+use MailOptin\Core\Repositories\StateRepository;
 
 class Customizer
 {
@@ -394,10 +395,18 @@ class Customizer
         );
 
         wp_enqueue_script(
-            'mailoptin-optin-form-customizer-toast-notifications',
+            'mailoptin-customizer-toast-notifications',
             MAILOPTIN_ASSETS_URL . 'js/customizer-controls/customizer-toast-notifications.js',
             array('customize-controls'),
             MAILOPTIN_VERSION_NUMBER
+        );
+
+        wp_localize_script(
+            'mailoptin-customizer-toast-notifications',
+            'moStateRepository',
+            array(
+                'data' => (new StateRepository())->getAll(),
+            )
         );
 
         wp_enqueue_style('mailoptin-customizer', MAILOPTIN_ASSETS_URL . 'css/admin/customizer-stylesheet.css');

@@ -20,15 +20,9 @@
                 "hideMethod": "fadeOut"
             };
 
-            toastr.options.onclick = function () {
-            };
-
-            toastr.options.onCloseClick = function () {
-            };
-
             $.extend(toastr.options, options);
 
-            toastr[type](title, message);
+            toastr[type](message, title);
         };
     };
 
