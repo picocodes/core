@@ -182,6 +182,12 @@ class Customizer
         <?php
     }
 
+    public function preview_iframe_footer_assets()
+    {
+        $this->selector_mapping_scripts_styles();
+        $this->toast_notifications();
+    }
+
     /**
      * Add activation switch to optin customizer
      */
@@ -311,6 +317,37 @@ class Customizer
     }
 
     /**
+     * @todo consider moving to customizerTrait if email automation customizer would use it.
+     */
+    public function toast_notifications()
+    {
+        wp_enqueue_script(
+            'mailoptin-optin-customizer-toastr',
+            MAILOPTIN_ASSETS_URL . 'toastr/toastr.min.js',
+            array('jquery'),
+            MAILOPTIN_VERSION_NUMBER,
+            true
+        );
+        wp_enqueue_script(
+            'mailoptin-optin-customizer-toastr-init',
+            MAILOPTIN_ASSETS_URL . 'toastr/toastr-init.js',
+            array('mailoptin-optin-customizer-toastr'),
+            MAILOPTIN_VERSION_NUMBER,
+            true
+        );
+
+        wp_enqueue_style('mailoptin-optin-customizer-toastr', MAILOPTIN_ASSETS_URL . 'toastr/toastr.min.css');
+
+        ?>
+        <style type="text/css">
+            div#toast-container {
+                z-index: 999999999 !important;
+            }
+        </style>
+        <?php
+    }
+
+    /**
      * Burst / clear optin cache after changes in customizer.
      */
     public function burst_cache_after_customizer_save()
@@ -352,6 +389,13 @@ class Customizer
         wp_enqueue_script(
             'mailoptin-optin-form-fetch-customizer-connect-list-controls',
             MAILOPTIN_ASSETS_URL . 'js/customizer-controls/fetch-customizer-connect-list.js',
+            array('customize-controls'),
+            MAILOPTIN_VERSION_NUMBER
+        );
+
+        wp_enqueue_script(
+            'mailoptin-optin-form-customizer-toast-notifications',
+            MAILOPTIN_ASSETS_URL . 'js/customizer-controls/customizer-toast-notifications.js',
             array('customize-controls'),
             MAILOPTIN_VERSION_NUMBER
         );
@@ -600,7 +644,7 @@ class Customizer
 
         $optin_class_instance = OptinFormFactory::make($optin_campaign_id);
 
-        add_action('wp_head', [$this, 'selector_mapping_scripts_styles']);
+        add_action('wp_footer', [$this, 'preview_iframe_footer_assets']);
 
         // $result is false of optin form class do not exist.
         if (!$optin_class_instance) {

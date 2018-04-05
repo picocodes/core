@@ -27,7 +27,7 @@
                     if (_.isObject(response) && 'success' in response && 'data' in response) {
                         var data = response.data;
 
-                        if (_.size(data) >= 1 || $.inArray(connect_service, ['ConvertFoxConnect', 'RegisteredUsersConnect'] !== -1)) {
+                        if (_.size(data) >= 1 || $.inArray(connect_service, ['ConvertFoxConnect', 'RegisteredUsersConnect']) !== -1) {
 
                             // clear out the select options before appending.
                             $("select[data-customize-setting-link*='connection_email_list'] option").remove();
