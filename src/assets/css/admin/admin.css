@@ -575,6 +575,9 @@ form.mo-inline {
 .mobtnPush:hover {
     margin-top: 15px;
     margin-bottom: 5px;
+}
+
+.mobtnPush:active, .mobtnPush:focus, .mobtnPush:hover {
     color: #fff;
 }
 

@@ -3,6 +3,7 @@
 namespace MailOptin\Core\Admin\SettingsPage;
 
 use MailOptin\AdvanceAnalytics\SettingsPage;
+use MailOptin\Libsodium\LibsodiumSettingsPage;
 use W3Guy\Custom_Settings_Page_Api;
 
 class AdvanceAnalytics extends AbstractSettingsPage
@@ -36,6 +37,14 @@ class AdvanceAnalytics extends AbstractSettingsPage
             return $content;
         }
 
+        $license_key = LibsodiumSettingsPage::license_key();
+
+        $url = 'https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=advanceanalytics_btn';
+
+        if (!empty($license_key)) {
+            $url = sprintf('https://my.mailoptin.io/?mo_plan_upgrade=%s&license_key=%s', 'pro', $license_key);
+        }
+
         ob_start();
         ?>
         <div class="mo-settings-page-disabled">
@@ -58,7 +67,7 @@ class AdvanceAnalytics extends AbstractSettingsPage
                         ?>
                     </p>
                     <div class="moBtncontainer mobtnUpgrade">
-                        <a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=advanceanalytics_btn" class="mobutton mobtnPush mobtnGreen">
+                        <a target="_blank" href="<?= $url; ?>" class="mobutton mobtnPush mobtnGreen">
                             <?php _e('Upgrade to Unlock', 'mailoptin'); ?>
                         </a>
                     </div>

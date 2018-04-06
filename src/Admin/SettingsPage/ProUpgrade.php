@@ -6,10 +6,6 @@ class ProUpgrade
 {
     public function __construct()
     {
-        add_action('plugins_loaded', function () {
-            add_action('admin_menu', array($this, 'register_settings_page'));
-        }, 399);
-
         $basename = plugin_basename(MAILOPTIN_SYSTEM_FILE_PATH);
         $prefix = is_network_admin() ? 'network_admin_' : '';
         add_filter("{$prefix}plugin_action_links_$basename", [$this, 'mo_action_links'], 10, 4);
@@ -39,27 +35,6 @@ class ProUpgrade
             return $footer_text;
         }
     }
-
-    public function register_settings_page()
-    {
-        if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
-            add_submenu_page(
-                MAILOPTIN_SETTINGS_SETTINGS_SLUG,
-                __('Upgrade to PRO - MailOptin', 'mailoptin'),
-                '<span style="color:#d54e21;font-weight:bold">' . __('Upgrade to PRO', 'mailoptin') . '</span>',
-                'manage_options',
-                'mailoptin-pro-upgrade',
-                array($this, 'pro_upgrade_admin_page_callback')
-            );
-        }
-    }
-
-    public function pro_upgrade_admin_page_callback()
-    {
-        wp_redirect('https://mailoptin.io/lead-generation-wordpress/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=settings_menu');
-        exit;
-    }
-
 
     /**
      * Show row meta on the plugin screen.

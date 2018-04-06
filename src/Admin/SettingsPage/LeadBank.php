@@ -36,6 +36,12 @@ class LeadBank extends AbstractSettingsPage
             return $content;
         }
 
+        $url = 'https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=leadbank_btn';
+
+        if (!empty($license_key)) {
+            $url = sprintf('https://my.mailoptin.io/?mo_plan_upgrade=%s&license_key=%s', 'pro', $license_key);
+        }
+
         ob_start();
         ?>
         <div class="mo-settings-page-disabled">
@@ -58,7 +64,7 @@ class LeadBank extends AbstractSettingsPage
                         ?>
                     </p>
                     <div class="moBtncontainer mobtnUpgrade">
-                        <a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=leadbank_btn" class="mobutton mobtnPush mobtnGreen">
+                        <a target="_blank" href="<?= $url; ?>" class="mobutton mobtnPush mobtnGreen">
                             <?php _e('Upgrade to Unlock', 'mailoptin'); ?>
                         </a>
                     </div>
