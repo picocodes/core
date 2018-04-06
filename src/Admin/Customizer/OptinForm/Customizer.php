@@ -409,6 +409,15 @@ class Customizer
             )
         );
 
+        wp_localize_script(
+            'mailoptin-customizer-toast-notifications',
+            'moToastrLabels',
+            [
+                'integrationNotSet' => ['title' => __("You haven't setup an integration", 'mailoptin'), 'message' => __('Click me to do it now', 'mailoptin')],
+                'optinNotActive' => ['title' => __('This optin campaign is not active', 'mailoptin'), 'message' => __('Click me to activate it', 'mailoptin')],
+            ]
+        );
+
         wp_enqueue_style('mailoptin-customizer', MAILOPTIN_ASSETS_URL . 'css/admin/customizer-stylesheet.css');
 
         do_action('mo_optin_customizer_css_js_enqueue', $this);

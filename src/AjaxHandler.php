@@ -47,7 +47,7 @@ class AjaxHandler
             'end_optin_split_modal' => false,
             'split_test_select_winner' => false,
             'page_targeting_search' => false,
-            'dismiss_toastr_is_optin_activated' => false,
+            'dismiss_toastr_notifications' => false,
         );
 
         foreach ($ajax_events as $ajax_event => $nopriv) {
@@ -843,10 +843,11 @@ class AjaxHandler
     /**
      * Save state of dismissible toastr notification.
      */
-    public function dismiss_toastr_is_optin_activated()
+    public function dismiss_toastr_notifications()
     {
         $optin_campaign_id = sanitize_text_field($_POST['optin_id']);
-        (new StateRepository())->set('integration_not_set', absint($optin_campaign_id));
+        $notification = sanitize_text_field($_POST['notification']);
+        (new StateRepository())->set($notification, absint($optin_campaign_id));
     }
 
     /**
