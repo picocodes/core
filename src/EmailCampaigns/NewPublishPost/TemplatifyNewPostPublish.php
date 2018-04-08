@@ -3,6 +3,7 @@
 namespace MailOptin\Core\EmailCampaigns\NewPublishPost;
 
 use MailOptin\Core\Admin\Customizer\EmailCampaign\EmailCampaignFactory;
+use MailOptin\Core\EmailCampaigns\VideoToImageLink;
 use MailOptin\Core\Repositories\EmailCampaignRepository as ER;
 use WP_Post;
 
@@ -136,8 +137,10 @@ class TemplatifyNewPostPublish
 
         $templatified_content = str_replace($search, $replace, $instance->get_preview_structure());
 
+        $content = (new VideoToImageLink($templatified_content))->forge();
+
         $emogrifier = new \Pelago\Emogrifier();
-        $emogrifier->setHtml($templatified_content);
+        $emogrifier->setHtml($content);
 
         $content = $emogrifier->emogrify();
 
