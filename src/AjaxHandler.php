@@ -261,7 +261,7 @@ class AjaxHandler
             if (apply_filters('mailoptin_lite_upgrade_more_optin_themes', true)) {
                 if ($optin_type == 'bar') $optin_type = 'notification bar';
                 echo '<div style="cursor: pointer;float: left;margin: 0 4% 4% 0;position: relative;width: 30.66666666667%;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">';
-                echo '<div class="mo-error-box" style="padding: 80px 10px;margin:0">';
+                echo '<div class="mo-error-box" style="margin:0">';
                 printf(
                     __('Upgrade to %s for more "%s" optin themes', 'mailoptin'),
                     '<a href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=get_more_optin_themes" target="_blank">MailOptin Premium</a>',

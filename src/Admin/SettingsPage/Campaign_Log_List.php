@@ -287,7 +287,7 @@ class Campaign_Log_List extends \WP_List_Table
 
         $preview_url = add_query_arg(
             ['mailoptin' => 'preview-campaign-error-log', 'id' => $error_log_filename],
-            admin_url()
+            home_url()
         );
 
         $log_file = MAILOPTIN_CAMPAIGN_ERROR_LOG . "{$error_log_filename}.log";

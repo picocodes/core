@@ -7,7 +7,7 @@ class PreviewCampaignLog
     public function __construct()
     {
         add_filter('template_include', array($this, 'preview_campaign'));
-        add_action('admin_init', array($this, 'preview_campaign_error_log'));
+        add_action('template_redirect', array($this, 'preview_campaign_error_log'));
     }
 
     /**
@@ -33,7 +33,7 @@ class PreviewCampaignLog
      */
     public function preview_campaign_error_log()
     {
-        if (isset($_GET['mailoptin']) && isset($_GET['id']) && 'preview-campaign-error-log' == $_GET['mailoptin']) {
+        if (isset($_GET['mailoptin'], $_GET['id']) && 'preview-campaign-error-log' == $_GET['mailoptin']) {
             $filename = sanitize_key($_GET['id']);
             echo nl2br(file_get_contents(MAILOPTIN_CAMPAIGN_ERROR_LOG . "$filename.log"));
             wp_die();
