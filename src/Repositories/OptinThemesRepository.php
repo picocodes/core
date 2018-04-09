@@ -11,24 +11,30 @@ class OptinThemesRepository extends AbstractRepository
     {
         if (is_null(self::$optin_themes)) {
             self::$optin_themes = apply_filters('mailoptin_registered_optin_themes', array(
-                array(
+                [
                     'name' => 'BareMetal',
                     'optin_class' => 'BareMetal',
                     'optin_type' => 'lightbox', // accept comma delimited values eg lightbox,sidebar,inpost
                     'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/baremetal-lightbox.png'
-                ),
-                array(
+                ],
+                [
+                    'name' => 'Elegance',
+                    'optin_class' => 'Elegance',
+                    'optin_type' => 'lightbox',
+                    'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/elegance-lightbox.png'
+                ],
+                [
                     'name' => 'Lupin',
                     'optin_class' => 'Lupin',
                     'optin_type' => 'sidebar', // accept comma delimited values eg lightbox,sidebar,inpost
                     'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/lupin-sidebar.png'
-                ),
-                array(
+                ],
+                [
                     'name' => 'Columbine',
                     'optin_class' => 'Columbine',
                     'optin_type' => 'inpost', // accept comma delimited values eg lightbox,sidebar,inpost
                     'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/columbine-inpost.png'
-                )
+                ]
             ));
         }
     }
