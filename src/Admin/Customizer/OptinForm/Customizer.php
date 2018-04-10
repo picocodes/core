@@ -343,6 +343,8 @@ class Customizer
         <style type="text/css">
             div#toast-container {
                 z-index: 999999999 !important;
+                font-size: 14px;
+                font-family: sans-serif;
             }
         </style>
         <?php

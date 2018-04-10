@@ -38,8 +38,11 @@ class LeadBank extends AbstractSettingsPage
 
         $url = 'https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=leadbank_btn';
 
-        if (!empty($license_key)) {
-            $url = sprintf('https://my.mailoptin.io/?mo_plan_upgrade=%s&license_key=%s', 'pro', $license_key);
+        if (class_exists('MailOptin\Libsodium\LibsodiumSettingsPage')) {
+            $license_key = LibsodiumSettingsPage::license_key();
+            if (!empty($license_key)) {
+                $url = sprintf('https://my.mailoptin.io/?mo_plan_upgrade=%s&license_key=%s', 'pro', $license_key);
+            }
         }
 
         ob_start();

@@ -35,6 +35,12 @@ trait TemplateTrait
             \MailOptin\Core\country_code_to_name(Settings::instance()->company_country()),
         ];
 
+        foreach ($replace as $key => $item) {
+            if (empty($item)) {
+                unset($search[$key]);
+            }
+        }
+
         return str_replace($search, $replace, $content);
     }
 }
