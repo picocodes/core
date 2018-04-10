@@ -2,6 +2,7 @@
 
 namespace MailOptin\Core\Admin\SettingsPage;
 
+use MailOptin\Libsodium\LibsodiumSettingsPage;
 use W3Guy\Custom_Settings_Page_Api;
 
 class LeadBank extends AbstractSettingsPage
