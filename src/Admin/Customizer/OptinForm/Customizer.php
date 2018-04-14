@@ -122,11 +122,11 @@ class Customizer
             // Disable admin bar.
             add_filter('show_admin_bar', '__return_false');
 
-            add_action( 'customize_controls_init', [$this, 'preview_screen_preserve_query_arg']);
+            add_action('customize_controls_init', [$this, 'set_customizer_urls']);
         }
     }
 
-    public function preview_screen_preserve_query_arg()
+    public function set_customizer_urls()
     {
         global $wp_customize;
 
@@ -137,6 +137,8 @@ class Customizer
                 sprintf(home_url('/?mailoptin_optin_campaign_id=%d'), absint($_GET['mailoptin_optin_campaign_id']))
             )
         );
+
+        $wp_customize->set_return_url(MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE);
     }
 
     /**
