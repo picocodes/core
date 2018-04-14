@@ -5,7 +5,7 @@ namespace MailOptin\Core\Admin\SettingsPage;
 use MailOptin\Core\Core;
 use MailOptin\Core\Repositories\EmailCampaignRepository;
 
-if (!class_exists('WP_List_Table')) {
+if ( ! class_exists('WP_List_Table')) {
     require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
 }
 
@@ -21,12 +21,12 @@ class Email_Campaign_List extends \WP_List_Table
      */
     public function __construct($wpdb)
     {
-        $this->wpdb = $wpdb;
+        $this->wpdb  = $wpdb;
         $this->table = $this->wpdb->prefix . Core::email_campaigns_table_name;
         parent::__construct(array(
                 'singular' => __('email_campaign', 'mailoptin'), //singular name of the listed records
-                'plural' => __('email_campaigns', 'mailoptin'), //plural name of the listed records
-                'ajax' => false //does this table support ajax?
+                'plural'   => __('email_campaigns', 'mailoptin'), //plural name of the listed records
+                'ajax'     => false //does this table support ajax?
             )
         );
     }
@@ -43,10 +43,10 @@ class Email_Campaign_List extends \WP_List_Table
     public function get_email_campaigns($per_page, $current_page = 1, $campaign_type = '')
     {
         $offset = ($current_page - 1) * $per_page;
-        $sql = "SELECT * FROM {$this->table}";
-        if (!empty($campaign_type)) {
+        $sql    = "SELECT * FROM {$this->table}";
+        if ( ! empty($campaign_type)) {
             $campaign_type = esc_sql($campaign_type);
-            $sql .= "  WHERE campaign_type = '$campaign_type'";
+            $sql           .= "  WHERE campaign_type = '$campaign_type'";
         }
 
         $sql .= "  ORDER BY id DESC";
@@ -84,9 +84,9 @@ class Email_Campaign_List extends \WP_List_Table
     {
         global $wpdb;
         $sql = "SELECT COUNT(*) FROM $this->table";
-        if (!empty($campaign_type)) {
+        if ( ! empty($campaign_type)) {
             $campaign_type = esc_sql($campaign_type);
-            $sql .= "  WHERE campaign_type = '$campaign_type'";
+            $sql           .= "  WHERE campaign_type = '$campaign_type'";
         }
 
         return $wpdb->get_var($sql);
@@ -137,14 +137,6 @@ class Email_Campaign_List extends \WP_List_Table
     {
         return add_query_arg(
             apply_filters('mo_email_campaign_customize_url', array(
-                    'url' => urlencode(
-                        add_query_arg(
-                            '_wpnonce',
-                            wp_create_nonce('mailoptin-preview-email-campaign'),
-                            sprintf(home_url('/?mailoptin_email_campaign_id=%d'), $item_id)
-                        )
-                    ),
-                    'return' => MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE,
                     'mailoptin_email_campaign_id' => $item_id,
                 )
             ),
@@ -220,7 +212,7 @@ class Email_Campaign_List extends \WP_List_Table
         $customize_url = self::_campaign_customize_url($email_campaign_id);
 
         $delete_url = self::_campaign_delete_url($email_campaign_id);
-        $name = "<a href=\"$customize_url\"><strong>" . $item['name'] . '</strong></a>';
+        $name       = "<a href=\"$customize_url\"><strong>" . $item['name'] . '</strong></a>';
 
         $actions = array(
             'delete' => sprintf("<a href=\"$delete_url\">%s</a>", __('Delete', 'mailoptin')),
@@ -240,8 +232,8 @@ class Email_Campaign_List extends \WP_List_Table
     {
         $email_campaign_id = absint($item['id']);
 
-        $delete_url = self::_campaign_delete_url($email_campaign_id);
-        $clone_url = self::_campaign_clone_url($email_campaign_id);
+        $delete_url    = self::_campaign_delete_url($email_campaign_id);
+        $clone_url     = self::_campaign_clone_url($email_campaign_id);
         $customize_url = self::_campaign_customize_url($email_campaign_id);
 
         $action = sprintf(
@@ -278,7 +270,7 @@ class Email_Campaign_List extends \WP_List_Table
         $email_campaign_id = absint($item['id']);
 
         $input_value = EmailCampaignRepository::is_campaign_active($email_campaign_id) ? 'yes' : 'no';
-        $checked = ($input_value == 'yes') ? 'checked="checked"' : null;
+        $checked     = ($input_value == 'yes') ? 'checked="checked"' : null;
 
         $switch = sprintf(
             '<input data-mo-automation-id="%1$s" id="mo-automation-activate-switch-%1$s" type="checkbox" class="mo-automation-activate-switch tgl tgl-light" value="%%3$s" %3$s />',
@@ -318,11 +310,11 @@ class Email_Campaign_List extends \WP_List_Table
     public function get_columns()
     {
         $columns = array(
-            'cb' => '<input type="checkbox">',
-            'name' => __('Name', 'mailoptin'),
+            'cb'            => '<input type="checkbox">',
+            'name'          => __('Name', 'mailoptin'),
             'campaign_type' => __('Automation Type', 'mailoptin'),
-            'action' => __('Actions', 'mailoptin'),
-            'activated' => __('Activated', 'mailoptin'),
+            'action'        => __('Actions', 'mailoptin'),
+            'activated'     => __('Activated', 'mailoptin'),
         );
 
         return $columns;
@@ -350,8 +342,8 @@ class Email_Campaign_List extends \WP_List_Table
     public function get_bulk_actions()
     {
         $actions = array(
-            'bulk-delete' => __('Delete', 'mailoptin'),
-            'bulk-activate' => __('Activate', 'mailoptin'),
+            'bulk-delete'     => __('Delete', 'mailoptin'),
+            'bulk-activate'   => __('Activate', 'mailoptin'),
             'bulk-deactivate' => __('Deactivate', 'mailoptin'),
         );
 
@@ -366,15 +358,15 @@ class Email_Campaign_List extends \WP_List_Table
         /** Process bulk action */
         $this->process_actions();
 
-        $campaign_type = isset($_GET['page']) && $_GET['page'] == MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_SLUG && !empty($_GET['type']) ? sanitize_text_field($_GET['type']) : '';
+        $campaign_type = isset($_GET['page']) && $_GET['page'] == MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_SLUG && ! empty($_GET['type']) ? sanitize_text_field($_GET['type']) : '';
 
         $this->_column_headers = $this->get_column_info();
-        $per_page = defined('MAILOPTIN_DETACH_LIBSODIUM') ? $this->get_items_per_page('email_campaign_per_page', 15) : 1;
-        $current_page = $this->get_pagenum();
-        $total_items = defined('MAILOPTIN_DETACH_LIBSODIUM') ? self::record_count($campaign_type) : 1;
+        $per_page              = defined('MAILOPTIN_DETACH_LIBSODIUM') ? $this->get_items_per_page('email_campaign_per_page', 15) : 1;
+        $current_page          = $this->get_pagenum();
+        $total_items           = defined('MAILOPTIN_DETACH_LIBSODIUM') ? self::record_count($campaign_type) : 1;
         $this->set_pagination_args(array(
                 'total_items' => $total_items, //WE have to calculate the total number of items
-                'per_page' => $per_page //WE have to determine how many items to show on a page
+                'per_page'    => $per_page //WE have to determine how many items to show on a page
             )
         );
 
@@ -384,7 +376,7 @@ class Email_Campaign_List extends \WP_List_Table
     public function process_actions()
     {
         // bail if user is not an admin or without admin privileges.
-        if (!current_user_can('administrator')) {
+        if ( ! current_user_can('administrator')) {
             return;
         }
 
@@ -394,7 +386,7 @@ class Email_Campaign_List extends \WP_List_Table
         if ('delete' === $this->current_action()) {
             // In our file that handles the request, verify the nonce.
             $nonce = esc_attr($_REQUEST['_wpnonce']);
-            if (!wp_verify_nonce($nonce, 'mailoptin_delete_email_campaign')) {
+            if ( ! wp_verify_nonce($nonce, 'mailoptin_delete_email_campaign')) {
                 die('Go get a life script kiddies');
             } else {
                 self::delete_email_campaign($email_campaign_id);
@@ -414,7 +406,7 @@ class Email_Campaign_List extends \WP_List_Table
 
             // In our file that handles the request, verify the nonce.
             $nonce = esc_attr($_REQUEST['_wpnonce']);
-            if (!wp_verify_nonce($nonce, 'mailoptin_clone_email_campaign')) {
+            if ( ! wp_verify_nonce($nonce, 'mailoptin_clone_email_campaign')) {
                 die('Go get a life script kiddies');
             } else {
                 (new CloneEmailCampaign($email_campaign_id))->forge();
@@ -427,7 +419,7 @@ class Email_Campaign_List extends \WP_List_Table
         if ('activate' === $this->current_action()) {
             // In our file that handles the request, verify the nonce.
             $nonce = sanitize_text_field($_REQUEST['_wpnonce']);
-            if (!wp_verify_nonce($nonce, 'mailoptin_activate_email_campaign')) {
+            if ( ! wp_verify_nonce($nonce, 'mailoptin_activate_email_campaign')) {
                 die('Go get a life script kiddies');
             } else {
                 EmailCampaignRepository::activate_email_campaign($email_campaign_id);
@@ -440,7 +432,7 @@ class Email_Campaign_List extends \WP_List_Table
         if ('deactivate' === $this->current_action()) {
             // In our file that handles the request, verify the nonce.
             $nonce = sanitize_text_field($_REQUEST['_wpnonce']);
-            if (!wp_verify_nonce($nonce, 'mailoptin_deactivate_email_campaign')) {
+            if ( ! wp_verify_nonce($nonce, 'mailoptin_deactivate_email_campaign')) {
                 die('Go get a life script kiddies');
             } else {
                 EmailCampaignRepository::deactivate_email_campaign($email_campaign_id);

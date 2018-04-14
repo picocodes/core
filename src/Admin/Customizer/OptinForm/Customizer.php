@@ -82,7 +82,7 @@ class Customizer
      */
     public function __construct()
     {
-        if (!empty($_REQUEST['mailoptin_optin_campaign_id'])) {
+        if ( ! empty($_REQUEST['mailoptin_optin_campaign_id'])) {
 
             $this->clean_up_customizer();
             $this->modify_customizer_publish_button();
@@ -91,7 +91,7 @@ class Customizer
 
             add_action('customize_controls_print_footer_scripts', [$this, 'customizer_footer_scripts']);
 
-            $this->optin_campaign_id = absint($_REQUEST['mailoptin_optin_campaign_id']);
+            $this->optin_campaign_id   = absint($_REQUEST['mailoptin_optin_campaign_id']);
             $this->optin_campaign_type = OptinCampaignsRepository::get_optin_campaign_type($this->optin_campaign_id);
 
             add_action('customize_controls_init', function () {
@@ -121,7 +121,22 @@ class Customizer
 
             // Disable admin bar.
             add_filter('show_admin_bar', '__return_false');
+
+            add_action( 'customize_controls_init', [$this, 'preview_screen_preserve_query_arg']);
         }
+    }
+
+    public function preview_screen_preserve_query_arg()
+    {
+        global $wp_customize;
+
+        $wp_customize->set_preview_url(
+            add_query_arg(
+                '_wpnonce',
+                wp_create_nonce('mailoptin-preview-optin-form'),
+                sprintf(home_url('/?mailoptin_optin_campaign_id=%d'), absint($_GET['mailoptin_optin_campaign_id']))
+            )
+        );
     }
 
     /**
@@ -132,8 +147,8 @@ class Customizer
         if (OptinCampaignsRepository::is_split_test_variant($this->optin_campaign_id)) return;
 
         $input_value = OptinCampaignsRepository::is_activated($this->optin_campaign_id) ? 'yes' : 'no';
-        $checked = ($input_value == 'yes') ? 'checked="checked"' : null;
-        $tooltip = __('Toggle to activate and deactivate optin.', 'mailoptin');
+        $checked     = ($input_value == 'yes') ? 'checked="checked"' : null;
+        $tooltip     = __('Toggle to activate and deactivate optin.', 'mailoptin');
 
         $switch = sprintf(
             '<input id="mo-optin-activate-switch" type="checkbox" class="tgl tgl-light" value="%s" %s />',
@@ -204,68 +219,68 @@ class Customizer
         $mappings = apply_filters('mo_optin_selectors_mapping', [
             [
                 'selector' => '.mo-optin-form-headline',
-                'type' => 'section',
-                'value' => $this->headline_section_id
+                'type'     => 'section',
+                'value'    => $this->headline_section_id
             ],
             [
                 'selector' => '.mo-optin-form-description',
-                'type' => 'section',
-                'value' => $this->description_section_id
+                'type'     => 'section',
+                'value'    => $this->description_section_id
             ],
             [
                 'selector' => '.mo-optin-form-note',
-                'type' => 'section',
-                'value' => $this->note_section_id
+                'type'     => 'section',
+                'value'    => $this->note_section_id
             ],
             [
                 'selector' => '.mo-optin-form-close-icon',
-                'type' => 'control',
-                'value' => 'hide_close_button'
+                'type'     => 'control',
+                'value'    => 'hide_close_button'
             ],
             [
                 'selector' => '.mo-optin-form-name-field',
-                'type' => 'control',
-                'value' => 'name_field_placeholder'
+                'type'     => 'control',
+                'value'    => 'name_field_placeholder'
             ],
             [
                 'selector' => '.mo-optin-form-email-field',
-                'type' => 'control',
-                'value' => 'email_field_placeholder'
+                'type'     => 'control',
+                'value'    => 'email_field_placeholder'
             ],
             [
                 'selector' => '.mo-optin-form-submit-button',
-                'type' => 'control',
-                'value' => 'submit_button'
+                'type'     => 'control',
+                'value'    => 'submit_button'
             ],
             [
                 'selector' => '.mo-optin-form-image',
-                'type' => 'control',
-                'value' => 'form_image'
+                'type'     => 'control',
+                'value'    => 'form_image'
             ],
             [
                 'selector' => '.mo-optin-form-background-image',
-                'type' => 'control',
-                'value' => 'form_background_image'
+                'type'     => 'control',
+                'value'    => 'form_background_image'
             ],
             [
                 'selector' => '.mo-optin-form-cta-button',
-                'type' => 'control',
-                'value' => 'input[type="submit].cta_button_action'
+                'type'     => 'control',
+                'value'    => 'input[type="submit].cta_button_action'
             ],
             [
                 'selector' => '.rescript_miniHeader',
-                'type' => 'control',
-                'value' => 'mini_headline'
+                'type'     => 'control',
+                'value'    => 'mini_headline'
             ],
             [
                 'selector' => '.gridgum_header2',
-                'type' => 'control',
-                'value' => 'mini_headline'
+                'type'     => 'control',
+                'value'    => 'mini_headline'
             ],
             [
                 'selector' => '.columbine-miniText',
-                'type' => 'control',
-                'value' => 'mini_headline'
+                'type'     => 'control',
+                'value'    => 'mini_headline'
             ]
         ]);
 
@@ -273,13 +288,13 @@ class Customizer
             $mappings[] =
                 [
                     'selector' => '.mo-optin-powered-by',
-                    'type' => 'control',
-                    'value' => 'remove_branding'
+                    'type'     => 'control',
+                    'value'    => 'remove_branding'
                 ];
         }
 
         // source: https://stackoverflow.com/a/35957563/2648410
-        $last_mapping = array_values(array_slice($mappings, -1))[0];
+        $last_mapping  = array_values(array_slice($mappings, -1))[0];
         $css_selectors = '';
         foreach ($mappings as $mapping) {
             $css_selectors .= $mapping['selector'] . ':hover';
@@ -355,7 +370,7 @@ class Customizer
      */
     public function burst_cache_after_customizer_save()
     {
-        if (isset($_REQUEST['customized']) && !empty($_REQUEST['mailoptin_optin_campaign_id'])) {
+        if (isset($_REQUEST['customized']) && ! empty($_REQUEST['mailoptin_optin_campaign_id'])) {
             $optin_id = absint($_REQUEST['mailoptin_optin_campaign_id']);
             OptinCampaignsRepository::burst_cache($optin_id);
         }
@@ -416,7 +431,7 @@ class Customizer
             'moToastrLabels',
             [
                 'integrationNotSet' => ['title' => __("You haven't setup an integration", 'mailoptin'), 'message' => __('Click me to do it now', 'mailoptin')],
-                'optinNotActive' => ['title' => __('This optin campaign is not active', 'mailoptin'), 'message' => __('Click me to activate it', 'mailoptin')],
+                'optinNotActive'    => ['title' => __('This optin campaign is not active', 'mailoptin'), 'message' => __('Click me to activate it', 'mailoptin')],
             ]
         );
 
@@ -611,7 +626,7 @@ class Customizer
                     unset($controls['slidein_position']);
                 }
 
-                if (!in_array($customizerClassInstance->optin_campaign_type, ['lightbox', 'slidein', 'bar'])) {
+                if ( ! in_array($customizerClassInstance->optin_campaign_type, ['lightbox', 'slidein', 'bar'])) {
                     unset($controls['hide_close_button']);
                 }
 
@@ -667,7 +682,7 @@ class Customizer
         add_action('wp_footer', [$this, 'preview_iframe_footer_assets']);
 
         // $result is false of optin form class do not exist.
-        if (!$optin_class_instance) {
+        if ( ! $optin_class_instance) {
             wp_redirect(add_query_arg('optin-error', 'class-not-found', MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE));
             exit;
         }
@@ -692,8 +707,8 @@ class Customizer
     public function save_optin_campaign_title($wp_customize_manager)
     {
         $optin_campaign_id = absint($_POST['mailoptin_optin_campaign_id']);
-        $option_name = "mo_optin_campaign[$optin_campaign_id][campaign_title]";
-        $posted_values = $wp_customize_manager->unsanitized_post_values();
+        $option_name       = "mo_optin_campaign[$optin_campaign_id][campaign_title]";
+        $posted_values     = $wp_customize_manager->unsanitized_post_values();
 
         if (array_key_exists($option_name, $posted_values)) {
             OptinCampaignsRepository::updateCampaignName(
@@ -713,7 +728,7 @@ class Customizer
         do_action('mo_optin_before_display_rules_panel', $wp_customize, $this);
 
         $wp_customize->add_panel($this->display_rules_panel_id, array(
-                'title' => __('Display Rules', 'mailoptin'),
+                'title'       => __('Display Rules', 'mailoptin'),
                 'description' => __('Configure how this optin campaign will be shown to visitors or users.', 'mailoptin')
             )
         );
@@ -730,23 +745,23 @@ class Customizer
     {
         do_action('mo_optin_before_design_customizer_section', $wp_customize, $this);
 
-        if (!apply_filters('mo_optin_customizer_disable_upsell_section', false)) {
+        if ( ! apply_filters('mo_optin_customizer_disable_upsell_section', false)) {
             $wp_customize->add_section(
                 new UpsellCustomizerSection($wp_customize, 'mailoptin_upsell_section',
                     array(
-                        'pro_text' => __('Check out MailOptin Premium!', 'mailoptin'),
-                        'pro_url' => 'https://mailoptin.io/pricing/?utm_source=optin_customizer&utm_medium=upgrade&utm_campaign=upsell_customizer_section',
+                        'pro_text'   => __('Check out MailOptin Premium!', 'mailoptin'),
+                        'pro_url'    => 'https://mailoptin.io/pricing/?utm_source=optin_customizer&utm_medium=upgrade&utm_campaign=upsell_customizer_section',
                         'capability' => 'manage_options',
-                        'priority' => 0,
-                        'type' => 'mo-upsell-section'
+                        'priority'   => 0,
+                        'type'       => 'mo-upsell-section'
                     )
                 )
             );
         }
 
-        if (!apply_filters('mo_optin_customizer_disable_design_section', false)) {
+        if ( ! apply_filters('mo_optin_customizer_disable_design_section', false)) {
             $wp_customize->add_section($this->design_section_id, array(
-                    'title' => __('Design', 'mailoptin'),
+                    'title'    => __('Design', 'mailoptin'),
                     'priority' => 5,
                 )
             );
@@ -754,18 +769,18 @@ class Customizer
 
         do_action('mo_optin_after_design_customizer_section', $wp_customize, $this);
 
-        if (!apply_filters('mo_optin_customizer_disable_headline_section', false)) {
+        if ( ! apply_filters('mo_optin_customizer_disable_headline_section', false)) {
             $wp_customize->add_section($this->headline_section_id, array(
-                    'title' => __('Headline', 'mailoptin'),
+                    'title'    => __('Headline', 'mailoptin'),
                     'priority' => 10,
                 )
             );
         }
         do_action('mo_optin_after_headline_customizer_section', $wp_customize, $this);
 
-        if (!apply_filters('mo_optin_customizer_disable_description_section', false)) {
+        if ( ! apply_filters('mo_optin_customizer_disable_description_section', false)) {
             $wp_customize->add_section($this->description_section_id, array(
-                    'title' => __('Description', 'mailoptin'),
+                    'title'    => __('Description', 'mailoptin'),
                     'priority' => 15,
                 )
             );
@@ -773,9 +788,9 @@ class Customizer
 
         do_action('mo_optin_after_description_customizer_section', $wp_customize, $this);
 
-        if (!apply_filters('mo_optin_customizer_disable_note_section', false)) {
+        if ( ! apply_filters('mo_optin_customizer_disable_note_section', false)) {
             $wp_customize->add_section($this->note_section_id, array(
-                    'title' => __('Note', 'mailoptin'),
+                    'title'    => __('Note', 'mailoptin'),
                     'priority' => 20,
                 )
             );
@@ -783,9 +798,9 @@ class Customizer
 
         do_action('mo_optin_after_note_customizer_section', $wp_customize, $this);
 
-        if (!apply_filters('mo_optin_customizer_disable_fields_section', false)) {
+        if ( ! apply_filters('mo_optin_customizer_disable_fields_section', false)) {
             $wp_customize->add_section($this->fields_section_id, array(
-                    'title' => __('Fields', 'mailoptin'),
+                    'title'    => __('Fields', 'mailoptin'),
                     'priority' => 25,
                 )
             );
@@ -793,9 +808,9 @@ class Customizer
 
         do_action('mo_optin_after_fields_customizer_section', $wp_customize, $this);
 
-        if (!apply_filters('mo_optin_customizer_disable_configuration_section', false)) {
+        if ( ! apply_filters('mo_optin_customizer_disable_configuration_section', false)) {
             $wp_customize->add_section($this->configuration_section_id, array(
-                    'title' => __('Configuration', 'mailoptin'),
+                    'title'    => __('Configuration', 'mailoptin'),
                     'priority' => 30,
                 )
             );
@@ -803,17 +818,17 @@ class Customizer
 
         do_action('mo_optin_after_configuration_customizer_section', $wp_customize, $this);
 
-        if (!apply_filters('mo_optin_customizer_disable_integration_section', false)) {
+        if ( ! apply_filters('mo_optin_customizer_disable_integration_section', false)) {
             $wp_customize->add_section($this->integration_section_id, array(
-                    'title' => __('Integration', 'mailoptin'),
+                    'title'    => __('Integration', 'mailoptin'),
                     'priority' => 35,
                 )
             );
         }
 
-        if (!apply_filters('mo_optin_customizer_disable_success_section', false)) {
+        if ( ! apply_filters('mo_optin_customizer_disable_success_section', false)) {
             $wp_customize->add_section($this->success_section_id, array(
-                    'title' => __('After Conversion', 'mailoptin'),
+                    'title'    => __('After Conversion', 'mailoptin'),
                     'priority' => 40,
                 )
             );

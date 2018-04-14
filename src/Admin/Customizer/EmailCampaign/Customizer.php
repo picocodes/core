@@ -46,7 +46,7 @@ class Customizer
      */
     public function __construct()
     {
-        if (!empty($_REQUEST['mailoptin_email_campaign_id'])) {
+        if ( ! empty($_REQUEST['mailoptin_email_campaign_id'])) {
 
             $this->clean_up_customizer();
             $this->modify_customizer_publish_button();
@@ -85,8 +85,22 @@ class Customizer
             add_action('customize_panel_active', '__return_false');
 
             add_action('customize_register', array($this, 'register_campaign_customizer'));
-        }
 
+            add_action('customize_controls_init', [$this, 'preview_screen_preserve_query_arg']);
+        }
+    }
+
+    public function preview_screen_preserve_query_arg()
+    {
+        global $wp_customize;
+
+        $wp_customize->set_preview_url(
+            add_query_arg(
+                '_wpnonce',
+                wp_create_nonce('mailoptin-preview-email-campaign'),
+                sprintf(home_url('/?mailoptin_email_campaign_id=%d'), absint($_GET['mailoptin_email_campaign_id']))
+            )
+        );
     }
 
     /**
@@ -95,8 +109,8 @@ class Customizer
     public function add_activate_switch()
     {
         $input_value = EmailCampaignRepository::is_campaign_active($this->email_campaign_id) ? 'yes' : 'no';
-        $checked = ($input_value == 'yes') ? 'checked="checked"' : null;
-        $tooltip = __('Toggle to activate and deactivate email automation.', 'mailoptin');
+        $checked     = ($input_value == 'yes') ? 'checked="checked"' : null;
+        $tooltip     = __('Toggle to activate and deactivate email automation.', 'mailoptin');
 
         $switch = sprintf(
             '<input id="mo-automation-activate-switch" type="checkbox" class="tgl tgl-light" value="%s" %s />',
@@ -263,7 +277,7 @@ class Customizer
         $result = EmailCampaignFactory::make($email_campaign_id);
 
         // $result is false of optin form class do not exist.
-        if (!$result) {
+        if ( ! $result) {
             wp_redirect(add_query_arg('email-campaign-error', 'class-not-found', MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE));
             exit;
         }
@@ -286,52 +300,52 @@ class Customizer
      */
     public function add_sections($wp_customize)
     {
-        if (!apply_filters('mo_email_customizer_disable_upsell_section', false)) {
+        if ( ! apply_filters('mo_email_customizer_disable_upsell_section', false)) {
             $wp_customize->add_section(
                 new UpsellCustomizerSection($wp_customize, 'mailoptin_upsell_section',
                     array(
-                        'pro_text' => __('Check out MailOptin Premium!', 'mailoptin'),
-                        'pro_url' => 'https://mailoptin.io/pricing/?utm_source=optin_customizer&utm_medium=upgrade&utm_campaign=upsell_customizer_section',
+                        'pro_text'   => __('Check out MailOptin Premium!', 'mailoptin'),
+                        'pro_url'    => 'https://mailoptin.io/pricing/?utm_source=optin_customizer&utm_medium=upgrade&utm_campaign=upsell_customizer_section',
                         'capability' => 'manage_options',
-                        'priority' => 0,
-                        'type' => 'mo-upsell-section'
+                        'priority'   => 0,
+                        'type'       => 'mo-upsell-section'
                     )
                 )
             );
         }
 
         $wp_customize->add_section($this->campaign_settings_section_id, array(
-                'title' => __('Automation Settings', 'mailoptin'),
+                'title'    => __('Automation Settings', 'mailoptin'),
                 'priority' => 55,
             )
         );
 
         $wp_customize->add_section($this->campaign_page_section_id, array(
-                'title' => __('Template Page', 'mailoptin'),
+                'title'    => __('Template Page', 'mailoptin'),
                 'priority' => 20,
             )
         );
 
         $wp_customize->add_section($this->campaign_header_section_id, array(
-                'title' => __('Template Header', 'mailoptin'),
+                'title'    => __('Template Header', 'mailoptin'),
                 'priority' => 30,
             )
         );
 
         $wp_customize->add_section($this->campaign_content_section_id, array(
-                'title' => __('Template Content', 'mailoptin'),
+                'title'    => __('Template Content', 'mailoptin'),
                 'priority' => 40,
             )
         );
 
         $wp_customize->add_section($this->campaign_footer_section_id, array(
-                'title' => __('Template Footer', 'mailoptin'),
+                'title'    => __('Template Footer', 'mailoptin'),
                 'priority' => 50,
             )
         );
 
         $wp_customize->add_section($this->campaign_send_email_section_id, array(
-                'title' => __('Send Test Email', 'mailoptin'),
+                'title'    => __('Send Test Email', 'mailoptin'),
                 'priority' => 60,
             )
         );
@@ -353,7 +367,7 @@ class Customizer
         $instance->footer_settings();
 
         $wp_customize->add_setting($this->option_prefix . '[send_test_email]', array(
-                'type' => 'option',
+                'type'      => 'option',
                 'transport' => 'postMessage',
             )
         );
@@ -379,12 +393,12 @@ class Customizer
                 $wp_customize,
                 $this->option_prefix . '[send_test_email]',
                 array(
-                    'label' => __('Background Color', 'mailoptin'),
+                    'label'       => __('Background Color', 'mailoptin'),
                     'description' => __("Save the template and then click the button to send a test email to admin email $admin_email",
                         'mailoptin'
                     ),
-                    'section' => $this->campaign_send_email_section_id,
-                    'settings' => $this->option_prefix . '[send_test_email]',
+                    'section'     => $this->campaign_send_email_section_id,
+                    'settings'    => $this->option_prefix . '[send_test_email]',
                 )
             )
         );
