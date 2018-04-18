@@ -33,15 +33,20 @@ class OptinCampaign_List extends \WP_List_Table
     public function __construct($wpdb)
     {
         $this->lite_themes = [
-            'lightbox' => 'BareMetal',
-            'inpost'   => 'Columbine',
-            'sidebar'  => 'Lupin',
+            ['type' => 'lightbox', 'class' => 'BareMetal'],
+            ['type' => 'lightbox', 'class' => 'Elegance'],
+            ['type' => 'inpost', 'class' => 'Columbine'],
+            ['type' => 'sidebar', 'class' => 'Lupin']
         ];
 
-        $this->lite_optin_types_support = array_keys($this->lite_themes);
+        $this->lite_optin_types_support = array_unique(array_reduce($this->lite_themes, function ($carry, $item) {
+            $carry[] = $item['type'];
 
-        foreach ($this->lite_themes as $type => $class) {
-            $this->fqn_lite_themes[] = $type . '/' . $class;
+            return $carry;
+        }));
+
+        foreach ($this->lite_themes as $lite_theme) {
+            $this->fqn_lite_themes[] = $lite_theme['type'] . '/' . $lite_theme['class'];
         }
 
         $this->wpdb  = $wpdb;
@@ -52,6 +57,17 @@ class OptinCampaign_List extends \WP_List_Table
                 'ajax'     => false //does this table support ajax?
             )
         );
+    }
+
+    public function get_optin_classes_by_type($optin_type)
+    {
+        return array_reduce($this->lite_themes, function ($carry, $item) use ($optin_type) {
+            if ($item['type'] == $optin_type) {
+                $carry[] = $item['class'];
+            }
+
+            return $carry;
+        });
     }
 
     /**
@@ -83,8 +99,8 @@ class OptinCampaign_List extends \WP_List_Table
 
             // if this is lite and ofcourse $optin_type is specified.
             if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM')) {
-                $sql    .= " AND optin_class = %s";
-                $args[] = $this->lite_themes[$optin_type];
+                $_lite_optin_classes = "('" . implode("','", $this->get_optin_classes_by_type($optin_type)) . "')";
+                $sql                 .= " AND optin_class IN $_lite_optin_classes";
             }
         }
 
