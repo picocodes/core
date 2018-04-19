@@ -100,7 +100,7 @@ class Customizer
                 echo '</script>';
             });
 
-            add_filter('template_include', array($this, 'include_optin_form_customizer_template'));
+            add_filter('template_include', array($this, 'include_optin_form_customizer_template'), 999999999);
 
             add_filter('gettext', array($this, 'rewrite_customizer_panel_description'), 10, 3);
             add_filter('gettext', array($this, 'rewrite_customizer_save_publish_label'), 10, 3);

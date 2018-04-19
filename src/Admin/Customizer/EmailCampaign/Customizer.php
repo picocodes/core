@@ -74,7 +74,7 @@ class Customizer
                 wp_enqueue_script('mailoptin-send-test-email', MAILOPTIN_ASSETS_URL . 'js/admin/send-test-email.js');
             });
 
-            add_filter('template_include', array($this, 'include_campaign_customizer_template'));
+            add_filter('template_include', array($this, 'include_campaign_customizer_template'), 999999999);
 
             add_filter('gettext', array($this, 'rewrite_customizer_panel_description'), 10, 3);
 
