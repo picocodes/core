@@ -462,6 +462,10 @@ class CustomizerSettings extends AbstractCustomizer
                     'type' => 'option',
                     'transport' => 'postMessage',
                 ),
+                'no_integration_notice' => array(
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
                 'ajax_nonce' => array(
                     'default' => wp_create_nonce('customizer-fetch-email-list'),
                     'type' => 'option',
