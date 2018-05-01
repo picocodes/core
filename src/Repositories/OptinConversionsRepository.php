@@ -98,6 +98,13 @@ class OptinConversionsRepository extends AbstractRepository
         $table = parent::conversions_table();
         $offset = ($offset - 1) * $limit;
         $sql = "SELECT * FROM {$table}";
+
+        if (!empty($_POST['s'])) {
+            $search = esc_sql(sanitize_text_field($_POST['s']));
+            $sql .= " WHERE name LIKE '%$search%'";
+            $sql .= " OR email LIKE '%$search%'";
+        }
+
         $sql .= " ORDER BY id DESC";
         if (!is_null($limit)) {
             $sql .= " LIMIT $limit";
