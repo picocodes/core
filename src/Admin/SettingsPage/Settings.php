@@ -64,21 +64,21 @@ class Settings extends AbstractSettingsPage
     public function settings_admin_page_callback()
     {
         $clear_optin_cache_url = add_query_arg('clear-optin-cache', 'true', MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE);
-        $args = array(
-            'general_settings' => apply_filters('mailoptin_settings_general_settings_page', array(
+        $args = [
+            'general_settings' => apply_filters('mailoptin_settings_general_settings_page', [
                     'tab_title' => __('General', 'mailoptin'),
                     'section_title' => __('General Settings', 'mailoptin'),
-                    'remove_plugin_data' => array(
+                    'remove_plugin_data' => [
                         'type' => 'checkbox',
                         'label' => __('Remove Data on Uninstall?', 'mailoptin'),
                         'description' => __('Check this box if you would like MailOptin to completely remove all of its data when uninstalled.', 'mailoptin'),
-                    ),
-                    'allow_tracking' => array(
+                    ],
+                    'allow_tracking' => [
                         'type' => 'checkbox',
                         'label' => __('Allow Usage Tracking?', 'mailoptin'),
                         'description' => __('Allow MailOptin to anonymously track how this plugin is used and help us make the plugin better. Opt-in to tracking and our newsletter. No sensitive data is tracked.', 'mailoptin'),
-                    ),
-                    'mailoptin_affiliate_url' => array(
+                    ],
+                    'mailoptin_affiliate_url' => [
                         'type' => 'text',
                         'label' => __('MailOptin Affiliate Link', 'mailoptin'),
                         'description' => sprintf(
@@ -86,8 +86,8 @@ class Settings extends AbstractSettingsPage
                             '<a href="https://mailoptin.io/affiliates/" target="_blank">',
                             '</a>'
                         ),
-                    )
-                )
+                    ]
+                ]
             ),
             'optin_campaign_settings' => apply_filters('mailoptin_settings_optin_campaign_settings_page', [
                     'tab_title' => __('Optin Campaign', 'mailoptin'),
@@ -127,57 +127,57 @@ class Settings extends AbstractSettingsPage
                     ]
                 ]
             ),
-            'email_campaign_settings' => apply_filters('mailoptin_settings_email_campaign_settings_page', array(
+            'email_campaign_settings' => apply_filters('mailoptin_settings_email_campaign_settings_page', [
                     'tab_title' => __('Email Campaign', 'mailoptin'),
                     'section_title' => __('Email Campaign Settings', 'mailoptin'),
-                    'from_name' => array(
+                    'from_name' => [
                         'type' => 'text',
                         'label' => __('From Name', 'mailoptin'),
                         'description' => sprintf(__('Enter the sender name to be used as the "From Name".', 'mailoptin')),
-                    ),
-                    'from_email' => array(
+                    ],
+                    'from_email' => [
                         'type' => 'text',
                         'label' => __('From Email', 'mailoptin'),
                         'description' => __('Enter the email address to be used as the "From Email"', 'mailoptin'),
-                    ),
-                    'reply_to' => array(
+                    ],
+                    'reply_to' => [
                         'type' => 'text',
                         'label' => __('Reply To', 'mailoptin'),
                         'description' => __('Enter the email address to be used as the "Reply To"', 'mailoptin'),
-                    ),
-                    'company_name' => array(
+                    ],
+                    'company_name' => [
                         'type' => 'text',
                         'label' => __('Company / Organization', 'mailoptin'),
                         'description' => __('Enter the name of your company or organization.', 'mailoptin'),
-                    ),
-                    'company_address' => array(
+                    ],
+                    'company_address' => [
                         'type' => 'text',
                         'label' => __('Address', 'mailoptin'),
-                    ),
-                    'company_address_2' => array(
+                    ],
+                    'company_address_2' => [
                         'type' => 'text',
                         'label' => __('Address 2', 'mailoptin'),
-                    ),
-                    'company_city' => array(
+                    ],
+                    'company_city' => [
                         'type' => 'text',
                         'label' => __('City', 'mailoptin'),
-                    ),
-                    'company_state' => array(
+                    ],
+                    'company_state' => [
                         'type' => 'text',
                         'label' => __('State / Province / Region', 'mailoptin'),
-                    ),
-                    'company_zip' => array(
+                    ],
+                    'company_zip' => [
                         'type' => 'text',
                         'label' => __('Zip / Postal code', 'mailoptin')
-                    ),
-                    'company_country' => array(
+                    ],
+                    'company_country' => [
                         'type' => 'select',
                         'label' => __('Country', 'mailoptin'),
                         'options' => \MailOptin\Core\countries_array()
-                    )
-                )
+                    ]
+                ]
             )
-        );
+        ];
 
         if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
             unset($args['optin_campaign_settings']);

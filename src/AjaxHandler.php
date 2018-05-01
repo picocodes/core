@@ -21,6 +21,7 @@ use MailOptin\Core\Repositories\OptinCampaignStat;
 use MailOptin\Core\Repositories\OptinConversionsRepository;
 use MailOptin\Core\Repositories\OptinThemesRepository;
 use MailOptin\Core\Repositories\StateRepository;
+use MailOptin\Libprodium\LeadBank\LeadBank;
 
 class AjaxHandler
 {
@@ -749,9 +750,11 @@ class AjaxHandler
             'referrer' => $conversion_data->referrer,
         ];
 
-        if ($conversion_data->is_leadbank_active === true) {
-            // capture optin lead / conversion
-            OptinConversionsRepository::add($lead_data);
+        if (class_exists('MailOptin\Libprodium\LeadBank\LeadBank') && !LeadBank::is_leadbank_disabled()) {
+            if ($conversion_data->is_leadbank_active === true) {
+                // capture optin lead / conversion
+                OptinConversionsRepository::add($lead_data);
+            }
         }
 
         // kick-in if only lead bank should be used
