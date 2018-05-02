@@ -54,61 +54,10 @@ trait CustomizerTrait
     {
         add_action('init', function () {
 
-            add_action('customize_controls_enqueue_scripts', function () {
-                $cache = wp_get_theme();
-                $child_theme = wp_get_theme()->get_stylesheet();
-                $parent_theme = $cache->get_template();
-
-                $wp_styles = wp_styles();
-                $wp_scripts = wp_scripts();
-
-                foreach ($wp_scripts->registered as $key => $value) {
-                    $src = $value->src;
-                    if (strpos($src, $child_theme) !== false || strpos($src, $parent_theme) !== false) {
-                        wp_deregister_script($key);
-                    }
-                }
-
-                foreach ($wp_styles->registered as $key => $value) {
-                    $src = $value->src;
-                    if (strpos($src, $child_theme) !== false || strpos($src, $parent_theme) !== false) {
-                        wp_deregister_style($key);
-                    }
-                }
-
-            }, 9999999999999);
-
-            add_action('customize_controls_enqueue_scripts', function () {
-
-                $cache = wp_get_theme();
-                $child_theme = wp_get_theme()->get_stylesheet();
-                $parent_theme = $cache->get_template();
-
-                $wp_styles = wp_styles();
-                $wp_scripts = wp_scripts();
-
-                foreach ($wp_scripts->registered as $key => $value) {
-                    $src = $value->src;
-                    if (strpos($src, $child_theme) !== false || strpos($src, $parent_theme) !== false) {
-                        wp_deregister_script($key);
-                        wp_dequeue_script($key);
-                    }
-                }
-
-                foreach ($wp_styles->registered as $key => $value) {
-                    $src = $value->src;
-                    if (strpos($src, $child_theme) !== false || strpos($src, $parent_theme) !== false) {
-                        wp_deregister_style($key);
-                        wp_dequeue_style($key);
-                    }
-                }
-
-            }, 9999999999999);
-
             // remove all custom media button added by plugins and core.
             remove_all_actions('media_buttons');
-            remove_all_filters( 'mce_buttons', 10 );
-            remove_all_filters( 'mce_external_plugins', 10 );
+            remove_all_filters('mce_buttons', 10);
+            remove_all_filters('mce_external_plugins', 10);
 
             remove_all_actions('wp_head');
             remove_all_actions('wp_print_styles');
@@ -120,17 +69,98 @@ trait CustomizerTrait
             add_action('wp_head', 'wp_print_styles', 8);
             add_action('wp_head', 'wp_print_head_scripts', 9);
             add_action('wp_head', 'wp_site_icon');
-            // add core media button back.
-            add_action('media_buttons', 'media_buttons');
+
             // Handle `wp_footer`
             add_action('wp_footer', 'wp_print_footer_scripts', 20);
+
+            // add core media button back.
+            add_action('media_buttons', 'media_buttons');
+
+            $wp_get_theme = wp_get_theme();
+
+            $active_plugins = array_reduce(get_option('active_plugins'), function ($carry, $item) {
+                $name = dirname($item);
+                if ($name != 'mailoptin' && $name != '.') {
+                    $carry[] = $name;
+                }
+
+                return $carry;
+            });
+
+            add_action('customize_controls_enqueue_scripts', function () use ($wp_get_theme, $active_plugins) {
+                global $wp_styles;
+                global $wp_scripts;
+
+                $child_theme = $wp_get_theme->get_stylesheet();
+                $parent_theme = $wp_get_theme->get_template();
+
+                foreach ($wp_scripts->registered as $key => $value) {
+                    $src = $value->src;
+                    if (strpos($src, $child_theme) !== false || strpos($src, $parent_theme) !== false) {
+                        unset($wp_scripts->registered[$key]);
+                    }
+
+                    foreach ($active_plugins as $active_plugin) {
+                        if (strpos($src, $active_plugin) !== false) {
+                            unset($wp_scripts->registered[$key]);
+                        }
+                    }
+                }
+
+                foreach ($wp_styles->registered as $key => $value) {
+                    $src = $value->src;
+                    if (strpos($src, $child_theme) !== false || strpos($src, $parent_theme) !== false) {
+                        wp_deregister_style($key);
+                    }
+
+                    foreach ($active_plugins as $active_plugin) {
+                        if (strpos($src, $active_plugin) !== false) {
+                            unset($wp_styles->registered[$key]);
+                        }
+                    }
+                }
+
+            }, 9999999999999);
+
+            add_action('wp_enqueue_scripts', function () use ($wp_get_theme, $active_plugins) {
+                global $wp_styles;
+                global $wp_scripts;
+
+                $child_theme = $wp_get_theme->get_stylesheet();
+                $parent_theme = $wp_get_theme->get_template();
+
+                foreach ($wp_scripts->registered as $key => $value) {
+                    $src = $value->src;
+                    if (strpos($src, $child_theme) !== false || strpos($src, $parent_theme) !== false) {
+                        unset($wp_scripts->registered[$key]);
+                    }
+
+                    foreach ($active_plugins as $active_plugin) {
+                        if (strpos($src, $active_plugin) !== false) {
+                            unset($wp_scripts->registered[$key]);
+                        }
+                    }
+                }
+
+                foreach ($wp_styles->registered as $key => $value) {
+                    $src = $value->src;
+                    if (strpos($src, $child_theme) !== false || strpos($src, $parent_theme) !== false) {
+                        unset($wp_styles->registered[$key]);
+                    }
+
+                    foreach ($active_plugins as $active_plugin) {
+                        if (strpos($src, $active_plugin) !== false) {
+                            unset($wp_styles->registered[$key]);
+                        }
+                    }
+                }
+
+            }, 9999999999999);
 
             if (class_exists('Astra_Customizer') && method_exists('Astra_Customizer', 'print_footer_scripts')) {
                 remove_action('customize_controls_print_footer_scripts', [\Astra_Customizer::get_instance(), 'print_footer_scripts']);
             }
 
-        },
-            9999999999999
-        );
+        }, 9999999999999);
     }
 }

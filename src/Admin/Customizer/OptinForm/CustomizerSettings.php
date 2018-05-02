@@ -201,6 +201,11 @@ class CustomizerSettings extends AbstractCustomizer
                     'type' => 'option',
                     'transport' => 'refresh',
                 ),
+                'note_acceptance_checkbox' => array(
+                    'default' => $this->customizer_defaults['note_acceptance_checkbox'],
+                    'type' => 'option',
+                    'transport' => 'refresh',
+                ),
                 'note_close_optin_onclick' => array(
                     'default' => $this->customizer_defaults['note_close_optin_onclick'],
                     'type' => 'option',

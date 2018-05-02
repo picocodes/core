@@ -391,6 +391,21 @@ class CustomizerControls
                         )
                     )
                 ),
+                'note_acceptance_checkbox' => new WP_Customize_Toggle_Control(
+                    $this->wp_customize,
+                    $this->option_prefix . '[note_acceptance_checkbox]',
+                    apply_filters('mo_optin_form_customizer_note_acceptance_checkbox_onclick_args', array(
+                            'label'       => __('Enable Acceptance Checkbox', 'mailoptin'),
+                            'section'     => $this->customizerClassInstance->note_section_id,
+                            'settings'    => $this->option_prefix . '[note_acceptance_checkbox]',
+                            'description' => sprintf(
+                                __('Activate to display an acceptance checkbox that users have to check before they are subscribed. %sLearn More%s', 'mailoptin'),
+                                '<a href="#" target="_blank">', '</a>'
+                            ),
+                            'priority'    => 40,
+                        )
+                    )
+                ),
                 'note_close_optin_onclick' => new WP_Customize_Toggle_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[note_close_optin_onclick]',
@@ -402,7 +417,7 @@ class CustomizerControls
                                 __('Activate if you want a click on "note" to close the optin form. Particularly useful if close icon is hidden. %sLearn More%s', 'mailoptin'),
                                 '<a href="https://mailoptin.io/article/text-link-closes-popup-optin-form/" target="_blank">', '</a>'
                             ),
-                            'priority'    => 40,
+                            'priority'    => 60,
                         )
                     )
                 ),

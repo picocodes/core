@@ -593,17 +593,6 @@ class Customizer
             return $status;
         });
 
-        add_filter('mo_optin_customizer_disable_note_section', function ($status) {
-            if ($this->optin_campaign_type == 'bar') {
-                $status = true;
-                add_filter('mailoptin_tinymce_customizer_control_count', function ($count) {
-                    return --$count;
-                });
-            }
-
-            return $status;
-        });
-
         add_filter('mo_optin_form_customizer_configuration_controls',
             function ($controls, $wp_customize, $option_prefix, $customizerClassInstance) {
                 // do not display these controls if optin type is sidebar.

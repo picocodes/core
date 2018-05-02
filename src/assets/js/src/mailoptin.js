@@ -912,6 +912,9 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 var self = this;
                 var name_field = $('#' + $optin_css_id + '_name_field:visible');
                 var email_field = $('#' + $optin_css_id + '_email_field:visible');
+                var acceptance_checkbox = $('#' + $optin_css_id + ' #mo-acceptance-checkbox');
+
+                console.log(acceptance_checkbox);
 
                 var honeypot_email_field = $('#' + $optin_css_id + '_honeypot_email_field').val();
                 var honeypot_website_field = $('#' + $optin_css_id + '_honeypot_website_field').val();
@@ -934,6 +937,13 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 // if this is a name field, check if the field isn't empty.
                 if (name_field.length > 0) {
                     if (name_field.val() === "") {
+                        self.display_optin_error.call(name_field, $optin_css_id, namefield_error);
+                        response = false;
+                    }
+                }
+
+                if (acceptance_checkbox.length > 0) {
+                    if (acceptance_checkbox[0].checked === false) {
                         self.display_optin_error.call(name_field, $optin_css_id, namefield_error);
                         response = false;
                     }

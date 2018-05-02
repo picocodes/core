@@ -691,7 +691,18 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
     public function shortcode_optin_form_note($atts)
     {
         $note = apply_filters('mo_optin_form_before_note', '', $this->optin_campaign_id, $this->optin_campaign_type, $this->optin_campaign_uuid, $atts);
+        $is_acceptance_checkbox_active = $this->get_customizer_value('note_acceptance_checkbox');
+
+        if ($is_acceptance_checkbox_active) {
+            $note .= '<label class="mo-acceptance-label"><input type="checkbox" id="mo-acceptance-checkbox">';
+        }
+
         $note .= $this->get_customizer_value('note');
+
+        if ($is_acceptance_checkbox_active) {
+            $note .= '</label>';
+        }
+
         $note .= apply_filters('mo_optin_form_after_note', '', $this->optin_campaign_id, $this->optin_campaign_type, $this->optin_campaign_uuid, $atts);
 
         $note = do_shortcode($note);
@@ -893,7 +904,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
      *
      * @param array $atts supplied shortcode attributes
      *
-     * @return string
+     * @return mixed
      */
     function mo_optin_form_other_field_atts($atts)
     {
