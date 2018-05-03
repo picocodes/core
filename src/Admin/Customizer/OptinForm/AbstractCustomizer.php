@@ -60,6 +60,7 @@ class AbstractCustomizer
         $defaults['note_font'] = apply_filters('mo_optin_form_note_font_default', '', $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
         $defaults['note_close_optin_onclick'] = apply_filters('mo_optin_form_note_close_optin_onclick_default', false, $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
         $defaults['note_acceptance_checkbox'] = apply_filters('mo_optin_form_note_acceptance_checkbox_default', false, $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
+        $defaults['note_acceptance_error'] = apply_filters('mo_optin_form_note_acceptance_error_default', __('Please accept our terms.', 'mailoptin'), $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
 
         $defaults['display_only_button'] = apply_filters('mo_optin_form_display_only_button_default', false, $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
         $defaults['hide_name_field'] = apply_filters('mo_optin_form_hide_name_field_default', false, $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);

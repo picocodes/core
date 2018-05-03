@@ -41,10 +41,10 @@ class CustomizerControls
      */
     public function __construct($wp_customize, $option_prefix, $customizerClassInstance, $optin_class_instance = null)
     {
-        $this->wp_customize            = $wp_customize;
+        $this->wp_customize = $wp_customize;
         $this->customizerClassInstance = $customizerClassInstance;
-        $this->option_prefix           = $option_prefix;
-        $this->optin_class_instance    = $optin_class_instance;
+        $this->option_prefix = $option_prefix;
+        $this->optin_class_instance = $optin_class_instance;
 
         $this->optin_campaign_id = $customizerClassInstance->optin_campaign_id;
     }
@@ -67,11 +67,11 @@ class CustomizerControls
                 $this->wp_customize->selective_refresh->add_partial($this->option_prefix . '[form_image]', array(
                     // Whether to refresh the entire preview in case a partial cannot be refreshed.
                     // A partial render is considered a failure if the render_callback returns false.
-                    'fallback_refresh'    => true,
-                    'selector'            => apply_filters('mo_optin_form_image_partial_selector', '.mo-optin-form-image-wrapper'),
+                    'fallback_refresh' => true,
+                    'selector' => apply_filters('mo_optin_form_image_partial_selector', '.mo-optin-form-image-wrapper'),
                     // determines if change will apply to container / wrapper element.
                     'container_inclusive' => apply_filters('mo_optin_form_image_partial_container_inclusive', false),
-                    'render_callback'     => apply_filters('mo_optin_form_image_render_callback', function () {
+                    'render_callback' => apply_filters('mo_optin_form_image_render_callback', function () {
                         return do_shortcode("[mo-optin-form-image default='{$this->default_form_image}']");
                     })
                 ));
@@ -84,14 +84,14 @@ class CustomizerControls
                 $this->wp_customize,
                 $this->option_prefix . '[form_image]',
                 apply_filters('mo_optin_form_customizer_form_image_args', array(
-                        'width'       => 220,
-                        'height'      => 35,
-                        'flex_width'  => true,
+                        'width' => 220,
+                        'height' => 35,
+                        'flex_width' => true,
                         'flex_height' => true,
-                        'label'       => __('Image', 'mailoptin'),
-                        'section'     => $this->customizerClassInstance->design_section_id,
-                        'settings'    => $this->option_prefix . '[form_image]',
-                        'priority'    => 10,
+                        'label' => __('Image', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->design_section_id,
+                        'settings' => $this->option_prefix . '[form_image]',
+                        'priority' => 10,
                     )
                 )
             );
@@ -105,11 +105,11 @@ class CustomizerControls
                 $this->wp_customize->selective_refresh->add_partial($this->option_prefix . '[form_background_image]', array(
                     // Whether to refresh the entire preview in case a partial cannot be refreshed.
                     // A partial render is considered a failure if the render_callback returns false.
-                    'fallback_refresh'    => true,
-                    'selector'            => apply_filters('mo_optin_form_background_image_partial_selector', '.mo-optin-form-background-image-wrapper'),
+                    'fallback_refresh' => true,
+                    'selector' => apply_filters('mo_optin_form_background_image_partial_selector', '.mo-optin-form-background-image-wrapper'),
                     // determines if change will apply to container / wrapper element.
                     'container_inclusive' => apply_filters('mo_optin_form_image_partial_container_inclusive', false),
-                    'render_callback'     => apply_filters('mo_optin_form_image_render_callback', false)
+                    'render_callback' => apply_filters('mo_optin_form_image_render_callback', false)
                 ));
             } else {
                 // if selective refresh not supported, fallback to 'refresh' transport.
@@ -120,8 +120,8 @@ class CustomizerControls
                 $this->wp_customize,
                 $this->option_prefix . '[form_background_image]',
                 apply_filters('mo_optin_form_customizer_form_background_image_args', array(
-                        'label'    => __('Background Image', 'mailoptin'),
-                        'section'  => $this->customizerClassInstance->design_section_id,
+                        'label' => __('Background Image', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->design_section_id,
                         'settings' => $this->option_prefix . '[form_background_image]',
                         'priority' => 20,
                     )
@@ -133,8 +133,8 @@ class CustomizerControls
             $this->wp_customize,
             $this->option_prefix . '[form_background_color]',
             apply_filters('mailoptin_optin_customizer_form_background_color_args', array(
-                    'label'    => __('Background Color', 'mailoptin'),
-                    'section'  => $this->customizerClassInstance->design_section_id,
+                    'label' => __('Background Color', 'mailoptin'),
+                    'section' => $this->customizerClassInstance->design_section_id,
                     'settings' => $this->option_prefix . '[form_background_color]',
                     'priority' => 20,
                 )
@@ -145,15 +145,15 @@ class CustomizerControls
             $this->wp_customize,
             $this->option_prefix . '[form_border_color]',
             apply_filters('mo_optin_form_customizer_form_border_color_args', array(
-                    'label'    => __('Border Color', 'mailoptin'),
-                    'section'  => $this->customizerClassInstance->design_section_id,
+                    'label' => __('Border Color', 'mailoptin'),
+                    'section' => $this->customizerClassInstance->design_section_id,
                     'settings' => $this->option_prefix . '[form_border_color]',
                     'priority' => 40,
                 )
             )
         );
 
-        if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM')) {
+        if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
             $content = sprintf(
                 '<div class="mo-pro"><a href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=custom_css_notice" target="_blank">%s</a></div>',
                 __('Premium Version Available', 'mailoptin')
@@ -170,8 +170,8 @@ class CustomizerControls
                 $this->wp_customize,
                 $this->option_prefix . '[custom_css_notice]',
                 apply_filters('mo_optin_form_customizer_custom_css_notice_args', array(
-                        'content'  => $content,
-                        'section'  => $this->customizerClassInstance->design_section_id,
+                        'content' => $content,
+                        'section' => $this->customizerClassInstance->design_section_id,
                         'settings' => $this->option_prefix . '[custom_css_notice]',
                         'priority' => 199,
                     )
@@ -197,28 +197,28 @@ class CustomizerControls
         $headline_control_args = apply_filters(
             "mo_optin_form_customizer_headline_controls",
             array(
-                'hide_headline'       => new WP_Customize_Toggle_Control(
+                'hide_headline' => new WP_Customize_Toggle_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[hide_headline]',
                     apply_filters('mo_optin_form_customizer_hide_headline_args', array(
-                            'label'    => __('Hide Headline', 'mailoptin'),
-                            'section'  => $this->customizerClassInstance->headline_section_id,
+                            'label' => __('Hide Headline', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->headline_section_id,
                             'settings' => $this->option_prefix . '[hide_headline]',
-                            'type'     => 'light',
+                            'type' => 'light',
                             'priority' => 5,
                         )
                     )
                 ),
-                'headline'            => new WP_Customize_Tinymce_Control(
+                'headline' => new WP_Customize_Tinymce_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[headline]',
                     apply_filters('mo_optin_form_customizer_headline_args', array(
-                            'label'         => __('Headline', 'mailoptin'),
-                            'section'       => $this->customizerClassInstance->headline_section_id,
-                            'settings'      => $this->option_prefix . '[headline]',
-                            'editor_id'     => 'headline',
+                            'label' => __('Headline', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->headline_section_id,
+                            'settings' => $this->option_prefix . '[headline]',
+                            'editor_id' => 'headline',
                             'editor_height' => 50,
-                            'priority'      => 10
+                            'priority' => 10
                         )
                     )
                 ),
@@ -226,21 +226,21 @@ class CustomizerControls
                     $this->wp_customize,
                     $this->option_prefix . '[headline_color]',
                     apply_filters('mo_optin_form_customizer_headline_font_color_args', array(
-                            'label'    => __('Color', 'mailoptin'),
-                            'section'  => $this->customizerClassInstance->headline_section_id,
+                            'label' => __('Color', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->headline_section_id,
                             'settings' => $this->option_prefix . '[headline_font_color]',
                             'priority' => 30
                         )
                     )
                 ),
-                'headline_font'       => new WP_Customize_Google_Font_Control(
+                'headline_font' => new WP_Customize_Google_Font_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[headline_font]',
                     apply_filters('mo_optin_form_customizer_headline_font_args', array(
-                            'label'    => __('Font Family', 'mailoptin'),
-                            'section'  => $this->customizerClassInstance->headline_section_id,
+                            'label' => __('Font Family', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->headline_section_id,
                             'settings' => $this->option_prefix . '[headline_font]',
-                            'count'    => 200,
+                            'count' => 200,
                             'priority' => 20
                         )
                     )
@@ -253,7 +253,7 @@ class CustomizerControls
 
         do_action('mailoptin_before_headline_controls_addition');
 
-        if ( ! empty($headline_control_args)) {
+        if (!empty($headline_control_args)) {
             foreach ($headline_control_args as $id => $args) {
                 if (is_object($args)) {
                     $this->wp_customize->add_control($args);
@@ -271,27 +271,27 @@ class CustomizerControls
         $description_controls_args = apply_filters(
             "mo_optin_form_customizer_description_controls",
             array(
-                'hide_description'       => new WP_Customize_Toggle_Control(
+                'hide_description' => new WP_Customize_Toggle_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[hide_description]',
                     apply_filters('mo_optin_form_customizer_hide_description_args', array(
-                            'label'    => __('Hide Description', 'mailoptin'),
-                            'section'  => $this->customizerClassInstance->description_section_id,
+                            'label' => __('Hide Description', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->description_section_id,
                             'settings' => $this->option_prefix . '[hide_description]',
-                            'type'     => 'light',
+                            'type' => 'light',
                             'priority' => 10,
                         )
                     )
                 ),
-                'description'            => new WP_Customize_Tinymce_Control(
+                'description' => new WP_Customize_Tinymce_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[description]',
                     apply_filters('mo_optin_form_customizer_description_args', array(
-                            'label'     => __('Description', 'mailoptin'),
-                            'section'   => $this->customizerClassInstance->description_section_id,
-                            'settings'  => $this->option_prefix . '[description]',
+                            'label' => __('Description', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->description_section_id,
+                            'settings' => $this->option_prefix . '[description]',
                             'editor_id' => 'description',
-                            'priority'  => 20
+                            'priority' => 20
                         )
                     )
                 ),
@@ -299,21 +299,21 @@ class CustomizerControls
                     $this->wp_customize,
                     $this->option_prefix . '[description_font_color]',
                     apply_filters('mo_optin_form_customizer_description_font_color_args', array(
-                            'label'    => __('Color', 'mailoptin'),
-                            'section'  => $this->customizerClassInstance->description_section_id,
+                            'label' => __('Color', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->description_section_id,
                             'settings' => $this->option_prefix . '[description_font_color]',
                             'priority' => 30
                         )
                     )
                 ),
-                'description_font'       => new WP_Customize_Google_Font_Control(
+                'description_font' => new WP_Customize_Google_Font_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[description_font]',
                     apply_filters('mo_optin_form_customizer_description_font_args', array(
-                            'label'    => __('Font Family', 'mailoptin'),
-                            'section'  => $this->customizerClassInstance->description_section_id,
+                            'label' => __('Font Family', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->description_section_id,
                             'settings' => $this->option_prefix . '[description_font]',
-                            'count'    => 200,
+                            'count' => 200,
                             'priority' => 15
                         )
                     )
@@ -343,66 +343,51 @@ class CustomizerControls
         $note_controls_args = apply_filters(
             "mo_optin_form_customizer_note_controls",
             array(
-                'hide_note'                => new WP_Customize_Toggle_Control(
+                'hide_note' => new WP_Customize_Toggle_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[hide_note]',
                     apply_filters('mo_optin_form_customizer_hide_note_args', array(
-                            'label'    => __('Hide Note', 'mailoptin'),
-                            'section'  => $this->customizerClassInstance->note_section_id,
+                            'label' => __('Hide Note', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->note_section_id,
                             'settings' => $this->option_prefix . '[hide_note]',
-                            'type'     => 'light',
+                            'type' => 'light',
                             'priority' => 5,
                         )
                     )
                 ),
-                'note'                     => new WP_Customize_Tinymce_Control(
+                'note' => new WP_Customize_Tinymce_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[note]',
                     apply_filters('mo_optin_form_customizer_note_args', array(
-                            'label'         => __('Note', 'mailoptin'),
-                            'section'       => $this->customizerClassInstance->note_section_id,
-                            'settings'      => $this->option_prefix . '[note]',
-                            'editor_id'     => 'note',
+                            'label' => __('Note', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->note_section_id,
+                            'settings' => $this->option_prefix . '[note]',
+                            'editor_id' => 'note',
                             'editor_height' => 50,
-                            'priority'      => 10
+                            'priority' => 10
                         )
                     )
                 ),
-                'note_font_color'          => new \WP_Customize_Color_Control(
+                'note_font_color' => new \WP_Customize_Color_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[note_font_color]',
                     apply_filters('mo_optin_form_customizer_note_font_color_args', array(
-                            'label'    => __('Color', 'mailoptin'),
-                            'section'  => $this->customizerClassInstance->note_section_id,
+                            'label' => __('Color', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->note_section_id,
                             'settings' => $this->option_prefix . '[note_font_color]',
                             'priority' => 30
                         )
                     )
                 ),
-                'note_font'                => new WP_Customize_Google_Font_Control(
+                'note_font' => new WP_Customize_Google_Font_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[note_font]',
                     apply_filters('mo_optin_form_customizer_note_font_args', array(
-                            'label'    => __('Font Family', 'mailoptin'),
-                            'section'  => $this->customizerClassInstance->note_section_id,
+                            'label' => __('Font Family', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->note_section_id,
                             'settings' => $this->option_prefix . '[note_font]',
-                            'count'    => 200,
+                            'count' => 200,
                             'priority' => 20
-                        )
-                    )
-                ),
-                'note_acceptance_checkbox' => new WP_Customize_Toggle_Control(
-                    $this->wp_customize,
-                    $this->option_prefix . '[note_acceptance_checkbox]',
-                    apply_filters('mo_optin_form_customizer_note_acceptance_checkbox_onclick_args', array(
-                            'label'       => __('Enable Acceptance Checkbox', 'mailoptin'),
-                            'section'     => $this->customizerClassInstance->note_section_id,
-                            'settings'    => $this->option_prefix . '[note_acceptance_checkbox]',
-                            'description' => sprintf(
-                                __('Activate to display an acceptance checkbox that users have to check before they are subscribed. %sLearn More%s', 'mailoptin'),
-                                '<a href="#" target="_blank">', '</a>'
-                            ),
-                            'priority'    => 40,
                         )
                     )
                 ),
@@ -410,17 +395,42 @@ class CustomizerControls
                     $this->wp_customize,
                     $this->option_prefix . '[note_close_optin_onclick]',
                     apply_filters('mo_optin_form_customizer_note_close_optin_onclick_args', array(
-                            'label'       => __('Close Optin on Click', 'mailoptin'),
-                            'section'     => $this->customizerClassInstance->note_section_id,
-                            'settings'    => $this->option_prefix . '[note_close_optin_onclick]',
+                            'label' => __('Close Optin on Click', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->note_section_id,
+                            'settings' => $this->option_prefix . '[note_close_optin_onclick]',
                             'description' => sprintf(
                                 __('Activate if you want a click on "note" to close the optin form. Particularly useful if close icon is hidden. %sLearn More%s', 'mailoptin'),
                                 '<a href="https://mailoptin.io/article/text-link-closes-popup-optin-form/" target="_blank">', '</a>'
                             ),
-                            'priority'    => 60,
+                            'priority' => 40,
                         )
                     )
                 ),
+                'note_acceptance_checkbox' => new WP_Customize_Toggle_Control(
+                    $this->wp_customize,
+                    $this->option_prefix . '[note_acceptance_checkbox]',
+                    apply_filters('mo_optin_form_customizer_note_acceptance_checkbox_onclick_args', array(
+                            'label' => __('Enable Acceptance Checkbox', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->note_section_id,
+                            'settings' => $this->option_prefix . '[note_acceptance_checkbox]',
+                            'description' => sprintf(
+                                __('Activate to display an acceptance checkbox that users have to check before they are subscribed. %sLearn More%s', 'mailoptin'),
+                                '<a href="#" target="_blank">', '</a>'
+                            ),
+                            'priority' => 60,
+                        )
+                    )
+                ),
+                'note_acceptance_error' => apply_filters('mo_optin_form_customizer_note_acceptance_error_args',
+                    array(
+                        'type' => 'text',
+                        'label' => __('Checkbox Error Message', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->note_section_id,
+                        'settings' => $this->option_prefix . '[note_acceptance_error]',
+                        'description' => __('Error message displayed when the acceptance checkbox is not checked.', 'mailoptin'),
+                        'priority' => 65
+                    )
+                )
             ),
             $this->wp_customize,
             $this->option_prefix,
@@ -444,17 +454,17 @@ class CustomizerControls
     public function fields_controls()
     {
         $cta_button_action_description = '';
-        $cta_button_action_choices     = [
+        $cta_button_action_choices = [
             'reveal_optin_form' => __('Reveal Optin Form', 'mailoptin'),
-            'navigate_to_url'   => __('Navigate to URL', 'mailoptin'),
+            'navigate_to_url' => __('Navigate to URL', 'mailoptin'),
         ];
 
-        if ( ! in_array($this->customizerClassInstance->optin_campaign_type, ['sidebar', 'inpost'])) {
-            $cta_button_action_choices['close_optin']             = __('Close optin', 'mailoptin');
+        if (!in_array($this->customizerClassInstance->optin_campaign_type, ['sidebar', 'inpost'])) {
+            $cta_button_action_choices['close_optin'] = __('Close optin', 'mailoptin');
             $cta_button_action_choices['close_optin_reload_page'] = __('Close optin and reload page', 'mailoptin');
         }
 
-        if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM')) {
+        if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
 
             $cta_button_action_description = sprintf(
                 __('Upgrade to %sMailOptin Premium%s to have the option to close, close and reload or reveal optin form when CTA button is clicked.', 'mailoptin'),
@@ -470,167 +480,167 @@ class CustomizerControls
         $field_controls_args = apply_filters(
             "mo_optin_form_customizer_fields_controls",
             array(
-                'hide_name_field'          => new WP_Customize_Toggle_Control(
+                'hide_name_field' => new WP_Customize_Toggle_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[hide_name_field]',
                     apply_filters('mo_optin_form_customizer_hide_name_field_args', array(
-                            'label'       => __('Hide Name Field', 'mailoptin'),
-                            'section'     => $this->customizerClassInstance->fields_section_id,
-                            'settings'    => $this->option_prefix . '[hide_name_field]',
+                            'label' => __('Hide Name Field', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->fields_section_id,
+                            'settings' => $this->option_prefix . '[hide_name_field]',
                             'description' => __('Activate to hide the name field.', 'mailoptin'),
-                            'type'        => 'light',
-                            'priority'    => 10,
+                            'type' => 'light',
+                            'priority' => 10,
                         )
                     )
                 ),
-                'name_field_header'        => new WP_Customize_Custom_Content(
+                'name_field_header' => new WP_Customize_Custom_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[name_field_header]',
                     apply_filters('mo_optin_form_customizer_name_field_header_args', array(
-                            'content'     => '<div class="mo-field-header">' . __("Name Field", 'mailoptin') . '</div>',
+                            'content' => '<div class="mo-field-header">' . __("Name Field", 'mailoptin') . '</div>',
                             'block_class' => 'mo-field-header-wrapper',
-                            'section'     => $this->customizerClassInstance->fields_section_id,
-                            'settings'    => $this->option_prefix . '[name_field_header]',
-                            'priority'    => 18,
+                            'section' => $this->customizerClassInstance->fields_section_id,
+                            'settings' => $this->option_prefix . '[name_field_header]',
+                            'priority' => 18,
                         )
                     )
                 ),
-                'name_field_placeholder'   => apply_filters('mo_optin_form_customizer_name_field_placeholder_args',
+                'name_field_placeholder' => apply_filters('mo_optin_form_customizer_name_field_placeholder_args',
                     array(
-                        'type'        => 'text',
-                        'label'       => __('Name Placeholder', 'mailoptin'),
-                        'section'     => $this->customizerClassInstance->fields_section_id,
-                        'settings'    => $this->option_prefix . '[name_field_placeholder]',
+                        'type' => 'text',
+                        'label' => __('Name Placeholder', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->fields_section_id,
+                        'settings' => $this->option_prefix . '[name_field_placeholder]',
                         'description' => __('The placeholder text for the name field.', 'mailoptin'),
-                        'priority'    => 20
+                        'priority' => 20
                     )
                 ),
-                'name_field_color'         => new \WP_Customize_Color_Control(
+                'name_field_color' => new \WP_Customize_Color_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[name_field_color]',
                     apply_filters('mo_optin_form_customizer_name_field_color_args', array(
-                            'label'       => __('Name Color', 'mailoptin'),
-                            'section'     => $this->customizerClassInstance->fields_section_id,
-                            'settings'    => $this->option_prefix . '[name_field_color]',
-                            'priority'    => 30,
+                            'label' => __('Name Color', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->fields_section_id,
+                            'settings' => $this->option_prefix . '[name_field_color]',
+                            'priority' => 30,
                             'description' => __('The text color for the name field.', 'mailoptin'),
                         )
                     )
                 ),
-                'name_field_background'    => new \WP_Customize_Color_Control(
+                'name_field_background' => new \WP_Customize_Color_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[name_field_background]',
                     apply_filters('mo_optin_form_customizer_email_field_background_args', array(
-                            'label'       => __('Name Background', 'mailoptin'),
-                            'section'     => $this->customizerClassInstance->fields_section_id,
-                            'settings'    => $this->option_prefix . '[name_field_background]',
-                            'priority'    => 37,
+                            'label' => __('Name Background', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->fields_section_id,
+                            'settings' => $this->option_prefix . '[name_field_background]',
+                            'priority' => 37,
                             'description' => __('The background color of the name field.', 'mailoptin'),
                         )
                     )
                 ),
-                'name_field_font'          => new WP_Customize_Font_Stack_Control(
+                'name_field_font' => new WP_Customize_Font_Stack_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[name_field_font]',
                     apply_filters('mo_optin_form_customizer_name_field_font_args', array(
-                            'label'       => __('Name Font'),
-                            'section'     => $this->customizerClassInstance->fields_section_id,
-                            'settings'    => $this->option_prefix . '[name_field_font]',
+                            'label' => __('Name Font'),
+                            'section' => $this->customizerClassInstance->fields_section_id,
+                            'settings' => $this->option_prefix . '[name_field_font]',
                             'description' => __('The font family for the name field.', 'mailoptin'),
-                            'count'       => 50,
-                            'priority'    => 40
+                            'count' => 50,
+                            'priority' => 40
                         )
                     )
                 ),
-                'email_field_header'       => new WP_Customize_Custom_Content(
+                'email_field_header' => new WP_Customize_Custom_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[email_field_header]',
                     apply_filters('mo_optin_form_customizer_email_field_header_args', array(
-                            'content'     => '<div class="mo-field-header">' . __("Email Field", 'mailoptin') . '</div>',
+                            'content' => '<div class="mo-field-header">' . __("Email Field", 'mailoptin') . '</div>',
                             'block_class' => 'mo-field-header-wrapper',
-                            'section'     => $this->customizerClassInstance->fields_section_id,
-                            'settings'    => $this->option_prefix . '[email_field_header]',
-                            'priority'    => 48,
+                            'section' => $this->customizerClassInstance->fields_section_id,
+                            'settings' => $this->option_prefix . '[email_field_header]',
+                            'priority' => 48,
                         )
                     )
                 ),
-                'email_field_placeholder'  => apply_filters('mo_optin_form_customizer_email_field_placeholder_args',
+                'email_field_placeholder' => apply_filters('mo_optin_form_customizer_email_field_placeholder_args',
                     array(
-                        'type'        => 'text',
-                        'label'       => __('Email Placeholder', 'mailoptin'),
-                        'section'     => $this->customizerClassInstance->fields_section_id,
-                        'settings'    => $this->option_prefix . '[email_field_placeholder]',
-                        'priority'    => 50,
+                        'type' => 'text',
+                        'label' => __('Email Placeholder', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->fields_section_id,
+                        'settings' => $this->option_prefix . '[email_field_placeholder]',
+                        'priority' => 50,
                         'description' => __('The placeholder text for the email field.', 'mailoptin'),
                     )
                 ),
-                'email_field_color'        => new \WP_Customize_Color_Control(
+                'email_field_color' => new \WP_Customize_Color_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[email_field_color]',
                     apply_filters('mo_optin_form_customizer_email_field_color_args', array(
-                            'label'       => __('Email Color', 'mailoptin'),
-                            'section'     => $this->customizerClassInstance->fields_section_id,
-                            'settings'    => $this->option_prefix . '[email_field_color]',
-                            'priority'    => 60,
+                            'label' => __('Email Color', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->fields_section_id,
+                            'settings' => $this->option_prefix . '[email_field_color]',
+                            'priority' => 60,
                             'description' => __('The text color for the email field.', 'mailoptin'),
                         )
                     )
                 ),
-                'email_field_background'   => new \WP_Customize_Color_Control(
+                'email_field_background' => new \WP_Customize_Color_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[email_field_background]',
                     apply_filters('mo_optin_form_customizer_email_field_background_args', array(
-                            'label'       => __('Email Background', 'mailoptin'),
-                            'section'     => $this->customizerClassInstance->fields_section_id,
-                            'settings'    => $this->option_prefix . '[email_field_background]',
-                            'priority'    => 67,
+                            'label' => __('Email Background', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->fields_section_id,
+                            'settings' => $this->option_prefix . '[email_field_background]',
+                            'priority' => 67,
                             'description' => __('The background color of the email field.', 'mailoptin'),
                         )
                     )
                 ),
-                'email_field_font'         => new WP_Customize_Font_Stack_Control(
+                'email_field_font' => new WP_Customize_Font_Stack_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[email_field_font]',
                     apply_filters('mo_optin_form_customizer_email_field_font_args', array(
-                            'label'       => __('Email Font'),
-                            'section'     => $this->customizerClassInstance->fields_section_id,
-                            'settings'    => $this->option_prefix . '[email_field_font]',
-                            'count'       => 50,
-                            'priority'    => 70,
+                            'label' => __('Email Font'),
+                            'section' => $this->customizerClassInstance->fields_section_id,
+                            'settings' => $this->option_prefix . '[email_field_font]',
+                            'count' => 50,
+                            'priority' => 70,
                             'description' => __('The font family for the email field.', 'mailoptin'),
                         )
                     )
                 ),
-                'submit_button_header'     => new WP_Customize_Custom_Content(
+                'submit_button_header' => new WP_Customize_Custom_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[submit_button_header]',
                     apply_filters('mo_optin_form_customizer_submit_button_header_args', array(
-                            'content'     => '<div class="mo-field-header">' . __("Submit Field", 'mailoptin') . '</div>',
+                            'content' => '<div class="mo-field-header">' . __("Submit Field", 'mailoptin') . '</div>',
                             'block_class' => 'mo-field-header-wrapper',
-                            'section'     => $this->customizerClassInstance->fields_section_id,
-                            'settings'    => $this->option_prefix . '[submit_button_header]',
-                            'priority'    => 78,
+                            'section' => $this->customizerClassInstance->fields_section_id,
+                            'settings' => $this->option_prefix . '[submit_button_header]',
+                            'priority' => 78,
                         )
                     )
                 ),
-                'submit_button'            => apply_filters('mo_optin_form_customizer_submit_button_args',
+                'submit_button' => apply_filters('mo_optin_form_customizer_submit_button_args',
                     array(
-                        'type'        => 'text',
-                        'label'       => __('Submit Button', 'mailoptin'),
-                        'section'     => $this->customizerClassInstance->fields_section_id,
-                        'settings'    => $this->option_prefix . '[submit_button]',
-                        'priority'    => 80,
+                        'type' => 'text',
+                        'label' => __('Submit Button', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->fields_section_id,
+                        'settings' => $this->option_prefix . '[submit_button]',
+                        'priority' => 80,
                         'description' => __('The value/label of the submit button.', 'mailoptin'),
                     )
                 ),
-                'submit_button_color'      => new \WP_Customize_Color_Control(
+                'submit_button_color' => new \WP_Customize_Color_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[submit_button_color]',
                     apply_filters('mo_optin_form_customizer_submit_button_color_args', array(
-                            'label'       => __('Submit Button Color', 'mailoptin'),
-                            'section'     => $this->customizerClassInstance->fields_section_id,
-                            'settings'    => $this->option_prefix . '[submit_button_color]',
-                            'priority'    => 90,
+                            'label' => __('Submit Button Color', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->fields_section_id,
+                            'settings' => $this->option_prefix . '[submit_button_color]',
+                            'priority' => 90,
                             'description' => __('The text color for the submit button field.', 'mailoptin'),
                         )
                     )
@@ -639,24 +649,24 @@ class CustomizerControls
                     $this->wp_customize,
                     $this->option_prefix . '[submit_button_background]',
                     apply_filters('mo_optin_form_customizer_submit_button_background_args', array(
-                            'label'       => __('Submit Button Background', 'mailoptin'),
-                            'section'     => $this->customizerClassInstance->fields_section_id,
-                            'settings'    => $this->option_prefix . '[submit_button_background]',
-                            'priority'    => 100,
+                            'label' => __('Submit Button Background', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->fields_section_id,
+                            'settings' => $this->option_prefix . '[submit_button_background]',
+                            'priority' => 100,
                             'description' => __('The background color of the submit button.', 'mailoptin'),
                         )
                     )
                 ),
-                'submit_button_font'       => new WP_Customize_Google_Font_Control(
+                'submit_button_font' => new WP_Customize_Google_Font_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[submit_button_font]',
                     apply_filters('mo_optin_form_customizer_submit_button_font_args', array(
-                            'label'       => __('Submit Button Font'),
-                            'section'     => $this->customizerClassInstance->fields_section_id,
-                            'settings'    => $this->option_prefix . '[submit_button_font]',
+                            'label' => __('Submit Button Font'),
+                            'section' => $this->customizerClassInstance->fields_section_id,
+                            'settings' => $this->option_prefix . '[submit_button_font]',
                             'description' => __('The font family for the submit button field.', 'mailoptin'),
-                            'count'       => 200,
-                            'priority'    => 110
+                            'count' => 200,
+                            'priority' => 110
                         )
                     )
                 )
@@ -672,12 +682,12 @@ class CustomizerControls
                 $this->wp_customize,
                 $this->option_prefix . '[display_only_button]',
                 apply_filters('mo_optin_form_customizer_display_only_button_args', array(
-                        'label'       => __('Display Only CTA Button', 'mailoptin'),
-                        'section'     => $this->customizerClassInstance->fields_section_id,
-                        'settings'    => $this->option_prefix . '[display_only_button]',
+                        'label' => __('Display Only CTA Button', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->fields_section_id,
+                        'settings' => $this->option_prefix . '[display_only_button]',
                         'description' => __('Activate to hide opt-in form and display a call-to-action button instead.', 'mailoptin'),
-                        'type'        => 'light',
-                        'priority'    => 3,
+                        'type' => 'light',
+                        'priority' => 3,
                     )
                 )
             );
@@ -686,44 +696,44 @@ class CustomizerControls
                 $this->wp_customize,
                 $this->option_prefix . '[cta_button_header]',
                 apply_filters('mo_optin_form_customizer_cta_button_header_args', array(
-                        'content'     => '<div class="mo-field-header">' . __("Call-to-action Button", 'mailoptin') . '</div>',
+                        'content' => '<div class="mo-field-header">' . __("Call-to-action Button", 'mailoptin') . '</div>',
                         'block_class' => 'mo-field-header-wrapper',
-                        'section'     => $this->customizerClassInstance->fields_section_id,
-                        'settings'    => $this->option_prefix . '[cta_button_header]',
-                        'priority'    => 120,
+                        'section' => $this->customizerClassInstance->fields_section_id,
+                        'settings' => $this->option_prefix . '[cta_button_header]',
+                        'priority' => 120,
                     )
                 )
             );
 
             $field_controls_args['cta_button_action'] = apply_filters('mo_optin_form_customizer_cta_button_action_args', array(
-                    'type'        => 'select',
+                    'type' => 'select',
                     'description' => $cta_button_action_description,
-                    'choices'     => $cta_button_action_choices,
-                    'label'       => __('Action After Button Click', 'mailoptin'),
-                    'section'     => $this->customizerClassInstance->fields_section_id,
-                    'settings'    => $this->option_prefix . '[cta_button_action]',
-                    'priority'    => 125,
+                    'choices' => $cta_button_action_choices,
+                    'label' => __('Action After Button Click', 'mailoptin'),
+                    'section' => $this->customizerClassInstance->fields_section_id,
+                    'settings' => $this->option_prefix . '[cta_button_action]',
+                    'priority' => 125,
                 )
             );
 
             $field_controls_args['cta_button_navigation_url'] = apply_filters('mo_optin_form_customizer_cta_button_navigation_url_args', array(
-                    'type'        => 'text',
-                    'label'       => __('Enter URL', 'mailoptin'),
+                    'type' => 'text',
+                    'label' => __('Enter URL', 'mailoptin'),
                     'description' => __('URL should begin with http or https.', 'mailoptin'),
-                    'section'     => $this->customizerClassInstance->fields_section_id,
-                    'settings'    => $this->option_prefix . '[cta_button_navigation_url]',
+                    'section' => $this->customizerClassInstance->fields_section_id,
+                    'settings' => $this->option_prefix . '[cta_button_navigation_url]',
                     'input_attrs' => ['placeholder' => 'https://'],
-                    'priority'    => 127,
+                    'priority' => 127,
                 )
             );
 
             $field_controls_args['cta_button'] = apply_filters('mo_optin_form_customizer_cta_button_args',
                 array(
-                    'type'        => 'text',
-                    'label'       => __('CTA Button', 'mailoptin'),
-                    'section'     => $this->customizerClassInstance->fields_section_id,
-                    'settings'    => $this->option_prefix . '[cta_button]',
-                    'priority'    => 130,
+                    'type' => 'text',
+                    'label' => __('CTA Button', 'mailoptin'),
+                    'section' => $this->customizerClassInstance->fields_section_id,
+                    'settings' => $this->option_prefix . '[cta_button]',
+                    'priority' => 130,
                     'description' => __('The value/label of the call-to-action button.', 'mailoptin'),
                 )
             );
@@ -732,10 +742,10 @@ class CustomizerControls
                 $this->wp_customize,
                 $this->option_prefix . '[cta_button_color]',
                 apply_filters('mo_optin_form_customizer_cta_button_color_args', array(
-                        'label'       => __('CTA Button Color', 'mailoptin'),
-                        'section'     => $this->customizerClassInstance->fields_section_id,
-                        'settings'    => $this->option_prefix . '[cta_button_color]',
-                        'priority'    => 140,
+                        'label' => __('CTA Button Color', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->fields_section_id,
+                        'settings' => $this->option_prefix . '[cta_button_color]',
+                        'priority' => 140,
                         'description' => __('The text color for the call-to-action button field.', 'mailoptin'),
                     )
                 )
@@ -745,10 +755,10 @@ class CustomizerControls
                 $this->wp_customize,
                 $this->option_prefix . '[cta_button_background]',
                 apply_filters('mo_optin_form_customizer_cta_button_background_args', array(
-                        'label'       => __('CTA Button Background', 'mailoptin'),
-                        'section'     => $this->customizerClassInstance->fields_section_id,
-                        'settings'    => $this->option_prefix . '[cta_button_background]',
-                        'priority'    => 150,
+                        'label' => __('CTA Button Background', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->fields_section_id,
+                        'settings' => $this->option_prefix . '[cta_button_background]',
+                        'priority' => 150,
                         'description' => __('The background color of the call-to-action button.', 'mailoptin'),
                     )
                 )
@@ -758,12 +768,12 @@ class CustomizerControls
                 $this->wp_customize,
                 $this->option_prefix . '[cta_button_font]',
                 apply_filters('mo_optin_form_customizer_cta_button_font_args', array(
-                        'label'       => __('CTA Button Font'),
-                        'section'     => $this->customizerClassInstance->fields_section_id,
-                        'settings'    => $this->option_prefix . '[cta_button_font]',
+                        'label' => __('CTA Button Font'),
+                        'section' => $this->customizerClassInstance->fields_section_id,
+                        'settings' => $this->option_prefix . '[cta_button_font]',
                         'description' => __('The font family for the call-to-action button field.', 'mailoptin'),
-                        'count'       => 200,
-                        'priority'    => 160
+                        'count' => 200,
+                        'priority' => 160
                     )
                 )
             );
@@ -789,117 +799,117 @@ class CustomizerControls
         $content_control_args = apply_filters(
             "mo_optin_form_customizer_configuration_controls",
             array(
-                'campaign_title'             => apply_filters('mo_optin_form_customizer_campaign_title_args', array(
-                        'type'     => 'text',
-                        'label'    => __('Optin Campaign Name', 'mailoptin'),
-                        'section'  => $this->customizerClassInstance->configuration_section_id,
+                'campaign_title' => apply_filters('mo_optin_form_customizer_campaign_title_args', array(
+                        'type' => 'text',
+                        'label' => __('Optin Campaign Name', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->configuration_section_id,
                         'settings' => $this->option_prefix . '[campaign_title]',
                         'priority' => 10,
                     )
                 ),
-                'split_test_note'            => apply_filters('mo_optin_form_customizer_split_test_note_args', array(
-                        'type'        => 'textarea',
-                        'label'       => __('Split Test Note', 'mailoptin'),
-                        'section'     => $this->customizerClassInstance->configuration_section_id,
-                        'settings'    => $this->option_prefix . '[split_test_note]',
+                'split_test_note' => apply_filters('mo_optin_form_customizer_split_test_note_args', array(
+                        'type' => 'textarea',
+                        'label' => __('Split Test Note', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->configuration_section_id,
+                        'settings' => $this->option_prefix . '[split_test_note]',
                         'description' => __('Useful for keeping track of changes between each split test you create.', 'mailoptin'),
-                        'priority'    => 13,
+                        'priority' => 13,
                     )
                 ),
                 'inpost_form_optin_position' => apply_filters('mo_optin_form_customizer_inpost_form_optin_position_args', array(
-                        'type'        => 'select',
-                        'label'       => __('Optin Form Position', 'mailoptin'),
-                        'section'     => $this->customizerClassInstance->configuration_section_id,
-                        'settings'    => $this->option_prefix . '[inpost_form_optin_position]',
+                        'type' => 'select',
+                        'label' => __('Optin Form Position', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->configuration_section_id,
+                        'settings' => $this->option_prefix . '[inpost_form_optin_position]',
                         'description' => __('Select position within your post the optin form will be displayed.', 'mailoptin'),
-                        'choices'     => [
+                        'choices' => [
                             'before_content' => __('Before Content', 'mailoptin'),
-                            'after_content'  => __('After Content', 'mailoptin'),
+                            'after_content' => __('After Content', 'mailoptin'),
                         ],
-                        'priority'    => 15,
+                        'priority' => 15,
                     )
                 ),
-                'slidein_position'           => apply_filters('mo_optin_form_customizer_slidein_position_args', array(
-                        'type'     => 'select',
-                        'choices'  => ['bottom_right' => __('Bottom Right', 'mailoptin'), 'bottom_left' => __('Bottom Left', 'mailoptin')],
-                        'label'    => __('Slide-in Position', 'mailoptin'),
-                        'section'  => $this->customizerClassInstance->configuration_section_id,
+                'slidein_position' => apply_filters('mo_optin_form_customizer_slidein_position_args', array(
+                        'type' => 'select',
+                        'choices' => ['bottom_right' => __('Bottom Right', 'mailoptin'), 'bottom_left' => __('Bottom Left', 'mailoptin')],
+                        'label' => __('Slide-in Position', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->configuration_section_id,
                         'settings' => $this->option_prefix . '[slidein_position]',
                         'priority' => 20,
                     )
                 ),
-                'bar_position'               => apply_filters('mo_optin_form_customizer_bar_position_args', array(
-                        'type'     => 'select',
-                        'choices'  => ['top' => __('Top', 'mailoptin'), 'bottom' => __('Bottom', 'mailoptin')],
-                        'label'    => __('Bar Position', 'mailoptin'),
-                        'section'  => $this->customizerClassInstance->configuration_section_id,
+                'bar_position' => apply_filters('mo_optin_form_customizer_bar_position_args', array(
+                        'type' => 'select',
+                        'choices' => ['top' => __('Top', 'mailoptin'), 'bottom' => __('Bottom', 'mailoptin')],
+                        'label' => __('Bar Position', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->configuration_section_id,
                         'settings' => $this->option_prefix . '[bar_position]',
                         'priority' => 30,
                     )
                 ),
-                'bar_sticky'                 => new WP_Customize_Toggle_Control(
+                'bar_sticky' => new WP_Customize_Toggle_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[bar_sticky]',
                     apply_filters('mo_optin_form_customizer_bar_sticky_args', array(
-                            'label'       => __('Sticky Bar?', 'mailoptin'),
-                            'section'     => $this->customizerClassInstance->configuration_section_id,
-                            'settings'    => $this->option_prefix . '[bar_sticky]',
+                            'label' => __('Sticky Bar?', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->configuration_section_id,
+                            'settings' => $this->option_prefix . '[bar_sticky]',
                             'description' => __('Check to make bar sticky.', 'mailoptin'),
-                            'type'        => 'light',
-                            'priority'    => 40,
+                            'type' => 'light',
+                            'priority' => 40,
                         )
                     )
                 ),
-                'hide_close_button'          => new WP_Customize_Toggle_Control(
+                'hide_close_button' => new WP_Customize_Toggle_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[hide_close_button]',
                     apply_filters('mo_optin_form_customizer_hide_close_button_args', array(
-                            'label'    => __('Hide Close Button', 'mailoptin'),
-                            'section'  => $this->customizerClassInstance->configuration_section_id,
+                            'label' => __('Hide Close Button', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->configuration_section_id,
                             'settings' => $this->option_prefix . '[hide_close_button]',
-                            'type'     => 'light',
+                            'type' => 'light',
                             'priority' => 45,
                         )
                     )
                 ),
-                'cookie'                     => apply_filters('mo_optin_form_customizer_cookie_args', array(
-                        'type'        => 'text',
-                        'label'       => __('Cookie Duration', 'mailoptin'),
-                        'section'     => $this->customizerClassInstance->configuration_section_id,
-                        'settings'    => $this->option_prefix . '[cookie]',
-                        'priority'    => 80,
+                'cookie' => apply_filters('mo_optin_form_customizer_cookie_args', array(
+                        'type' => 'text',
+                        'label' => __('Cookie Duration', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->configuration_section_id,
+                        'settings' => $this->option_prefix . '[cookie]',
+                        'priority' => 80,
                         'description' => sprintf(
                             __('The length of time before this optin will display again to the user once they exit this campaign (defaults to 30 days). %sSet to 0 to prevent cookies from being set.%s', 'mailoptin'),
                             '<strong>', '</strong>'
                         )
                     )
                 ),
-                'success_cookie'             => apply_filters('mo_optin_form_customizer_success_cookie_args', array(
-                        'type'        => 'text',
-                        'label'       => __('Success Cookie Duration', 'mailoptin'),
-                        'section'     => $this->customizerClassInstance->configuration_section_id,
-                        'settings'    => $this->option_prefix . '[success_cookie]',
-                        'priority'    => 90,
+                'success_cookie' => apply_filters('mo_optin_form_customizer_success_cookie_args', array(
+                        'type' => 'text',
+                        'label' => __('Success Cookie Duration', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->configuration_section_id,
+                        'settings' => $this->option_prefix . '[success_cookie]',
+                        'priority' => 90,
                         'description' => sprintf(
                             __('The length of time before the optin will display again to the user once they successfully opt in to this campaign (defaults to value of exit cookie above). %sSet to 0 to prevent cookies from being set.%s', 'mailoptin'),
                             '<strong>', '</strong>'
                         )
                     )
                 ),
-                'remove_branding'            => new WP_Customize_Toggle_Control(
+                'remove_branding' => new WP_Customize_Toggle_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[remove_branding]',
                     apply_filters('mo_optin_form_customizer_remove_branding_args', array(
-                            'label'       => __('Remove MailOptin Branding', 'mailoptin'),
+                            'label' => __('Remove MailOptin Branding', 'mailoptin'),
                             'description' => sprintf(
                                 __('%sSet your affiliate link%s and make money with branding.', 'mailoptin'),
                                 '<a href="' . MAILOPTIN_SETTINGS_SETTINGS_PAGE . '#mailoptin_affiliate_url_row" target="_blank">',
                                 '</a>'
                             ),
-                            'section'     => $this->customizerClassInstance->configuration_section_id,
-                            'settings'    => $this->option_prefix . '[remove_branding]',
-                            'type'        => 'light',
-                            'priority'    => 110,
+                            'section' => $this->customizerClassInstance->configuration_section_id,
+                            'settings' => $this->option_prefix . '[remove_branding]',
+                            'type' => 'light',
+                            'priority' => 110,
                         )
                     )
                 )
@@ -909,7 +919,7 @@ class CustomizerControls
             $this->customizerClassInstance
         );
 
-        if ( ! OptinCampaignsRepository::is_split_test_variant($this->optin_campaign_id)) {
+        if (!OptinCampaignsRepository::is_split_test_variant($this->optin_campaign_id)) {
             unset($content_control_args['split_test_note']);
         }
 
@@ -939,29 +949,29 @@ class CustomizerControls
         $integration_control_args = apply_filters(
             "mo_optin_form_customizer_integration_controls",
             array(
-                'connection_service'    => apply_filters('mo_optin_form_customizer_connection_service_args', array(
-                        'type'     => 'select',
-                        'label'    => __('Email Provider', 'mailoptin'),
-                        'section'  => $this->customizerClassInstance->integration_section_id,
+                'connection_service' => apply_filters('mo_optin_form_customizer_connection_service_args', array(
+                        'type' => 'select',
+                        'label' => __('Email Provider', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->integration_section_id,
                         'settings' => $this->option_prefix . '[connection_service]',
-                        'choices'  => $email_providers,
+                        'choices' => $email_providers,
                         'priority' => 20,
                     )
                 ),
                 'connection_email_list' => apply_filters('mo_optin_form_customizer_connection_email_list_args', array(
-                        'type'     => 'select',
-                        'label'    => __('Email Provider List', 'mailoptin'),
-                        'section'  => $this->customizerClassInstance->integration_section_id,
+                        'type' => 'select',
+                        'label' => __('Email Provider List', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->integration_section_id,
                         'settings' => $this->option_prefix . '[connection_email_list]',
-                        'choices'  => $connection_email_list,
+                        'choices' => $connection_email_list,
                         'priority' => 40,
                     )
                 ),
-                'ajax_nonce'            => apply_filters('mo_optin_form_customizer_ajax_nonce_args', array(
-                        'type'     => 'hidden',
+                'ajax_nonce' => apply_filters('mo_optin_form_customizer_ajax_nonce_args', array(
+                        'type' => 'hidden',
                         // simple hack because control won't render if label is empty.
-                        'label'    => '&nbsp;',
-                        'section'  => $this->customizerClassInstance->integration_section_id,
+                        'label' => '&nbsp;',
+                        'section' => $this->customizerClassInstance->integration_section_id,
                         'settings' => $this->option_prefix . '[ajax_nonce]',
                         // 999 cos we want it to be bottom.
                         'priority' => 999,
@@ -986,8 +996,8 @@ class CustomizerControls
                 $this->wp_customize,
                 $this->option_prefix . '[no_integration_notice]',
                 apply_filters('mo_optin_form_customizer_no_integration_notice_args', array(
-                        'content'  => $content,
-                        'section'  => $this->customizerClassInstance->integration_section_id,
+                        'content' => $content,
+                        'section' => $this->customizerClassInstance->integration_section_id,
                         'settings' => $this->option_prefix . '[no_integration_notice]',
                         'priority' => 200,
                     )
@@ -995,7 +1005,7 @@ class CustomizerControls
             );
         }
 
-        if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM')) {
+        if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
             $content = sprintf(
                 '<div class="mo-pro"><a href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=integration_panel" target="_blank">%s</a></div>',
                 __('Premium Version Available', 'mailoptin')
@@ -1012,8 +1022,8 @@ class CustomizerControls
                 $this->wp_customize,
                 $this->option_prefix . '[after_integration_notice]',
                 apply_filters('mo_optin_form_customizer_after_integration_notice_args', array(
-                        'content'  => $content,
-                        'section'  => $this->customizerClassInstance->integration_section_id,
+                        'content' => $content,
+                        'section' => $this->customizerClassInstance->integration_section_id,
                         'settings' => $this->option_prefix . '[after_integration_notice]',
                         'priority' => 299,
                     )
@@ -1041,10 +1051,10 @@ class CustomizerControls
     public function after_conversion_controls()
     {
         $success_control_choices = [
-            'success_message'         => __('Display success message.', 'mailoptin'),
-            'close_optin'             => __('Close optin', 'mailoptin'),
+            'success_message' => __('Display success message.', 'mailoptin'),
+            'close_optin' => __('Close optin', 'mailoptin'),
             'close_optin_reload_page' => __('Close optin and reload page', 'mailoptin'),
-            'redirect_url'            => __('Redirect to URL', 'mailoptin')
+            'redirect_url' => __('Redirect to URL', 'mailoptin')
         ];
 
         if (in_array($this->customizerClassInstance->optin_campaign_type, ['inpost', 'sidebar'])) {
@@ -1056,30 +1066,30 @@ class CustomizerControls
             "mo_optin_form_customizer_success_controls",
             array(
                 'success_action' => apply_filters('mo_optin_form_customizer_success_action_args', array(
-                        'type'        => 'select',
-                        'choices'     => $success_control_choices,
-                        'label'       => __('Success Action', 'mailoptin'),
-                        'section'     => $this->customizerClassInstance->success_section_id,
-                        'settings'    => $this->option_prefix . '[success_action]',
+                        'type' => 'select',
+                        'choices' => $success_control_choices,
+                        'label' => __('Success Action', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->success_section_id,
+                        'settings' => $this->option_prefix . '[success_action]',
                         'description' => __('What to do after users subscribe.', 'mailoptin'),
-                        'priority'    => 10,
+                        'priority' => 10,
                     )
                 ),
 
-                'success_message'    => apply_filters('mo_optin_form_customizer_success_message_args', array(
-                        'type'     => 'textarea',
-                        'label'    => __('Optin Success Message', 'mailoptin'),
-                        'section'  => $this->customizerClassInstance->success_section_id,
+                'success_message' => apply_filters('mo_optin_form_customizer_success_message_args', array(
+                        'type' => 'textarea',
+                        'label' => __('Optin Success Message', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->success_section_id,
                         'settings' => $this->option_prefix . '[success_message]',
                         'priority' => 15,
                     )
                 ),
                 'redirect_url_value' => apply_filters('mo_optin_form_customizer_redirect_url_value_args', array(
-                        'type'        => 'text',
-                        'label'       => __('Redirect URL', 'mailoptin'),
-                        'section'     => $this->customizerClassInstance->success_section_id,
-                        'settings'    => $this->option_prefix . '[redirect_url_value]',
-                        'priority'    => 20,
+                        'type' => 'text',
+                        'label' => __('Redirect URL', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->success_section_id,
+                        'settings' => $this->option_prefix . '[redirect_url_value]',
+                        'priority' => 20,
                         'description' => __('Specify a URL to redirect users to after opt-in. Must begin with http or https.', 'mailoptin')
                     )
                 )
@@ -1089,7 +1099,7 @@ class CustomizerControls
             $this->customizerClassInstance
         );
 
-        if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM')) {
+        if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
             $content = sprintf(
                 '<div class="mo-pro"><a href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=quick_setup_panel" target="_blank">%s</a></div>',
                 __('Premium Version Available', 'mailoptin')
@@ -1105,8 +1115,8 @@ class CustomizerControls
                 $this->wp_customize,
                 $this->option_prefix . '[after_conversion_notice]',
                 apply_filters('mo_optin_form_customizer_after_conversion_notice_args', array(
-                        'content'  => $content,
-                        'section'  => $this->customizerClassInstance->success_section_id,
+                        'content' => $content,
+                        'section' => $this->customizerClassInstance->success_section_id,
                         'settings' => $this->option_prefix . '[after_conversion_notice]',
                         'priority' => 199,
                     )
@@ -1137,20 +1147,20 @@ class CustomizerControls
     public function page_filter_display_rule_controls()
     {
         $page_filter_control_args = array(
-            'load_optin_globally'             => new WP_Customize_Toggle_Control(
+            'load_optin_globally' => new WP_Customize_Toggle_Control(
                 $this->wp_customize,
                 $this->option_prefix . '[load_optin_globally]',
                 apply_filters('mo_optin_form_customizer_load_optin_globally_args', array(
-                        'label'       => __('Globally load optin', 'mailoptin'),
-                        'section'     => $this->customizerClassInstance->page_filter_display_rule_section_id,
-                        'settings'    => $this->option_prefix . '[load_optin_globally]',
+                        'label' => __('Globally load optin', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->page_filter_display_rule_section_id,
+                        'settings' => $this->option_prefix . '[load_optin_globally]',
                         'description' => sprintf(
                             __('The optin will be loaded on all pages of your website if activated. %sDo not activate%s if you want to load optin on specific areas of your site using the settings below.', 'mailoptin'),
                             '<strong>',
                             '</strong>'
                         ),
-                        'type'        => 'light',
-                        'priority'    => 20
+                        'type' => 'light',
+                        'priority' => 20
                     )
                 )
             ),
@@ -1158,42 +1168,42 @@ class CustomizerControls
                 $this->wp_customize,
                 $this->option_prefix . '[exclusive_post_types_posts_load]',
                 apply_filters('mo_optin_form_customizer_exclusive_post_types_posts_load_args', array(
-                        'label'       => __('Load optin exclusively on:', 'mailoptin'),
-                        'section'     => $this->customizerClassInstance->page_filter_display_rule_section_id,
-                        'settings'    => $this->option_prefix . '[exclusive_post_types_posts_load]',
+                        'label' => __('Load optin exclusively on:', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->page_filter_display_rule_section_id,
+                        'settings' => $this->option_prefix . '[exclusive_post_types_posts_load]',
                         'description' => __('Loads the optin only on the selected posts and pages.', 'mailoptin'),
                         'search_type' => 'exclusive_post_types_posts_load',
-                        'choices'     => ControlsHelpers::get_all_post_types_posts(),
-                        'priority'    => 35
+                        'choices' => ControlsHelpers::get_all_post_types_posts(),
+                        'priority' => 35
                     )
                 )
             )
         );
 
         if (defined('MAILOPTIN_DETACH_LIBSODIUM')) {
-            $page_filter_control_args['load_optin_index']          = new WP_Customize_Toggle_Control(
+            $page_filter_control_args['load_optin_index'] = new WP_Customize_Toggle_Control(
                 $this->wp_customize,
                 $this->option_prefix . '[load_optin_index]',
                 apply_filters('mo_optin_form_customizer_load_optin_index_args', array(
-                        'label'       => __('Front Page, Archive and Search Pages', 'mailoptin'),
-                        'section'     => $this->customizerClassInstance->page_filter_display_rule_section_id,
-                        'settings'    => $this->option_prefix . '[load_optin_index]',
+                        'label' => __('Front Page, Archive and Search Pages', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->page_filter_display_rule_section_id,
+                        'settings' => $this->option_prefix . '[load_optin_index]',
                         'description' => __('Loads the optin on home front page, archive and search pages', 'mailoptin'),
-                        'priority'    => 30,
-                        'type'        => 'light',
+                        'priority' => 30,
+                        'type' => 'light',
                     )
                 )
             );
-            $page_filter_control_args['post_categories_load']      = new WP_Customize_Chosen_Select_Control(
+            $page_filter_control_args['post_categories_load'] = new WP_Customize_Chosen_Select_Control(
                 $this->wp_customize,
                 $this->option_prefix . '[post_categories_load]',
                 apply_filters('mo_optin_form_customizer_post_categories_load_args', array(
-                        'label'       => __('Load on post categories:'),
-                        'section'     => $this->customizerClassInstance->page_filter_display_rule_section_id,
-                        'settings'    => $this->option_prefix . '[post_categories_load]',
+                        'label' => __('Load on post categories:'),
+                        'section' => $this->customizerClassInstance->page_filter_display_rule_section_id,
+                        'settings' => $this->option_prefix . '[post_categories_load]',
                         'description' => __('Loads the optin on posts that are in one of the selected categories.', 'mailoptin'),
-                        'choices'     => ControlsHelpers::get_categories(),
-                        'priority'    => 40
+                        'choices' => ControlsHelpers::get_categories(),
+                        'priority' => 40
                     )
                 )
             );
@@ -1201,54 +1211,54 @@ class CustomizerControls
                 $this->wp_customize,
                 $this->option_prefix . '[exclusive_post_types_load]',
                 apply_filters('mo_optin_form_customizer_exclusive_post_types_load_args', array(
-                        'label'       => __('Load optin only on "post types":', 'mailoptin'),
-                        'section'     => $this->customizerClassInstance->page_filter_display_rule_section_id,
-                        'settings'    => $this->option_prefix . '[exclusive_post_types_load]',
+                        'label' => __('Load optin only on "post types":', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->page_filter_display_rule_section_id,
+                        'settings' => $this->option_prefix . '[exclusive_post_types_load]',
                         'description' => __('Loads the optin only on the selected "post types".', 'mailoptin'),
-                        'choices'     => ControlsHelpers::get_post_types(),
-                        'priority'    => 50
+                        'choices' => ControlsHelpers::get_post_types(),
+                        'priority' => 50
                     )
                 )
             );
-            $page_filter_control_args['posts_never_load']          = new WP_Customize_Chosen_Select_Control(
+            $page_filter_control_args['posts_never_load'] = new WP_Customize_Chosen_Select_Control(
                 $this->wp_customize,
                 $this->option_prefix . '[posts_never_load]',
                 apply_filters('mo_optin_form_customizer_posts_never_load_args', array(
-                        'label'       => __('Never load optin on these posts:'),
-                        'section'     => $this->customizerClassInstance->page_filter_display_rule_section_id,
-                        'settings'    => $this->option_prefix . '[posts_never_load]',
+                        'label' => __('Never load optin on these posts:'),
+                        'section' => $this->customizerClassInstance->page_filter_display_rule_section_id,
+                        'settings' => $this->option_prefix . '[posts_never_load]',
                         'description' => __('Select the posts this optin should never be loaded on.', 'mailoptin'),
                         'search_type' => 'posts_never_load',
-                        'choices'     => ControlsHelpers::get_post_type_posts('post'),
-                        'priority'    => 60
+                        'choices' => ControlsHelpers::get_post_type_posts('post'),
+                        'priority' => 60
                     )
                 )
             );
-            $page_filter_control_args['pages_never_load']          = new WP_Customize_Chosen_Select_Control(
+            $page_filter_control_args['pages_never_load'] = new WP_Customize_Chosen_Select_Control(
                 $this->wp_customize,
                 $this->option_prefix . '[pages_never_load]',
                 apply_filters('mo_optin_form_customizer_pages_never_load_args', array(
-                        'label'       => __('Never load optin on these pages:'),
-                        'section'     => $this->customizerClassInstance->page_filter_display_rule_section_id,
-                        'settings'    => $this->option_prefix . '[pages_never_load]',
+                        'label' => __('Never load optin on these pages:'),
+                        'section' => $this->customizerClassInstance->page_filter_display_rule_section_id,
+                        'settings' => $this->option_prefix . '[pages_never_load]',
                         'description' => __('Select the pages this optin should never be loaded on.', 'mailoptin'),
                         'search_type' => 'pages_never_load',
-                        'choices'     => ControlsHelpers::get_post_type_posts('page'),
-                        'priority'    => 70
+                        'choices' => ControlsHelpers::get_post_type_posts('page'),
+                        'priority' => 70
                     )
                 )
             );
-            $page_filter_control_args['cpt_never_load']            = new WP_Customize_Chosen_Select_Control(
+            $page_filter_control_args['cpt_never_load'] = new WP_Customize_Chosen_Select_Control(
                 $this->wp_customize,
                 $this->option_prefix . '[cpt_never_load]',
                 apply_filters('mo_optin_form_customizer_cpt_never_load_args', array(
-                        'label'       => __('Never load optin on these CPT posts:'),
-                        'section'     => $this->customizerClassInstance->page_filter_display_rule_section_id,
-                        'settings'    => $this->option_prefix . '[cpt_never_load]',
+                        'label' => __('Never load optin on these CPT posts:'),
+                        'section' => $this->customizerClassInstance->page_filter_display_rule_section_id,
+                        'settings' => $this->option_prefix . '[cpt_never_load]',
                         'description' => __('Select "custom post type" posts this optin should never be loaded on.', 'mailoptin'),
                         'search_type' => 'cpt_never_load',
-                        'choices'     => ControlsHelpers::get_all_post_types_posts(array('post', 'page')),
-                        'priority'    => 80
+                        'choices' => ControlsHelpers::get_all_post_types_posts(array('post', 'page')),
+                        'priority' => 80
                     )
                 )
             );
@@ -1271,8 +1281,8 @@ class CustomizerControls
                 $this->wp_customize,
                 $this->option_prefix . '[optin_trigger_notice]',
                 apply_filters('mo_optin_form_customizer_optin_trigger_notice_args', array(
-                        'content'  => $content,
-                        'section'  => $this->customizerClassInstance->page_filter_display_rule_section_id,
+                        'content' => $content,
+                        'section' => $this->customizerClassInstance->page_filter_display_rule_section_id,
                         'settings' => $this->option_prefix . '[optin_trigger_notice]',
                         'priority' => 199,
                     )
@@ -1315,17 +1325,17 @@ class CustomizerControls
             "mo_optin_form_customizer_user_filter_controls",
             array(
                 'who_see_optin' => apply_filters('mo_optin_form_customizer_who_see_optin_args', array(
-                        'type'        => 'select',
-                        'label'       => __('Who should see this optin?', 'mailoptin'),
-                        'section'     => $this->customizerClassInstance->user_targeting_display_rule_section_id,
-                        'settings'    => $this->option_prefix . '[who_see_optin]',
+                        'type' => 'select',
+                        'label' => __('Who should see this optin?', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->user_targeting_display_rule_section_id,
+                        'settings' => $this->option_prefix . '[who_see_optin]',
                         'description' => __('Decide who are able to see this optin.', 'mailoptin'),
-                        'choices'     => [
-                            'show_all'           => __('Show to all visitors and users', 'mailoptin'),
-                            'show_logged_in'     => __('Show to only logged-in users', 'mailoptin'),
+                        'choices' => [
+                            'show_all' => __('Show to all visitors and users', 'mailoptin'),
+                            'show_logged_in' => __('Show to only logged-in users', 'mailoptin'),
                             'show_non_logged_in' => __('Show to only users not logged-in', 'mailoptin'),
                         ],
-                        'priority'    => 10,
+                        'priority' => 10,
                     )
                 )
             ),

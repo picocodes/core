@@ -908,6 +908,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 var namefield_error = optin_js_config.name_missing_error;
                 var emailfield_error = optin_js_config.email_missing_error;
                 var honeypot_error = optin_js_config.honeypot_error;
+                var note_acceptance_error = optin_js_config.note_acceptance_error;
 
                 var self = this;
                 var name_field = $('#' + $optin_css_id + '_name_field:visible');
@@ -942,15 +943,15 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                     }
                 }
 
-                if (acceptance_checkbox.length > 0) {
-                    if (acceptance_checkbox[0].checked === false) {
-                        self.display_optin_error.call(name_field, $optin_css_id, namefield_error);
-                        response = false;
-                    }
-                }
-
                 // we are doing a return here to ensure core validation has passed before hooked validations.
                 if (response === false) return response;
+
+                if (acceptance_checkbox.length > 0) {
+                    if (acceptance_checkbox[0].checked === false) {
+                        self.display_optin_error.call(undefined, $optin_css_id, note_acceptance_error);
+                        return false;
+                    }
+                }
 
                 var added_validation = $(document.body).triggerHandler('mo_validate_optin_form_fields', [self, $optin_css_id, optin_js_config]);
 

@@ -211,7 +211,7 @@
                 var is_redirect_url_value_displayed, is_success_message_displayed,
                     linkSettingValueToControlActiveState1, linkSettingValueToControlActiveState2;
 
-            is_success_message_displayed = function () {
+                is_success_message_displayed = function () {
                     return setting.get() === 'success_message';
                 };
 
@@ -248,6 +248,28 @@
                 api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][success_message]', linkSettingValueToControlActiveState2);
             }
         );
+
+        api('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][note_acceptance_checkbox]', function (setting) {
+            var is_displayed, linkSettingValueToControlActiveState;
+
+            is_displayed = function () {
+                return setting.get() === true;
+            };
+
+            linkSettingValueToControlActiveState = function (control) {
+                var setActiveState = function () {
+                    control.active.set(is_displayed());
+                };
+
+                control.active.validate = is_displayed;
+
+                setActiveState();
+
+                setting.bind(setActiveState);
+            };
+
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][note_acceptance_error]', linkSettingValueToControlActiveState);
+        });
 
         // handles click to select on input readonly fields
         $('.mo-click-select').click(function () {
