@@ -775,28 +775,29 @@ class AjaxHandler
             (!in_array('non_email_list_support', $connection_fqn_class::features_support($connection_service)) && empty($connection_email_list))
         ) {
             self::send_optin_error_email($optin_campaign_id, 'No email provider or list has been set for this optin.');
-            $response = AbstractConnect::ajax_failure(__('No email provider or list has been set for this optin. Please try again', 'mailoptin'));
+            return AbstractConnect::ajax_failure(__('No email provider or list has been set for this optin. Please try again', 'mailoptin'));
+        }
+
+        $extras = $conversion_data->payload;
+        $extras['optin_campaign_id'] = $optin_campaign_id;
+        $extras['connection_service'] = $connection_service;
+        $extras['connection_email_list'] = $connection_email_list;
+
+        do_action_ref_array('mailoptin_before_optin_subscription', $extras);
+
+        $instance = ConnectionFactory::make($connection_service);
+
+        $response = $instance->subscribe($conversion_data->email, $conversion_data->name, $connection_email_list, $extras);
+
+        do_action_ref_array('mailoptin_after_optin_subscription', $extras);
+
+        if ($response['success'] === true) {
+            // record optin campaign conversion.
+            (new OptinCampaignStat($optin_campaign_id))->save('conversion');
+
+            do_action('mailoptin_track_conversions', $lead_data, $optin_campaign_id);
         } else {
-            $extras = $conversion_data->payload;
-            $extras['optin_campaign_id'] = $optin_campaign_id;
-            $extras['connection_service'] = $connection_service;
-            $extras['connection_email_list'] = $connection_email_list;
-
-            do_action_ref_array('mailoptin_before_optin_subscription', $extras);
-
-            $instance = ConnectionFactory::make($connection_service);
-
-            $response = $instance->subscribe($conversion_data->email, $conversion_data->name, $connection_email_list, $extras);
-
-            do_action_ref_array('mailoptin_after_optin_subscription', $extras);
-
-            if ($response['success'] === true) {
-
-                // record optin campaign conversion.
-                (new OptinCampaignStat($optin_campaign_id))->save('conversion');
-
-                do_action('mailoptin_track_conversions', $lead_data, $optin_campaign_id);
-            }
+            self::send_optin_error_email($optin_campaign_id, $response['message']);
         }
 
         return $response;
