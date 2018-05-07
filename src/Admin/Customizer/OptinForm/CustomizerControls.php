@@ -364,6 +364,7 @@ class CustomizerControls
                             'settings' => $this->option_prefix . '[note]',
                             'editor_id' => 'note',
                             'editor_height' => 50,
+                            'quicktags' => true,
                             'priority' => 10
                         )
                     )

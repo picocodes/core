@@ -17,11 +17,14 @@ class WP_Customize_Tinymce_Control extends \WP_Customize_Control
 
     protected $textarea_rows = 10;
 
+    protected $quicktags = false;
+
     public function __construct($manager, $id, $args = array())
     {
         $this->editor_id = isset($args['editor_id']) ? $args['editor_id'] : $this->editor_id;
         $this->editor_height = isset($args['textarea_rows']) ? '' : (isset($args['editor_height']) ? $args['editor_height'] : $this->editor_height);
         $this->media_buttons = isset($args['media_buttons']) ? $args['media_buttons'] : $this->media_buttons;
+        $this->quicktags = isset($args['quicktags']) ? $args['quicktags'] : $this->quicktags;
 
         $this->textarea_rows = isset($args['textarea_rows']) ? $args['textarea_rows'] : $this->textarea_rows;
         parent::__construct($manager, $id, $args);
@@ -48,7 +51,7 @@ class WP_Customize_Tinymce_Control extends \WP_Customize_Control
                 'editor_height' => $this->editor_height,
                 'media_buttons' => $this->media_buttons,
                 'textarea_rows' => $this->textarea_rows,
-                'quicktags' => false,
+                'quicktags' => $this->quicktags,
             ),
                 $this->editor_id
             );

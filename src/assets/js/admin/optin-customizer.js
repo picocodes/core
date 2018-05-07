@@ -77,7 +77,7 @@
             // extract content between paragraph tag and append space to it.
             var b = a.replace(/<p>(.+)<\/p>/g, '$1 ');
 
-            $('.mo-optin-form-note').html(b)
+            $('.mo-optin-form-note .mo-note-content').html(b)
         });
     });
 
@@ -89,7 +89,7 @@
 
     wp.customize(mailoptin_optin_option_prefix + '[' + mailoptin_optin_campaign_id + '][note_close_optin_onclick]', function (value) {
         value.bind(function (to) {
-            var cache = $('.mo-optin-form-note');
+            var cache = $('.mo-optin-form-note .mo-note-content');
             if (to === true) {
                 cache.addClass('mo-close-optin');
                 cache.css('text-decoration', 'underline');

@@ -693,11 +693,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         $note = apply_filters('mo_optin_form_before_note', '', $this->optin_campaign_id, $this->optin_campaign_type, $this->optin_campaign_uuid, $atts);
         $is_acceptance_checkbox_active = $this->get_customizer_value('note_acceptance_checkbox');
 
-        if ($is_acceptance_checkbox_active) {
-            $note .= '<label class="mo-acceptance-label"><input type="checkbox" id="mo-acceptance-checkbox">';
-        }
-
-        $note .= $this->get_customizer_value('note');
+        $note .= '<span class="mo-note-content">' . $this->get_customizer_value('note') . '</span>';
 
         if ($is_acceptance_checkbox_active) {
             $note .= '</label>';
@@ -725,12 +721,26 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
 
         $class = "mo-optin-form-note $class";
 
-        $style = esc_attr($atts['style']);
-        $style = "$note_styles $style";
+        $style = $note_styles . esc_attr($atts['style']);
 
-        $html = "<div class=\"$class\" style=\"$style\">$note</div>";
+        $html = '';
 
-        return $html;
+        if ($is_acceptance_checkbox_active) {
+            $html .= '<label class="mo-acceptance-label">';
+            $html .= '<input name="mo-acceptance" type="checkbox" id="mo-acceptance-checkbox" value="yes">';
+        }
+
+        $html .= str_replace(
+            ['<p', '</p', '<div', '</div'],
+            ['<span', '</span', '<span', '</span'],
+            $note
+        );
+
+        if ($is_acceptance_checkbox_active) {
+            $html .= '</label>';
+        }
+
+        return "<div class=\"$class\" style=\"$style\">$html</div>";
     }
 
     /**

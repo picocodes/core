@@ -165,12 +165,8 @@ abstract class AbstractConnect
 
         $names = explode(' ', $name);
 
-        if (isset($names[0])) {
-            $data[] = trim($names[0]);
-        }
-        if (isset($names[1])) {
-            $data[] = trim($names[1]);
-        }
+        $data[] = isset($names[0]) ? trim($names[0]) : '';
+        $data[] = isset($names[1]) ? trim($names[1]) : '';
 
         return $data;
     }

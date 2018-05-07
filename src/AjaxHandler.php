@@ -791,13 +791,13 @@ class AjaxHandler
 
         do_action_ref_array('mailoptin_after_optin_subscription', $extras);
 
-        if ($response['success'] === true) {
+        if ($response['success'] !== true) {
+            self::send_optin_error_email($optin_campaign_id, $response['message']);
+        } else {
             // record optin campaign conversion.
             (new OptinCampaignStat($optin_campaign_id))->save('conversion');
 
             do_action('mailoptin_track_conversions', $lead_data, $optin_campaign_id);
-        } else {
-            self::send_optin_error_email($optin_campaign_id, $response['message']);
         }
 
         return $response;
