@@ -7,7 +7,7 @@ use MailOptin\Core\Repositories\OptinCampaignMeta;
 use MailOptin\Core\Repositories\OptinCampaignsRepository;
 use MailOptin\Core\Repositories\OptinCampaignStat;
 
-if ( ! class_exists('WP_List_Table')) {
+if (!class_exists('WP_List_Table')) {
     require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
 }
 
@@ -49,12 +49,12 @@ class OptinCampaign_List extends \WP_List_Table
             $this->fqn_lite_themes[] = $lite_theme['type'] . '/' . $lite_theme['class'];
         }
 
-        $this->wpdb  = $wpdb;
+        $this->wpdb = $wpdb;
         $this->table = $this->wpdb->prefix . Core::optin_campaigns_table_name;
         parent::__construct(array(
                 'singular' => __('optin_form', 'mailoptin'), //singular name of the listed records
-                'plural'   => __('optin_forms', 'mailoptin'), //plural name of the listed records
-                'ajax'     => false //does this table support ajax?
+                'plural' => __('optin_forms', 'mailoptin'), //plural name of the listed records
+                'ajax' => false //does this table support ajax?
             )
         );
     }
@@ -81,31 +81,31 @@ class OptinCampaign_List extends \WP_List_Table
      */
     public function get_optin_campaign($per_page, $current_page = 1, $optin_type = '')
     {
-        if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM') && ! empty($optin_type) && ! in_array($optin_type, $this->lite_optin_types_support)) {
+        if (!defined('MAILOPTIN_DETACH_LIBSODIUM') && !empty($optin_type) && !in_array($optin_type, $this->lite_optin_types_support)) {
             return [];
         }
 
-        $per_page     = absint($per_page);
+        $per_page = absint($per_page);
         $current_page = absint($current_page);
-        $optin_type   = sanitize_text_field($optin_type);
+        $optin_type = sanitize_text_field($optin_type);
 
         $offset = ($current_page - 1) * $per_page;
-        $sql    = "SELECT * FROM $this->table";
-        $args   = [];
+        $sql = "SELECT * FROM $this->table";
+        $args = [];
 
-        if ( ! empty($optin_type)) {
-            $sql    .= " WHERE optin_type = %s";
+        if (!empty($optin_type)) {
+            $sql .= " WHERE optin_type = %s";
             $args[] = $optin_type;
 
             // if this is lite and ofcourse $optin_type is specified.
-            if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM')) {
+            if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
                 $_lite_optin_classes = "('" . implode("','", $this->get_optin_classes_by_type($optin_type)) . "')";
-                $sql                 .= " AND optin_class IN $_lite_optin_classes";
+                $sql .= " AND optin_class IN $_lite_optin_classes";
             }
         }
 
         // if this is lite and $optin_type is not specified. That is "All" optin needed to be fetched regardless of type.
-        if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM') && empty($optin_type)) {
+        if (!defined('MAILOPTIN_DETACH_LIBSODIUM') && empty($optin_type)) {
             $_lite_themes = "('" . implode("','", $this->fqn_lite_themes) . "')";
 
             $sql .= " WHERE CONCAT_WS('/', optin_type,optin_class) IN $_lite_themes";
@@ -118,7 +118,7 @@ class OptinCampaign_List extends \WP_List_Table
         $sql .= " LIMIT %d";
         if ($current_page > 1) {
             $args[] = $offset;
-            $sql    .= "  OFFSET %d";
+            $sql .= "  OFFSET %d";
         }
 
         return $this->wpdb->get_results(
@@ -141,9 +141,9 @@ class OptinCampaign_List extends \WP_List_Table
         $optin_type = sanitize_text_field($optin_type);
 
         $sql = "SELECT COUNT(*) FROM $this->table";
-        if ( ! empty($optin_type)) {
+        if (!empty($optin_type)) {
             $optin_type = esc_sql($optin_type);
-            $sql        .= "  WHERE optin_type = '$optin_type'";
+            $sql .= "  WHERE optin_type = '$optin_type'";
         }
 
         return $wpdb->get_var($sql);
@@ -372,7 +372,7 @@ class OptinCampaign_List extends \WP_List_Table
         $this->single_row_columns($item);
         echo '</tr>';
 
-        if ( ! empty($variant_ids)) {
+        if (!empty($variant_ids)) {
             foreach ($variant_ids as $variant_id) {
                 $item = OptinCampaignsRepository::get_optin_campaign_by_id($variant_id);
                 echo "<tr class='$class mo-is-split-test'>";
@@ -388,12 +388,12 @@ class OptinCampaign_List extends \WP_List_Table
     {
         $pause_class = '';
         if (OptinCampaignsRepository::is_split_test_active($optin_campaign_id)) {
-            $pause_start_label  = __('Pause Test', 'mailoptin');
+            $pause_start_label = __('Pause Test', 'mailoptin');
             $pause_start_action = 'pause';
         } else {
-            $pause_start_label  = __('Start Test', 'mailoptin');
+            $pause_start_label = __('Start Test', 'mailoptin');
             $pause_start_action = 'start';
-            $pause_class        = ' mo-split-test-action-paused ';
+            $pause_class = ' mo-split-test-action-paused ';
         }
         ?>
         <tr class="mo-split-test-actions">
@@ -425,14 +425,14 @@ class OptinCampaign_List extends \WP_List_Table
     public function get_columns()
     {
         $columns = array(
-            'cb'         => '<input type="checkbox" />',
-            'name'       => __('Name', 'mailoptin'),
-            'uuid'       => __('Unique ID', 'mailoptin'),
-            'actions'    => __('Actions', 'mailoptin'),
-            'activated'  => __('Activated', 'mailoptin'),
+            'cb' => '<input type="checkbox" />',
+            'name' => __('Name', 'mailoptin'),
+            'uuid' => __('Unique ID', 'mailoptin'),
+            'actions' => __('Actions', 'mailoptin'),
+            'activated' => __('Activated', 'mailoptin'),
             'impression' => __('Impression', 'mailoptin'),
             'conversion' => __('Subscribers', 'mailoptin'),
-            'percent'    => __('% Conversion', 'mailoptin'),
+            'percent' => __('% Conversion', 'mailoptin'),
         );
 
         return $columns;
@@ -462,23 +462,25 @@ class OptinCampaign_List extends \WP_List_Table
     public function column_name($item)
     {
         $optin_campaign_id = absint($item['id']);
-        $customize_url     = $this->_optin_campaign_customize_url($optin_campaign_id);
-        $delete_url        = $this->_optin_campaign_delete_url($optin_campaign_id);
+        $customize_url = $this->_optin_campaign_customize_url($optin_campaign_id);
+        $delete_url = $this->_optin_campaign_delete_url($optin_campaign_id);
 
         if (OptinCampaignsRepository::is_test_mode($optin_campaign_id)) {
-            $url   = $this->_optin_campaign_disable_test_mode($optin_campaign_id);
+            $url = $this->_optin_campaign_disable_test_mode($optin_campaign_id);
             $label = esc_attr__('Disable Test Mode', 'mailoptin');
         } else {
-            $url   = $this->_optin_campaign_enable_test_mode($optin_campaign_id);
+            $url = $this->_optin_campaign_enable_test_mode($optin_campaign_id);
             $label = esc_attr__('Enable Test Mode', 'mailoptin');
         }
 
+        $optin_type = ucwords(OptinCampaignsRepository::get_optin_campaign_type($optin_campaign_id));
+
         $actions = array(
-            'delete'    => sprintf("<a href='%s'>%s</a>", $delete_url, esc_attr__('Delete', 'mailoptin')),
+            'delete' => sprintf("<a href='%s'>%s</a>", $delete_url, esc_attr__('Delete', 'mailoptin')),
             'test_mode' => "<a href=\"$url\">$label</a>"
         );
 
-        $name = '<a href="' . $customize_url . '"><strong>' . $item['name'] . '</strong></a>';
+        $name = '<strong><a href="' . $customize_url . '">' . $item['name'] . '</a> <span class="mo-optin-type-state post-state"> — ' . $optin_type . '</span></strong>';
 
         if (OptinCampaignsRepository::is_split_test_parent($optin_campaign_id)) {
             $name .= '<div class="mo-has-split-test-variant">' . __('A/B', 'mailoptin') . '</div>';
@@ -531,7 +533,7 @@ class OptinCampaign_List extends \WP_List_Table
         if (OptinCampaignsRepository::is_split_test_variant($optin_campaign_id)) return '';
 
         $input_value = OptinCampaignsRepository::is_activated($optin_campaign_id) ? 'yes' : 'no';
-        $checked     = ($input_value == 'yes') ? 'checked="checked"' : null;
+        $checked = ($input_value == 'yes') ? 'checked="checked"' : null;
 
         $switch = sprintf(
             '<input data-mo-optin-id="%1$s" id="mo-optin-activate-switch-%1$s" type="checkbox" class="mo-optin-activate-switch tgl tgl-light" value="%%3$s" %3$s />',
@@ -559,7 +561,7 @@ class OptinCampaign_List extends \WP_List_Table
     {
         $optin_campaign_id = absint($item['id']);
 
-        $delete_url    = $this->_optin_campaign_delete_url($optin_campaign_id);
+        $delete_url = $this->_optin_campaign_delete_url($optin_campaign_id);
         $customize_url = $this->_optin_campaign_customize_url($optin_campaign_id);
 
         $action = sprintf(
@@ -590,37 +592,37 @@ class OptinCampaign_List extends \WP_List_Table
     public function popover_action_links($optin_campaign_id)
     {
         if (OptinCampaignsRepository::is_test_mode($optin_campaign_id)) {
-            $test_mode_url   = $this->_optin_campaign_disable_test_mode($optin_campaign_id);
+            $test_mode_url = $this->_optin_campaign_disable_test_mode($optin_campaign_id);
             $test_mode_label = esc_attr__('Disable Test Mode', 'mailoptin');
         } else {
-            $test_mode_url   = $this->_optin_campaign_enable_test_mode($optin_campaign_id);
+            $test_mode_url = $this->_optin_campaign_enable_test_mode($optin_campaign_id);
             $test_mode_label = esc_attr__('Enable Test Mode', 'mailoptin');
         }
 
         $actions = apply_filters('mo_optin_popover_actions', [
-            'split_test'    => [
+            'split_test' => [
                 'title' => __('Create new split variation', 'mailoptin'),
-                'href'  => 'javascript:;',
+                'href' => 'javascript:;',
                 'label' => __('A/B Split Test', 'mailoptin'),
                 'class' => 'mo-split-test'
             ],
-            'clone'         => [
+            'clone' => [
                 'title' => __('Duplicate optin', 'mailoptin'),
-                'href'  => self::_optin_campaign_clone_url($optin_campaign_id),
+                'href' => self::_optin_campaign_clone_url($optin_campaign_id),
                 'label' => __('Duplicate', 'mailoptin')
             ],
-            'test_mode'     => [
-                'href'  => $test_mode_url,
+            'test_mode' => [
+                'href' => $test_mode_url,
                 'label' => $test_mode_label
             ],
-            'reset_stat'    => [
+            'reset_stat' => [
                 'title' => __('Reset optin campaign statistics', 'mailoptin'),
-                'href'  => self::_optin_campaign_reset_stat_url($optin_campaign_id),
+                'href' => self::_optin_campaign_reset_stat_url($optin_campaign_id),
                 'label' => __('Reset Analytics', 'mailoptin')
             ],
             'clear_cookies' => [
                 'title' => __('Clear local cookies of this optin'),
-                'href'  => self::_optin_campaign_clear_cookies_url($optin_campaign_id),
+                'href' => self::_optin_campaign_clear_cookies_url($optin_campaign_id),
                 'label' => __('Clear Local Cookies', 'mailoptin')
             ],
         ], $optin_campaign_id);
@@ -630,24 +632,24 @@ class OptinCampaign_List extends \WP_List_Table
             unset($actions['clone']);
         }
 
-        if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM')) {
+        if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
             $actions['split_test'] = [
-                'title'  => __('This is a premium feature. Upgrade now!', 'mailoptin'),
-                'href'   => 'https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=ab_test_popover',
-                'label'  => __('A/B Split Test', 'mailoptin'),
+                'title' => __('This is a premium feature. Upgrade now!', 'mailoptin'),
+                'href' => 'https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=ab_test_popover',
+                'label' => __('A/B Split Test', 'mailoptin'),
                 'target' => '_blank',
-                'class'  => 'mo-split-test-upgrade'
+                'class' => 'mo-split-test-upgrade'
             ];
         }
 
         $structure = '<ul>';
         foreach ($actions as $action) {
             $action = wp_parse_args($action, [
-                'href'   => '',
-                'title'  => '',
+                'href' => '',
+                'title' => '',
                 'target' => '_self',
-                'label'  => '',
-                'class'  => '',
+                'label' => '',
+                'class' => '',
             ]);
 
             $structure .= sprintf(
@@ -688,7 +690,7 @@ class OptinCampaign_List extends \WP_List_Table
     public function get_bulk_actions()
     {
         $actions = array(
-            'bulk-delete'        => __('Delete', 'mailoptin'),
+            'bulk-delete' => __('Delete', 'mailoptin'),
             'bulk-clear-cookies' => __('Clear Local Cookies', 'mailoptin'),
         );
 
@@ -700,7 +702,7 @@ class OptinCampaign_List extends \WP_List_Table
      */
     public function prepare_items()
     {
-        if (isset($_GET['page']) && $_GET['page'] == MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_SLUG && ! empty($_GET['optin-type'])) {
+        if (isset($_GET['page']) && $_GET['page'] == MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_SLUG && !empty($_GET['optin-type'])) {
             $optin_type = sanitize_text_field($_GET['optin-type']);
         } else {
             $optin_type = '';
@@ -709,12 +711,12 @@ class OptinCampaign_List extends \WP_List_Table
         $this->_column_headers = $this->get_column_info();
         /** Process bulk action */
         $this->process_actions();
-        $per_page     = defined('MAILOPTIN_DETACH_LIBSODIUM') ? $this->get_items_per_page('optin_form_per_page', 15) : 3;
+        $per_page = defined('MAILOPTIN_DETACH_LIBSODIUM') ? $this->get_items_per_page('optin_form_per_page', 15) : 3;
         $current_page = $this->get_pagenum();
-        $total_items  = defined('MAILOPTIN_DETACH_LIBSODIUM') ? self::record_count($optin_type) : 3;
+        $total_items = defined('MAILOPTIN_DETACH_LIBSODIUM') ? self::record_count($optin_type) : 3;
         $this->set_pagination_args(array(
                 'total_items' => $total_items, //WE have to calculate the total number of items
-                'per_page'    => $per_page //WE have to determine how many items to show on a page
+                'per_page' => $per_page //WE have to determine how many items to show on a page
             )
         );
 
@@ -732,17 +734,17 @@ class OptinCampaign_List extends \WP_List_Table
     public function process_actions()
     {
         // Bail if user is not an admin or without admin privileges.
-        if ( ! current_user_can('administrator')) {
+        if (!current_user_can('administrator')) {
             return;
         }
 
-        $optin_campaign_id = ! empty($_GET['optin-form']) ? @absint($_GET['optin-form']) : @absint($_GET['optin-campaign']);
+        $optin_campaign_id = !empty($_GET['optin-form']) ? @absint($_GET['optin-form']) : @absint($_GET['optin-campaign']);
 
         // Detect when a bulk action is being triggered...
         if ('delete' === $this->current_action()) {
             // In our file that handles the request, verify the nonce.
             $nonce = sanitize_text_field($_REQUEST['_wpnonce']);
-            if ( ! wp_verify_nonce($nonce, 'mailoptin_delete_optin_campaign')) {
+            if (!wp_verify_nonce($nonce, 'mailoptin_delete_optin_campaign')) {
                 die('Go get a life script kiddies');
             } else {
                 OptinCampaignsRepository::delete_optin_campaign($optin_campaign_id);
@@ -760,7 +762,7 @@ class OptinCampaign_List extends \WP_List_Table
 
             // In our file that handles the request, verify the nonce.
             $nonce = sanitize_text_field($_REQUEST['_wpnonce']);
-            if ( ! wp_verify_nonce($nonce, 'mailoptin_clone_optin_campaign')) {
+            if (!wp_verify_nonce($nonce, 'mailoptin_clone_optin_campaign')) {
                 die('Go get a life script kiddies');
             } else {
                 (new CloneOptinCampaign($optin_campaign_id))->forge();
@@ -773,7 +775,7 @@ class OptinCampaign_List extends \WP_List_Table
         if ('activate' === $this->current_action()) {
             // In our file that handles the request, verify the nonce.
             $nonce = sanitize_text_field($_REQUEST['_wpnonce']);
-            if ( ! wp_verify_nonce($nonce, 'mailoptin_activate_optin_campaign')) {
+            if (!wp_verify_nonce($nonce, 'mailoptin_activate_optin_campaign')) {
                 die('Go get a life script kiddies');
             } else {
                 OptinCampaignsRepository::activate_campaign($optin_campaign_id);
@@ -786,7 +788,7 @@ class OptinCampaign_List extends \WP_List_Table
         if ('deactivate' === $this->current_action()) {
             // In our file that handles the request, verify the nonce.
             $nonce = sanitize_text_field($_REQUEST['_wpnonce']);
-            if ( ! wp_verify_nonce($nonce, 'mailoptin_deactivate_optin_campaign')) {
+            if (!wp_verify_nonce($nonce, 'mailoptin_deactivate_optin_campaign')) {
                 die('Go get a life script kiddies');
             } else {
                 OptinCampaignsRepository::deactivate_campaign($optin_campaign_id);
@@ -799,7 +801,7 @@ class OptinCampaign_List extends \WP_List_Table
         if ('reset_stat' === $this->current_action()) {
             // In our file that handles the request, verify the nonce.
             $nonce = sanitize_text_field($_REQUEST['_wpnonce']);
-            if ( ! wp_verify_nonce($nonce, 'mailoptin_reset_stat_campaign')) {
+            if (!wp_verify_nonce($nonce, 'mailoptin_reset_stat_campaign')) {
                 die('Go get a life script kiddies');
             } else {
                 (new OptinCampaignStat($optin_campaign_id))->reset_stat();
@@ -812,7 +814,7 @@ class OptinCampaign_List extends \WP_List_Table
         if ('enable_test_mode' === $this->current_action()) {
             // In our file that handles the request, verify the nonce.
             $nonce = sanitize_text_field($_REQUEST['_wpnonce']);
-            if ( ! wp_verify_nonce($nonce, 'mailoptin_enable_test_mode')) {
+            if (!wp_verify_nonce($nonce, 'mailoptin_enable_test_mode')) {
                 die('Go get a life script kiddies');
             } else {
                 OptinCampaignsRepository::enable_test_mode($optin_campaign_id);
@@ -826,7 +828,7 @@ class OptinCampaign_List extends \WP_List_Table
         if ('disable_test_mode' === $this->current_action()) {
             // In our file that handles the request, verify the nonce.
             $nonce = sanitize_text_field($_REQUEST['_wpnonce']);
-            if ( ! wp_verify_nonce($nonce, 'mailoptin_disable_test_mode')) {
+            if (!wp_verify_nonce($nonce, 'mailoptin_disable_test_mode')) {
                 die('Go get a life script kiddies');
             } else {
                 OptinCampaignsRepository::disable_test_mode($optin_campaign_id);
@@ -839,7 +841,7 @@ class OptinCampaign_List extends \WP_List_Table
         if ('clear_cookies' === $this->current_action()) {
             // In our file that handles the request, verify the nonce.
             $nonce = sanitize_text_field($_REQUEST['_wpnonce']);
-            if ( ! wp_verify_nonce($nonce, 'mailoptin_clear_cookies')) {
+            if (!wp_verify_nonce($nonce, 'mailoptin_clear_cookies')) {
                 die('Go get a life script kiddies');
             } else {
                 self::clear_cookie($optin_campaign_id);

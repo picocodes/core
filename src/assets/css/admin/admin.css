@@ -7,6 +7,14 @@
     padding: 5px 10px
 }
 
+.wp_csa_view .wp-list-table .mo-optin-type-state {
+    display:none;
+}
+
+.wp_csa_view .wp-list-table tr:hover .mo-optin-type-state {
+    display:inline-block;
+}
+
 .mailoptin-data-listing .add-new-h2 {
     background: #0085ba;
     border-color: #0073aa #006799 #006799;
