@@ -250,7 +250,7 @@
         );
 
         api('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][note_acceptance_checkbox]', function (setting) {
-            var is_displayed, linkSettingValueToControlActiveState;
+            var is_displayed, linkSettingValueToControlActiveState, controlCloseOptinOnClick;
 
             is_displayed = function () {
                 return setting.get() === true;
@@ -268,7 +268,42 @@
                 setting.bind(setActiveState);
             };
 
+            controlCloseOptinOnClick = function (control) {
+                var setValueState = function () {
+                    if (is_displayed() === true) {
+                        control.setting.set(false);
+                    }
+                };
+
+                setValueState();
+
+                setting.bind(setValueState);
+            };
+
             api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][note_acceptance_error]', linkSettingValueToControlActiveState);
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][note_close_optin_onclick]', controlCloseOptinOnClick);
+        });
+
+        api('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][note_close_optin_onclick]', function (setting) {
+            var is_displayed, controlAcceptanceCheckbox;
+
+            is_displayed = function () {
+                return setting.get() === true;
+            };
+
+            controlAcceptanceCheckbox = function (control) {
+                var setValueState = function () {
+                    if (is_displayed() === true) {
+                        control.setting.set(false);
+                    }
+                };
+
+                setValueState();
+
+                setting.bind(setValueState);
+            };
+
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][note_acceptance_checkbox]', controlAcceptanceCheckbox);
         });
 
         // handles click to select on input readonly fields
