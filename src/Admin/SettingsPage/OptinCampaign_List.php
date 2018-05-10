@@ -711,7 +711,7 @@ class OptinCampaign_List extends \WP_List_Table
         $this->_column_headers = $this->get_column_info();
         /** Process bulk action */
         $this->process_actions();
-        $per_page = defined('MAILOPTIN_DETACH_LIBSODIUM') ? $this->get_items_per_page('optin_form_per_page', 15) : 3;
+        $per_page = defined('MAILOPTIN_DETACH_LIBSODIUM') ? $this->get_items_per_page('optin_forms_per_page', 15) : 3;
         $current_page = $this->get_pagenum();
         $total_items = defined('MAILOPTIN_DETACH_LIBSODIUM') ? self::record_count($optin_type) : 3;
         $this->set_pagination_args(array(
