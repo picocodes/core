@@ -39,9 +39,12 @@ class UsageTracking
     public function __construct()
     {
         add_action('init', array($this, 'schedule_send'));
+        add_action('init', function () {
+            add_action('admin_notices', array($this, 'admin_notice'));
+        });
+
         add_action('wp_cspa_persist_settings', array($this, 'check_for_settings_optin'), 10, 2);
         add_action('admin_init', array($this, 'act_on_tracking_decision'));
-        add_action('admin_notices', array($this, 'admin_notice'));
 
         add_action('init', [$this, 'create_recurring_schedule']);
 
@@ -287,7 +290,7 @@ class UsageTracking
             $optin_url = add_query_arg('edd_action', 'mo_opt_into_tracking');
             $optout_url = add_query_arg('edd_action', 'mo_opt_out_of_tracking');
 
-            $source         = substr( md5( get_bloginfo( 'name' ) ), 0, 10 );
+            $source = substr(md5(get_bloginfo('name')), 0, 10);
             $store_url = 'https://mailoptin.io/pricing/?utm_source=' . $source . '&utm_medium=admin&utm_term=notice&utm_campaign=MailOptinUsageTracking';
 
             echo '<div class="updated"><p>';

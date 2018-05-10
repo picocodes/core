@@ -16,7 +16,10 @@ class Connections extends AbstractSettingsPage
     {
         add_action('admin_menu', array($this, 'register_settings_page'));
 
-        add_action('admin_notices', array($this, 'admin_notices'));
+        add_action('init', function () {
+            add_action('admin_notices', array($this, 'admin_notices'));
+        });
+
         add_filter('removable_query_args', array($this, 'removable_query_args'));
 
         add_action('wp_cspa_after_persist_settings', [$this, 'bust_all_connection_cache'], 10, 2);

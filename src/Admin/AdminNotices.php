@@ -11,20 +11,24 @@ class AdminNotices
 {
     public function __construct()
     {
-        add_action('admin_init', array('PAnD', 'init'));
-        add_action('admin_init', array($this, 'dismiss_leave_review_notice_forever'));
-        add_action('admin_notices', array($this, 'optin_campaigns_cache_cleared'));
-        add_action('admin_notices', array($this, 'template_class_not_found'));
-        add_action('admin_notices', array($this, 'optin_class_not_found'));
-        add_action('admin_notices', array($this, 'failed_campaign_retried'));
-        add_action('admin_notices', array($this, 'optin_campaign_count_limit_exceeded'));
-        add_action('admin_notices', array($this, 'email_campaign_count_limit_exceeded'));
-        add_action('admin_notices', array($this, 'optin_branding_added_by_default'));
-        add_action('admin_notices', array($this, 'review_plugin_notice'));
+        add_action('init', function () {
+            remove_all_actions('admin_notices');
 
-        add_action('admin_notices', array($this, 'optin_conversion_limit_exceeded'));
+            add_action('admin_init', array('PAnD', 'init'));
+            add_action('admin_init', array($this, 'dismiss_leave_review_notice_forever'));
+            add_action('admin_notices', array($this, 'optin_campaigns_cache_cleared'));
+            add_action('admin_notices', array($this, 'template_class_not_found'));
+            add_action('admin_notices', array($this, 'optin_class_not_found'));
+            add_action('admin_notices', array($this, 'failed_campaign_retried'));
+            add_action('admin_notices', array($this, 'optin_campaign_count_limit_exceeded'));
+            add_action('admin_notices', array($this, 'email_campaign_count_limit_exceeded'));
+            add_action('admin_notices', array($this, 'optin_branding_added_by_default'));
+            add_action('admin_notices', array($this, 'review_plugin_notice'));
 
-        add_filter('removable_query_args', array($this, 'removable_query_args'));
+            add_action('admin_notices', array($this, 'optin_conversion_limit_exceeded'));
+
+            add_filter('removable_query_args', array($this, 'removable_query_args'));
+        });
     }
 
     public function removable_query_args($args)
@@ -193,7 +197,7 @@ class AdminNotices
         $upgrade_url = 'https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=optin_campaign_limit';
         $notice = sprintf(
             __('%sYou have exceeded the maximum of %d optin campaign that you can create%s. Upgrade now to %s to remove this limit with ton of conversion boosting features.', 'mailoptin'),
-            '<strong>', MO_LITE_OPTIN_CAMPAIGN_LIMIT, '</strong>', '<a href="' . $upgrade_url . '" target="_blank"><strong>MailOptin premium</strong></a>'
+            '<strong>', MO_LITE_OPTIN_CAMPAIGN_LIMIT, '</strong>', '<a href="' . $upgrade_url . '" target="_blank"><strong>' . __('MailOptin premium', 'mailoptin') . '</strong></a>'
         );
 
         echo '<div data-dismissible="optin-campaign-count-limit-exceeded-7" class="updated notice notice-success is-dismissible">';
@@ -218,7 +222,7 @@ class AdminNotices
 
         $upgrade_url = 'https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=email_campaign_limit';
         $notice = sprintf(__('Upgrade to %s now to create multiple email campaigns with advance targeting and availability of your email list subscribers as recipients.', 'mailoptin'),
-            '<a href="' . $upgrade_url . '" target="_blank">MailOptin premium</a>'
+            '<a href="' . $upgrade_url . '" target="_blank">' . __('MailOptin premium', 'mailoptin') . '</a>'
         );
         echo '<div data-dismissible="email-campaign-count-limit-exceeded-3" class="updated notice notice-success is-dismissible">';
         echo "<p>$notice</p>";
@@ -238,7 +242,7 @@ class AdminNotices
         $upgrade_url = 'https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=optin_conversion_limit';
         $notice = sprintf(
             __('The monthly limit of %2$d optin subscribers has been exceeded. %3$sUpgrade to %1$s to capture unlimited subscribers and stop losing subscribers and customers.%4$s ', 'mailoptin'),
-            '<a href="' . $upgrade_url . '" target="_blank">MailOptin premium</a>',
+            '<a href="' . $upgrade_url . '" target="_blank">' . __('MailOptin premium', 'mailoptin') . '</a>',
             MO_LITE_OPTIN_CONVERSION_LIMIT,
             '<strong>',
             '</strong>'
