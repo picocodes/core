@@ -57,6 +57,49 @@ class OptinConversionsRepository extends AbstractRepository
     }
 
     /**
+     * Update existing conversion data to database.
+     *
+     * @param int $id
+     * @param array $data {
+     *     Array of conversion data
+     *
+     * @type string $optin_id
+     * @type string $optin_type
+     * @type string $name
+     * @type string $email
+     * @type string $user_agent
+     * @type string $conversion_page
+     * @type string $referrer
+     * }
+     *
+     * @return false|int
+     */
+    public static function update($id, $data)
+    {
+        $update_data = array(
+            'optin_id' => $data['optin_campaign_id'],
+            'optin_type' => $data['optin_campaign_type'],
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'user_agent' => $data['user_agent'],
+            'conversion_page' => $data['conversion_page'],
+            'referrer' => $data['referrer'],
+            'date_added' => current_time('mysql')
+        );
+
+        $update_data = array_filter($update_data, function ($value) {
+            return !empty($value);
+        });
+
+        return parent::wpdb()->update(
+            parent::conversions_table(),
+            $update_data,
+            array('id' => $id),
+            '%s'
+        );
+    }
+
+    /**
      * Get a conversion data
      *
      * @param int $conversion_id
@@ -93,14 +136,18 @@ class OptinConversionsRepository extends AbstractRepository
      *
      * @return mixed
      */
-    public static function get_conversions($limit = null, $offset = 1)
+    public static function get_conversions($limit = null, $offset = 1, $search = null)
     {
+        if (is_null($search) && !empty($_POST['s'])) {
+            $search = $_POST['s'];
+        }
+
         $table = parent::conversions_table();
         $offset = ($offset - 1) * $limit;
         $sql = "SELECT * FROM {$table}";
 
-        if (!empty($_POST['s'])) {
-            $search = esc_sql(sanitize_text_field($_POST['s']));
+        if (!empty($search)) {
+            $search = esc_sql(sanitize_text_field($search));
             $sql .= " WHERE name LIKE '%$search%'";
             $sql .= " OR email LIKE '%$search%'";
         }
