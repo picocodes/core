@@ -281,6 +281,11 @@ class CustomizerSettings extends AbstractCustomizer
                     'type' => 'option',
                     'transport' => 'refresh',
                 ),
+                'name_field_required' => array(
+                    'default' => $this->customizer_defaults['name_field_required'],
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
 
                 // ---- Email fields -------- //
 

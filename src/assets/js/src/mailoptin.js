@@ -934,7 +934,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 }
 
                 // if this is a name field, check if the field isn't empty.
-                if (name_field.length > 0) {
+                if (optin_js_config.name_field_required === true && name_field.length > 0) {
                     if (name_field.val() === "") {
                         self.display_optin_error.call(name_field, $optin_css_id, namefield_error);
                         response = false;

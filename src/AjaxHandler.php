@@ -657,7 +657,7 @@ class AjaxHandler
         $builder->payload = $payload = apply_filters('mailoptin_optin_subscription_request_body', sanitize_data($_REQUEST['optin_data']));
         $builder->optin_uuid = $optin_uuid = $payload['optin_uuid'];
         $builder->email = $payload['email'];
-        $builder->name = $payload['name'];
+        $builder->name = isset($payload['name']) ? $payload['name'] : '';
         $builder->user_agent = $payload['user_agent'];
         $builder->conversion_page = $payload['conversion_page'];
         $builder->referrer = $payload['referrer'];

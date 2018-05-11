@@ -68,6 +68,7 @@ class AbstractCustomizer
         $defaults['name_field_color'] = apply_filters('mo_optin_form_name_field_color_default', '', $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
         $defaults['name_field_background'] = apply_filters('mo_optin_form_name_field_background_default', '', $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
         $defaults['name_field_font'] = apply_filters('mo_optin_form_name_field_font_default', 'Consolas, Lucida Console, monospace', $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
+        $defaults['name_field_required'] = apply_filters('mo_optin_form_name_field_required_default', true, $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
         $defaults['email_field_placeholder'] = apply_filters('mo_optin_form_email_field_placeholder_default', __('Enter your email address here...', 'mailoptin'), $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
         $defaults['email_field_color'] = apply_filters('mo_optin_form_email_field_color_default', '', $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
         $defaults['email_field_background'] = apply_filters('mo_optin_form_email_field_background_default', '', $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);

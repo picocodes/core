@@ -712,6 +712,8 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         $data['global_cookie'] = $global_exit_cookie != '' ? absint($global_exit_cookie) : 0;
         $data['global_success_cookie'] = $global_success_cookie != '' ? absint($global_success_cookie) : 0;
         $data['success_message'] = $this->get_customizer_value('success_message');
+        $data['name_field_required'] = $this->get_customizer_value('name_field_required');
+
 
         /** click launch display rule */
         if ($click_launch_status === true) {

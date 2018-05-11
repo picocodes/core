@@ -553,6 +553,19 @@ class CustomizerControls
                         )
                     )
                 ),
+                'name_field_required' => new WP_Customize_Toggle_Control(
+                    $this->wp_customize,
+                    $this->option_prefix . '[name_field_required]',
+                    apply_filters('mo_optin_form_customizer_name_field_required_args', array(
+                            'label' => __('Name Field Required?', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->fields_section_id,
+                            'settings' => $this->option_prefix . '[name_field_required]',
+                            'description' => __('Toggle to make name field required or not.', 'mailoptin'),
+                            'type' => 'light',
+                            'priority' => 43,
+                        )
+                    )
+                ),
                 'email_field_header' => new WP_Customize_Custom_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[email_field_header]',
