@@ -416,7 +416,7 @@ class CustomizerControls
                             'settings' => $this->option_prefix . '[note_acceptance_checkbox]',
                             'description' => sprintf(
                                 __('Activate to display an acceptance checkbox that users have to check before they are subscribed. %sLearn More%s', 'mailoptin'),
-                                '<a href="#" target="_blank">', '</a>'
+                                '<a href="https://mailoptin.io/article/acceptance-checkbox-terms-privacy-policy/" target="_blank">', '</a>'
                             ),
                             'priority' => 60,
                         )
