@@ -101,7 +101,7 @@ trait CustomizerTrait
                     }
 
                     foreach ($active_plugins as $active_plugin) {
-                        if (strpos($src, $active_plugin) !== false) {
+                        if (strpos($src, "plugins/$active_plugin/") !== false) {
                             unset($wp_scripts->registered[$key]);
                         }
                     }
@@ -110,11 +110,11 @@ trait CustomizerTrait
                 foreach ($wp_styles->registered as $key => $value) {
                     $src = $value->src;
                     if (strpos($src, $child_theme) !== false || strpos($src, $parent_theme) !== false) {
-                        wp_deregister_style($key);
+                        unset($wp_styles->registered[$key]);
                     }
 
                     foreach ($active_plugins as $active_plugin) {
-                        if (strpos($src, $active_plugin) !== false) {
+                        if (strpos($src, "plugins/$active_plugin/") !== false) {
                             unset($wp_styles->registered[$key]);
                         }
                     }
@@ -136,7 +136,7 @@ trait CustomizerTrait
                     }
 
                     foreach ($active_plugins as $active_plugin) {
-                        if (strpos($src, $active_plugin) !== false) {
+                        if (strpos($src, "plugins/$active_plugin/") !== false) {
                             unset($wp_scripts->registered[$key]);
                         }
                     }
@@ -149,7 +149,7 @@ trait CustomizerTrait
                     }
 
                     foreach ($active_plugins as $active_plugin) {
-                        if (strpos($src, $active_plugin) !== false) {
+                        if (strpos($src, "plugins/$active_plugin/") !== false) {
                             unset($wp_styles->registered[$key]);
                         }
                     }
