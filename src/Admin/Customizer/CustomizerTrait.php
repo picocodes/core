@@ -87,6 +87,8 @@ trait CustomizerTrait
                 return $carry;
             });
 
+            $active_plugins = ! is_array($active_plugins) ? [] : $active_plugins;
+
             add_action('customize_controls_enqueue_scripts', function () use ($wp_get_theme, $active_plugins) {
                 global $wp_styles;
                 global $wp_scripts;
