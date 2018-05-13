@@ -473,7 +473,12 @@ class OptinCampaign_List extends \WP_List_Table
             $label = esc_attr__('Enable Test Mode', 'mailoptin');
         }
 
-        $optin_type = ucwords(OptinCampaignsRepository::get_optin_campaign_type($optin_campaign_id));
+        $optin_type = OptinCampaignsRepository::get_optin_campaign_type($optin_campaign_id);
+
+        if ($optin_type == 'bar') $optin_type = __('Notification Bar', 'mailoptin');
+        if ($optin_type == 'sidebar') $optin_type = __('Sidebar / Widget', 'mailoptin');
+
+        $optin_type = ucwords($optin_type);
 
         $actions = array(
             'delete' => sprintf("<a href='%s'>%s</a>", $delete_url, esc_attr__('Delete', 'mailoptin')),

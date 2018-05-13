@@ -98,7 +98,7 @@ trait CustomizerTrait
 
                 foreach ($wp_scripts->registered as $key => $value) {
                     $src = $value->src;
-                    if (strpos($src, $child_theme) !== false || strpos($src, $parent_theme) !== false) {
+                    if (strpos($src, "themes/$child_theme/") !== false || strpos($src, "themes/$parent_theme/") !== false) {
                         unset($wp_scripts->registered[$key]);
                     }
 
@@ -111,7 +111,7 @@ trait CustomizerTrait
 
                 foreach ($wp_styles->registered as $key => $value) {
                     $src = $value->src;
-                    if (strpos($src, $child_theme) !== false || strpos($src, $parent_theme) !== false) {
+                    if (strpos($src, "themes/$child_theme/") !== false || strpos($src, "themes/$parent_theme/") !== false) {
                         unset($wp_styles->registered[$key]);
                     }
 
@@ -133,7 +133,7 @@ trait CustomizerTrait
 
                 foreach ($wp_scripts->registered as $key => $value) {
                     $src = $value->src;
-                    if (strpos($src, $child_theme) !== false || strpos($src, $parent_theme) !== false) {
+                    if (strpos($src, "themes/$child_theme/") !== false || strpos($src, "themes/$parent_theme/") !== false) {
                         unset($wp_scripts->registered[$key]);
                     }
 
@@ -146,7 +146,7 @@ trait CustomizerTrait
 
                 foreach ($wp_styles->registered as $key => $value) {
                     $src = $value->src;
-                    if (strpos($src, $child_theme) !== false || strpos($src, $parent_theme) !== false) {
+                    if (strpos($src, "themes/$child_theme/") !== false || strpos($src, "themes/$parent_theme/") !== false) {
                         unset($wp_styles->registered[$key]);
                     }
 
