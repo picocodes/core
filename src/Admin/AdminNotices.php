@@ -12,7 +12,10 @@ class AdminNotices
     public function __construct()
     {
         add_action('init', function () {
-            remove_all_actions('admin_notices');
+
+            if (\MailOptin\Core\is_mailoptin_admin_page()) {
+                remove_all_actions('admin_notices');
+            }
 
             add_action('admin_init', array('PAnD', 'init'));
             add_action('admin_init', array($this, 'dismiss_leave_review_notice_forever'));
