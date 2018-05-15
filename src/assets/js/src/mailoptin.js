@@ -1008,16 +1008,31 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
              * @param optin_data
              */
             success_action_after_conversion: function (e, optin_container, optin_js_config, optin_data) {
+                console.log(optin_data);
                 var success_action = optin_js_config.success_action;
                 var redirect_url_val = optin_js_config.redirect_url_value;
                 var success_js_script = optin_js_config.success_js_script;
                 var is_success_js_script = typeof success_js_script !== 'undefined' && success_js_script !== '';
+                var lead_data = {};
+
+                lead_data.mo_name = lead_data.mo_email = '';
+
+                if (mailoptin_optin.is_defined_not_empty(optin_data.name)) {
+                    lead_data.mo_name = optin_data.name;
+                }
+
+                if (mailoptin_optin.is_defined_not_empty(optin_data.email)) {
+                    lead_data.mo_email = optin_data.email;
+                }
+
 
                 // if we have a JS success script, trigger it.
                 if (is_success_js_script === true) {
                     if (success_js_script.indexOf('<script') === -1) {
                         success_js_script = '<script type="text/javascript">' + success_js_script + '</script>';
                     }
+
+                    success_js_script = success_js_script.replace(/\[EMAIL\]/gi, lead_data.mo_email).replace(/\[NAME\]/gi, lead_data.mo_name);
 
                     $(optin_container).append(success_js_script);
                 }
@@ -1040,17 +1055,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
 
                 if (success_action === 'redirect_url' && typeof redirect_url_val !== 'undefined' && redirect_url_val !== '') {
                     if (typeof optin_js_config.pass_lead_data !== 'undefined' && true === optin_js_config.pass_lead_data) {
-                        var redirect_query_arg = {};
-
-                        if (mailoptin_optin.is_defined_not_empty(optin_data.name)) {
-                            redirect_query_arg.mo_name = optin_data.name;
-                        }
-
-                        if (mailoptin_optin.is_defined_not_empty(optin_data.email)) {
-                            redirect_query_arg.mo_email = optin_data.email;
-                        }
-
-                        redirect_url_val = mailoptin_optin.add_query_args(redirect_url_val, redirect_query_arg);
+                        redirect_url_val = mailoptin_optin.add_query_args(redirect_url_val, lead_data);
                     }
 
                     if (is_success_js_script) {
