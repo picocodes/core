@@ -1011,10 +1011,15 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 var success_action = optin_js_config.success_action;
                 var redirect_url_val = optin_js_config.redirect_url_value;
                 var success_js_script = optin_js_config.success_js_script;
+                var is_success_js_script = typeof success_js_script !== 'undefined' && success_js_script !== '';
 
                 // if we have a JS success script, trigger it.
-                if (typeof success_js_script !== 'undefined' && success_js_script !== '') {
-                    new Function(success_js_script)();
+                if (is_success_js_script === true) {
+                    if (success_js_script.indexOf('<script') === -1) {
+                        success_js_script = '<script type="text/javascript">' + success_js_script + '</script>';
+                    }
+
+                    $(optin_container).append(success_js_script);
                 }
 
                 if (typeof success_action !== 'undefined' && $.inArray(success_action, ['close_optin', 'redirect_url', 'close_optin_reload_page']) !== -1) {
@@ -1023,18 +1028,39 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 }
 
                 if (success_action === 'close_optin_reload_page') {
-                    window.location.reload();
+                    if (is_success_js_script) {
+                        setTimeout(function () {
+                            return window.location.reload();
+                        }, 500);
+                    }
+                    else {
+                        window.location.reload();
+                    }
                 }
 
                 if (success_action === 'redirect_url' && typeof redirect_url_val !== 'undefined' && redirect_url_val !== '') {
                     if (typeof optin_js_config.pass_lead_data !== 'undefined' && true === optin_js_config.pass_lead_data) {
-                        redirect_url_val = mailoptin_optin.add_query_args(redirect_url_val, {
-                            mo_name: optin_data.name,
-                            mo_email: optin_data.email
-                        });
+                        var redirect_query_arg = {};
+
+                        if (mailoptin_optin.is_defined_not_empty(optin_data.name)) {
+                            redirect_query_arg.mo_name = optin_data.name;
+                        }
+
+                        if (mailoptin_optin.is_defined_not_empty(optin_data.email)) {
+                            redirect_query_arg.mo_email = optin_data.email;
+                        }
+
+                        redirect_url_val = mailoptin_optin.add_query_args(redirect_url_val, redirect_query_arg);
                     }
 
-                    window.location.assign(redirect_url_val);
+                    if (is_success_js_script) {
+                        setTimeout(function () {
+                            window.location.assign(redirect_url_val);
+                        }, 500);
+                    }
+                    else {
+                        window.location.assign(redirect_url_val);
+                    }
                 }
             },
 

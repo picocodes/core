@@ -6,14 +6,31 @@ jQuery(window).on('load', function () {
         var language = jQuery(this).data('ace-lang');
 
         var editor = ace.edit(editor_id);
+        var session = editor.getSession();
         editor.setTheme("ace/theme/" + theme);
-        editor.getSession().setMode("ace/mode/" + language);
+        session.setMode("ace/mode/" + language);
         editor.$blockScrolling = Infinity;
-        editor.getSession().setValue(jQuery('textarea#' + editor_id + '-textarea').val());
+        session.setValue(jQuery('textarea#' + editor_id + '-textarea').val());
 
         editor.on('change', function () {
-            jQuery('textarea#' + editor_id + '-textarea').val(editor.getSession().getValue()).change();
+            jQuery('textarea#' + editor_id + '-textarea').val(session.getValue()).change();
 
+        });
+
+        // https://stackoverflow.com/a/39176259/2648410
+        session.on("changeAnnotation", function () {
+            var annotations = session.getAnnotations() || [], i = len = annotations.length;
+            while (i--) {
+                if (/doctype first\. Expected/.test(annotations[i].text)) {
+                    annotations.splice(i, 1);
+                }
+                else if (/Unexpected End of file\. Expected/.test(annotations[i].text)) {
+                    annotations.splice(i, 1);
+                }
+            }
+            if (len > annotations.length) {
+                session.setAnnotations(annotations);
+            }
         });
 
     });
