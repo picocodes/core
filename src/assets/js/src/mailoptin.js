@@ -1008,7 +1008,6 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
              * @param optin_data
              */
             success_action_after_conversion: function (e, optin_container, optin_js_config, optin_data) {
-                console.log(optin_data);
                 var success_action = optin_js_config.success_action;
                 var redirect_url_val = optin_js_config.redirect_url_value;
                 var success_js_script = optin_js_config.success_js_script;
