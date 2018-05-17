@@ -7,6 +7,8 @@ jQuery(window).on('load', function () {
 
         var editor = ace.edit(editor_id);
         var session = editor.getSession();
+        // disable syntax checker https://stackoverflow.com/a/13016089/2648410
+        session.setUseWorker(false);
         editor.setTheme("ace/theme/" + theme);
         session.setMode("ace/mode/" + language);
         editor.$blockScrolling = Infinity;
@@ -16,22 +18,5 @@ jQuery(window).on('load', function () {
             jQuery('textarea#' + editor_id + '-textarea').val(session.getValue()).change();
 
         });
-
-        // https://stackoverflow.com/a/39176259/2648410
-        session.on("changeAnnotation", function () {
-            var annotations = session.getAnnotations() || [], i = len = annotations.length;
-            while (i--) {
-                if (/doctype first\. Expected/.test(annotations[i].text)) {
-                    annotations.splice(i, 1);
-                }
-                else if (/Unexpected End of file\. Expected/.test(annotations[i].text)) {
-                    annotations.splice(i, 1);
-                }
-            }
-            if (len > annotations.length) {
-                session.setAnnotations(annotations);
-            }
-        });
-
     });
 });

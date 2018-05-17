@@ -56,6 +56,7 @@ trait CustomizerTrait
 
             // remove all custom media button added by plugins and core.
             remove_all_actions('media_buttons');
+            remove_all_filters('media_buttons_context');
             remove_all_filters('mce_buttons', 10);
             remove_all_filters('mce_external_plugins', 10);
 
@@ -93,7 +94,7 @@ trait CustomizerTrait
                 global $wp_styles;
                 global $wp_scripts;
 
-                $child_theme = $wp_get_theme->get_stylesheet();
+                $child_theme  = $wp_get_theme->get_stylesheet();
                 $parent_theme = $wp_get_theme->get_template();
 
                 foreach ($wp_scripts->registered as $key => $value) {
@@ -128,7 +129,7 @@ trait CustomizerTrait
                 global $wp_styles;
                 global $wp_scripts;
 
-                $child_theme = $wp_get_theme->get_stylesheet();
+                $child_theme  = $wp_get_theme->get_stylesheet();
                 $parent_theme = $wp_get_theme->get_template();
 
                 foreach ($wp_scripts->registered as $key => $value) {
