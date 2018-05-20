@@ -65,12 +65,12 @@ function html_to_text($content)
  */
 function limit_text($text, $limit = 150)
 {
-    $limit = !is_int($limit) || 0 === $limit ? 150 : $limit;
+    $limit = ! is_int($limit) || 0 === $limit ? 150 : $limit;
 
     if (str_word_count($text, 0) > $limit) {
         $words = str_word_count($text, 2);
-        $pos = array_keys($words);
-        $text = substr($text, 0, $pos[$limit]) . apply_filters('maioptin_limit_text_ellipsis', '. . .');
+        $pos   = array_keys($words);
+        $text  = substr($text, 0, $pos[$limit]) . apply_filters('maioptin_limit_text_ellipsis', '. . .');
     }
 
     return $text;
@@ -175,18 +175,20 @@ function plugin_settings()
 
 function get_ip_address()
 {
-    $ipaddress = '';
-    if (isset($_SERVER['HTTP_CLIENT_IP']))
-        $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
-    else if (isset($_SERVER['HTTP_X_FORWARDED']))
-        $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
-    else if (isset($_SERVER['HTTP_FORWARDED_FOR']))
-        $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
-    else if (isset($_SERVER['HTTP_FORWARDED']))
-        $ipaddress = $_SERVER['HTTP_FORWARDED'];
-    else if (isset($_SERVER['REMOTE_ADDR']))
-        $ipaddress = $_SERVER['REMOTE_ADDR'];
-    return $ipaddress;
+    $ip = '127.0.0.1';
+
+    if ( ! empty($_SERVER['HTTP_CLIENT_IP'])) {
+        $ip = $_SERVER['HTTP_CLIENT_IP'];
+    } elseif ( ! empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    } elseif ( ! empty($_SERVER['REMOTE_ADDR'])) {
+        $ip = $_SERVER['REMOTE_ADDR'];
+    }
+
+    // Fix potential CSV returned from $_SERVER variables
+    $ip_array = array_map('trim', explode(',', $ip));
+
+    return $ip_array[0];
 }
 
 /**
