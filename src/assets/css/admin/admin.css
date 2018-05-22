@@ -8,11 +8,11 @@
 }
 
 .wp_csa_view .wp-list-table .mo-optin-type-state {
-    display:none;
+    display: none;
 }
 
 .wp_csa_view .wp-list-table tr:hover .mo-optin-type-state {
-    display:inline-block;
+    display: inline-block;
 }
 
 .mailoptin-data-listing .add-new-h2 {
@@ -23,6 +23,7 @@
     text-decoration: none;
     text-shadow: 0 -1px 1px #006799, 1px 0 1px #006799, 0 1px 1px #006799, -1px 0 1px #006799;
 }
+
 .mo-banner {
     position: absolute;
     left: 10%;
@@ -449,9 +450,14 @@ table.email_campaigns th, table.email_campaigns td {
 
 /* split test styling */
 tr.mo-is-split-test .check-column input[type="checkbox"],
-tr.mo-is-split-test .column-name > a,
+tr.mo-is-split-test .column-name strong a,
 tr.mo-is-split-test .column-name .row-actions {
     margin-left: 2em;
+}
+
+tr.mo-is-split-test .column-name strong a,
+tr.mo-is-split-test .column-name .row-actions {
+    margin-left: 1em;
 }
 
 table.optin_forms .mo-has-split-test-variant {

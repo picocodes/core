@@ -1,10 +1,4 @@
 {
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/mailoptin/composer-cleanup-plugin.git"
-    }
-  ],
   "name": "mailoptin/core",
   "description": "Core lib for MailOptin",
   "type": "library",

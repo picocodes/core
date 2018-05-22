@@ -103,6 +103,10 @@ trait CustomizerTrait
                         unset($wp_scripts->registered[$key]);
                     }
 
+                    if (strpos($src, "/uploads/$child_theme/") !== false || strpos($src, "/uploads/$parent_theme/") !== false) {
+                        unset($wp_scripts->registered[$key]);
+                    }
+
                     foreach ($active_plugins as $active_plugin) {
                         if (strpos($src, "plugins/$active_plugin/") !== false) {
                             unset($wp_scripts->registered[$key]);
@@ -113,6 +117,10 @@ trait CustomizerTrait
                 foreach ($wp_styles->registered as $key => $value) {
                     $src = $value->src;
                     if (strpos($src, "themes/$child_theme/") !== false || strpos($src, "themes/$parent_theme/") !== false) {
+                        unset($wp_styles->registered[$key]);
+                    }
+
+                    if (strpos($src, "/uploads/$child_theme/") !== false || strpos($src, "/uploads/$parent_theme/") !== false) {
                         unset($wp_styles->registered[$key]);
                     }
 
@@ -138,6 +146,10 @@ trait CustomizerTrait
                         unset($wp_scripts->registered[$key]);
                     }
 
+                    if (strpos($src, "/uploads/$child_theme/") !== false || strpos($src, "/uploads/$parent_theme/") !== false) {
+                        unset($wp_scripts->registered[$key]);
+                    }
+
                     foreach ($active_plugins as $active_plugin) {
                         if (strpos($src, "plugins/$active_plugin/") !== false) {
                             unset($wp_scripts->registered[$key]);
@@ -148,6 +160,10 @@ trait CustomizerTrait
                 foreach ($wp_styles->registered as $key => $value) {
                     $src = $value->src;
                     if (strpos($src, "themes/$child_theme/") !== false || strpos($src, "themes/$parent_theme/") !== false) {
+                        unset($wp_styles->registered[$key]);
+                    }
+
+                    if (strpos($src, "/uploads/$child_theme/") !== false || strpos($src, "/uploads/$parent_theme/") !== false) {
                         unset($wp_styles->registered[$key]);
                     }
 
