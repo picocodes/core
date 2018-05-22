@@ -27,5 +27,8 @@
     "platform": {
       "php": "5.4"
     }
+  },
+  "require-dev": {
+    "barryvdh/composer-cleanup-plugin": "0.1.x@dev"
   }
 }
