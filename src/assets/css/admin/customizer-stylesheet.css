@@ -3,6 +3,11 @@
     padding-top: 10px;
 }
 
+.customize-control.customize-control-hidden {
+    border: 0;
+    padding: 0;
+}
+
 .customize-control-title {
     margin-top: 0 !important;
 }
@@ -258,15 +263,15 @@ input.button.mo-autoresponder-btn {
 }
 
 .mo-autoresponder-config-btn {
-    vertical-align:middle;
+    vertical-align: middle;
 }
 
 .mo-autoresponder-config-btn.dashicons-yes {
-    color:#008000;
+    color: #008000;
 }
 
 .mo-autoresponder-config-btn.dashicons-no-alt {
-    color:#ff0000;
+    color: #ff0000;
 }
 
 .mo-autoresponder-modal-desc {

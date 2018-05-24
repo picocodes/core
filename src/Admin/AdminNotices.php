@@ -38,6 +38,7 @@ class AdminNotices
     {
         $args[] = 'email-campaign-error';
         $args[] = 'optin-cache';
+        $args[] = 'settings-updated';
 
         return $args;
     }

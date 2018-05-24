@@ -12,19 +12,19 @@ use MailOptin\Core\Repositories\OptinCampaignsRepository;
 abstract class AbstractOptinForm extends AbstractCustomizer implements OptinFormInterface
 {
     /** @var int optin campaign ID */
-    protected $optin_campaign_id;
+    public $optin_campaign_id;
 
     /** @var string optin universal unique ID */
-    protected $optin_campaign_uuid;
+    public $optin_campaign_uuid;
 
     /** @var string optin campaign type */
-    protected $optin_campaign_type;
+    public $optin_campaign_type;
 
     /** @var string optin campaign class */
-    protected $optin_campaign_class;
+    public $optin_campaign_class;
 
     /** @var string optin wrapper CSS ID */
-    protected $optin_css_id;
+    public $optin_css_id;
 
     // feature support flags
     public $cta_button = 'cta_button';
@@ -702,6 +702,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         $data = array();
         $data['optin_uuid'] = $this->optin_campaign_uuid;
         $data['optin_campaign_id'] = $optin_campaign_id;
+        $data['optin_campaign_name'] = OptinCampaignsRepository::get_optin_campaign_name($optin_campaign_id);
         $data['optin_type'] = OptinCampaignsRepository::get_optin_campaign_type($optin_campaign_id);
         $data['post_id'] = $post_id = is_singular() || is_front_page() ? get_queried_object_id() : 0;
         // must be of integer type for js-cookie to work.

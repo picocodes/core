@@ -30,11 +30,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                     referrer: document.referrer || ""
                 };
 
-                $.post(mailoptin_globals.mailoptin_ajaxurl.toString().replace('%%endpoint%%', 'track_optin_impression'),
-                    {
-                        stat_data: stat_data
-                    }
-                );
+                $.post(mailoptin_globals.mailoptin_ajaxurl.toString().replace('%%endpoint%%', 'track_optin_impression'), {stat_data: stat_data});
             }
         };
 
@@ -553,7 +549,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 if (optin_type !== undefined && optin_type === 'lightbox') {
                     // trigger optin show event.
                     $(document.body).on($.MoModalBox.OPEN, function (e, elm, optin_config) {
-                        $(this).trigger('moOptin:show', [optin_config.optin_uuid]);
+                        $(this).trigger('moOptin:show', [optin_config.optin_uuid, optin_config]);
                     });
 
                     this.MoModalBox(optin_config);
@@ -564,7 +560,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 self.animate_optin_display.call(this, optin_config.effects);
                 self.flag_optin_type_displayed(optin_config, optin_type);
                 this.show();
-                $(this).trigger('moOptin:show', [optin_config.optin_uuid]);
+                $(this).trigger('moOptin:show', [optin_config.optin_uuid, optin_config]);
             },
 
             /**
@@ -1000,6 +996,26 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 return (new RegExp(/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i)).test(email);
             },
 
+            ga_event_tracking: function (action, optin_js_config) {
+
+                action = action || 'impression';
+
+                if (mailoptin_optin.is_defined_not_empty(optin_js_config.ga_active) === false) return;
+
+                if (typeof ga !== "function") return;
+
+                ga(function () {
+
+                    var trackingId = ga.getAll()[0].get('trackingId');
+
+                    if (mailoptin_optin.is_defined_not_empty(trackingId) === false) return;
+
+                    ga('create', trackingId, 'auto', 'moTracker');
+
+                    ga('moTracker.send', 'event', optin_js_config.optin_campaign_name, action, optin_js_config.optin_uuid);
+                });
+            },
+
             /**
              * Handle after conversion/success actions
              * @param e
@@ -1012,6 +1028,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 var redirect_url_val = optin_js_config.redirect_url_value;
                 var success_js_script = optin_js_config.success_js_script;
                 var is_success_js_script = typeof success_js_script !== 'undefined' && success_js_script !== '';
+                var is_ga_active = typeof optin_js_config.ga_active !== 'undefined';
                 var lead_data = {};
 
                 lead_data.mo_name = lead_data.mo_email = '';
@@ -1024,6 +1041,8 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                     lead_data.mo_email = optin_data.email;
                 }
 
+                // track GA
+                mailoptin_optin.ga_event_tracking('conversion', optin_js_config);
 
                 // if we have a JS success script, trigger it.
                 if (is_success_js_script === true) {
@@ -1042,10 +1061,10 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 }
 
                 if (success_action === 'close_optin_reload_page') {
-                    if (is_success_js_script) {
+                    if (is_success_js_script || is_ga_active) {
                         setTimeout(function () {
                             return window.location.reload();
-                        }, 500);
+                        }, 1000);
                     }
                     else {
                         window.location.reload();
@@ -1057,10 +1076,10 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                         redirect_url_val = mailoptin_optin.add_query_args(redirect_url_val, lead_data);
                     }
 
-                    if (is_success_js_script) {
+                    if (is_success_js_script || is_ga_active) {
                         setTimeout(function () {
                             window.location.assign(redirect_url_val);
-                        }, 500);
+                        }, 1000);
                     }
                     else {
                         window.location.assign(redirect_url_val);
@@ -1073,8 +1092,10 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
              */
             eventSubscription: function () {
                 // track impression for optin form other than modals
-                $(document.body).on('moOptin:show', function (e, optin_uuid) {
-                    $.MailOptin.track_impression(optin_uuid)
+                $(document.body).on('moOptin:show', function (e, optin_uuid, optin_js_config) {
+                    $.MailOptin.track_impression(optin_uuid);
+                    // track GA
+                    mailoptin_optin.ga_event_tracking('impression', optin_js_config);
                 });
 
                 // success actions

@@ -9,6 +9,12 @@ abstract class AbstractConnect
 {
     use TemplateTrait;
 
+    const EMAIL_MARKETING_TYPE = 'emailmarketing';
+    const SOCIAL_TYPE = 'social';
+    const CRM_TYPE = 'crm';
+    const OTHER_TYPE = 'other';
+    const ANALYTICS_TYPE = 'analytics';
+
     public function __construct()
     {
         add_action('customize_controls_print_footer_scripts', [$this, 'js_script']);

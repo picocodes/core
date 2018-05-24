@@ -951,7 +951,6 @@ public function _header($section_title)
             $this->do_settings_errors();
             settings_errors('wp_csa_notice');
             $this->settings_page_tab();
-
             echo '<div class="mailoptin-settings-wrap" data-option-name="' . $option_name . '">';
             echo '<h2 class="nav-tab-wrapper">' . $nav_tabs . '</h2>';
             echo '<div class="metabox-holder mailoptin-tab-settings">';
