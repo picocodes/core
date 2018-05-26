@@ -117,10 +117,14 @@ class Connections extends AbstractSettingsPage
         $tab_content_area = '';
         if (!empty($connection_args)) {
             $instance = Custom_Settings_Page_Api::instance([], MAILOPTIN_CONNECTIONS_DB_OPTION_NAME, __('Connections', 'mailoptin'));
-            foreach ($connection_args as $connection_arg) {
+            foreach ($connection_args as $key => $connection_arg) {
                 $type = isset($connection_arg['type']) ? $connection_arg['type'] : '';
+                if (isset($_GET['connect-type']) && $type != $_GET['connect-type']) {
+                    unset($connection_args[$key]);
+                    continue;
+                }
+
                 unset($connection_arg['type']);
-                if (isset($_GET['connect-type']) && $type != $_GET['connect-type']) continue;
 
                 $section_title = $connection_arg['section_title'];
                 // remove "Connection" + connected status from section title
@@ -145,18 +149,20 @@ class Connections extends AbstractSettingsPage
             $instance->settings_page_tab();
             $this->filter_sub_menu();
 
-            echo '<div class="mailoptin-settings-wrap" data-option-name="' . MAILOPTIN_CONNECTIONS_DB_OPTION_NAME . '">';
-            echo '<h2 class="nav-tab-wrapper">' . $nav_tabs . '</h2>';
-            echo '<div class="metabox-holder mailoptin-tab-settings">';
-            echo '<form method="post">';
-            $instance->nonce_field();
-            echo $tab_content_area;
-            echo '</form>';
-            echo '</div>';
-            echo '</div>';
-            echo '</div>';
+            if (!empty($connection_args)) {
+                echo '<div class="mailoptin-settings-wrap" data-option-name="' . MAILOPTIN_CONNECTIONS_DB_OPTION_NAME . '">';
+                echo '<h2 class="nav-tab-wrapper">' . $nav_tabs . '</h2>';
+                echo '<div class="metabox-holder mailoptin-tab-settings">';
+                echo '<form method="post">';
+                $instance->nonce_field();
+                echo $tab_content_area;
+                echo '</form>';
+                echo '</div>';
+                echo '</div>';
+                echo '</div>';
 
-            do_action('mailoptin_after_connections_settings_page', MAILOPTIN_CONNECTIONS_DB_OPTION_NAME);
+                do_action('mailoptin_after_connections_settings_page', MAILOPTIN_CONNECTIONS_DB_OPTION_NAME);
+            }
         }
     }
 
