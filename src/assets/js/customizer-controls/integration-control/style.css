@@ -1,0 +1,124 @@
+.customize-control-mailoptin-integration .mo-integration__add_new {
+    text-align: center;
+}
+
+.mo-integration-widget {
+    box-sizing: border-box;
+    box-shadow: rgba(0, 0, 0, 0.04) 0px 1px 1px;
+    margin: 0px auto 10px;
+}
+
+.mo-integration-part-widget-top {
+    cursor: move;
+}
+
+.mo-integration-widget-top {
+    position: relative;
+    color: rgb(35, 40, 45);
+    line-height: 1.4em;
+    z-index: 1;
+    background: rgb(255, 255, 255);
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(229, 229, 229);
+    border-image: initial;
+    transition: opacity 0.5s;
+}
+
+.mo-integration-widget-action {
+    display: inline-block;
+    color: rgb(114, 119, 124);
+    cursor: pointer;
+    background-color: transparent;
+    padding: 8px 10px;
+    margin: 0px;
+    border-width: 0px;
+    border-style: initial;
+    border-color: initial;
+    border-image: initial;
+    outline: none;
+    border-radius: 0px;
+}
+
+.mo-integration-widget-action .toggle-indicator {
+    display: inline-block;
+    font-size: 20px;
+    line-height: 1;
+}
+
+.mo-integration-widget-action .toggle-indicator:before {
+    display: block;
+    content: '\f140';
+    font: normal 20px/1 dashicons;
+    padding: 1px 2px 1px 0px;
+    border-radius: 50%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-decoration: none !important;
+}
+
+.mo-integration-widget-expanded .toggle-indicator:before {
+    content: '\f142';
+}
+
+.mo-integration-widget-action:focus .toggle-indicator:before {
+    box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30, 140, 190, .8);
+}
+
+.mo-integration-part-widget-title-action {
+    float: right;
+    cursor: pointer;
+}
+
+.mo-integration-widget-title h3 {
+    line-height: 1;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    user-select: none;
+    font-size: 13px !important;
+    margin: 0px;
+    padding: 13px 15px;
+    overflow: hidden;
+}
+
+.mo-integration-part-widget.mo-integration-widget-expanded .mo-integration-widget-content {
+    display: block;
+}
+
+.mo-integration-part-widget .mo-integration-widget-content {
+    display: none;
+}
+
+.mo-integration-widget-content {
+    line-height: 16px;
+    padding: 1px 10px 10px;
+    background: rgb(255, 255, 255);
+    border-width: 0px 1px 1px;
+    border-style: solid solid solid;
+    border-color: rgb(229, 229, 229) rgb(229, 229, 229) rgb(229, 229, 229);
+    border-image: initial;
+    border-top: 0px;
+}
+
+.mo-integration-widget-content {
+    line-height: 16px;
+    padding: 1px 10px 10px;
+    background: rgb(255, 255, 255);
+    border-width: 0px 1px 1px;
+    border-style: solid solid solid;
+    border-color: rgb(229, 229, 229) rgb(229, 229, 229) rgb(229, 229, 229);
+    border-image: initial;
+    border-top: 0px;
+}
+
+.mo-integration-widget-actions {
+    padding-bottom: 5px;
+}
+
+a.mo-integration-form-remove, a.mo-integration-form-part-remove {
+    color: rgb(170, 0, 0);
+}
+
+.customize-control textarea {
+    width: 100%;
+}

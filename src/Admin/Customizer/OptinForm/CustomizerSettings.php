@@ -454,6 +454,34 @@ class CustomizerSettings extends AbstractCustomizer
     /**
      * Customize setting for all optin form integration controls.
      */
+    public function integration_new_settings()
+    {
+        $integration_settings_args = apply_filters("mo_optin_form_customizer_integration_settings",
+            array(
+                'integrations' => array(
+                    'default' => '',
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'ajax_nonce' => array(
+                    'default' => wp_create_nonce('customizer-fetch-email-list'),
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
+            ),
+            $this
+        );
+
+        foreach ($integration_settings_args as $id => $args) {
+            $this->wp_customize->add_setting($this->option_prefix . '[' . $id . ']', $args);
+        }
+
+        do_action('mo_optin_after_integration_customizer_settings', $this->wp_customize, $integration_settings_args);
+    }
+
+    /**
+     * Customize setting for all optin form integration controls.
+     */
     public function integration_settings()
     {
         $integration_settings_args = apply_filters("mo_optin_form_customizer_integration_settings",

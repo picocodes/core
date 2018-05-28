@@ -7,6 +7,7 @@ use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Custom_Content;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Google_Font_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Font_Stack_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Chosen_Select_Control;
+use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Integration_Repeater_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Tinymce_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Toggle_Control;
 use MailOptin\Core\OptinForms\AbstractOptinForm;
@@ -948,6 +949,70 @@ class CustomizerControls
         }
 
         do_action('mailoptin_after_configuration_controls_addition');
+    }
+
+    public function integration_new_controls()
+    {
+        $email_providers = ConnectionsRepository::get_connections();
+
+        $connections_control = (new \WP_Customize_Control(
+            $this->wp_customize,
+            $this->option_prefix . '[connection_service]',
+            apply_filters('mo_optin_form_customizer_connection_service_args', array(
+                    'section' => 'mo_integration_new_section',
+                    'settings' => $this->option_prefix . '[connection_service]',
+                    'priority' => 20,
+                    'type' => 'select',
+                    'label' => __('Email Provider', 'mailoptin'),
+                    'choices' => $email_providers,
+                )
+            )
+        ))->get_content();
+
+        $connections_control = preg_replace('/<li(?:.+)?>([\S\s]+)<\/li>/', '<p>$1</p>', $connections_control);
+
+
+        $integration_control_args = apply_filters(
+            "mo_optin_form_customizer_integration_controls",
+            array(
+                'integrations' => new WP_Customize_Integration_Repeater_Control(
+                    $this->wp_customize,
+                    $this->option_prefix . '[integrations]',
+                    apply_filters('mo_optin_form_customizer_integrations_args', array(
+                            'section' => $this->customizerClassInstance->integration_new_section_id,
+                            'settings' => $this->option_prefix . '[integrations]',
+                            'priority' => 200,
+                            'connections_control' => $connections_control,
+                        )
+                    )
+                ),
+                'ajax_nonce' => apply_filters('mo_optin_form_customizer_ajax_nonce_args', array(
+                        'type' => 'hidden',
+                        // simple hack because control won't render if label is empty.
+                        'label' => '&nbsp;',
+                        'section' => $this->customizerClassInstance->integration_section_id,
+                        'settings' => $this->option_prefix . '[ajax_nonce]',
+                        // 999 cos we want it to be bottom.
+                        'priority' => 999,
+                    )
+                )
+            ),
+            $this->wp_customize,
+            $this->option_prefix,
+            $this->customizerClassInstance
+        );
+
+        do_action('mailoptin_before_integration_controls_addition');
+
+        foreach ($integration_control_args as $id => $args) {
+            if (is_object($args)) {
+                $this->wp_customize->add_control($args);
+            } else {
+                $this->wp_customize->add_control($this->option_prefix . '[' . $id . ']', $args);
+            }
+        }
+
+        do_action('mailoptin_after_integration_controls_addition');
     }
 
     public function integration_controls()
