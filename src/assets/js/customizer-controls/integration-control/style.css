@@ -85,6 +85,12 @@
     display: block;
 }
 
+.mo-integration-widget-content .mo-integration-widget-form .customize-control-title {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 0;
+}
+
 .mo-integration-part-widget .mo-integration-widget-content {
     display: none;
 }

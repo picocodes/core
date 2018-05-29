@@ -969,8 +969,19 @@ class CustomizerControls
             )
         ))->get_content();
 
-        $connections_control = preg_replace('/<li(?:.+)?>([\S\s]+)<\/li>/', '<p>$1</p>', $connections_control);
-
+        $connection_email_list = (new \WP_Customize_Control(
+            $this->wp_customize,
+            $this->option_prefix . '[connection_email_list]',
+            apply_filters('mo_optin_form_customizer_connection_email_list_args', array(
+                    'section' => 'mo_integration_new_section',
+                    'settings' => $this->option_prefix . '[connection_email_list]',
+                    'priority' => 40,
+                    'type' => 'select',
+                    'label' => __('Email Provider List', 'mailoptin'),
+                    'choices' => $email_providers,
+                )
+            )
+        ))->get_content();
 
         $integration_control_args = apply_filters(
             "mo_optin_form_customizer_integration_controls",
@@ -981,8 +992,11 @@ class CustomizerControls
                     apply_filters('mo_optin_form_customizer_integrations_args', array(
                             'section' => $this->customizerClassInstance->integration_new_section_id,
                             'settings' => $this->option_prefix . '[integrations]',
+                            'option_prefix' => $this->option_prefix,
+                            'customizerClassInstance' => $this->customizerClassInstance,
                             'priority' => 200,
                             'connections_control' => $connections_control,
+                            'connection_email_list' => $connection_email_list,
                         )
                     )
                 ),

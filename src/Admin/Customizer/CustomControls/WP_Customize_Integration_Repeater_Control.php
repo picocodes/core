@@ -15,6 +15,12 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
     public $connections_control;
 
+    public $connection_email_list;
+
+    public $option_prefix;
+
+    public $customizerClassInstance;
+
     /**
      * Enqueue control related scripts/styles.
      *
@@ -26,8 +32,45 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         wp_enqueue_style('mailoptin-customizer-integrations', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/integration-control/style.css', null);
     }
 
+    public function sanitize_control($control)
+    {
+        return preg_replace(
+            ['/<li\s([^<]+)?>([\S\s]+)<\/li>/', '/\s?data-customize-setting-link=".+"/'],
+            ['<p>$2</p>', ''],
+            $control
+        );
+    }
+
+    /**
+     * @param array $control
+     */
+    public function parse_control_object($controls = [])
+    {
+        if (!is_array($controls)) return;
+
+        /** @var WP_Customize_Control $control */
+        foreach ($controls as $control) {
+            echo $this->sanitize_control($control->get_content());
+        }
+    }
+
     public function template()
     {
+        $before_core_controls = apply_filters(
+            'mo_optin_integrations_controls_before',
+            [],
+            $this->manager,
+            $this->option_prefix,
+            $this->customizerClassInstance
+        );
+
+        $after_core_controls = apply_filters(
+            'mo_optin_integrations_controls_after',
+            [],
+            $this->manager,
+            $this->option_prefix,
+            $this->customizerClassInstance
+        );
         ?>
         <div class="mo-integration-widget mo-integration-part-widget">
             <div class="mo-integration-widget-top mo-integration-part-widget-top ui-sortable-handle">
@@ -37,35 +80,15 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
                     </button>
                 </div>
                 <div class="mo-integration-widget-title">
-                    <h3>Short Text<span class="in-widget-title">: <span>First name</span></span></h3>
+                    <h3><?php _e('New Integration', 'mailoptin') ?></h3>
                 </div>
             </div>
             <div class="mo-integration-widget-content">
                 <div class="mo-integration-widget-form">
-                    <?php echo $this->connections_control; ?>
-                    <p>
-                        <label for="single_line_text_0_title">Title</label>
-                        <input type="text" id="single_line_text_0_title" class="widefat title" value="First name">
-                    </p>
-                    <p>
-                        <label for="single_line_text_0_label_placement">Title placement</label>
-                        <select id="single_line_text_0_label_placement" data-bind="label_placement">
-                            <option value="above" selected="">Above</option>
-                        </select>
-                    </p>
-                    <p>
-                        <label for="single_line_text_0_description">Description</label>
-                        <textarea id="single_line_text_0_description" data-bind="description"></textarea>
-                    </p>
-                    <p>
-                        <label for="single_line_text_0_placeholder">Placeholder</label>
-                        <input type="text" id="single_line_text_0_placeholder" class="widefat title" value="" data-bind="placeholder">
-                    </p>
-                    <p>
-                        <label>
-                            <input type="checkbox" class="checkbox" value="1" checked="checked" data-bind="required"> This is a required field
-                        </label>
-                    </p>
+                    <?php $this->parse_control_object($before_core_controls); ?>
+                    <?php echo $this->sanitize_control($this->connections_control); ?>
+                    <?php echo $this->sanitize_control($this->connection_email_list); ?>
+                    <?php $this->parse_control_object($after_core_controls); ?>
                 </div>
                 <div class="mo-integration-widget-actions">
                     <a href="#" class="mo-integration-form-part-remove">Delete</a>
