@@ -35,8 +35,8 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
     public function sanitize_control($control)
     {
         return preg_replace(
-            ['/<li\s([^<]+)?>([\S\s]+)<\/li>/', '/\s?data-customize-setting-link=".+"/'],
-            ['<p>$2</p>', ''],
+            ['/<li\s([^<>]+)?>([\S\s]+(?:data-customize-setting-link="(.+)")?[\S\s]+)<\/li>/'],
+            ['<p>$2</p>'],
             $control
         );
     }
