@@ -951,37 +951,9 @@ class CustomizerControls
         do_action('mailoptin_after_configuration_controls_addition');
     }
 
-    public function integration_new_controls()
+    public function integration_controls()
     {
         $email_providers = ConnectionsRepository::get_connections();
-
-        $connections_control = (new \WP_Customize_Control(
-            $this->wp_customize,
-            $this->option_prefix . '[connection_service]',
-            apply_filters('mo_optin_form_customizer_connection_service_args', array(
-                    'section' => 'mo_integration_new_section',
-                    'settings' => $this->option_prefix . '[connection_service]',
-                    'priority' => 20,
-                    'type' => 'select',
-                    'label' => __('Email Provider', 'mailoptin'),
-                    'choices' => $email_providers,
-                )
-            )
-        ))->get_content();
-
-        $connection_email_list = (new \WP_Customize_Control(
-            $this->wp_customize,
-            $this->option_prefix . '[connection_email_list]',
-            apply_filters('mo_optin_form_customizer_connection_email_list_args', array(
-                    'section' => 'mo_integration_new_section',
-                    'settings' => $this->option_prefix . '[connection_email_list]',
-                    'priority' => 40,
-                    'type' => 'select',
-                    'label' => __('Email Provider List', 'mailoptin'),
-                    'choices' => $email_providers,
-                )
-            )
-        ))->get_content();
 
         $integration_control_args = apply_filters(
             "mo_optin_form_customizer_integration_controls",
@@ -990,74 +962,13 @@ class CustomizerControls
                     $this->wp_customize,
                     $this->option_prefix . '[integrations]',
                     apply_filters('mo_optin_form_customizer_integrations_args', array(
-                            'section' => $this->customizerClassInstance->integration_new_section_id,
+                            'section' => $this->customizerClassInstance->integration_section_id,
                             'settings' => $this->option_prefix . '[integrations]',
                             'option_prefix' => $this->option_prefix,
                             'customizerClassInstance' => $this->customizerClassInstance,
-                            'priority' => 200,
-                            'connections_control' => $connections_control,
-                            'connection_email_list' => $connection_email_list,
+                            'optin_campaign_id' => $this->optin_campaign_id,
+                            'priority' => 200
                         )
-                    )
-                ),
-                'ajax_nonce' => apply_filters('mo_optin_form_customizer_ajax_nonce_args', array(
-                        'type' => 'hidden',
-                        // simple hack because control won't render if label is empty.
-                        'label' => '&nbsp;',
-                        'section' => $this->customizerClassInstance->integration_section_id,
-                        'settings' => $this->option_prefix . '[ajax_nonce]',
-                        // 999 cos we want it to be bottom.
-                        'priority' => 999,
-                    )
-                )
-            ),
-            $this->wp_customize,
-            $this->option_prefix,
-            $this->customizerClassInstance
-        );
-
-        do_action('mailoptin_before_integration_controls_addition');
-
-        foreach ($integration_control_args as $id => $args) {
-            if (is_object($args)) {
-                $this->wp_customize->add_control($args);
-            } else {
-                $this->wp_customize->add_control($this->option_prefix . '[' . $id . ']', $args);
-            }
-        }
-
-        do_action('mailoptin_after_integration_controls_addition');
-    }
-
-    public function integration_controls()
-    {
-        $email_providers = ConnectionsRepository::get_connections();
-
-        $saved_email_provider = OptinCampaignsRepository::get_customizer_value($this->optin_campaign_id, 'connection_service');
-
-        // prepend 'Select...' to the array of email list.
-        // because select control will be hidden if no choice is found.
-        $connection_email_list = ['' => __('Select...', 'mailoptin')] + ConnectionsRepository::connection_email_list($saved_email_provider);
-
-        $integration_control_args = apply_filters(
-            "mo_optin_form_customizer_integration_controls",
-            array(
-                'connection_service' => apply_filters('mo_optin_form_customizer_connection_service_args', array(
-                        'type' => 'select',
-                        'label' => __('Email Provider', 'mailoptin'),
-                        'section' => $this->customizerClassInstance->integration_section_id,
-                        'settings' => $this->option_prefix . '[connection_service]',
-                        'choices' => $email_providers,
-                        'priority' => 20,
-                    )
-                ),
-                'connection_email_list' => apply_filters('mo_optin_form_customizer_connection_email_list_args', array(
-                        'type' => 'select',
-                        'label' => __('Email Provider List', 'mailoptin'),
-                        'section' => $this->customizerClassInstance->integration_section_id,
-                        'settings' => $this->option_prefix . '[connection_email_list]',
-                        'choices' => $connection_email_list,
-                        'priority' => 40,
                     )
                 ),
                 'ajax_nonce' => apply_filters('mo_optin_form_customizer_ajax_nonce_args', array(

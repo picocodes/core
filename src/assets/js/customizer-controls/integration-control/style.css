@@ -40,6 +40,10 @@
     border-radius: 0px;
 }
 
+.mo-integration-block {
+    margin: 10px 0;
+}
+
 .mo-integration-widget-action .toggle-indicator {
     display: inline-block;
     font-size: 20px;

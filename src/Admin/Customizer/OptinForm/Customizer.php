@@ -46,9 +46,6 @@ class Customizer
     public $integration_section_id = 'mo_integration_section';
 
     /** @var string ID of optin form integration customizer section. */
-    public $integration_new_section_id = 'mo_integration_new_section';
-
-    /** @var string ID of optin form integration customizer section. */
     public $success_section_id = 'mo_success_section';
 
     /** @var string panel ID of display rules. */
@@ -526,7 +523,6 @@ class Customizer
             array(
                 $this->configuration_section_id,
                 $this->integration_section_id,
-                $this->integration_new_section_id,
                 $this->design_section_id,
                 $this->fields_section_id,
                 $this->headline_section_id,
@@ -820,13 +816,8 @@ class Customizer
 
         if (!apply_filters('mo_optin_customizer_disable_integration_section', false)) {
             $wp_customize->add_section($this->integration_section_id, array(
-                    'title' => __('Integration', 'mailoptin'),
-                    'priority' => 35,
-                )
-            );
-            $wp_customize->add_section($this->integration_new_section_id, array(
                     'title' => __('Integrations', 'mailoptin'),
-                    'priority' => 36,
+                    'priority' => 35,
                 )
             );
         }
@@ -921,7 +912,6 @@ class Customizer
         $instance->fields_controls();
         $instance->configuration_controls();
         $instance->integration_controls();
-        $instance->integration_new_controls();
         $instance->after_conversion_controls();
         $instance->page_filter_display_rule_controls();
         $instance->user_filter_display_rule_controls();
