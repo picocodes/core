@@ -28,6 +28,8 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
      */
     public function enqueue()
     {
+        add_action('customize_controls_print_footer_scripts', [$this, 'integration_template']);
+
         wp_enqueue_script('mailoptin-customizer-integrations', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/integration-control/control.js', array('jquery', 'customize-base'), false, true);
         wp_enqueue_style('mailoptin-customizer-integrations', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/integration-control/style.css', null);
 
@@ -70,6 +72,15 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         do_action('mo_optin_integration_control_enqueue');
     }
 
+    public function integration_template()
+    {
+        ?>
+        <script type="text/html" id="tmpl-mo-integration-js-template">
+            <?php $this->template(); ?>
+        </script>
+        <?php
+    }
+
     public static function text_field($name, $class = '', $label = '', $description = '', $type = 'text')
     {
         $saved_value = '';
@@ -93,8 +104,8 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
                 name="<?php echo $name; ?>"
                 value="<?php echo esc_attr($saved_value); ?>"
         />
-        </div>
         <?php
+        echo '</div>';
     }
 
     public static function select_field($name, $choices, $class = '', $label = '', $description = '')
@@ -201,13 +212,6 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
             echo '<span class="description customize-control-description">' . $description . '</span>';
         }
         echo '</div>';
-        ?>
-        <script type="text/javascript">
-            jQuery(document).ready(function () {
-                jQuery('.mo-color-picker-hex').wpColorPicker();
-            });
-        </script>
-        <?php
     }
 
     public static function font_fields($name, $class = '', $label = '', $description = '', $count = 40)
@@ -293,7 +297,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
                     <?php do_action('mo_optin_integrations_controls_after', $this->optin_campaign_id); ?>
                 </div>
                 <div class="mo-integration-widget-actions">
-                    <a href="#" class="mo-integration-form-part-remove">Delete</a>
+                    <a href="#" class="mo-integration-delete"><?php __('Delete', 'mailoptin');?></a>
                 </div>
             </div>
         </div>
@@ -305,7 +309,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         $this->template();
         ?>
         <div class="mo-integration__add_new">
-            <button type="button" class="button">
+            <button type="button" class="button mo-add-new-integration">
                 <?php _e('Add Another Integration', 'mailoptin') ?>
             </button>
         </div>
