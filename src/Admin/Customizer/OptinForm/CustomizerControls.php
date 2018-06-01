@@ -967,7 +967,7 @@ class CustomizerControls
                             'option_prefix' => $this->option_prefix,
                             'customizerClassInstance' => $this->customizerClassInstance,
                             'optin_campaign_id' => $this->optin_campaign_id,
-                            'priority' => 200
+                            'priority' => 15
                         )
                     )
                 ),

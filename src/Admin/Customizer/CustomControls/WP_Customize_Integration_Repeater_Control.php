@@ -6,6 +6,11 @@ use MailOptin\Core\Repositories\ConnectionsRepository;
 use MailOptin\Core\Repositories\OptinCampaignsRepository;
 use WP_Customize_Control;
 
+// WP_Customize_Control seem not to be defined during ajax call hence this.
+if (!class_exists('WP_Customize_Control')) {
+    require ABSPATH . WPINC . '/class-wp-customize-control.php';
+}
+
 class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 {
     public $type = 'mailoptin-integration';
@@ -61,41 +66,21 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         // color field
         wp_enqueue_script('wp-color-picker');
         wp_enqueue_style('wp-color-picker');
+
+        do_action('mo_optin_integration_control_enqueue');
     }
 
-    public function sanitize_control($control, $classes = [])
-    {
-        $classes[] = 'mo-repeater-field';
-
-        $class = implode(' ', $classes);
-
-        return preg_replace(
-            ['/<li\s([^<>]+)?>([\S\s]+(?:data-customize-setting-link="(.+)")?[\S\s]+)<\/li>/'],
-            ["<p class='$class'>\$2</p>"],
-            $control
-        );
-    }
-
-    /**
-     * @param array $control
-     */
-    public function parse_control_object($controls = [])
-    {
-        if (!is_array($controls)) return;
-
-        /** @var WP_Customize_Control $control */
-        foreach ($controls as $control) {
-            echo $this->sanitize_control($control->get_content());
-        }
-    }
-
-    public static function text_field($name, $label = '', $description = '', $type = 'text')
+    public static function text_field($name, $class = '', $label = '', $description = '', $type = 'text')
     {
         $saved_value = '';
         $default = '';
 
+        if (!empty($class)) {
+            $class = " $class";
+        }
+
         $random_id = wp_generate_password(5, false);
-        echo "<div class=\"$name mo-integration-block\">";
+        echo "<div class=\"$name mo-integration-block{$class}\">";
         if (!empty($label)) : ?>
             <label for="<?php echo $random_id; ?>" class="customize-control-title"><?php echo esc_html($label); ?></label>
         <?php endif; ?>
@@ -112,7 +97,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         <?php
     }
 
-    public static function select_field($name, $choices, $label = '', $description = '')
+    public static function select_field($name, $choices, $class = '', $label = '', $description = '')
     {
         $saved_value = '';
         $default = '';
@@ -123,7 +108,11 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
         $random_id = wp_generate_password(5, false);
 
-        echo "<div class=\"$name mo-integration-block\">";
+        if (!empty($class)) {
+            $class = " $class";
+        }
+
+        echo "<div class=\"$name mo-integration-block{$class}\">";
         if (!empty($label)) : ?>
             <label for="<?php echo $random_id ?>" class="customize-control-title"><?php echo esc_html($label); ?></label>
         <?php endif; ?>
@@ -141,11 +130,16 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         <?php
     }
 
-    public static function mc_group_select($name, $choices)
+    public static function mc_group_select($name, $choices, $class = '')
     {
         $saved_value = '';
         $default = '';
-        echo "<div class=\"$name mo-integration-block\">";
+
+        if (!empty($class)) {
+            $class = " $class";
+        }
+
+        echo "<div class=\"$name mo-integration-block{$class}\">";
 
         if (empty($choices)) {
             echo '<div style="background:#000000;color:#fff;padding:10px;font-size:14px;">' . __('No MailChimp group found. Try selecting another email list.', 'mailoptin') . '</div>';
@@ -171,13 +165,17 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         echo '</div>';
     }
 
-    public static function color_field($name, $label = '', $description = '')
+    public static function color_field($name, $class = '', $label = '', $description = '')
     {
         $default = '';
         $save_value = '';
 
         $defaultValue = '#RRGGBB';
         $defaultValueAttr = '';
+
+        if (!empty($class)) {
+            $class = " $class";
+        }
 
         if ($default && is_string($default)) {
             if ('#' !== substr($default, 0, 1)) {
@@ -188,7 +186,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
             $defaultValueAttr = " data-default-color=\"$defaultValue\""; // Quotes added automatically.
         }
 
-        echo "<div class=\"$name mo-integration-block\">";
+        echo "<div class=\"$name mo-integration-block{$class}\">";
         if ($label) {
             echo '<span class="customize-control-title">' . $label . '</span>';
         }
@@ -212,13 +210,17 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         <?php
     }
 
-    public static function font_fields($name, $label = '', $description = '', $count = 40)
+    public static function font_fields($name, $class = '', $label = '', $description = '', $count = 40)
     {
         $default = '';
         $save_value = '';
 
+        if (!empty($class)) {
+            $class = " $class";
+        }
+
         $fonts = WP_Customize_Google_Font_Control::get_fonts($count);
-        echo "<div class=\"$name mo-integration-block\">";
+        echo "<div class=\"$name mo-integration-block{$class}\">";
         if (!empty($fonts)) {
             ?>
             <label>
@@ -240,13 +242,17 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         echo '</div>';
     }
 
-    public static function toggle_field($name, $label = '', $description = '', $type = 'light')
+    public static function toggle_field($name, $class = '', $label = '', $description = '', $type = 'light')
     {
         $saved_value = '';
 
+        if (!empty($class)) {
+            $class = " $class";
+        }
+
         $random_id = wp_generate_password(5, false);
         ?>
-    <div class="<?= $name; ?> mo-integration-block">
+    <div class="<?= $name; ?> mo-integration-block<?= $class; ?>">
         <div style="display:flex;flex-direction: row;justify-content: flex-start;">
             <span class="customize-control-title" style="flex: 2 0 0; vertical-align: middle;"><?php echo $label; ?></span>
             <input name="<?= $name; ?>" id="<?php echo $random_id ?>" type="checkbox" class="tgl tgl-<?php echo $type ?>" value="<?php echo esc_attr($saved_value); ?>" <?php checked($saved_value); ?> />
@@ -260,7 +266,6 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
     public function template()
     {
-
         $email_providers = ConnectionsRepository::get_connections();
 
         $saved_email_provider = OptinCampaignsRepository::get_customizer_value($this->optin_campaign_id, 'connection_service');

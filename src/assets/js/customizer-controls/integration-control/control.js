@@ -3,7 +3,6 @@
         ready: function () {
             "use strict";
             $(document).on('click', '.mo-integration-widget-action', this.toggleWidget);
-
             $(window).on('load', this.contextual_display);
 
         },
@@ -19,11 +18,11 @@
         contextual_display: function () {
 
             $('.mo-integration-widget').each(function () {
-                toggle_connect_service_connected_fields($(this));
-                fetch_email_list($(this));
+                var parent = $(this);
+                toggle_connect_service_connected_fields(parent);
+                toggle_connect_service_email_list_field(parent);
+                fetch_email_list(parent);
             });
-
-            toggle_connect_service_email_list_field();
 
             function fetch_email_list(parent) {
 
@@ -128,7 +127,7 @@
                     // hide any shown connection service fields before showing that of selected one.
                     $('div[class*="Connect"]', parent).hide();
 
-                    $('div[class*="' + selected_connection_service + '"]', parent).show();
+                    $('div[class*="' + selected_connection_service + '"]', parent).not('.mc-group-block').show();
                 }
                 else {
                     $('div[class*="Connect"]', parent).hide();
@@ -143,10 +142,10 @@
                 // '*=' selector check if the string after = is found in the element.
                 // >= 2 is used because connection email list select-dropdown always have a default "Select..." option.
                 if ($("select[name='connection_email_list'] option", parent).length >= 2) {
-                    $('.connection_email_list').show();
+                    $('.connection_email_list', parent).show();
                 }
                 else {
-                    $('.connection_email_list').hide();
+                    $('.connection_email_list', parent).hide();
                 }
             }
         }

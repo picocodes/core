@@ -412,13 +412,6 @@ class Customizer
         );
 
         wp_enqueue_script(
-            'mailoptin-optin-form-fetch-customizer-connect-list-controls',
-            MAILOPTIN_ASSETS_URL . 'js/customizer-controls/fetch-customizer-connect-list.js',
-            array('customize-controls'),
-            MAILOPTIN_VERSION_NUMBER
-        );
-
-        wp_enqueue_script(
             'mailoptin-customizer-toast-notifications',
             MAILOPTIN_ASSETS_URL . 'js/customizer-controls/customizer-toast-notifications.js',
             array('customize-controls'),
