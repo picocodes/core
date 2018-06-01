@@ -297,7 +297,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
                     <?php do_action('mo_optin_integrations_controls_after', $this->optin_campaign_id); ?>
                 </div>
                 <div class="mo-integration-widget-actions">
-                    <a href="#" class="mo-integration-delete"><?php __('Delete', 'mailoptin');?></a>
+                    <a href="#" class="mo-integration-delete"><?php _e('Delete', 'mailoptin');?></a>
                 </div>
             </div>
         </div>

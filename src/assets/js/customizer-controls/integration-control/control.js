@@ -28,10 +28,7 @@
 
             var remove_integration = function (e) {
                 e.preventDefault();
-                var template = wp.template('mo-integration-js-template');
-                $('.mo-integration__add_new').before(template());
-                onload_contextual_display();
-                $(document).trigger('mo_added_new_integration');
+                $(this).parents('.mo-integration-widget').slideUp();
             };
 
             $(window).on('load', onload_contextual_display);

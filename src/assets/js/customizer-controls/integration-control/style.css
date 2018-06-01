@@ -9,7 +9,7 @@
 }
 
 .mo-integration-part-widget-top {
-    cursor: move;
+    /*cursor: move;*/
 }
 
 .mo-integration-widget-top {
@@ -125,7 +125,7 @@
     padding-bottom: 5px;
 }
 
-a.mo-integration-form-remove, a.mo-integration-form-part-remove {
+a.mo-integration-form-remove, a.mo-integration-delete {
     color: rgb(170, 0, 0);
 }
 
