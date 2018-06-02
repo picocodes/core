@@ -4,13 +4,13 @@
         ready: function () {
             "use strict";
 
-            $('.mo-color-picker-hex').wpColorPicker();
-
             var _this = this;
+
+            $('.mo-color-picker-hex').wpColorPicker();
 
             this.fetch_email_list();
 
-            var onload_contextual_display = function () {
+            var contextual_display_init = function () {
                 $('.mo-integration-widget').each(function () {
                     var parent = $(this);
                     _this.toggle_connect_service_connected_fields(parent);
@@ -21,20 +21,14 @@
             var add_new_integration = function (e) {
                 e.preventDefault();
                 var template = wp.template('mo-integration-js-template');
-                $('.mo-integration__add_new').before(template());
-                onload_contextual_display();
-                $(document).trigger('mo_added_new_integration');
+                $(template()).insertBefore('.mo-integration__add_new').addClass('mo-integration-widget-expanded');
+                contextual_display_init();
             };
 
-            var remove_integration = function (e) {
-                e.preventDefault();
-                $(this).parents('.mo-integration-widget').slideUp();
-            };
-
-            $(window).on('load', onload_contextual_display);
+            $(window).on('load', contextual_display_init);
             $(document).on('click', '.mo-integration-widget-action', this.toggleWidget);
             $(document).on('click', '.mo-add-new-integration', add_new_integration);
-            $(document).on('click', '.mo-integration-delete', remove_integration);
+            $(document).on('click', '.mo-integration-delete', this.remove_integration);
         },
 
         toggleWidget: function (e) {
@@ -43,6 +37,11 @@
             $('.mo-integration-widget-content', parent).slideToggle(function () {
                 parent.toggleClass('mo-integration-widget-expanded');
             });
+        },
+
+        remove_integration: function (e) {
+            e.preventDefault();
+            $(this).parents('.mo-integration-widget').slideUp();
         },
 
         fetch_email_list: function () {
@@ -54,6 +53,9 @@
                 var parent = $(this).parents('.mo-integration-widget');
 
                 var connect_service = $(this).val();
+                var connect_service_label = $('option:selected', this).text();
+
+                $('.mo-integration-widget-title h3', parent).html(connect_service_label);
 
                 // hide email list select dropdown field before fetching the list of the selected connect/email service.
                 $(".connection_email_list", parent).hide();
