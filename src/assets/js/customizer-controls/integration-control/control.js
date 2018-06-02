@@ -27,46 +27,54 @@
             };
 
             var save_changes = _.debounce(function () {
-                console.log('debounce');
-                var data = [];
-                $('.mo-integration-widget').each(function (index) {
-                    var obj = {};
-                    $('select, input, textarea', this).each(function () {
-                        var field_name = this.name;
-                        var field_value = this.value;
+                var data_store = $('.mo-integrations-save-field');
 
-                        // returning true continue/skip the iteration.
-                        if (field_name === '') return true;
+                var old_data = data_store.val();
+                if (old_data === '' || typeof old_data === 'undefined') {
+                    old_data = [];
+                }
+                else {
+                    old_data = JSON.parse(old_data);
+                }
 
-                        // shim for single checkbox
-                        if ($(this).attr('type') === 'checkbox' && field_name.indexOf('[]') === -1) {
-                            obj[field_name] = this.checked;
-                            return true;
-                        }
+                var parent = $(this).parents('.mo-integration-widget');
+                var index = parent.data('integration-index');
+                console.log(old_data[index]);
+                if (typeof old_data[index] === 'undefined') {
+                    old_data[index] = {};
+                }
 
-                        if ($(this).attr('type') === 'checkbox' && field_name.indexOf('[]') !== -1) {
-                            var item_name = field_name.replace('[]', '');
-                            if (typeof obj[item_name] === 'undefined') {
-                                obj[item_name] = [];
-                                obj[item_name].push(field_value);
-                            } else {
-                                obj[item_name].push(field_value);
-                            }
+                var field_name = this.name;
+                var field_value = this.value;
 
-                            return true;
-                        }
+                // returning true continue/skip the iteration.
+                if (field_name === '') return;
 
-                        obj[this.name] = field_value;
-                    });
+                // shim for single checkbox
+                if ($(this).attr('type') === 'checkbox' && field_name.indexOf('[]') === -1) {
+                    old_data[index][field_name] = this.checked;
+                }
+                else if ($(this).attr('type') === 'checkbox' && field_name.indexOf('[]') !== -1) {
+                    var item_name = field_name.replace('[]', '');
+                    if (typeof old_data[index][item_name] === 'undefined') {
+                        old_data[index][item_name] = [];
+                        old_data[index][item_name].push(field_value);
+                    } else {
+                        old_data[index][item_name].push(field_value);
+                    }
 
-                    data.push(obj);
-                });
+                    old_data[index][item_name] = _.uniq(old_data[index][item_name]);
+                }
+                else {
+                    old_data[index][field_name] = field_value;
+                }
 
-                console.log(data);
+                console.log(old_data);
 
-                $('.mo-integrations-save-field').val(JSON.stringify(data)).trigger('change');
+                data_store.val(JSON.stringify(old_data)).trigger('change');
 
             }, 800);
+
 
             $(window).on('load', contextual_display_init);
             $(document).on('click', '.mo-integration-widget-action', this.toggleWidget);
