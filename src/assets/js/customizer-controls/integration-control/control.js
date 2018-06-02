@@ -20,15 +20,59 @@
 
             var add_new_integration = function (e) {
                 e.preventDefault();
+                var index = $('.mo-integration-widget').eq(-1).data('integration-index') + 1;
                 var template = wp.template('mo-integration-js-template');
-                $(template()).insertBefore('.mo-integration__add_new').addClass('mo-integration-widget-expanded');
+                $(template()).insertBefore('.mo-integration__add_new').addClass('mo-integration-widget-expanded').attr('data-integration-index', index);
                 contextual_display_init();
             };
+
+            var save_changes = _.debounce(function () {
+                console.log('debounce');
+                var data = [];
+                $('.mo-integration-widget').each(function (index) {
+                    var obj = {};
+                    $('select, input, textarea', this).each(function () {
+                        var field_name = this.name;
+                        var field_value = this.value;
+
+                        // returning true continue/skip the iteration.
+                        if (field_name === '') return true;
+
+                        // shim for single checkbox
+                        if ($(this).attr('type') === 'checkbox' && field_name.indexOf('[]') === -1) {
+                            obj[field_name] = this.checked;
+                            return true;
+                        }
+
+                        if ($(this).attr('type') === 'checkbox' && field_name.indexOf('[]') !== -1) {
+                            var item_name = field_name.replace('[]', '');
+                            if (typeof obj[item_name] === 'undefined') {
+                                obj[item_name] = [];
+                                obj[item_name].push(field_value);
+                            } else {
+                                obj[item_name].push(field_value);
+                            }
+
+                            return true;
+                        }
+
+                        obj[this.name] = field_value;
+                    });
+
+                    data.push(obj);
+                });
+
+                console.log(data);
+
+                $('.mo-integrations-save-field').val(JSON.stringify(data)).trigger('change');
+
+            }, 800);
 
             $(window).on('load', contextual_display_init);
             $(document).on('click', '.mo-integration-widget-action', this.toggleWidget);
             $(document).on('click', '.mo-add-new-integration', add_new_integration);
             $(document).on('click', '.mo-integration-delete', this.remove_integration);
+            $(document).on('change', '.mo-integration-widget select, .mo-integration-widget input, .mo-integration-widget textarea', save_changes);
         },
 
         toggleWidget: function (e) {

@@ -268,7 +268,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
     <?php endif;
     }
 
-    public function template()
+    public function template($index = 0)
     {
         $email_providers = ConnectionsRepository::get_connections();
 
@@ -278,7 +278,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         // because select control will be hidden if no choice is found.
         $connection_email_list = ['' => __('Select...', 'mailoptin')] + ConnectionsRepository::connection_email_list($saved_email_provider);
         ?>
-        <div class="mo-integration-widget mo-integration-part-widget">
+        <div class="mo-integration-widget mo-integration-part-widget" data-integration-index="<?= $index; ?>">
             <div class="mo-integration-widget-top mo-integration-part-widget-top ui-sortable-handle">
                 <div class="mo-integration-part-widget-title-action">
                     <button type="button" class="mo-integration-widget-action">
@@ -297,7 +297,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
                     <?php do_action('mo_optin_integrations_controls_after', $this->optin_campaign_id); ?>
                 </div>
                 <div class="mo-integration-widget-actions">
-                    <a href="#" class="mo-integration-delete"><?php _e('Delete', 'mailoptin');?></a>
+                    <a href="#" class="mo-integration-delete"><?php _e('Delete', 'mailoptin'); ?></a>
                 </div>
             </div>
         </div>
@@ -313,6 +313,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
                 <?php _e('Add Another Integration', 'mailoptin') ?>
             </button>
         </div>
+        <input class="mo-integrations-save-field" id="<?= '_customize-input-' . $this->id; ?>" type="hidden" value="<?php esc_attr_e($this->value()); ?>" <?php $this->link(); ?>/>
         <?php
     }
 }
