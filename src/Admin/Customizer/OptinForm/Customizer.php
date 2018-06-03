@@ -880,7 +880,6 @@ class Customizer
         $instance->fields_settings();
         $instance->configuration_settings();
         $instance->integration_settings();
-        $instance->integration_new_settings();
         $instance->after_conversion_settings();
         $instance->display_rules_settings();
 

@@ -270,6 +270,9 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
     public function template($index = 0)
     {
+        $saved_values = $this->value();
+        $default = $this->setting->default;
+
         $email_providers = ConnectionsRepository::get_connections();
 
         $saved_email_provider = OptinCampaignsRepository::get_customizer_value($this->optin_campaign_id, 'connection_service');
@@ -292,8 +295,8 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
             <div class="mo-integration-widget-content">
                 <div class="mo-integration-widget-form">
                     <?php do_action('mo_optin_integrations_controls_before', $this->optin_campaign_id); ?>
-                    <?php self::select_field('connection_service', $email_providers, __('Email Provider', 'mailoptin')); ?>
-                    <?php self::select_field('connection_email_list', $connection_email_list, __('Email Provider List', 'mailoptin')); ?>
+                    <?php self::select_field('connection_service', $email_providers, '', __('Email Provider', 'mailoptin')); ?>
+                    <?php self::select_field('connection_email_list', $connection_email_list, '', __('Email Provider List', 'mailoptin')); ?>
                     <?php do_action('mo_optin_integrations_controls_after', $this->optin_campaign_id); ?>
                 </div>
                 <div class="mo-integration-widget-actions">

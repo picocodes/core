@@ -26,61 +26,59 @@
                 contextual_display_init();
             };
 
-            var save_changes = _.debounce(function () {
-                var data_store = $('.mo-integrations-save-field');
-
-                var old_data = data_store.val();
-                if (old_data === '' || typeof old_data === 'undefined') {
-                    old_data = [];
-                }
-                else {
-                    old_data = JSON.parse(old_data);
-                }
-
-                var parent = $(this).parents('.mo-integration-widget');
-                var index = parent.data('integration-index');
-                console.log(old_data[index]);
-                if (typeof old_data[index] === 'undefined') {
-                    old_data[index] = {};
-                }
-
-                var field_name = this.name;
-                var field_value = this.value;
-
-                // returning true continue/skip the iteration.
-                if (field_name === '') return;
-
-                // shim for single checkbox
-                if ($(this).attr('type') === 'checkbox' && field_name.indexOf('[]') === -1) {
-                    old_data[index][field_name] = this.checked;
-                }
-                else if ($(this).attr('type') === 'checkbox' && field_name.indexOf('[]') !== -1) {
-                    var item_name = field_name.replace('[]', '');
-                    if (typeof old_data[index][item_name] === 'undefined') {
-                        old_data[index][item_name] = [];
-                        old_data[index][item_name].push(field_value);
-                    } else {
-                        old_data[index][item_name].push(field_value);
-                    }
-
-                    old_data[index][item_name] = _.uniq(old_data[index][item_name]);
-                }
-                else {
-                    old_data[index][field_name] = field_value;
-                }
-
-                console.log(old_data);
-
-                data_store.val(JSON.stringify(old_data)).trigger('change');
-
-            }, 800);
-
 
             $(window).on('load', contextual_display_init);
             $(document).on('click', '.mo-integration-widget-action', this.toggleWidget);
             $(document).on('click', '.mo-add-new-integration', add_new_integration);
             $(document).on('click', '.mo-integration-delete', this.remove_integration);
-            $(document).on('change', '.mo-integration-widget select, .mo-integration-widget input, .mo-integration-widget textarea', save_changes);
+            $(document).on('change', '.mo-integration-widget select, .mo-integration-widget input, .mo-integration-widget textarea', this.save_changes);
+        },
+
+        save_changes: function () {
+            var data_store = $('.mo-integrations-save-field');
+
+            var old_data = data_store.val();
+            if (old_data === '' || typeof old_data === 'undefined') {
+                old_data = [];
+            }
+            else {
+                old_data = JSON.parse(old_data);
+            }
+
+            var parent = $(this).parents('.mo-integration-widget');
+            var index = parent.data('integration-index');
+            if (typeof old_data[index] === 'undefined') {
+                old_data[index] = {};
+            }
+
+            var field_name = this.name;
+            var field_value = this.value;
+
+            // returning true continue/skip the iteration.
+            if (field_name === '') return;
+
+            // shim for single checkbox
+            if ($(this).attr('type') === 'checkbox' && field_name.indexOf('[]') === -1) {
+                old_data[index][field_name] = this.checked;
+            }
+            else if ($(this).attr('type') === 'checkbox' && field_name.indexOf('[]') !== -1) {
+                var item_name = field_name.replace('[]', '');
+                if (typeof old_data[index][item_name] === 'undefined') {
+                    old_data[index][item_name] = [];
+                    old_data[index][item_name].push(field_value);
+                } else {
+                    old_data[index][item_name].push(field_value);
+                }
+
+                old_data[index][item_name] = _.uniq(old_data[index][item_name]);
+            }
+            else {
+                old_data[index][field_name] = field_value;
+            }
+
+            console.log(old_data);
+
+            data_store.val(JSON.stringify(old_data)).trigger('change');
         },
 
         toggleWidget: function (e) {
