@@ -83,6 +83,8 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
     public static function text_field($name, $class = '', $label = '', $description = '', $type = 'text')
     {
+        $type = empty($type) ? 'text' : $type;
+
         $saved_value = '';
         $default = '';
 
@@ -216,6 +218,8 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
     public static function font_fields($name, $class = '', $label = '', $description = '', $count = 40)
     {
+        $count = empty($count) ? 40 : $count;
+
         $default = '';
         $save_value = '';
 
@@ -246,9 +250,10 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         echo '</div>';
     }
 
-    public static function toggle_field($name, $class = '', $label = '', $description = '', $type = 'light')
+    public static function toggle_field($name, $class = '', $label = '', $description = '')
     {
         $saved_value = '';
+
 
         if (!empty($class)) {
             $class = " $class";
@@ -259,13 +264,76 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
     <div class="<?= $name; ?> mo-integration-block<?= $class; ?>">
         <div style="display:flex;flex-direction: row;justify-content: flex-start;">
             <span class="customize-control-title" style="flex: 2 0 0; vertical-align: middle;"><?php echo $label; ?></span>
-            <input name="<?= $name; ?>" id="<?php echo $random_id ?>" type="checkbox" class="tgl tgl-<?php echo $type ?>" value="<?php echo esc_attr($saved_value); ?>" <?php checked($saved_value); ?> />
+            <input name="<?= $name; ?>" id="<?php echo $random_id ?>" type="checkbox" class="tgl tgl-light" value="<?php echo esc_attr($saved_value); ?>" <?php checked($saved_value); ?> />
             <label for="<?php echo $random_id ?>" class="tgl-btn"></label>
         </div>
         <?php if (!empty($description)) : ?>
         <span class="description customize-control-description"><?php echo $description; ?></span>
         </div>
     <?php endif;
+    }
+
+    public function parse_control($control_args)
+    {
+        if (!is_array($control_args) || empty($control_args)) return;
+
+        foreach ($control_args as $key => $control_arg) {
+            switch ($control_arg['field']) {
+                case 'text':
+                    self::text_field(
+                        @$control_arg['name'],
+                        @$control_arg['class'],
+                        @$control_arg['label'],
+                        @$control_arg['description'],
+                        @$control_arg['type']
+                    );
+                    break;
+                case 'select':
+                    self::select_field(
+                        @$control_arg['name'],
+                        @$control_arg['choices'],
+                        @$control_arg['class'],
+                        @$control_arg['label'],
+                        @$control_arg['description']
+                    );
+                    break;
+                case 'mc_group_select':
+                    self::mc_group_select(
+                        @$control_arg['name'],
+                        @$control_arg['choices'],
+                        @$control_arg['class']
+                    );
+                    break;
+                case 'color':
+                    self::color_field(
+                        @$control_arg['name'],
+                        @$control_arg['class'],
+                        @$control_arg['label'],
+                        @$control_arg['description']
+                    );
+                    break;
+                case 'font':
+                    self::font_fields(
+                        @$control_arg['name'],
+                        @$control_arg['class'],
+                        @$control_arg['label'],
+                        @$control_arg['description'],
+                        @$control_arg['count']
+                    );
+                    break;
+                case 'toggle':
+                    self::toggle_field(
+                        @$control_arg['name'],
+                        @$control_arg['class'],
+                        @$control_arg['label'],
+                        @$control_arg['description']
+                    );
+                    break;
+                case 'custom_content':
+                    echo $control_arg['content'];
+                    break;
+            }
+        }
     }
 
     public function template($index = 0)
@@ -294,10 +362,10 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
             </div>
             <div class="mo-integration-widget-content">
                 <div class="mo-integration-widget-form">
-                    <?php do_action('mo_optin_integrations_controls_before', $this->optin_campaign_id); ?>
+                    <?php $this->parse_control(apply_filters('mo_optin_integrations_controls_before', [], $this->optin_campaign_id)); ?>
                     <?php self::select_field('connection_service', $email_providers, '', __('Email Provider', 'mailoptin')); ?>
                     <?php self::select_field('connection_email_list', $connection_email_list, '', __('Email Provider List', 'mailoptin')); ?>
-                    <?php do_action('mo_optin_integrations_controls_after', $this->optin_campaign_id); ?>
+                    <?php $this->parse_control(apply_filters('mo_optin_integrations_controls_after', [], $this->optin_campaign_id)); ?>
                 </div>
                 <div class="mo-integration-widget-actions">
                     <a href="#" class="mo-integration-delete"><?php _e('Delete', 'mailoptin'); ?></a>
