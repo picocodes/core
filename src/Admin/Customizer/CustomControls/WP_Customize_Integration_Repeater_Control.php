@@ -6,11 +6,6 @@ use MailOptin\Core\Repositories\ConnectionsRepository;
 use MailOptin\Core\Repositories\OptinCampaignsRepository;
 use WP_Customize_Control;
 
-// WP_Customize_Control seem not to be defined during ajax call hence this.
-if (!class_exists('WP_Customize_Control')) {
-    require ABSPATH . WPINC . '/class-wp-customize-control.php';
-}
-
 class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 {
     public $type = 'mailoptin-integration';
@@ -20,6 +15,24 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
     public $optin_campaign_id;
 
     public $customizerClassInstance;
+
+    public $saved_values;
+
+    public $default_values;
+
+
+    public function __construct($manager, $id, $args = array())
+    {
+        parent::__construct($manager, $id, $args);
+
+        $this->default_values = $this->setting->default;
+
+        $saved_values = $this->value();
+
+        if (!empty($saved_values)) {
+            $this->saved_values = json_decode($saved_values, true);
+        }
+    }
 
     /**
      * Enqueue control related scripts/styles.
@@ -81,12 +94,11 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         <?php
     }
 
-    public static function text_field($name, $class = '', $label = '', $description = '', $type = 'text')
+    public function text_field($index, $name, $class = '', $label = '', $description = '', $type = 'text')
     {
         $type = empty($type) ? 'text' : $type;
 
-        $saved_value = '';
-        $default = '';
+        $saved_value = isset($this->saved_values[$index][$name]) ? $this->saved_values[$index][$name] : $this->default_values[$name];
 
         if (!empty($class)) {
             $class = " $class";
@@ -110,10 +122,9 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         echo '</div>';
     }
 
-    public static function select_field($name, $choices, $class = '', $label = '', $description = '')
+    public function select_field($index, $name, $choices, $class = '', $label = '', $description = '')
     {
-        $saved_value = '';
-        $default = '';
+        $saved_value = isset($this->saved_values[$index][$name]) ? $this->saved_values[$index][$name] : $this->default_values[$name];
 
         if (empty($choices)) {
             return;
@@ -143,7 +154,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         <?php
     }
 
-    public static function mc_group_select($name, $choices, $class = '')
+    public function mc_group_select($index, $name, $choices, $class = '')
     {
         $saved_value = '';
         $default = '';
@@ -178,7 +189,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         echo '</div>';
     }
 
-    public static function color_field($name, $class = '', $label = '', $description = '')
+    public function color_field($index, $name, $class = '', $label = '', $description = '')
     {
         $default = '';
         $save_value = '';
@@ -216,7 +227,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         echo '</div>';
     }
 
-    public static function font_fields($name, $class = '', $label = '', $description = '', $count = 40)
+    public function font_fields($index, $name, $class = '', $label = '', $description = '', $count = 40)
     {
         $count = empty($count) ? 40 : $count;
 
@@ -250,7 +261,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         echo '</div>';
     }
 
-    public static function toggle_field($name, $class = '', $label = '', $description = '')
+    public function toggle_field($index, $name, $class = '', $label = '', $description = '')
     {
         $saved_value = '';
 
@@ -273,14 +284,15 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
     <?php endif;
     }
 
-    public function parse_control($control_args)
+    public function parse_control($index, $control_args)
     {
         if (!is_array($control_args) || empty($control_args)) return;
 
         foreach ($control_args as $key => $control_arg) {
             switch ($control_arg['field']) {
                 case 'text':
-                    self::text_field(
+                    $this->text_field(
+                        $index,
                         @$control_arg['name'],
                         @$control_arg['class'],
                         @$control_arg['label'],
@@ -289,7 +301,8 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
                     );
                     break;
                 case 'select':
-                    self::select_field(
+                    $this->select_field(
+                        $index,
                         @$control_arg['name'],
                         @$control_arg['choices'],
                         @$control_arg['class'],
@@ -298,14 +311,16 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
                     );
                     break;
                 case 'mc_group_select':
-                    self::mc_group_select(
+                    $this->mc_group_select(
+                        $index,
                         @$control_arg['name'],
                         @$control_arg['choices'],
                         @$control_arg['class']
                     );
                     break;
                 case 'color':
-                    self::color_field(
+                    $this->color_field(
+                        $index,
                         @$control_arg['name'],
                         @$control_arg['class'],
                         @$control_arg['label'],
@@ -313,7 +328,8 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
                     );
                     break;
                 case 'font':
-                    self::font_fields(
+                    $this->font_fields(
+                        $index,
                         @$control_arg['name'],
                         @$control_arg['class'],
                         @$control_arg['label'],
@@ -322,7 +338,8 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
                     );
                     break;
                 case 'toggle':
-                    self::toggle_field(
+                    $this->toggle_field(
+                        $index,
                         @$control_arg['name'],
                         @$control_arg['class'],
                         @$control_arg['label'],
@@ -338,12 +355,9 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
     public function template($index = 0)
     {
-        $saved_values = $this->value();
-        $default = $this->setting->default;
-
         $email_providers = ConnectionsRepository::get_connections();
 
-        $saved_email_provider = OptinCampaignsRepository::get_customizer_value($this->optin_campaign_id, 'connection_service');
+        $saved_email_provider = $this->saved_values[$index]['connection_service'];
 
         // prepend 'Select...' to the array of email list.
         // because select control will be hidden if no choice is found.
@@ -362,10 +376,10 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
             </div>
             <div class="mo-integration-widget-content">
                 <div class="mo-integration-widget-form">
-                    <?php $this->parse_control(apply_filters('mo_optin_integrations_controls_before', [], $this->optin_campaign_id)); ?>
-                    <?php self::select_field('connection_service', $email_providers, '', __('Email Provider', 'mailoptin')); ?>
-                    <?php self::select_field('connection_email_list', $connection_email_list, '', __('Email Provider List', 'mailoptin')); ?>
-                    <?php $this->parse_control(apply_filters('mo_optin_integrations_controls_after', [], $this->optin_campaign_id)); ?>
+                    <?php $this->parse_control($index, apply_filters('mo_optin_integrations_controls_before', [], $this->optin_campaign_id)); ?>
+                    <?php $this->select_field($index, 'connection_service', $email_providers, '', __('Email Provider', 'mailoptin')); ?>
+                    <?php $this->select_field($index, 'connection_email_list', $connection_email_list, '', __('Email Provider List', 'mailoptin')); ?>
+                    <?php $this->parse_control($index, apply_filters('mo_optin_integrations_controls_after', [], $this->optin_campaign_id)); ?>
                 </div>
                 <div class="mo-integration-widget-actions">
                     <a href="#" class="mo-integration-delete"><?php _e('Delete', 'mailoptin'); ?></a>
@@ -377,7 +391,13 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
     public function render_content()
     {
-        $this->template();
+        if (is_array($this->saved_values) && count($this->saved_values) > 0) {
+            foreach ($this->saved_values as $index => $integration) {
+                $this->template($index);
+            }
+        } else {
+            $this->template();
+        }
         ?>
         <div class="mo-integration__add_new">
             <button type="button" class="button mo-add-new-integration">

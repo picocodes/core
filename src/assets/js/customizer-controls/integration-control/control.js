@@ -6,13 +6,12 @@
 
             var _this = this;
 
-            $('.mo-color-picker-hex').wpColorPicker();
-
             this.fetch_email_list();
 
             var contextual_display_init = function () {
                 $('.mo-integration-widget').each(function () {
                     var parent = $(this);
+                    _this.color_picker_init();
                     _this.toggle_connect_service_connected_fields(parent);
                     _this.toggle_connect_service_email_list_field(parent);
                 });
@@ -92,6 +91,17 @@
         remove_integration: function (e) {
             e.preventDefault();
             $(this).parents('.mo-integration-widget').slideUp();
+        },
+
+        color_picker_init: function () {
+            $('.mo-color-picker-hex').wpColorPicker({
+                change: function () {
+                    $(this).val($(this).wpColorPicker('color')).change();
+                },
+                clear: function () {
+                    $(this).val('').change();
+                }
+            });
         },
 
         fetch_email_list: function () {
