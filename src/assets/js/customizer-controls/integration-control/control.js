@@ -74,8 +74,6 @@
                 old_data[index][field_name] = field_value;
             }
 
-            console.log(old_data);
-
             data_store.val(JSON.stringify(old_data)).trigger('change');
         },
 
@@ -89,7 +87,21 @@
 
         remove_integration: function (e) {
             e.preventDefault();
-            $(this).parents('.mo-integration-widget').slideUp();
+            var parent = $(this).parents('.mo-integration-widget');
+            parent.slideUp();
+            var index = parent.data('integration-index');
+            var data_store = $('.mo-integrations-save-field');
+            var old_data = data_store.val();
+            old_data = JSON.parse(old_data);
+            // remove integration by index. see https://stackoverflow.com/a/1345122/2648410
+            old_data.splice(index, 1);
+            // remove null and empty from array elements.
+            _.without(old_data, null, '');
+            data_store.val(JSON.stringify(old_data)).trigger('change');
+            // re-order index
+            $('.mo-integration-widget').each(function (index) {
+                $(this).attr('data-integration-index', index);
+            });
         },
 
         color_picker_init: function () {
