@@ -25,8 +25,7 @@
                 contextual_display_init();
             };
 
-
-            $(window).on('load', contextual_display_init);
+            contextual_display_init();
             $(document).on('click', '.mo-integration-widget-action', this.toggleWidget);
             $(document).on('click', '.mo-add-new-integration', add_new_integration);
             $(document).on('click', '.mo-integration-delete', this.remove_integration);
@@ -204,7 +203,13 @@
                 // hide any shown connection service fields before showing that of selected one.
                 $('div[class*="Connect"]', parent).hide();
 
-                $('div[class*="' + selected_connection_service + '"]', parent).not('.mc-group-block').show();
+                // if interest selection is available, do not make group related fields hidden.
+                if ($('[name="MailChimpConnect_interests[]"]').length === 0) {
+                    $('div[class*="' + selected_connection_service + '"]', parent).not('.mc-group-block').show();
+                }
+                else {
+                    $('div[class*="' + selected_connection_service + '"]', parent).show();
+                }
             }
             else {
                 $('div[class*="Connect"]', parent).hide();
@@ -233,7 +238,7 @@
 
         remove_spinner: function (parent) {
             $('.mo-spinner.fetch-email-list', parent).remove();
-        },
+        }
     });
 
 })(jQuery);
