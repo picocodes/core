@@ -94,7 +94,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         <?php
     }
 
-    public function text_field($index, $name, $class = '', $label = '', $description = '', $type = 'text')
+    public function text_field($index, $name, $class = '', $label = '', $description = '', $placeholder = '', $type = 'text')
     {
         $type = empty($type) ? 'text' : $type;
 
@@ -116,6 +116,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
                 id="<?php echo $random_id; ?>"
                 type="<?php echo esc_attr($type); ?>"
                 name="<?php echo $name; ?>"
+                placeholder="<?php echo $placeholder; ?>"
                 value="<?php echo esc_attr($saved_value); ?>"
         />
         <?php
@@ -294,6 +295,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
                         @$control_arg['class'],
                         @$control_arg['label'],
                         @$control_arg['description'],
+                        @$control_arg['placeholder'],
                         @$control_arg['type']
                     );
                     break;
@@ -344,7 +346,15 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
                     );
                     break;
                 case 'custom_content':
-                    echo $control_arg['content'];
+                    $content = $control_arg['content'];
+                    if (!empty($control_arg['name'])) {
+                        $name = esc_attr($control_arg['name']);
+                        echo "<div class=\"$name mo-integration-block\">";
+                        echo $content;
+                        echo '</div>';
+                    } else {
+                        echo $content;
+                    }
                     break;
             }
         }
