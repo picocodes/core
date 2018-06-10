@@ -12,6 +12,7 @@
                 $('.mo-integration-widget').each(function () {
                     var parent = $(this);
                     _this.color_picker_init();
+                    _this.chosen_select_init();
                     _this.toggle_connect_service_connected_fields(parent);
                     _this.toggle_connect_service_email_list_field(parent);
                 });
@@ -70,6 +71,9 @@
 
                 old_data[index][item_name] = _.uniq(old_data[index][item_name]);
             }
+            else if (this.tagName === 'SELECT' && $(this).hasClass('mailoptin-integration-chosen')) {
+                old_data[index][field_name] = $(this).val();
+            }
             else {
                 old_data[index][field_name] = field_value;
             }
@@ -114,6 +118,12 @@
                 clear: function () {
                     $(this).val('').change();
                 }
+            });
+        },
+
+        chosen_select_init: function () {
+            $('.mailoptin-integration-chosen').chosen({
+                width: "100%"
             });
         },
 

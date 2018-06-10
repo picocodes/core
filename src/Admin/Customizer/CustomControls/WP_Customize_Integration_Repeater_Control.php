@@ -155,6 +155,45 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         echo '</div>';
     }
 
+    public function chosen_select_field($index, $name, $choices, $class = '', $label = '', $description = '')
+    {
+        $default = isset($this->default_values[$name]) ? $this->default_values[$name] : '';
+        $saved_value = isset($this->saved_values[$index][$name]) ? $this->saved_values[$index][$name] : $default;
+
+        echo "<div class=\"$name mo-integration-block{$class}\">";
+        ?>
+        <label>
+            <?php if (!empty($label)) : ?>
+                <span class="customize-control-title"><?php echo esc_html($label); ?></span>
+            <?php endif; ?>
+            <select class="mo-optin-integration-field mailoptin-integration-chosen" name="<?php echo $name ?>" multiple>
+                <?php
+                foreach ($choices as $key => $value) {
+                    if (is_array($value)) {
+                        echo "<optgroup label='$key'>";
+                        foreach ($value as $key2 => $value2) {
+                            echo '<option value="' . esc_attr($key2) . '"' . $this->_selected($key2, $saved_value) . '>' . $value2 . '</option>';
+                        }
+                        echo "</optgroup>";
+                    } else {
+                        echo '<option value="' . esc_attr($key) . '"' . $this->_selected($key, $saved_value) . '>' . $value . '</option>';
+                    }
+                }
+                ?>
+            </select>
+        </label>
+
+        <?php if (!empty($description)) : ?>
+        <span class="description customize-control-description"><?php echo $description; ?></span>
+    <?php endif;
+        echo '</div>';
+    }
+
+    protected function _selected($key, $saved_values)
+    {
+        return in_array($key, (array)$saved_values) ? 'selected=selected' : null;
+    }
+
     public function mc_group_select($index, $name, $choices, $class = '')
     {
         $saved_value = isset($this->saved_values[$index][$name]) ? $this->saved_values[$index][$name] : $this->default_values[$name];
@@ -301,6 +340,16 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
                     break;
                 case 'select':
                     $this->select_field(
+                        $index,
+                        @$control_arg['name'],
+                        @$control_arg['choices'],
+                        @$control_arg['class'],
+                        @$control_arg['label'],
+                        @$control_arg['description']
+                    );
+                    break;
+                case 'chosen_select':
+                    $this->chosen_select_field(
                         $index,
                         @$control_arg['name'],
                         @$control_arg['choices'],
