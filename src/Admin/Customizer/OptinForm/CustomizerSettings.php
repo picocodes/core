@@ -464,7 +464,7 @@ class CustomizerSettings extends AbstractCustomizer
                     'transport' => 'postMessage',
                 ),
                 'integrations' => array(
-                    'default' => $this->customizer_defaults['integrations'],
+                    'default' => '',
                     'type' => 'option',
                     'transport' => 'postMessage',
                 ),

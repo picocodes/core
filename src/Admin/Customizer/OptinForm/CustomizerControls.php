@@ -964,7 +964,7 @@ class CustomizerControls
                     apply_filters('mo_optin_form_customizer_integrations_args', array(
                             'section' => $this->customizerClassInstance->integration_section_id,
                             'settings' => $this->option_prefix . '[integrations]',
-                            'option_prefix' => $this->option_prefix,
+                            'default_values' => (new AbstractCustomizer($this->optin_campaign_id))->customizer_defaults['integrations'],
                             'customizerClassInstance' => $this->customizerClassInstance,
                             'optin_campaign_id' => $this->optin_campaign_id,
                             'priority' => 15

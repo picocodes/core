@@ -3,14 +3,13 @@
 namespace MailOptin\Core\Admin\Customizer\CustomControls;
 
 use MailOptin\Core\Repositories\ConnectionsRepository;
-use MailOptin\Core\Repositories\OptinCampaignsRepository;
 use WP_Customize_Control;
 
 class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 {
     public $type = 'mailoptin-integration';
 
-    public $option_prefix;
+    public $default_values;
 
     public $optin_campaign_id;
 
@@ -18,18 +17,13 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
     public $saved_values;
 
-    public $default_values;
-
-
     public function __construct($manager, $id, $args = array())
     {
         parent::__construct($manager, $id, $args);
 
-        $this->default_values = $this->setting->default;
-
         $saved_values = $this->value();
 
-        if (!empty($saved_values)) {
+        if (!empty($saved_values) && is_string($saved_values)) {
             $this->saved_values = json_decode($saved_values, true);
         }
     }
@@ -98,7 +92,8 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
     {
         $type = empty($type) ? 'text' : $type;
 
-        $saved_value = isset($this->saved_values[$index][$name]) ? $this->saved_values[$index][$name] : $this->default_values[$name];
+        $default = isset($this->default_values[$name]) ? $this->default_values[$name] : '';
+        $saved_value = isset($this->saved_values[$index][$name]) ? $this->saved_values[$index][$name] : $default;
 
         if (!empty($class)) {
             $class = " $class";
@@ -196,7 +191,8 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
     public function mc_group_select($index, $name, $choices, $class = '')
     {
-        $saved_value = isset($this->saved_values[$index][$name]) ? $this->saved_values[$index][$name] : $this->default_values[$name];
+        $default = isset($this->default_values[$name]) ? $this->default_values[$name] : '';
+        $saved_value = isset($this->saved_values[$index][$name]) ? $this->saved_values[$index][$name] : $default;
 
         if (!empty($class)) {
             $class = " $class";
@@ -230,7 +226,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
     public function color_field($index, $name, $class = '', $label = '', $description = '')
     {
-        $default = $this->default_values[$name];
+        $default = isset($this->default_values[$name]) ? $this->default_values[$name] : '';
         $saved_value = isset($this->saved_values[$index][$name]) ? $this->saved_values[$index][$name] : $default;
 
         $defaultValue = '#RRGGBB';
@@ -270,7 +266,8 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
     {
         $count = empty($count) ? 40 : $count;
 
-        $saved_value = isset($this->saved_values[$index][$name]) ? $this->saved_values[$index][$name] : $this->default_values[$name];
+        $default = isset($this->default_values[$name]) ? $this->default_values[$name] : '';
+        $saved_value = isset($this->saved_values[$index][$name]) ? $this->saved_values[$index][$name] : $default;
 
         if (!empty($class)) {
             $class = " $class";
@@ -301,7 +298,8 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
     public function toggle_field($index, $name, $class = '', $label = '', $description = '')
     {
-        $saved_value = isset($this->saved_values[$index][$name]) ? $this->saved_values[$index][$name] : $this->default_values[$name];
+        $default = isset($this->default_values[$name]) ? $this->default_values[$name] : '';
+        $saved_value = isset($this->saved_values[$index][$name]) ? $this->saved_values[$index][$name] : $default;
 
         if (!empty($class)) {
             $class = " $class";
@@ -458,13 +456,16 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         } else {
             $this->template();
         }
+
+        /* we normally would have added 'value="<?php $this->value();?>"
+        Apparently, it is automatically inserted by customizer*/
         ?>
         <div class="mo-integration__add_new">
             <button type="button" class="button mo-add-new-integration">
                 <?php _e('Add Another Integration', 'mailoptin') ?>
             </button>
         </div>
-        <input class="mo-integrations-save-field" id="<?= '_customize-input-' . $this->id; ?>" type="hidden" value="<?php esc_attr_e($this->value()); ?>" <?php $this->link(); ?>/>
+        <input class="mo-integrations-save-field" id="<?= '_customize-input-' . $this->id; ?>" type="hidden" <?php $this->link(); ?>/>
         <?php
     }
 }

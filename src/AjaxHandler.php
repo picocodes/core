@@ -656,6 +656,7 @@ class AjaxHandler
         $builder = new ConversionDataBuilder();
         $builder->payload = $payload = apply_filters('mailoptin_optin_subscription_request_body', sanitize_data($_REQUEST['optin_data']));
         $builder->optin_uuid = $optin_uuid = $payload['optin_uuid'];
+        $builder->optin_campaign_id = absint(OptinCampaignsRepository::get_optin_campaign_id_by_uuid($optin_uuid));
         $builder->email = $payload['email'];
         $builder->name = isset($payload['name']) ? $payload['name'] : '';
         $builder->user_agent = $payload['user_agent'];
@@ -667,34 +668,6 @@ class AjaxHandler
         wp_send_json($response);
     }
 
-    public static function send_optin_error_email($optin_campaign_id, $error_message)
-    {
-        $email = get_option('admin_email');
-
-        sprintf(
-            __("%s\n\n -- \n\nThis e-mail was sent by %s plugin on %s (%s)", 'mailoptin'), '[LEAD_DATA]', 'MailOptin', get_bloginfo('name'), site_url()
-        );
-
-        $optin_campaign_name = OptinCampaignsRepository::get_optin_campaign_name($optin_campaign_id);
-
-        $subject = apply_filters('mo_optin_form_email_error_email_subject', sprintf(__('Warning! "%s" Optin Campaign Is Not Working', 'mailoptin'), $optin_campaign_name), $optin_campaign_id, $error_message);
-
-        $message = apply_filters(
-            'mo_optin_form_email_error_email_message',
-            sprintf(
-                __('The optin campaign "%s" is failing to convert leads due to the following error "%s". %6$s -- %6$sThis e-mail was sent by %s plugin on %s (%s)', 'mailoptin'),
-                $optin_campaign_name,
-                $error_message,
-                'MailOptin',
-                get_bloginfo('name'),
-                site_url(),
-                "\r\n\n"
-            )
-        );
-
-        @wp_mail($email, $subject, $message);
-    }
-
     /**
      * Accept wide range of optin conversion data and save the lead.
      *
@@ -703,7 +676,7 @@ class AjaxHandler
      */
     public static function do_optin_conversion(ConversionDataBuilder $conversion_data)
     {
-        $optin_campaign_id = absint(OptinCampaignsRepository::get_optin_campaign_id_by_uuid($conversion_data->optin_uuid));
+        $optin_campaign_id = $conversion_data->optin_campaign_id;
 
         if (!is_email($conversion_data->email)) {
             return AbstractConnect::ajax_failure(
@@ -726,7 +699,7 @@ class AjaxHandler
 
         // flag to stop subscription if number of optin subscriber limit is exceeded or reached.
         if (!defined('MAILOPTIN_DETACH_LIBSODIUM') && OptinConversionsRepository::month_conversion_count() >= MO_LITE_OPTIN_CONVERSION_LIMIT) {
-            self::send_optin_error_email($optin_campaign_id, 'mo_subscription_limit_exceeded_error');
+            AbstractConnect::send_optin_error_email($optin_campaign_id, 'mo_subscription_limit_exceeded_error');
             return AbstractConnect::ajax_failure(
                 apply_filters('mo_subscription_limit_exceeded_error', __('You cannot be added to our email list at this time. Please try again later.', 'mailoptin'))
             );
@@ -734,11 +707,7 @@ class AjaxHandler
 
         $optin_campaign_type = isset($conversion_data->optin_campaign_type) ? $conversion_data->optin_campaign_type : OptinCampaignsRepository::get_optin_campaign_type($optin_campaign_id);
 
-        $lead_bank_only = OptinCampaignsRepository::get_customizer_value($optin_campaign_id, 'lead_bank_only');
-
-        $connection_service = isset($conversion_data->connection_service) ? $conversion_data->connection_service : OptinCampaignsRepository::get_customizer_value($optin_campaign_id, 'connection_service');
-
-        $connection_email_list = isset($conversion_data->connection_email_list) ? $conversion_data->connection_email_list : OptinCampaignsRepository::get_customizer_value($optin_campaign_id, 'connection_email_list');
+        $lead_bank_only = OptinCampaignsRepository::get_customizer_value($optin_campaign_id, 'lead_bank_only', false);
 
         $lead_data = [
             'optin_campaign_id' => $optin_campaign_id,
@@ -767,6 +736,78 @@ class AjaxHandler
             return AbstractConnect::ajax_success();
         }
 
+        $response = AbstractConnect::ajax_failure();
+
+        // we are not checking if $connection_email_list is set because it can be null when supplied by elementor connection
+        // for esp such as convertfox.
+        $connection_service = isset($conversion_data->connection_service) ? $conversion_data->connection_service : '';
+
+        if (!empty($connection_service)) {
+            $connection_email_list = isset($conversion_data->connection_email_list) ? $conversion_data->connection_email_list : '';
+            $response = self::add_lead_to_connection($connection_service, $connection_email_list, $conversion_data);
+            if (AbstractConnect::is_ajax_success($response)) {
+                self::track_conversion($optin_campaign_id, $lead_data);
+            }
+
+            return $response;
+        }
+
+        $integrations = json_decode(
+            OptinCampaignsRepository::get_customizer_value($optin_campaign_id, 'integrations', []),
+            true
+        );
+
+        $responses = [];
+        if (is_array($integrations) && !empty($integrations)) {
+            foreach ($integrations as $integration) {
+                $conversion_data->payload['integration_data'] = $integration;
+                $responses[] = self::add_lead_to_connection(
+                    $integration['connection_service'],
+                    isset($integration['connection_email_list']) ? $integration['connection_email_list'] : '',
+                    $conversion_data
+                );
+            }
+        }
+
+        var_dump($responses);
+
+        // if we get here, it means we have multiple integration tied to the optin campaign
+        $is_any_success = false;
+        foreach ($responses as $response) {
+            if (AbstractConnect::is_ajax_success($response)) {
+                $is_any_success = true;
+                break;
+            }
+        }
+
+        if ($is_any_success) {
+            self::track_conversion($optin_campaign_id, $lead_data);
+            return AbstractConnect::ajax_success();
+        }
+
+        // if we get here, it means all integration responses failed. so return the first errpr message
+        // which is a generic "There was an error saving your contact. Please try again." error.
+        return $responses[0];
+    }
+
+    /**
+     * Record optin campaign conversion
+     *
+     * @param int $optin_campaign_id
+     * @param mixed $lead_data
+     */
+    public static function track_conversion($optin_campaign_id, $lead_data)
+    {
+        // record optin campaign conversion.
+        (new OptinCampaignStat($optin_campaign_id))->save('conversion');
+
+        do_action('mailoptin_track_conversions', $lead_data, $optin_campaign_id);
+    }
+
+    public static function add_lead_to_connection($connection_service, $connection_email_list, $conversion_data)
+    {
+        $optin_campaign_id = $conversion_data->optin_campaign_id;
+
         $connection_fqn_class = ConnectionFactory::get_fqn_class($connection_service);
 
         // !$lead_bank_only ensures error is not thrown if lead_bank_only is checked or true.
@@ -774,7 +815,7 @@ class AjaxHandler
             // useful for service such as convertfox and in future customer.io that doesnt require an email list to be specified.
             (!in_array('non_email_list_support', $connection_fqn_class::features_support($connection_service)) && empty($connection_email_list))
         ) {
-            self::send_optin_error_email($optin_campaign_id, 'No email provider or list has been set for this optin.');
+            AbstractConnect::send_optin_error_email($optin_campaign_id, 'No email provider or list has been set for this optin.');
             return AbstractConnect::ajax_failure(__('No email provider or list has been set for this optin. Please try again', 'mailoptin'));
         }
 
@@ -790,15 +831,6 @@ class AjaxHandler
         $response = $instance->subscribe($conversion_data->email, $conversion_data->name, $connection_email_list, $extras);
 
         do_action_ref_array('mailoptin_after_optin_subscription', $extras);
-
-        if ($response['success'] !== true) {
-            self::send_optin_error_email($optin_campaign_id, $response['message']);
-        } else {
-            // record optin campaign conversion.
-            (new OptinCampaignStat($optin_campaign_id))->save('conversion');
-
-            do_action('mailoptin_track_conversions', $lead_data, $optin_campaign_id);
-        }
 
         return $response;
     }

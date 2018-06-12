@@ -4,6 +4,7 @@ namespace MailOptin\Core\Connections;
 
 use MailOptin\Core\EmailCampaigns\TemplateTrait;
 use MailOptin\Core\Repositories\EmailCampaignRepository;
+use MailOptin\Core\Repositories\OptinCampaignsRepository;
 
 abstract class AbstractConnect
 {
@@ -66,6 +67,17 @@ abstract class AbstractConnect
     }
 
     /**
+     * Helper to check if ajax response is successful.
+     *
+     * @param $response
+     * @return bool
+     */
+    public static function is_ajax_success($response)
+    {
+        return isset($response['success']) && $response['success'] === true;
+    }
+
+    /**
      * Helper to return success error.
      *
      * @return array
@@ -106,7 +118,7 @@ abstract class AbstractConnect
      *
      * @return array
      */
-    public static function ajax_failure($error)
+    public static function ajax_failure($error = '')
     {
         return ['success' => false, 'message' => $error];
     }
@@ -143,10 +155,11 @@ abstract class AbstractConnect
      *
      * @param string $message error message
      * @param string $filename log file name.
+     * @param int|null $optin_campaign_id
      *
      * @return bool
      */
-    public static function save_optin_error_log($message, $filename = 'error')
+    public static function save_optin_error_log($message, $filename = 'error', $optin_campaign_id = null)
     {
         $error_log_folder = MAILOPTIN_OPTIN_ERROR_LOG;
 
@@ -155,7 +168,41 @@ abstract class AbstractConnect
             mkdir($error_log_folder, 0755);
         }
 
-        return error_log($message . "\r\n", 3, "{$error_log_folder}{$filename}.log");
+        $response = error_log($message . "\r\n", 3, "{$error_log_folder}{$filename}.log");
+
+        self::send_optin_error_email($optin_campaign_id, $message);
+
+        return $response;
+    }
+
+    public static function send_optin_error_email($optin_campaign_id, $error_message)
+    {
+        if (!isset($optin_campaign_id, $error_message)) return;
+
+        $email = get_option('admin_email');
+
+        sprintf(
+            __("%s\n\n -- \n\nThis e-mail was sent by %s plugin on %s (%s)", 'mailoptin'), '[LEAD_DATA]', 'MailOptin', get_bloginfo('name'), site_url()
+        );
+
+        $optin_campaign_name = OptinCampaignsRepository::get_optin_campaign_name($optin_campaign_id);
+
+        $subject = apply_filters('mo_optin_form_email_error_email_subject', sprintf(__('Warning! "%s" Optin Campaign Is Not Working', 'mailoptin'), $optin_campaign_name), $optin_campaign_id, $error_message);
+
+        $message = apply_filters(
+            'mo_optin_form_email_error_email_message',
+            sprintf(
+                __('The optin campaign "%s" is failing to convert leads due to the following error "%s". %6$s -- %6$sThis e-mail was sent by %s plugin on %s (%s)', 'mailoptin'),
+                $optin_campaign_name,
+                $error_message,
+                'MailOptin',
+                get_bloginfo('name'),
+                site_url(),
+                "\r\n\n"
+            )
+        );
+
+        @wp_mail($email, $subject, $message);
     }
 
     /**

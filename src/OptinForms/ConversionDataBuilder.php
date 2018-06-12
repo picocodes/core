@@ -6,6 +6,7 @@ class ConversionDataBuilder
 {
     public $payload;
     public $optin_uuid;
+    public $optin_campaign_id;
     public $optin_campaign_type;
     public $email;
     public $name;
