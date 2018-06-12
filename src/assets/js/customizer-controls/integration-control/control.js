@@ -20,7 +20,12 @@
 
             var add_new_integration = function (e) {
                 e.preventDefault();
-                var index = $('.mo-integration-widget').eq(-1).data('integration-index') + 1;
+                var index = 0;
+                var preceding_index = $('.mo-integration-widget').eq(-1).data('integration-index');
+                if (typeof preceding_index === 'number' && isNaN(preceding_index) === false) {
+                    index = preceding_index + 1;
+                }
+
                 var template = wp.template('mo-integration-js-template');
                 $(template()).insertBefore('.mo-integration__add_new').addClass('mo-integration-widget-expanded').attr('data-integration-index', index);
                 contextual_display_init();
@@ -91,6 +96,10 @@
 
         remove_integration: function (e) {
             e.preventDefault();
+            var cache = $('.mo-integration-widget');
+            var integrations_count = cache.length;
+            if (integrations_count <= 1) return;
+
             var parent = $(this).parents('.mo-integration-widget');
             parent.slideUp(400, function () {
                 $(this).remove();

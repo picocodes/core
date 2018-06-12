@@ -407,7 +407,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         }
     }
 
-    public function template($index = '')
+    public function template($index = 0)
     {
         $email_providers = ConnectionsRepository::get_connections();
 

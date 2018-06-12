@@ -769,8 +769,6 @@ class AjaxHandler
             }
         }
 
-        var_dump($responses);
-
         // if we get here, it means we have multiple integration tied to the optin campaign
         $is_any_success = false;
         foreach ($responses as $response) {
