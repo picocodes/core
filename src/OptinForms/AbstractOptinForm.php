@@ -303,6 +303,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         $global_css .= "div#{$optin_css_id}_container #mo-acceptance-checkbox {background-color: #fff;line-height: 0;border: 1px solid #bbb;width: 16px;min-width: 16px;height: 16px;margin: 0 5px 0 0 !important;outline: 0;text-align: center;vertical-align: middle;clear: none;cursor: pointer;}";
         $global_css .= "div#{$optin_css_id}_container .mo-acceptance-label {cursor:pointer}";
         $global_css .= "div#{$optin_css_id}_container div#{$optin_css_id} p {padding:0px !important;margin:0px !important}";
+        $global_css .= "div#{$optin_campaign_uuid}.mo-cta-button-flag .mo-optin-form-note .mo-acceptance-label {display:none;}";
 
         if ($this->optin_campaign_type == 'bar') {
             $global_css .= "div#$optin_campaign_uuid.mo-optin-form-bar-top {top: 0;position: absolute;}";
@@ -405,7 +406,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         $optin_campaign_uuid = $this->optin_campaign_uuid;
         $optin_form = '';
         $name_email_class_indicator = $this->get_customizer_value('hide_name_field') === true ? 'mo-has-email' : 'mo-has-name-email';
-        $display_only_button_class_indicator = $this->get_customizer_value('display_only_button') === true ? ' mo-cta-button-display' : '';
+        $display_only_button_class_indicator = $this->get_customizer_value('display_only_button') === true ? ' mo-cta-button-display mo-cta-button-flag' : '';
         // set optin to display:none when schedule is active then allow mailoptinjs to decide whether to show it or not.
         $is_hidden_style = $this->is_schedule_display_rule_active() || $this->is_adblock_rule_active() || $this->is_referral_detection_rule_active() || $this->is_newvsreturn_rule_active() || $this->is_x_page_views_rule_active() ? 'display: none' : '';
 

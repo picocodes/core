@@ -278,7 +278,7 @@
             $('.mo-optin-form-cta-wrapper').toggle(to);
             $('.mo-mailchimp-interest-container').toggle(!to);
             // add the flag indicator when CTA button is active
-            $('.moOptinForm').toggleClass('mo-cta-button-display', to);
+            $('.moOptinForm').toggleClass('mo-cta-button-display', to).toggleClass('mo-cta-button-flag', to);
         });
     });
 
