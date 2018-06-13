@@ -9,7 +9,7 @@ notifications:
 
 branches:
   only:
-    - master
+    - /.*/
 
 cache:
   directories:

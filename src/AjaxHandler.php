@@ -736,8 +736,6 @@ class AjaxHandler
             return AbstractConnect::ajax_success();
         }
 
-        $response = AbstractConnect::ajax_failure();
-
         // we are not checking if $connection_email_list is set because it can be null when supplied by elementor connection
         // for esp such as convertfox.
         $connection_service = isset($conversion_data->connection_service) ? $conversion_data->connection_service : '';
