@@ -272,7 +272,7 @@ class Customizer
             [
                 'selector' => '.mo-optin-form-cta-button',
                 'type' => 'control',
-                'value' => 'input[type="submit].cta_button_action'
+                'value' => 'display_only_button'
             ],
             [
                 'selector' => '.rescript_miniHeader',
