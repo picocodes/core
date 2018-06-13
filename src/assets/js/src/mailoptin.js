@@ -139,7 +139,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                     // handle CTA button click if activated
                     if (self.is_defined_not_empty(optin_js_config.cta_display) && optin_js_config.cta_display === true && self.is_defined_not_empty(optin_js_config.cta_action)) {
                         // if cta action is to navigate
-                        $('#' + $optin_css_id + '_cta_button').on('click', function (e) {
+                        $(document).on('click', '#' + $optin_css_id + '_cta_button', function (e) {
                             e.preventDefault();
                             var optin_container = $(this).parents('.moOptinForm');
 
@@ -155,6 +155,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                                 cache.find('.mo-optin-form-cta-button, .mo-optin-form-cta-wrapper').hide();
                                 cache.find('.mo-optin-fields-wrapper').show();
                                 cache.find('.mo-optin-form-submit-button').show();
+                                $('#' + $optin_uuid).removeClass('mo-cta-button-flag');
                             }
 
                             else if ($.inArray(optin_js_config.cta_action, ['close_optin', 'close_optin_reload_page'] !== -1)) {
