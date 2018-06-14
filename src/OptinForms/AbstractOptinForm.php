@@ -303,6 +303,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         $global_css .= "div#{$optin_css_id}_container #mo-acceptance-checkbox {background-color: #fff;line-height: 0;border: 1px solid #bbb;width: 16px;min-width: 16px;height: 16px;margin: 0 5px 0 0 !important;outline: 0;text-align: center;vertical-align: middle;clear: none;cursor: pointer;}";
         $global_css .= "div#{$optin_css_id}_container .mo-acceptance-label {cursor:pointer}";
         $global_css .= "div#{$optin_css_id}_container div#{$optin_css_id} p {padding:0px !important;margin:0px !important}";
+        $global_css .= "div#{$optin_css_id} .mo-optin-form-note label.mo-acceptance-label {color:inherit;font-weight: normal;margin: 0;padding:0;";
         $global_css .= "div#{$optin_campaign_uuid}.mo-cta-button-flag .mo-optin-form-note .mo-acceptance-label {display:none;}";
 
         if ($this->optin_campaign_type == 'bar') {

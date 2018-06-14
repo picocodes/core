@@ -2,6 +2,7 @@
 
 namespace MailOptin\Core\Connections;
 
+use MailOptin\Core\Admin\Customizer\OptinForm\AbstractCustomizer;
 use MailOptin\Core\EmailCampaigns\TemplateTrait;
 use MailOptin\Core\Repositories\EmailCampaignRepository;
 use MailOptin\Core\Repositories\OptinCampaignsRepository;
@@ -16,9 +17,55 @@ abstract class AbstractConnect
     const OTHER_TYPE = 'other';
     const ANALYTICS_TYPE = 'analytics';
 
+    public $extras = [];
+
     public function __construct()
     {
         add_action('customize_controls_print_footer_scripts', [$this, 'js_script']);
+    }
+
+    public function get_integration_data($data_key)
+    {
+        $optin_campaign_id = absint($this->extras['optin_campaign_id']);
+        $defaults = (new AbstractCustomizer($optin_campaign_id))->customizer_defaults['integrations'];
+
+        $data = $defaults[$data_key];
+        if (isset($this->extras['integration_data'][$data_key])) {
+            $data = $this->extras['integration_data'][$data_key];
+        }
+
+        return $data;
+    }
+
+    public static function is_boolean($maybe_bool)
+    {
+        if (is_bool($maybe_bool)) {
+            return true;
+        }
+
+        if (is_string($maybe_bool)) {
+            $maybe_bool = strtolower($maybe_bool);
+
+            $valid_boolean_values = array(
+                'false',
+                'true',
+                '0',
+                '1',
+            );
+
+            return in_array($maybe_bool, $valid_boolean_values, true);
+        }
+
+        if (is_int($maybe_bool)) {
+            return in_array($maybe_bool, array(0, 1), true);
+        }
+
+        return false;
+    }
+
+    public function data_filter($value)
+    {
+        return self::is_boolean($value) || is_int($value) || !empty($value);
     }
 
     /**
