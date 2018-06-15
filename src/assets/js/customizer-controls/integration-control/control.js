@@ -1,4 +1,4 @@
-(function ($) {
+(function (api, $) {
     wp.customize.controlConstructor["mailoptin-integration"] = wp.customize.Control.extend({
 
         ready: function () {
@@ -64,6 +64,17 @@
             // shim for single checkbox
             if ($(this).attr('type') === 'checkbox' && field_name.indexOf('[]') === -1) {
                 old_data[index][field_name] = this.checked;
+            }
+            else if ($(this).hasClass('mo_mc_interest') && $(this).attr('type') === 'checkbox' && field_name.indexOf('[]') !== -1) {
+                var item_name = field_name.replace('[]', '');
+                if (typeof old_data[index][item_name] === 'undefined') {
+                    old_data[index][item_name] = {};
+                    old_data[index][item_name][field_value] = $(this).next('.mo_mc_interest_label').text();
+                } else {
+                    old_data[index][item_name][field_value] = $(this).next('.mo_mc_interest_label').text();
+                }
+
+                api.previewer.refresh();
             }
             else if ($(this).attr('type') === 'checkbox' && field_name.indexOf('[]') !== -1) {
                 var item_name = field_name.replace('[]', '');
@@ -274,5 +285,5 @@
         }
     });
 
-})(jQuery);
+})(wp.customize, jQuery);
 

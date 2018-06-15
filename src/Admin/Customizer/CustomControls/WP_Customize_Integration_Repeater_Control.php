@@ -123,9 +123,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         $default = isset($this->default_values[$name]) ? $this->default_values[$name] : '';
         $saved_value = isset($this->saved_values[$index][$name]) ? $this->saved_values[$index][$name] : $default;
 
-        if (empty($choices)) {
-            return;
-        }
+        if (empty($choices)) return;
 
         $random_id = wp_generate_password(5, false);
 
@@ -211,11 +209,11 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
                 <?php foreach ($choice['interests'] as $interests) : ?>
                     <div>
                         <label>
-                            <input type="checkbox" class="mo_mc_interest" name="<?= $name; ?>[]" value="<?= $interests['id']; ?>" <?php if (is_array($saved_value) && in_array($interests['id'], $saved_value)) {
+                            <input type="checkbox" class="mo_mc_interest" name="<?= $name; ?>[]" value="<?= $interests['id']; ?>" <?php if (is_array($saved_value) && in_array($interests['id'], array_keys($saved_value))) {
                                 echo 'checked="checked"';
                             } ?>
                             >
-                            <?= $interests['name']; ?>
+                            <span class="mo_mc_interest_label"><?= $interests['name']; ?></span>
                         </label>
                     </div>
                 <?php endforeach; ?>
@@ -407,7 +405,11 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         }
     }
 
-    public function template($index = 0)
+    /**
+     * $index is high numeric value by default so new integration added wont have populated data from saved data.
+     * @param string $index
+     */
+    public function template($index = 9999999999999)
     {
         $email_providers = ConnectionsRepository::get_connections();
 

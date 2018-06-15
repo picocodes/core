@@ -24,14 +24,15 @@ abstract class AbstractConnect
         add_action('customize_controls_print_footer_scripts', [$this, 'js_script']);
     }
 
-    public function get_integration_data($data_key)
+    public function get_integration_data($data_key, $integration_data = [], $default = '')
     {
-        $optin_campaign_id = absint($this->extras['optin_campaign_id']);
+        $optin_campaign_id = isset($this->extras['optin_campaign_id']) ? absint($this->extras['optin_campaign_id']) : '';
         $defaults = (new AbstractCustomizer($optin_campaign_id))->customizer_defaults['integrations'];
 
-        $data = $defaults[$data_key];
-        if (isset($this->extras['integration_data'][$data_key])) {
-            $data = $this->extras['integration_data'][$data_key];
+        $data = !empty($default) ? $default : @$defaults[$data_key];
+        $bucket = is_array($integration_data) && !empty($integration_data) ? $integration_data : $this->extras['integration_data'];
+        if (isset($bucket[$data_key])) {
+            $data = $bucket[$data_key];
         }
 
         return $data;
