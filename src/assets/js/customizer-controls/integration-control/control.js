@@ -67,25 +67,34 @@
             }
             else if ($(this).hasClass('mo_mc_interest') && $(this).attr('type') === 'checkbox' && field_name.indexOf('[]') !== -1) {
                 var item_name = field_name.replace('[]', '');
-                if (typeof old_data[index][item_name] === 'undefined') {
-                    old_data[index][item_name] = {};
-                    old_data[index][item_name][field_value] = $(this).next('.mo_mc_interest_label').text();
-                } else {
-                    old_data[index][item_name][field_value] = $(this).next('.mo_mc_interest_label').text();
+                if (this.checked === false) {
+                    delete old_data[index][item_name][field_value];
                 }
-
-                api.previewer.refresh();
+                else {
+                    if (typeof old_data[index][item_name] === 'undefined') {
+                        old_data[index][item_name] = {};
+                        old_data[index][item_name][field_value] = $(this).next('.mo_mc_interest_label').text();
+                    } else {
+                        old_data[index][item_name][field_value] = $(this).next('.mo_mc_interest_label').text();
+                    }
+                }
             }
             else if ($(this).attr('type') === 'checkbox' && field_name.indexOf('[]') !== -1) {
                 var item_name = field_name.replace('[]', '');
-                if (typeof old_data[index][item_name] === 'undefined') {
-                    old_data[index][item_name] = [];
-                    old_data[index][item_name].push(field_value);
-                } else {
-                    old_data[index][item_name].push(field_value);
+                if (this.checked === true) {
+                    old_data = _.without(old_data[index][item_name], field_value);
                 }
+                else {
 
-                old_data[index][item_name] = _.uniq(old_data[index][item_name]);
+                    if (typeof old_data[index][item_name] === 'undefined') {
+                        old_data[index][item_name] = [];
+                        old_data[index][item_name].push(field_value);
+                    } else {
+                        old_data[index][item_name].push(field_value);
+                    }
+
+                    old_data[index][item_name] = _.uniq(old_data[index][item_name]);
+                }
             }
             else if (this.tagName === 'SELECT' && $(this).hasClass('mailoptin-integration-chosen')) {
                 old_data[index][field_name] = $(this).val();
@@ -93,6 +102,9 @@
             else {
                 old_data[index][field_name] = field_value;
             }
+
+            // remove null and empty from array elements.
+            old_data = _.without(old_data, null, '');
 
             data_store.val(JSON.stringify(old_data)).trigger('change');
         },
@@ -120,7 +132,7 @@
                 // remove integration by index. see https://stackoverflow.com/a/1345122/2648410
                 old_data.splice(index, 1);
                 // remove null and empty from array elements.
-                _.without(old_data, null, '');
+                old_data = _.without(old_data, null, '');
                 // store the data
                 data_store.val(JSON.stringify(old_data)).trigger('change');
                 // re-order index
