@@ -453,7 +453,10 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
     {
         if (is_array($this->saved_values) && count($this->saved_values) > 0) {
             foreach ($this->saved_values as $index => $integration) {
-                $this->template($index);
+                // in place to ensure empty integration isn't displayed.
+                if (!empty($integration['connection_service'])) {
+                    $this->template($index);
+                }
             }
         } else {
             $this->template();
