@@ -260,9 +260,9 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         echo '</div>';
     }
 
-    public function font_fields($index, $name, $class = '', $label = '', $description = '', $count = 40)
+    public function font_fields($index, $name, $class = '', $label = '', $description = '', $count = 200)
     {
-        $count = empty($count) ? 40 : $count;
+        $count = empty($count) ? 200 : $count;
 
         $default = isset($this->default_values[$name]) ? $this->default_values[$name] : '';
         $saved_value = isset($this->saved_values[$index][$name]) ? $this->saved_values[$index][$name] : $default;
