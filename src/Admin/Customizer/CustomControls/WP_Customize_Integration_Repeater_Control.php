@@ -451,6 +451,13 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
     public function render_content()
     {
+        $collapse_text = __('Collapse all', 'mailoptin');
+        $expand_text = __('Expand all', 'mailoptin');
+        printf(
+            '<div class="mo-integration-expand-collapse-wrap"><a href="#" class="mo-expand-collapse-all expand" data-collapse-text="%1$s" data-expand-text="%2$s">%2$s</a></div>',
+            $collapse_text, $expand_text
+        );
+
         if (is_array($this->saved_values) && count($this->saved_values) > 0) {
             foreach ($this->saved_values as $index => $integration) {
                 // in place to ensure empty integration isn't displayed.

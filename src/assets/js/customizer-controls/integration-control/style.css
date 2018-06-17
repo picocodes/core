@@ -74,6 +74,13 @@
     cursor: pointer;
 }
 
+.mo-integration-expand-collapse-wrap {
+    text-align: right;
+    font-weight: normal;
+    font-size: 11px;
+    margin: 5px 0;
+}
+
 .mo-integration-widget-title h3 {
     line-height: 1;
     white-space: nowrap;

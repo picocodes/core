@@ -31,7 +31,35 @@
                 contextual_display_init();
             };
 
+
+            var toggleAllWidget = function (e) {
+                e.preventDefault();
+                var $button = $(this);
+
+                $('.mo-integration-widget').each(function () {
+                    var parent = $(this);
+                    if ($button.hasClass('mo-expand')) {
+                        $('.mo-integration-widget-content', parent).slideDown(function () {
+                            parent.addClass('mo-integration-widget-expanded');
+                        });
+
+                    } else {
+                        $('.mo-integration-widget-content', parent).slideUp(function () {
+                            parent.removeClass('mo-integration-widget-expanded');
+                        });
+                    }
+                });
+
+                if ($button.hasClass('mo-expand')) {
+                    $button.text($button.data('collapse-text')).removeClass('mo-expand').addClass('mo-collapse');
+                } else {
+                    $button.text($button.data('expand-text')).removeClass('mo-collapse').addClass('mo-expand');
+                }
+            };
+
+
             contextual_display_init();
+            $(document).on('click', '.mo-expand-collapse-all', toggleAllWidget);
             $(document).on('click', '.mo-integration-widget-action', this.toggleWidget);
             $(document).on('click', '.mo-add-new-integration', add_new_integration);
             $(document).on('click', '.mo-integration-delete', this.remove_integration);
