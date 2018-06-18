@@ -27,8 +27,13 @@
                 }
 
                 var template = wp.template('mo-integration-js-template');
-                $(template()).insertBefore('.mo-integration__add_new').addClass('mo-integration-widget-expanded').attr('data-integration-index', index);
+                // replace index placeholder with actual value.
+                var template_structure = template().replace(/{mo-integration-index}/g, index);
+                $(template_structure).insertBefore('.mo-integration__add_new').addClass('mo-integration-widget-expanded').attr('data-integration-index', index);
                 contextual_display_init();
+
+                // search and replace ID of fields
+                $(this).parents('.mo-integration-block').attr('data-integration-index', index);
             };
 
 

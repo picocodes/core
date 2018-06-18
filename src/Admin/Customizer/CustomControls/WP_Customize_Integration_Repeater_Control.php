@@ -92,6 +92,10 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
     {
         $type = empty($type) ? 'text' : $type;
 
+        if (!isset($index) || empty($index) || !array_key_exists($index, $this->saved_values)) {
+            $index = '{mo-integration-index}';
+        }
+
         $default = isset($this->default_values[$name]) ? $this->default_values[$name] : '';
         $saved_value = isset($this->saved_values[$index][$name]) ? $this->saved_values[$index][$name] : $default;
 
@@ -99,7 +103,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
             $class = " $class";
         }
 
-        $random_id = wp_generate_password(5, false);
+        $random_id = wp_generate_password(5, false) . '_' . $index;
         echo "<div class=\"$name mo-integration-block{$class}\">";
         if (!empty($label)) : ?>
             <label for="<?php echo $random_id; ?>" class="customize-control-title"><?php echo esc_html($label); ?></label>
@@ -120,12 +124,16 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
     public function select_field($index, $name, $choices, $class = '', $label = '', $description = '')
     {
+        if (!isset($index) || empty($index) || !array_key_exists($index, $this->saved_values)) {
+            $index = '{mo-integration-index}';
+        }
+
         $default = isset($this->default_values[$name]) ? $this->default_values[$name] : '';
         $saved_value = isset($this->saved_values[$index][$name]) ? $this->saved_values[$index][$name] : $default;
 
         if (empty($choices)) return;
 
-        $random_id = wp_generate_password(5, false);
+        $random_id = wp_generate_password(5, false) . '_' . $index;
 
         if (!empty($class)) {
             $class = " $class";
@@ -296,6 +304,10 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
     public function toggle_field($index, $name, $class = '', $label = '', $description = '')
     {
+        if (!isset($index) || empty($index) || !array_key_exists($index, $this->saved_values)) {
+            $index = '{mo-integration-index}';
+        }
+
         $default = isset($this->default_values[$name]) ? $this->default_values[$name] : '';
         $saved_value = isset($this->saved_values[$index][$name]) ? $this->saved_values[$index][$name] : $default;
 
@@ -303,10 +315,10 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
             $class = " $class";
         }
 
-        $random_id = wp_generate_password(5, false);
+        $random_id = wp_generate_password(5, false) . '_' . $index;
         ?>
     <div class="<?= $name; ?> mo-integration-block<?= $class; ?>">
-        <div style="display:flex;flex-direction: row;justify-content: flex-start;">
+        <div class="mo-integration-toggle-field" style="display:flex;flex-direction: row;justify-content: flex-start;">
             <span class="customize-control-title" style="flex: 2 0 0; vertical-align: middle;"><?php echo $label; ?></span>
             <input name="<?= $name; ?>" id="<?php echo $random_id ?>" type="checkbox" class="tgl tgl-light" value="<?php echo esc_attr($saved_value); ?>" <?php checked($saved_value); ?> />
             <label for="<?php echo $random_id ?>" class="tgl-btn"></label>
@@ -454,7 +466,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         $collapse_text = __('Collapse all', 'mailoptin');
         $expand_text = __('Expand all', 'mailoptin');
         printf(
-            '<div class="mo-integration-expand-collapse-wrap"><a href="#" class="mo-expand-collapse-all expand" data-collapse-text="%1$s" data-expand-text="%2$s">%2$s</a></div>',
+            '<div class="mo-integration-expand-collapse-wrap"><a href="#" class="mo-expand-collapse-all mo-expand" data-collapse-text="%1$s" data-expand-text="%2$s">%2$s</a></div>',
             $collapse_text, $expand_text
         );
 
