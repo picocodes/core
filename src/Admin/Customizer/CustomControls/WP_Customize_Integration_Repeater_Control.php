@@ -15,7 +15,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
     public $customizerClassInstance;
 
-    public $saved_values;
+    public $saved_values = [];
 
     public function __construct($manager, $id, $args = array())
     {
@@ -24,7 +24,10 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         $saved_values = $this->value();
 
         if (!empty($saved_values) && is_string($saved_values)) {
-            $this->saved_values = json_decode($saved_values, true);
+            $result = json_decode($saved_values, true);
+            if (is_array($result)) {
+                $this->saved_values = $result;
+            }
         }
     }
 

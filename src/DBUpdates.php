@@ -119,6 +119,43 @@ class DBUpdates
         }
     }
 
+    public function update_routine_6()
+    {
+        // migrate old integration settings to new one
+        $all_optin_settings = OptinCampaignsRepository::get_settings();
+
+        $new_integration_data = [];
+
+        foreach ($all_optin_settings as $optin_campaign_id => $setting) {
+            if ($optin_campaign_id !== 4) continue;
+
+            if (!isset($all_optin_settings[$optin_campaign_id]['connection_service'])) return;
+
+            $connection_service = $all_optin_settings[$optin_campaign_id]['connection_service'];
+            $new_integration_data[0]['connection_service'] = $connection_service;
+
+            if (isset($all_optin_settings[$optin_campaign_id]['connection_email_list'])) {
+                $connection_email_list = $all_optin_settings[$optin_campaign_id]['connection_email_list'];
+                $new_integration_data[0]['connection_email_list'] = $connection_email_list;
+            }
+
+            // migrate connection metadata
+            if (!is_array($all_optin_settings[$optin_campaign_id])) return;
+            foreach ($all_optin_settings[$optin_campaign_id] as $key => $value) {
+                if (strpos($key, $connection_service) !== false) {
+                    $new_integration_data[0][$key] = $value;
+                }
+            }
+
+            $all_optin_settings[$optin_campaign_id]['integrations'] = json_encode($new_integration_data);
+        }
+
+//        var_dump($new_integration_data, $all_optin_settings);
+//        exit;
+
+        OptinCampaignsRepository::updateSettings($all_optin_settings);
+    }
+
     /** Singleton poop */
     public static function get_instance()
     {
