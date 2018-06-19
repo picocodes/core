@@ -8,7 +8,7 @@ class DBUpdates
 {
     public static $instance;
 
-    const DB_VER = 5;
+    const DB_VER = 6;
 
     public function init_options()
     {
@@ -124,34 +124,38 @@ class DBUpdates
         // migrate old integration settings to new one
         $all_optin_settings = OptinCampaignsRepository::get_settings();
 
-        $new_integration_data = [];
+        foreach ($all_optin_settings as $optin_campaign_id => $settings) {
 
-        foreach ($all_optin_settings as $optin_campaign_id => $setting) {
-            if ($optin_campaign_id !== 4) continue;
+            $new_integration_data = [];
 
-            if (!isset($all_optin_settings[$optin_campaign_id]['connection_service'])) return;
+            if (!isset($all_optin_settings[$optin_campaign_id]['connection_service'])) continue;
 
             $connection_service = $all_optin_settings[$optin_campaign_id]['connection_service'];
             $new_integration_data[0]['connection_service'] = $connection_service;
+            unset($all_optin_settings[$optin_campaign_id]['connection_service']);
 
             if (isset($all_optin_settings[$optin_campaign_id]['connection_email_list'])) {
                 $connection_email_list = $all_optin_settings[$optin_campaign_id]['connection_email_list'];
                 $new_integration_data[0]['connection_email_list'] = $connection_email_list;
+                unset($all_optin_settings[$optin_campaign_id]['connection_email_list']);
             }
 
             // migrate connection metadata
-            if (!is_array($all_optin_settings[$optin_campaign_id])) return;
-            foreach ($all_optin_settings[$optin_campaign_id] as $key => $value) {
+            if (!is_array($all_optin_settings[$optin_campaign_id])) continue;
+            foreach ($settings as $key => $value) {
                 if (strpos($key, $connection_service) !== false) {
-                    $new_integration_data[0][$key] = $value;
+                    if ($key == 'MailChimpConnect_user_input_interests' || $key == 'MailChimpConnect_automatic_interests') {
+                        $new_integration_data[0]['MailChimpConnect_interests'] = $value;
+                    } else {
+                        $new_integration_data[0][$key] = $value;
+                    }
+
+                    unset($all_optin_settings[$optin_campaign_id][$key]);
                 }
             }
 
             $all_optin_settings[$optin_campaign_id]['integrations'] = json_encode($new_integration_data);
         }
-
-//        var_dump($new_integration_data, $all_optin_settings);
-//        exit;
 
         OptinCampaignsRepository::updateSettings($all_optin_settings);
     }

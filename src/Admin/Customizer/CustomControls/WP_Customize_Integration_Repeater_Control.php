@@ -95,7 +95,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
     {
         $type = empty($type) ? 'text' : $type;
 
-        if (!isset($index) || empty($index) || !array_key_exists($index, $this->saved_values)) {
+        if (!isset($index) || !array_key_exists($index, $this->saved_values)) {
             $index = '{mo-integration-index}';
         }
 
@@ -127,7 +127,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
     public function select_field($index, $name, $choices, $class = '', $label = '', $description = '')
     {
-        if (!isset($index) || empty($index) || !array_key_exists($index, $this->saved_values)) {
+        if (!isset($index) || !array_key_exists($index, $this->saved_values)) {
             $index = '{mo-integration-index}';
         }
 
@@ -307,7 +307,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
     public function toggle_field($index, $name, $class = '', $label = '', $description = '')
     {
-        if (!isset($index) || empty($index) || !array_key_exists($index, $this->saved_values)) {
+        if (!isset($index) || !array_key_exists($index, $this->saved_values)) {
             $index = '{mo-integration-index}';
         }
 
