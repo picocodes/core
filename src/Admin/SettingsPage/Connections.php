@@ -113,6 +113,9 @@ class Connections extends AbstractSettingsPage
     {
         do_action('mailoptin_before_connections_settings_page', MAILOPTIN_CONNECTIONS_DB_OPTION_NAME);
         $connection_args = apply_filters('mailoptin_connections_settings_page', array());
+        usort($connection_args, function ($a, $b) {
+            return strcmp($a["section_title"], $b["section_title"]);
+        });
         $nav_tabs = '';
         $tab_content_area = '';
         if (!empty($connection_args)) {
