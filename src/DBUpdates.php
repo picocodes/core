@@ -144,8 +144,10 @@ class DBUpdates
             if (!is_array($all_optin_settings[$optin_campaign_id])) continue;
             foreach ($settings as $key => $value) {
                 if (strpos($key, $connection_service) !== false) {
-                    if ($key == 'MailChimpConnect_user_input_interests' || $key == 'MailChimpConnect_automatic_interests') {
+                    if ($key == 'MailChimpConnect_user_input_interests') {
                         $new_integration_data[0]['MailChimpConnect_interests'] = $value;
+                    } elseif ($key == 'MailChimpConnect_automatic_interests') {
+                        $new_integration_data[0]['MailChimpConnect_interests'] = array_fill_keys($value, '');
                     } else {
                         $new_integration_data[0][$key] = $value;
                     }
