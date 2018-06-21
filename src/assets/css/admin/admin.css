@@ -89,6 +89,21 @@
     transform: rotate(5deg)
 }
 
+.mo-premium-flag {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 90px;
+    height: 81px;
+    background-image: url(../../images/premium-theme.png);
+    background-size: 90px 81px;
+    transform: rotate(70deg)
+}
+
+.mailoptin-optin-theme a {
+    text-decoration:none;
+}
+
 /* hide ajax_nonce hidden field containing nonce. musn't be displayed */
 tr#ajax_nonce_row {
     display: none

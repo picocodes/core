@@ -38,7 +38,7 @@ class AddOptinCampaign extends AbstractSettingsPage
         if (!empty($_GET['page']) && $_GET['page'] == MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_SLUG) : ?>
             <div class="mailoptin-optin-new-list mailoptin-optin-clear">
                 <h4><?php _e('Optin Campaign Title', 'mailoptin'); ?>
-                    <input type="text" name="mailoptin-optin-campaign" id="mailoptin-add-optin-campaign-title" placeholder="<?php _e('Enter name for your optin campaign...', 'profilepress')?>">
+                    <input type="text" name="mailoptin-optin-campaign" id="mailoptin-add-optin-campaign-title" placeholder="<?php _e('Enter name for your optin campaign...', 'profilepress') ?>">
                 </h4>
             </div>
             <div id="mailoptin-sub-bar">
@@ -87,42 +87,7 @@ class AddOptinCampaign extends AbstractSettingsPage
         $optin_type = 'lightbox';
 
         echo '<div class="mailoptin-optin-themes mailoptin-optin-clear">';
-        foreach (OptinThemesRepository::get_by_type('lightbox') as $optin_theme) {
-
-            $theme_name = $optin_theme['name'];
-            $theme_class = $optin_theme['optin_class'];
-            $screenshot = $optin_theme['screenshot'];
-            ?>
-            <div id="mailoptin-optin-theme-list" class="mailoptin-optin-theme mailoptin-optin-theme-<?php echo $theme_class; ?>" data-optin-theme="<?php echo $theme_class; ?>" data-optin-type="<?php echo $optin_type; ?>">
-                <div class="mailoptin-optin-theme-screenshot">
-                    <img src="<?php echo $screenshot; ?>" alt="<?php echo $theme_name; ?>">
-                </div>
-                <h3 class="mailoptin-optin-theme-name"><?php echo $theme_name; ?></h3>
-                <div class="mailoptin-optin-theme-actions">
-                    <a class="button button-primary mailoptin-theme-select"
-                       data-optin-theme="<?php echo $theme_class; ?>" data-optin-type="<?php echo $optin_type; ?>"
-                       title="<?php _e('Select this theme', 'mailoptin'); ?>">
-                        <?php _e('Select Theme', 'mailoptin'); ?>
-                    </a>
-                </div>
-            </div>
-            <?php
-        }
-
-        if (apply_filters('mailoptin_lite_upgrade_more_optin_themes', true)) {
-
-            if ($optin_type == 'bar') $optin_type = 'notification bar';
-            echo '<div style="cursor: pointer;float: left;margin: 0 4% 4% 0;position: relative;width: 26.6%;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">';
-            echo '<div class="mo-error-box" style="padding: 87px 10px;margin:0;">';
-            printf(
-                __('Upgrade to %s for more "%s" optin themes', 'mailoptin'),
-                '<a href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=get_more_optin_themes" target="_blank">MailOptin Premium</a>',
-                $optin_type
-            );
-            echo '</div>';
-            echo '</div>';
-        }
-
+        OptinThemesRepository::listing_display_template($optin_type);
         echo '</div>';
     }
 

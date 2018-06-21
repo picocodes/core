@@ -1,6 +1,7 @@
 (function ($) {
     $(document).ready(function () {
-        $(document.body).on('click', '.mailoptin-optin-theme', function (e) {
+        $(document.body).on('click', '.mailoptin-optin-theme.mo-allow-activate', function (e) {
+            e.preventDefault();
             var optin_campaign_title_obj = $('#mailoptin-add-optin-campaign-title');
             // remove input field error on change.
             optin_campaign_title_obj.change(function () {
