@@ -24,7 +24,7 @@
     }
 }
 
-.mo-optin-spinner {
+.mo-optin-form-container .mo-optin-spinner {
     border-radius: inherit;
     position: absolute;
     width: 100%;
@@ -36,7 +36,7 @@
     filter: alpha(opacity=80);
 }
 
-.mo-optin-success-close {
+.mo-optin-form-container .mo-optin-success-close {
     font-size: 32px !important;
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif !important;
     color: #282828 !important;
@@ -56,10 +56,10 @@
     box-shadow: none !important;
 }
 
-.mo-optin-success-msg {
+.mo-optin-form-container .mo-optin-form-wrapper .mo-optin-success-msg {
     font-size: 21px;
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-    color: #282828;
+    color: #282828 !important;
     font-weight: 300;
     text-align: center;
     margin: 0 auto;
@@ -74,7 +74,7 @@
     transform: translate(-50%, -50%);
 }
 
-.mo-optin-success-msg a {
+.mo-optin-form-container .mo-optin-form-wrapper .mo-optin-success-msg a {
     color: #0000EE;
     text-decoration: underline;
 }
