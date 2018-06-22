@@ -1,8 +1,8 @@
 <?php
 
-namespace MailOptin\Core\Admin\SettingsPage;
+namespace MailOptin\Core\Admin\SettingsPage\LiteToPremiumUpgrade;
 
-class LiteLicenseActivation
+class DoUpgrade
 {
     const slug = MAILOPTIN_LICENSE_SETTINGS_SLUG;
 
@@ -12,7 +12,7 @@ class LiteLicenseActivation
         add_action('plugins_loaded', function () {
             if (defined('MAILOPTIN_DETACH_LIBSODIUM')) return;
             add_action('admin_menu', array(__CLASS__, 'register_settings_page'));
-            add_action('admin_init', [$this, 'perform_upgrade']);
+            add_action('admin_post_mo_upgrade_premium', [$this, 'perform_upgrade']);
         }, 199);
     }
 
@@ -36,12 +36,10 @@ class LiteLicenseActivation
         ?>
         <div class="wrap">
         <h2><?php _e('MailOptin License', 'mailoptin'); ?></h2>
-        <!--	Output Settings error	-->
-        <?php settings_errors(); ?>
-        <?php ?>
         <div class="mo-banner"><?php _e('Upgrade to MailOptin Premium', 'mailoptin'); ?></div>
         <br/><br/><br/><br/>
-        <form method="post">
+        <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
+            <input type="hidden" name="action" value="mo_upgrade_premium">
             <table class="form-table">
                 <tbody>
                 <tr valign="top">
@@ -87,8 +85,11 @@ class LiteLicenseActivation
                 $error = __('Error fetching downloads. Please try again.', 'mailoptin');
             }
 
-            return add_settings_error(self::slug, 'activation_error', $error);
+            wp_die($error, $error, ['back_link' => true]);
         }
+
+        // save the license key at this point
+        update_option('mo_license_key', $license_key);
 
         $body = json_decode(wp_remote_retrieve_body($response), true);
 
@@ -112,18 +113,18 @@ class LiteLicenseActivation
         $plugin = 'mailoptin/mailoptin.php';
         $nonce = 'upgrade-plugin_' . $plugin;
         $url = 'update.php?action=upgrade-plugin&plugin=' . rawurlencode($plugin);
-        $upgrader_skin = new \Plugin_Upgrader_Skin(compact('title', 'nonce', 'url', 'plugin'));
+        $upgrader_skin = new UpgraderSkin(compact('title', 'nonce', 'url', 'plugin'));
         $upgrader = new \Plugin_Upgrader($upgrader_skin);
         $upgrader->upgrade($plugin);
         wp_die(
-            '', __('MailOptin Upgrade to Premiumzz', 'rocket'), [
+            '', __('MailOptin Upgrade to Premium', 'rocket'), [
                 'response' => 200,
             ]
         );
     }
 
     /**
-     * @return LiteLicenseActivation
+     * @return DoUpgrade
      */
     public static function get_instance()
     {
