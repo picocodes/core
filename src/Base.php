@@ -8,6 +8,7 @@ if (!defined('ABSPATH')) {
 
 use MailOptin\Core\Admin\AdminNotices;
 use MailOptin\Core\Admin\SettingsPage\ConversionExport;
+use MailOptin\Core\Admin\SettingsPage\LiteLicenseActivation;
 use MailOptin\Core\Admin\SettingsPage\PreviewCampaignLog;
 use MailOptin\Core\Admin\SettingsPage\ProUpgrade;
 use MailOptin\Core\Admin\SettingsPage\UsageTracking;
@@ -123,6 +124,7 @@ class Base
         AdminNotices::get_instance();
         ConversionExport::get_instance();
         ProUpgrade::get_instance();
+        LiteLicenseActivation::get_instance();
 
         do_action('mailoptin_admin_hooks');
     }
