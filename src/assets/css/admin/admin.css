@@ -939,3 +939,7 @@ form.mo-inline {
 .mo-upgrade-plan h1 {
     font-weight: bold
 }
+
+#adminmenu a[href="admin.php?page=mailoptin-premium-upgrade"] {
+    color: #ffa506 !important;
+}

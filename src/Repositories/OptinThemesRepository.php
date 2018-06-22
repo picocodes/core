@@ -295,6 +295,8 @@ class OptinThemesRepository extends AbstractRepository
     {
         $optin_designs = OptinThemesRepository::get_by_type($optin_type);
 
+        if (!defined('MAILOPTIN_DETACH_LIBSODIUM') && in_array($optin_type, ['bar', 'slidein'])) $optin_designs = [];
+
         if (empty($optin_designs)) {
             if ($optin_type == 'bar') $optin_type = 'notification bar';
             echo '<div class="mo-error-box" style="padding: 87px 10px;margin:0;">';
@@ -320,7 +322,7 @@ class OptinThemesRepository extends AbstractRepository
                 $url_target = $is_premium_theme_disllowed ? ' target="_blank"' : '';
                 ?>
                 <div id="mailoptin-optin-theme-list" class="mailoptin-optin-theme<?= $extra_class; ?> mailoptin-optin-theme-<?php echo $theme_class; ?>" data-optin-theme="<?php echo $theme_class; ?>" data-optin-type="<?php echo $optin_type; ?>">
-                    <a <?=$url_target;?> href="<?= $url; ?>">
+                    <a <?= $url_target; ?> href="<?= $url; ?>">
                         <div class="mailoptin-optin-theme-screenshot">
                             <img src="<?php echo $screenshot; ?>" alt="<?php echo $theme_name; ?>">
                         </div>
@@ -329,9 +331,9 @@ class OptinThemesRepository extends AbstractRepository
                         <?php endif; ?>
                         <h3 class="mailoptin-optin-theme-name"><?php echo $theme_name; ?></h3>
                         <div class="mailoptin-optin-theme-actions">
-                            <a <?=$url_target;?> href="<?= $url; ?>" class="button button-primary mailoptin-theme-select"
-                               data-optin-theme="<?php echo $theme_class; ?>" data-optin-type="<?php echo $optin_type; ?>"
-                               title="<?php _e('Select this theme', 'mailoptin'); ?>">
+                            <a <?= $url_target; ?> href="<?= $url; ?>" class="button button-primary mailoptin-theme-select"
+                                                   data-optin-theme="<?php echo $theme_class; ?>" data-optin-type="<?php echo $optin_type; ?>"
+                                                   title="<?php _e('Select this theme', 'mailoptin'); ?>">
                                 <?php _e('Select Theme', 'mailoptin'); ?>
                             </a>
                         </div>

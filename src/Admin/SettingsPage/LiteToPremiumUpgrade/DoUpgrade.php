@@ -4,8 +4,6 @@ namespace MailOptin\Core\Admin\SettingsPage\LiteToPremiumUpgrade;
 
 class DoUpgrade
 {
-    const slug = MAILOPTIN_LICENSE_SETTINGS_SLUG;
-
     public function __construct()
     {
         // plugins_loaded hook is used so it is shown as the last sub menu.
@@ -20,10 +18,10 @@ class DoUpgrade
     {
         add_submenu_page(
             MAILOPTIN_SETTINGS_SETTINGS_SLUG,
-            __('License', 'mailoptin') . ' - MailOptin',
-            __('License', 'mailoptin'),
+            __('Upgrade to Premium', 'mailoptin') . ' - MailOptin',
+            __('Enter License Key', 'mailoptin'),
             'manage_options',
-            self::slug,
+            'mailoptin-premium-upgrade',
             array(__CLASS__, 'license_page')
         );
     }
@@ -33,6 +31,7 @@ class DoUpgrade
      */
     public static function license_page()
     {
+        $url = 'https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=lite_to_pro_page';
         ?>
         <div class="wrap">
         <h2><?php _e('MailOptin License', 'mailoptin'); ?></h2>
@@ -44,11 +43,15 @@ class DoUpgrade
                 <tbody>
                 <tr valign="top">
                     <th scope="row" valign="top"></th>
-                    <td>
-                        <input id="mo_plugin_license_key" name="mo_license_key" type="text" class="regular-text" value=""/>
-                        <p class="description">
-                            <label class="description" for="mo_plugin_license_key"><?php _e('Enter your license key and click the submit button to upgrade MailOptin premium.', 'mailoptin'); ?></label>
+                    <td><p class="description">
+                            <label class="description" for="mo_plugin_license_key"><?php _e('Enter your purchase license key and submit to upgrade to MailOptin premium.', 'mailoptin'); ?></label>
                         </p>
+                        <p class="description">
+                            <?php printf(__('Don\'t have one, %sClick here%s to buy now!.', 'mailoptin'), "<a target=\"_blank\" href=\"$url\">", '</a>'); ?>
+                        </p>
+                        <br/>
+                        <input id="mo_plugin_license_key" name="mo_license_key" type="text" class="regular-text" placeholder="<?php _e('Enter License Key') ?>"/>
+
                     </td>
                 </tr>
                 <tr valign="top" id="license_Activate_th">
