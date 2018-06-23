@@ -22,7 +22,7 @@
      * @returns {boolean}
      */
     nt.isIntegrationSet = function () {
-        return document.querySelector("select[data-customize-setting-link*='connection_service']").value !== "";
+        return document.querySelector("select[name='connection_service']").value !== "";
     };
 
     nt.dismiss_ajax = function (notification) {
@@ -46,7 +46,7 @@
 
             var options = {
                 onclick: function () {
-                    nt.controlFocus('connection_service');
+                    nt.controlFocus('integrations');
                     nt.dismiss_ajax('integrationNotSet');
                 },
 
