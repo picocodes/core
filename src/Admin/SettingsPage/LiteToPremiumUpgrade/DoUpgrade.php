@@ -34,7 +34,6 @@ class DoUpgrade
         $url = 'https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=lite_to_pro_page';
         ?>
         <div class="wrap">
-        <h2><?php _e('MailOptin License', 'mailoptin'); ?></h2>
         <div class="mo-banner"><?php _e('Upgrade to MailOptin Premium', 'mailoptin'); ?></div>
         <br/><br/><br/><br/>
         <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
@@ -50,14 +49,13 @@ class DoUpgrade
                             <?php printf(__('Don\'t have one, %sClick here%s to buy now!.', 'mailoptin'), "<a target=\"_blank\" href=\"$url\">", '</a>'); ?>
                         </p>
                         <br/>
-                        <input id="mo_plugin_license_key" name="mo_license_key" type="text" class="regular-text" placeholder="<?php _e('Enter License Key') ?>"/>
-
+                        <input id="mo_plugin_license_key" name="mo_license_key" type="text" class="regular-text" placeholder="<?php _e('Enter License Key', 'mailoptin') ?>"/>
                     </td>
                 </tr>
                 <tr valign="top" id="license_Activate_th">
                     <th scope="row" valign="top"></th>
                     <td>
-                        <input type="submit" class="button-secondary" name="mo_activate_license" value="<?php _e('Click to Upgrade to MailOptin Premium'); ?>"/>
+                        <input type="submit" class="button-secondary" name="mo_activate_license" value="<?php _e('Click to Upgrade to MailOptin Premium', 'mailoptin'); ?>"/>
                     </td>
                 </tr>
                 </tbody>

@@ -65,12 +65,12 @@ function html_to_text($content)
  */
 function limit_text($text, $limit = 150)
 {
-    $limit = ! is_int($limit) || 0 === $limit ? 150 : $limit;
+    $limit = !is_int($limit) || 0 === $limit ? 150 : $limit;
 
     if (str_word_count($text, 0) > $limit) {
         $words = str_word_count($text, 2);
-        $pos   = array_keys($words);
-        $text  = substr($text, 0, $pos[$limit]) . apply_filters('maioptin_limit_text_ellipsis', '. . .');
+        $pos = array_keys($words);
+        $text = substr($text, 0, $pos[$limit]) . apply_filters('maioptin_limit_text_ellipsis', '. . .');
     }
 
     return $text;
@@ -177,11 +177,11 @@ function get_ip_address()
 {
     $ip = '127.0.0.1';
 
-    if ( ! empty($_SERVER['HTTP_CLIENT_IP'])) {
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
         $ip = $_SERVER['HTTP_CLIENT_IP'];
-    } elseif ( ! empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
         $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-    } elseif ( ! empty($_SERVER['REMOTE_ADDR'])) {
+    } elseif (!empty($_SERVER['REMOTE_ADDR'])) {
         $ip = $_SERVER['REMOTE_ADDR'];
     }
 
@@ -198,15 +198,16 @@ function get_ip_address()
  */
 function is_mailoptin_admin_page()
 {
-    $mo_admin_pages = array(
-        MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE,
-        MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE,
-        MAILOPTIN_LEAD_BANK_SETTINGS_PAGE,
-        MAILOPTIN_CAMPAIGN_LOG_SETTINGS_PAGE,
-        MAILOPTIN_CONNECTIONS_SETTINGS_PAGE,
-        MAILOPTIN_SETTINGS_SETTINGS_PAGE,
-        MAILOPTIN_ADVANCE_ANALYTICS_SETTINGS_PAGE,
+    $mo_admin_pages_slug = array(
+        MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_SLUG,
+        MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_SLUG,
+        MAILOPTIN_LEAD_BANK_SETTINGS_SLUG,
+        MAILOPTIN_CAMPAIGN_LOG_SETTINGS_SLUG,
+        MAILOPTIN_CONNECTIONS_SETTINGS_SLUG,
+        MAILOPTIN_SETTINGS_SETTINGS_SLUG,
+        MAILOPTIN_ADVANCE_ANALYTICS_SETTINGS_SLUG,
+        'mailoptin-premium-upgrade'
     );
 
-    return (isset($_GET['page']) && in_array(current_url_with_query_string(), $mo_admin_pages));
+    return (isset($_GET['page']) && in_array($_GET['page'], $mo_admin_pages_slug));
 }

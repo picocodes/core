@@ -39,7 +39,7 @@ class UsageTracking
     public function __construct()
     {
         add_action('init', array($this, 'schedule_send'));
-        add_action('init', function () {
+        add_action('mailoptin_admin_notices', function () {
             add_action('admin_notices', array($this, 'admin_notice'));
         });
 
