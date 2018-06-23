@@ -693,6 +693,11 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         $x_seconds_status = $this->get_customizer_value('x_seconds_status');
         $x_seconds_value = $this->get_customizer_value('x_seconds_value');
 
+        if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
+            $x_seconds_status = true;
+            $x_seconds_value = 3;
+        }
+
         $x_scroll_status = $this->get_customizer_value('x_scroll_status');
         $x_scroll_value = $this->get_customizer_value('x_scroll_value');
 
