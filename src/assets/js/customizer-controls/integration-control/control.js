@@ -9,8 +9,11 @@
             this.fetch_email_list();
 
             var contextual_display_init = function () {
-                $('.mo-integration-widget').each(function () {
+
+                $('.mo-integration-widget').each(function (index) {
                     var parent = $(this);
+                    // re-order index
+                    $(this).attr('data-integration-index', index);
                     _this.color_picker_init();
                     _this.chosen_select_init();
                     _this.toggle_connect_service_connected_fields(parent);
@@ -83,7 +86,7 @@
             }
 
             var parent = $(this).parents('.mo-integration-widget');
-            var index = parent.data('integration-index');
+            var index = parent.attr('data-integration-index');
             if (typeof old_data[index] === 'undefined') {
                 old_data[index] = {};
             }
@@ -331,4 +334,3 @@
     });
 
 })(wp.customize, jQuery);
-
