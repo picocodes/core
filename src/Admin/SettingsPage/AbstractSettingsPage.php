@@ -108,11 +108,6 @@ abstract class AbstractSettingsPage
             100 => array('url' => MAILOPTIN_CAMPAIGN_LOG_SETTINGS_PAGE, 'label' => __('Email Log', 'mailoptin')),
         ));
 
-        if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
-            $url = 'https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=tab_menu';
-            $tabs[999999] = array('url' => $url, 'label' => __('Go Premium', 'mailoptin'), 'style' => 'background-color:#d54e21;color:#fff;border-color:#d54e21');
-        }
-
         ksort($tabs);
 
         return $tabs;
