@@ -39,11 +39,29 @@ class OptinThemesRepository extends AbstractRepository
                 'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/lupin-sidebar.png'
             ],
             [
+                'name' => 'Gridgum',
+                'optin_class' => 'Gridgum',
+                'optin_type' => 'sidebar',
+                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/gridgum-sidebar-slidein.png'
+            ],
+            [
                 'name' => 'Columbine',
                 'optin_class' => 'Columbine',
                 'optin_type' => 'inpost', // accept comma delimited values eg lightbox,sidebar,inpost
                 'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/columbine-inpost.png'
-            ]
+            ],
+            [
+                'name' => 'BareMetal',
+                'optin_class' => 'BareMetal',
+                'optin_type' => 'inpost',
+                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/baremetal-inpost.png'
+            ],
+            [
+                'name' => 'Elegance',
+                'optin_class' => 'Elegance',
+                'optin_type' => 'inpost',
+                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/elegance-inpost.png'
+            ],
         ];
     }
 
@@ -65,25 +83,11 @@ class OptinThemesRepository extends AbstractRepository
                 'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/bannino/bannino-inpost.png'
             ],
             [
-                'name' => 'BareMetal',
-                'optin_class' => 'BareMetal',
-                'flag' => 'premium',
-                'optin_type' => 'inpost',
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/baremetal-inpost.png'
-            ],
-            [
                 'name' => 'Daisy',
                 'optin_class' => 'Daisy',
                 'flag' => 'premium',
                 'optin_type' => 'lightbox',
                 'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/daisy-lightbox.png'
-            ],
-            [
-                'name' => 'Elegance',
-                'optin_class' => 'Elegance',
-                'flag' => 'premium',
-                'optin_type' => 'inpost',
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/elegance-inpost.png'
             ],
             [
                 'name' => 'Muscari',
@@ -161,13 +165,6 @@ class OptinThemesRepository extends AbstractRepository
                 'flag' => 'premium',
                 'optin_type' => 'lightbox',
                 'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/gridgum-lightbox.png'
-            ],
-            [
-                'name' => 'Gridgum',
-                'optin_class' => 'Gridgum',
-                'flag' => 'premium',
-                'optin_type' => 'sidebar',
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/gridgum-sidebar-slidein.png'
             ],
             [
                 'name' => 'Gridgum',
