@@ -5,11 +5,6 @@ namespace MailOptin\Core\Admin\Customizer;
 
 trait CustomizerTrait
 {
-    public function init()
-    {
-        add_action('init', [$this, 'clean_up_customizer'], 9999999999999);
-    }
-
     public function modify_customizer_publish_button()
     {
         add_filter('gettext', function ($translations, $text, $domain) {
@@ -53,6 +48,8 @@ trait CustomizerTrait
     public function clean_up_customizer()
     {
         add_action('init', function () {
+
+            remove_all_actions('admin_print_footer_scripts');
 
             // remove all custom media button added by plugins and core.
             remove_all_actions('media_buttons');
@@ -178,6 +175,10 @@ trait CustomizerTrait
 
             if (class_exists('Astra_Customizer') && method_exists('Astra_Customizer', 'print_footer_scripts')) {
                 remove_action('customize_controls_print_footer_scripts', [\Astra_Customizer::get_instance(), 'print_footer_scripts']);
+            }
+
+            if(function_exists('td_customize_js')) {
+                remove_action('customize_controls_print_footer_scripts', 'td_customize_js');
             }
 
         }, 9999999999999);
