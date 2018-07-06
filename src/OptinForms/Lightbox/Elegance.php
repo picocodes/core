@@ -418,7 +418,7 @@ div#$optin_css_id.moEleganceModal h2.moElegance_header {
   color: #000;
   margin: 0;
   font-size: 32px;
-  line-height: 2;
+  line-height: 1.5;
   text-align: center;
   text-transform: capitalize
 }
