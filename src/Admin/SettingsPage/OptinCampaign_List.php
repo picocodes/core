@@ -36,7 +36,10 @@ class OptinCampaign_List extends \WP_List_Table
             ['type' => 'lightbox', 'class' => 'BareMetal'],
             ['type' => 'lightbox', 'class' => 'Elegance'],
             ['type' => 'inpost', 'class' => 'Columbine'],
-            ['type' => 'sidebar', 'class' => 'Lupin']
+            ['type' => 'inpost', 'class' => 'BareMetal'],
+            ['type' => 'inpost', 'class' => 'Elegance'],
+            ['type' => 'sidebar', 'class' => 'Lupin'],
+            ['type' => 'sidebar', 'class' => 'Gridgum']
         ];
 
         $this->lite_optin_types_support = array_unique(array_reduce($this->lite_themes, function ($carry, $item) {
