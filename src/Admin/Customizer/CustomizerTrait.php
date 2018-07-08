@@ -85,13 +85,13 @@ trait CustomizerTrait
                 return $carry;
             });
 
-            $active_plugins = ! is_array($active_plugins) ? [] : $active_plugins;
+            $active_plugins = !is_array($active_plugins) ? [] : $active_plugins;
 
             add_action('customize_controls_enqueue_scripts', function () use ($wp_get_theme, $active_plugins) {
                 global $wp_styles;
                 global $wp_scripts;
 
-                $child_theme  = $wp_get_theme->get_stylesheet();
+                $child_theme = $wp_get_theme->get_stylesheet();
                 $parent_theme = $wp_get_theme->get_template();
 
                 foreach ($wp_scripts->registered as $key => $value) {
@@ -134,7 +134,7 @@ trait CustomizerTrait
                 global $wp_styles;
                 global $wp_scripts;
 
-                $child_theme  = $wp_get_theme->get_stylesheet();
+                $child_theme = $wp_get_theme->get_stylesheet();
                 $parent_theme = $wp_get_theme->get_template();
 
                 foreach ($wp_scripts->registered as $key => $value) {
@@ -177,10 +177,110 @@ trait CustomizerTrait
                 remove_action('customize_controls_print_footer_scripts', [\Astra_Customizer::get_instance(), 'print_footer_scripts']);
             }
 
-            if(function_exists('td_customize_js')) {
+            if (function_exists('td_customize_js')) {
                 remove_action('customize_controls_print_footer_scripts', 'td_customize_js');
             }
 
         }, 9999999999999);
+
+        add_action('customize_controls_print_footer_scripts', [$this, 'js_script']);
+    }
+
+    /**
+     * Change the label from "Email Provider List" to "ConvertKit Form" on convertkit selected as email provider.
+     */
+    public function js_script()
+    {
+        $ck_label = __('ConvertKit Form', 'mailoptin');
+        $drip_label = __('Drip Campaign', 'mailoptin');
+        $gr_label = __('GetResponse Campaign', 'mailoptin');
+        $default_label = __('Email Provider List', 'mailoptin');
+        ?>
+
+        <script type="text/javascript">
+            (function ($) {
+                    function logic(connection_service) {
+                        if (connection_service === undefined) {
+                            connection_service = $("select[data-customize-setting-link*='connection_service']").val();
+                        }
+
+                        var title_obj = $('li[id*="connection_email_list"] .customize-control-title');
+
+                        if (connection_service === 'GetResponseConnect') {
+                            title_obj.text('<?php echo $gr_label; ?>');
+                        }
+
+                        if (connection_service === 'ConvertKitConnect') {
+                            title_obj.text('<?php echo $ck_label; ?>');
+                        }
+
+                        if (connection_service === 'DripConnect') {
+                            title_obj.text('<?php echo $drip_label; ?>');
+                        }
+                    }
+
+                    function logic_new(connection_service, parent) {
+                        if (connection_service === undefined) {
+                            $('.mo-integration-widget').each(function () {
+                                var parent = $(this);
+                                connection_service = $("select[name='connection_service']", parent).val();
+                                console.log(connection_service);
+
+                                var title_obj = $(".connection_email_list label.customize-control-title", parent);
+
+                                if (connection_service === 'GetResponseConnect') {
+                                    title_obj.text('<?php echo $gr_label; ?>');
+                                }
+
+                                if (connection_service === 'ConvertKitConnect') {
+                                    title_obj.text('<?php echo $ck_label; ?>');
+                                }
+
+                                if (connection_service === 'DripConnect') {
+                                    title_obj.text('<?php echo $drip_label; ?>');
+                                }
+                            });
+                        }
+                        else {
+
+                            connection_service = $("select[name='connection_service']", parent).val();
+
+                            var title_obj = $(".connection_email_list label.customize-control-title", parent);
+
+                            if (connection_service === 'GetResponseConnect') {
+                                title_obj.text('<?php echo $gr_label; ?>');
+                            }
+
+                            if (connection_service === 'ConvertKitConnect') {
+                                title_obj.text('<?php echo $ck_label; ?>');
+                            }
+
+                            if (connection_service === 'DripConnect') {
+                                title_obj.text('<?php echo $drip_label; ?>');
+                            }
+                        }
+                    }
+
+                    // on ready event
+                    $(window).load(function () {
+                        logic();
+                        logic_new();
+                        $(document.body).on('mo_email_list_data_found', function (e, connection_service) {
+                            // restore default label before change
+                            $('li[id*="connection_email_list"] .customize-control-title').text('<?php echo $default_label; ?>');
+                            logic(connection_service);
+                        });
+
+                        $(document.body).on('mo_new_email_list_data_found', function (e, connection_service, parent) {
+                            $(".connection_email_list label.customize-control-title", parent).text('<?php echo $default_label; ?>');
+                            logic_new(connection_service, parent);
+                        });
+                    })
+                }
+
+            )(jQuery);
+        </script>
+        <?php
+        $flag = true;
     }
 }

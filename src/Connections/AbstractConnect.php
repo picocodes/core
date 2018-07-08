@@ -21,7 +21,6 @@ abstract class AbstractConnect
 
     public function __construct()
     {
-        add_action('customize_controls_print_footer_scripts', [$this, 'js_script']);
     }
 
     public function get_integration_data($data_key, $integration_data = [], $default = '')
@@ -73,51 +72,6 @@ abstract class AbstractConnect
     public function data_filter($value)
     {
         return self::is_boolean($value) || is_int($value) || !empty($value);
-    }
-
-    /**
-     * Change the label from "Email Provider List" to "ConvertKit Form" on convertkit selected as email provider.
-     */
-    public function js_script()
-    {
-        $ck_label = __('ConvertKit Form', 'mailoptin');
-        $drip_label = __('Drip Campaign', 'mailoptin');
-        $gr_label = __('GetResponse Campaign', 'mailoptin');
-        $default_label = __('Email Provider List', 'mailoptin');
-        ?>
-
-        <script type="text/javascript">
-            (function ($) {
-                function logic(connection_service) {
-                    if (connection_service === undefined) {
-                        connection_service = $("select[data-customize-setting-link*='connection_service']").val();
-                    }
-
-                    if (connection_service === 'GetResponseConnect') {
-                        $('li[id*="connection_email_list"] .customize-control-title').text('<?php echo $gr_label; ?>');
-                    }
-
-                    if (connection_service === 'ConvertKitConnect') {
-                        $('li[id*="connection_email_list"] .customize-control-title').text('<?php echo $ck_label; ?>');
-                    }
-
-                    if (connection_service === 'DripConnect') {
-                        $('li[id*="connection_email_list"] .customize-control-title').text('<?php echo $drip_label; ?>');
-                    }
-                }
-
-                // on ready event
-                $(function () {
-                    logic();
-                    $(document.body).on('mo_email_list_data_found', function (e, connection_service) {
-                        // restore default label before change
-                        $('li[id*="connection_email_list"] .customize-control-title').text('<?php echo $default_label; ?>');
-                        logic(connection_service);
-                    });
-                })
-            })(jQuery);
-        </script>
-        <?php
     }
 
     /**

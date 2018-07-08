@@ -253,7 +253,7 @@
 
                                 _this.toggle_connect_service_connected_fields(parent);
 
-                                $(document.body).trigger('mo_email_list_data_found', [connect_service, parent]);
+                                $(document.body).trigger('mo_new_email_list_data_found', [connect_service, parent]);
                             }
                             else {
 
