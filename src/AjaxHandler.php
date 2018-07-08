@@ -184,6 +184,11 @@ class AjaxHandler
 
         $response = wp_mail($admin_email, $formatted_email_subject, $content_html, $headers);
 
+        if (!$response) {
+            $headers = ["Content-Type: text/html"];
+            $response = wp_mail($admin_email, $formatted_email_subject, $content_html, $headers);
+        }
+
         wp_send_json(array('success' => (bool)$response));
     }
 

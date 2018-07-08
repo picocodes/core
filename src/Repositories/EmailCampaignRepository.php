@@ -221,6 +221,23 @@ class EmailCampaignRepository extends AbstractRepository
         return !is_null($value) ? $value : $default;
     }
 
+    /**
+     * Return value of a email campaign customizer settings or the default settings value if not found.
+     *
+     * @param int $optin_campaign_id
+     * @param string $optin_form_setting
+     *
+     * @return string
+     */
+    public static function get_merged_customizer_value($email_campaign_id, $settings_name)
+    {
+        $customizer_defaults = (new AbstractCustomizer($email_campaign_id))->customizer_defaults;
+
+        $default = isset($customizer_defaults[$settings_name]) ? $customizer_defaults[$settings_name] : '';
+
+        return self::get_customizer_value($email_campaign_id, $settings_name, $default);
+    }
+
 
     /**
      * Retrieve/return all email campaign customizer settings as stored in wp_option table.

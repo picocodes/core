@@ -35,7 +35,7 @@ class TemplatifyNewPostPublish
         $this->template_class = !is_null($template_class) ? $template_class : ER::get_template_class($email_campaign_id);
         $this->campaign_type = !is_null($campaign_type) ? $campaign_type : ER::get_email_campaign_type($email_campaign_id);
         $this->post_content_length = ER::get_customizer_value($email_campaign_id, 'post_content_length');
-        $this->default_feature_image = ER::get_customizer_value($email_campaign_id, 'default_image_url');
+        $this->default_feature_image = ER::get_merged_customizer_value($email_campaign_id, 'default_image_url');
     }
 
     /**
@@ -87,6 +87,13 @@ class TemplatifyNewPostPublish
      */
     public function feature_image()
     {
+        $is_remove_featured_image = ER::get_merged_customizer_value(
+            $this->email_campaign_id,
+            'content_remove_feature_image'
+        );
+
+        if ($is_remove_featured_image) return '';
+
         if (has_post_thumbnail($this->post_id())) {
             $image_data = wp_get_attachment_image_src(get_post_thumbnail_id($this->post_id()), 'full');
             if (!empty($image_data[0])) {
@@ -106,7 +113,6 @@ class TemplatifyNewPostPublish
     {
         $email_campaign_id = $this->email_campaign_id;
         $db_template_class = $this->template_class;
-        $campaign_type = $this->campaign_type;
 
         do_action('mailoptin_email_template_before_forge', $email_campaign_id, $db_template_class);
 

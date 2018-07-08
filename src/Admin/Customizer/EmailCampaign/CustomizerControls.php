@@ -85,26 +85,6 @@ class CustomizerControls
                     )
                 )
             ),
-            'default_image_url' => apply_filters('mailoptin_customizer_settings_campaign_default_image_url_args',
-                array(
-                    'type' => 'text',
-                    'label' => __('Fallback Feature Image', 'mailoptin'),
-                    'section' => $this->customizerClassInstance->campaign_settings_section_id,
-                    'settings' => $this->option_prefix . '[default_image_url]',
-                    'description' => __('Enter URL of an image to use when a post lack a feature image.', 'mailoptin'),
-                    'priority' => 30
-                )
-            ),
-            'post_content_length' => apply_filters('mailoptin_customizer_settings_campaign_post_content_length_args',
-                array(
-                    'type' => 'number',
-                    'label' => __('Post Content Length', 'mailoptin'),
-                    'section' => $this->customizerClassInstance->campaign_settings_section_id,
-                    'settings' => $this->option_prefix . '[post_content_length]',
-                    'description' => __('Enter the number of words to limit the post content to. Set to "0" for full post content. Default is 150.', 'mailoptin'),
-                    'priority' => 40
-                )
-            ),
             'post_categories' => new WP_Customize_Chosen_Select_Control(
                 $this->wp_customize,
                 $this->option_prefix . '[post_categories]',
@@ -466,7 +446,7 @@ class CustomizerControls
                             'label' => __('Background Color', 'mailoptin'),
                             'section' => $this->customizerClassInstance->campaign_content_section_id,
                             'settings' => $this->option_prefix . '[content_background_color]',
-                            'priority' => 20
+                            'priority' => 10
                         )
                     )
                 ),
@@ -477,8 +457,39 @@ class CustomizerControls
                             'label' => __('Text Color', 'mailoptin'),
                             'section' => $this->customizerClassInstance->campaign_content_section_id,
                             'settings' => $this->option_prefix . '[content_text_color]',
-                            'priority' => 40
+                            'priority' => 20
                         )
+                    )
+                ),
+                'content_remove_feature_image' => new WP_Customize_Toggle_Control(
+                    $this->wp_customize,
+                    $this->option_prefix . '[content_remove_feature_image]',
+                    apply_filters('mailoptin_template_customizer_content_remove_feature_image_args', array(
+                            'label' => esc_html__('Remove Featured Image', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->campaign_content_section_id,
+                            'settings' => $this->option_prefix . '[content_remove_feature_image]',
+                            'priority' => 30
+                        )
+                    )
+                ),
+                'default_image_url' => apply_filters('mailoptin_customizer_settings_campaign_default_image_url_args',
+                    array(
+                        'type' => 'text',
+                        'label' => __('Fallback Featured Image', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->campaign_content_section_id,
+                        'settings' => $this->option_prefix . '[default_image_url]',
+                        'description' => __('Enter URL of an image to use when a post lack a feature image.', 'mailoptin'),
+                        'priority' => 40
+                    )
+                ),
+                'post_content_length' => apply_filters('mailoptin_customizer_settings_campaign_post_content_length_args',
+                    array(
+                        'type' => 'number',
+                        'label' => __('Post Content Length', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->campaign_content_section_id,
+                        'settings' => $this->option_prefix . '[post_content_length]',
+                        'description' => __('Enter the number of words to limit the post content to. Set to "0" for full post content. Default is 150.', 'mailoptin'),
+                        'priority' => 50
                     )
                 ),
                 'content_title_font_size' => new WP_Customize_Range_Value_Control(

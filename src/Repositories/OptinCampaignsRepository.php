@@ -449,7 +449,7 @@ class OptinCampaignsRepository extends AbstractRepository
 
         $default = isset($customizer_defaults[$settings_name]) ? $customizer_defaults[$settings_name] : '';
 
-        return OptinCampaignsRepository::get_customizer_value($optin_campaign_id, $settings_name, $default);
+        return self::get_customizer_value($optin_campaign_id, $settings_name, $default);
     }
 
     /**

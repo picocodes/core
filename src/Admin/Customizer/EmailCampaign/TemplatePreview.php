@@ -29,9 +29,4 @@ class TemplatePreview extends TemplatifyNewPostPublish
     {
         return '#';
     }
-
-    public function feature_image()
-    {
-        return MAILOPTIN_ASSETS_URL . 'images/email-templates/default-feature-img.jpg';
-    }
 }
