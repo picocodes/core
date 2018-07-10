@@ -7,6 +7,7 @@ use MailOptin\Core\Admin\Customizer\EmailCampaign\AbstractCustomizer;
 class EmailCampaignRepository extends AbstractRepository
 {
     const NEW_PUBLISH_POST = 'new_publish_post';
+    const POSTS_EMAIL_DIGEST = 'post_email_digest';
 
     /**
      * Return a human readable name for campaign identifier/key/type.

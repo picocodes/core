@@ -44,7 +44,7 @@ class CustomizerControls
     {
         add_filter('mailoptin_customizer_settings_email_campaign_subject_description',
             function ($description, $campaign_type) {
-                if ('new_publish_post' == $campaign_type) {
+                if (EmailCampaignRepository::NEW_PUBLISH_POST == $campaign_type) {
                     $description = sprintf(
                         __('Available placeholders for use in subject line:%s %s', 'mailoptin'),
                         '<br><strong>{{title}}</strong>:',

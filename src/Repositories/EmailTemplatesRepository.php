@@ -14,7 +14,7 @@ class EmailTemplatesRepository extends AbstractRepository
                 array(
                     'name' => 'Lucid',
                     'template_class' => 'Lucid',
-                    'campaign_type' => 'new_publish_post',
+                    'campaign_type' => EmailCampaignRepository::NEW_PUBLISH_POST,
                     'screenshot' => MAILOPTIN_ASSETS_URL . 'images/email-templates/lucid.png'
                 )
             ));

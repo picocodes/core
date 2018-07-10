@@ -1,7 +1,4 @@
 <?php
-/**
- * Copyright (C) 2016  Agbonghama Collins <me@w3guy.com>
- */
 
 namespace MailOptin\Core\Admin\SettingsPage;
 
@@ -10,11 +7,8 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-use MailOptin\Core\PluginSettings\Templates;
-use MailOptin\Core\Repositories\ConnectionsRepository;
 use MailOptin\Core\Repositories\EmailCampaignRepository;
 use MailOptin\Core\Repositories\EmailTemplatesRepository;
-use MailOptin\Core\Repositories\OptinThemesRepository;
 use W3Guy\Custom_Settings_Page_Api;
 
 class AddEmailCampaign extends AbstractSettingsPage
@@ -27,7 +21,8 @@ class AddEmailCampaign extends AbstractSettingsPage
     public function email_campaign_types()
     {
         return apply_filters('mo_email_campaign_types', [
-            'new_publish_post' => __('New Post Notification', 'mailoptin')
+            EmailCampaignRepository::NEW_PUBLISH_POST => __('New Post Notification', 'mailoptin'),
+            EmailCampaignRepository::POSTS_EMAIL_DIGEST => __('Email Digest of Posts', 'mailoptin')
         ]);
     }
 
