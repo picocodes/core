@@ -4,6 +4,7 @@ namespace MailOptin\Core\Admin\Customizer\EmailCampaign;
 
 use MailOptin\Core\Admin\Customizer\CustomControls\ControlsHelpers;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Chosen_Select_Control;
+use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Controls_Tab_Toggle;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Custom_Content;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Custom_Input_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Email_Schedule_Time_Fields_Control;
@@ -624,6 +625,16 @@ class CustomizerControls
         $footer_control_args = apply_filters(
             "mailoptin_template_customizer_footer_controls",
             array(
+                'footer_controls_tab_toggle' => new WP_Customize_Controls_Tab_Toggle(
+                    $this->wp_customize,
+                    $this->option_prefix . '[footer_controls_tab_toggle]',
+                    apply_filters('mailoptin_template_customizer_footer_controls_tab_toggle_args', array(
+                            'section' => $this->customizerClassInstance->campaign_footer_section_id,
+                            'settings' => $this->option_prefix . '[footer_controls_tab_toggle]',
+                            'priority' => 2
+                        )
+                    )
+                ),
                 'footer_removal' => new WP_Customize_Toggle_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[footer_removal]',

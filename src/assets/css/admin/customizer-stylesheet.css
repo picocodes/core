@@ -462,3 +462,31 @@ a.mo-autoresponder-modal-view-tags {
         width: 800px;
     }
 }
+
+.mailoptin-toggle-control-tab {
+    display: table;
+    table-layout: fixed;
+    width: 110%;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.mailoptin-toggle-control-tab .mo-toggle-tab-wrapper {
+    display: table-cell;
+    text-align: center;
+    padding: 0.6em 1em;
+}
+
+.mailoptin-toggle-control-tab .mo-single-toggle-tab span {
+    display: block;
+    margin: auto;
+}
+
+.customize-control-mailoptin_tab_toggle {
+    border: 0;
+    margin-top: -15px;
+    margin-left: -12px;
+}
+
+.customize-control-mailoptin_tab_toggle + .customize-control {border-top:0}
+
+.mailoptin-toggle-control-tab input[type="radio"]:checked + .mo-toggle-tab-wrapper  {background:#0085ba;color:#fff}

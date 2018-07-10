@@ -259,6 +259,11 @@ class CustomizerSettings extends AbstractCustomizer
     public function footer_settings()
     {
         $footer_settings_args = apply_filters("mailoptin_email_campaign_customizer_footer_settings", array(
+            'footer_controls_tab_toggle' => array(
+                'default' => 'general',
+                'type' => 'option',
+                'transport' => 'postMessage',
+            ),
             'footer_removal' => array(
                 'default' => $this->customizer_defaults['footer_removal'],
                 'type' => 'option',
