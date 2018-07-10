@@ -473,7 +473,7 @@ a.mo-autoresponder-modal-view-tags {
 .mailoptin-toggle-control-tab .mo-toggle-tab-wrapper {
     display: table-cell;
     text-align: center;
-    padding: 0.6em 1em;
+    padding: 1em;
 }
 
 .mailoptin-toggle-control-tab .mo-single-toggle-tab span {
