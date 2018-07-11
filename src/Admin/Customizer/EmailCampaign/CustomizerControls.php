@@ -36,6 +36,34 @@ class CustomizerControls
         $this->option_prefix = $option_prefix;
 
         $this->selective_control_modifications();
+
+        add_action('customize_controls_print_footer_scripts', function () {
+            ?>
+            <script type="text/javascript">
+                var mailoptin_tab_control_config = <?php echo wp_json_encode($this->tab_toggle_controls_config());?>;
+            </script>
+            <?php
+        });
+    }
+
+    public function tab_toggle_controls_config()
+    {
+        return apply_filters('mailoptin_email_campaign_tab_toggle_config',
+            [
+                'general' => apply_filters('mailoptin_email_campaign_tab_toggle_general_config', [
+                    'footer_removal',
+                    'footer_copyright_line',
+                    'footer_description',
+                    'footer_unsubscribe_line',
+                    'footer_unsubscribe_link_label'
+                ]),
+                'style' => apply_filters('mailoptin_email_campaign_tab_toggle_design_config', [
+                    'footer_background_color',
+                    'footer_text_color',
+                    'footer_font_size',
+                    'footer_unsubscribe_link_color'
+                ]),
+            ]);
     }
 
     /**
@@ -264,7 +292,6 @@ class CustomizerControls
             $this->option_prefix,
             $this->customizerClassInstance
         );
-
 
 
         if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {

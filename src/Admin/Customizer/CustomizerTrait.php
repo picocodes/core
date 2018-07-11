@@ -224,7 +224,6 @@ trait CustomizerTrait
                             $('.mo-integration-widget').each(function () {
                                 var parent = $(this);
                                 connection_service = $("select[name='connection_service']", parent).val();
-                                console.log(connection_service);
 
                                 var title_obj = $(".connection_email_list label.customize-control-title", parent);
 

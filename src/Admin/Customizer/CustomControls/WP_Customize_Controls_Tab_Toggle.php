@@ -8,8 +8,6 @@ class WP_Customize_Controls_Tab_Toggle extends WP_Customize_Control
 {
     public $type = 'mailoptin_tab_toggle';
 
-    public $choices = [];
-
     /**
      * Enqueue scripts/styles.
      *
@@ -17,51 +15,24 @@ class WP_Customize_Controls_Tab_Toggle extends WP_Customize_Control
      */
     public function enqueue()
     {
-        wp_enqueue_script('mo-customizer-toggle-control', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/toggle-control/customizer-toggle-control.js', array('jquery'), false, true);
-        wp_enqueue_style('mo-pure-css-toggle-buttons', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/toggle-control/pure-css-togle-buttons.css', array(), false);
-
-        $css = '
-			.disabled-control-title {
-				color: #a0a5aa;
-			}
-			input[type=checkbox].tgl-light:checked + .tgl-btn {
-				background: #0085ba;
-			}
-			input[type=checkbox].tgl-light + .tgl-btn {
-			  background: #a0a5aa;
-			}
-			input[type=checkbox].tgl-light + .tgl-btn:after {
-			  background: #f7f7f7;
-			}
-
-			input[type=checkbox].tgl-ios:checked + .tgl-btn {
-			  background: #0085ba;
-			}
-
-			input[type=checkbox].tgl-flat:checked + .tgl-btn {
-			  border: 4px solid #0085ba;
-			}
-			input[type=checkbox].tgl-flat:checked + .tgl-btn:after {
-			  background: #0085ba;
-			}
-
-		';
-        wp_add_inline_style('mo-pure-css-toggle-buttons', $css);
+        wp_enqueue_script('mo-customizer-tab-toggle-control', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/tab-toggle/control.js', array('jquery'), false, true);
     }
 
     public function render_content()
     {
         $tabs = [
-            'general' => __('General', 'mailoptin'),
-            'style' => __('Style', 'mailoptin'),
-            'advance' => __('Advance', 'mailoptin'),
+            'general' => ['title' => __('General', 'mailoptin'), 'icon' => 'dashicons-admin-settings'],
+            'style' => ['title' => __('Style', 'mailoptin'), 'icon' => 'dashicons-admin-customizer'],
+            'advance' => ['title' => __('Advance', 'mailoptin'), 'icon' => 'dashicons-admin-generic'],
         ];
         echo '<div class="mailoptin-toggle-control-tab">';
-        foreach ($tabs as $key => $title) {
+        foreach ($tabs as $key => $value) {
+            $title = $value['title'];
             $name = '_customize-radio-' . $this->id;
-            $dashicon = '<span class="dashicons dashicons-admin-settings"></span>';
+            $dashicon = sprintf('<span class="dashicons %s"></span>', $value['icon']);
             ?>
             <input
+                    class="mailoptin-toggle-control-radio"
                     id="<?= $this->type . '_' . $key; ?>"
                     type="radio"
                     name="<?= $name; ?>"
@@ -70,8 +41,8 @@ class WP_Customize_Controls_Tab_Toggle extends WP_Customize_Control
                 <?php $this->link();
                 checked($this->value(), $key); ?>
             />
-            <div class="mo-toggle-tab-wrapper">
-                <label for="<?= $this->type . '_' . $key; ?>" class="mo-single-toggle-tab mo-general">
+            <div class="mo-toggle-tab-wrapper mo-<?= $key; ?>">
+                <label for="<?= $this->type . '_' . $key; ?>" class="mo-single-toggle-tab">
                     <?= $dashicon; ?>
                     <?= $title; ?>
                 </label>

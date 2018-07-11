@@ -132,7 +132,6 @@
 
     // handle click of A/B test ultimate winner selection
     $(document.body).on('click', '.mo-end-test-tbody', function (e) {
-        console.log('clicked')
         e.preventDefault();
         var parent_optin_id = $(this).data('parent-id'),
             winner_optin_id = $(this).data('optin-id'),
