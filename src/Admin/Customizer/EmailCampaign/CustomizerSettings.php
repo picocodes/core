@@ -122,13 +122,17 @@ class CustomizerSettings extends AbstractCustomizer
         }
     }
 
-
     /**
      * Customize setting for all template header controls.
      */
     public function header_settings()
     {
         $header_settings_args = apply_filters("mailoptin_email_campaign_customizer_header_settings", array(
+                'header_controls_tab_toggle' => array(
+                    'default' => 'general',
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
                 'header_removal' => array(
                     'default' => $this->customizer_defaults['header_removal'],
                     'type' => 'option',
@@ -178,6 +182,11 @@ class CustomizerSettings extends AbstractCustomizer
     public function content_settings()
     {
         $content_settings_args = apply_filters("mailoptin_email_campaign_customizer_content_settings", array(
+                'content_controls_tab_toggle' => array(
+                    'default' => 'general',
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
                 'default_image_url' => array(
                     'default' => $this->customizer_defaults['default_image_url'],
                     'type' => 'option',

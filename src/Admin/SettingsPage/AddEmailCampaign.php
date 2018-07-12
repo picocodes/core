@@ -21,8 +21,7 @@ class AddEmailCampaign extends AbstractSettingsPage
     public function email_campaign_types()
     {
         return apply_filters('mo_email_campaign_types', [
-            EmailCampaignRepository::NEW_PUBLISH_POST => __('New Post Notification', 'mailoptin'),
-            EmailCampaignRepository::POSTS_EMAIL_DIGEST => __('Email Digest of Posts', 'mailoptin')
+            EmailCampaignRepository::NEW_PUBLISH_POST => __('New Post Notification', 'mailoptin')
         ]);
     }
 

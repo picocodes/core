@@ -8,11 +8,6 @@ class WP_Customize_Controls_Tab_Toggle extends WP_Customize_Control
 {
     public $type = 'mailoptin_tab_toggle';
 
-    /**
-     * Enqueue scripts/styles.
-     *
-     * @since 3.4.0
-     */
     public function enqueue()
     {
         wp_enqueue_script('mo-customizer-tab-toggle-control', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/tab-toggle/control.js', array('jquery'), false, true);
@@ -33,7 +28,7 @@ class WP_Customize_Controls_Tab_Toggle extends WP_Customize_Control
             ?>
             <input
                     class="mailoptin-toggle-control-radio"
-                    id="<?= $this->type . '_' . $key; ?>"
+                    id="<?= $this->id . $key; ?>"
                     type="radio"
                     name="<?= $name; ?>"
                     style="display: none"
@@ -42,7 +37,7 @@ class WP_Customize_Controls_Tab_Toggle extends WP_Customize_Control
                 checked($this->value(), $key); ?>
             />
             <div class="mo-toggle-tab-wrapper mo-<?= $key; ?>">
-                <label for="<?= $this->type . '_' . $key; ?>" class="mo-single-toggle-tab">
+                <label for="<?= $this->id . $key; ?>" class="mo-single-toggle-tab">
                     <?= $dashicon; ?>
                     <?= $title; ?>
                 </label>

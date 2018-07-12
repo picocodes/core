@@ -55,13 +55,37 @@ class CustomizerControls
                     'footer_copyright_line',
                     'footer_description',
                     'footer_unsubscribe_line',
-                    'footer_unsubscribe_link_label'
+                    'footer_unsubscribe_link_label',
+
+                    'header_logo',
+                    'header_removal',
+                    'header_web_version_link_label',
+                    'header_text',
+
+                    'content_remove_feature_image',
+                    'default_image_url',
+                    'post_content_length',
+                    'content_alignment',
+                    'content_remove_ellipsis_button',
+                    'content_ellipsis_button_alignment',
+                    'content_ellipsis_button_label'
                 ]),
-                'style' => apply_filters('mailoptin_email_campaign_tab_toggle_design_config', [
+                'style' => apply_filters('mailoptin_email_campaign_tab_toggle_style_config', [
                     'footer_background_color',
                     'footer_text_color',
                     'footer_font_size',
-                    'footer_unsubscribe_link_color'
+                    'footer_unsubscribe_link_color',
+
+                    'header_background_color',
+                    'header_text_color',
+                    'header_web_version_link_color',
+
+                    'content_background_color',
+                    'content_text_color',
+                    'content_title_font_size',
+                    'content_body_font_size',
+                    'content_ellipsis_button_text_color',
+                    'content_ellipsis_button_background_color'
                 ]),
             ]);
     }
@@ -345,6 +369,16 @@ class CustomizerControls
         $header_control_args = apply_filters(
             "mailoptin_template_customizer_header_controls",
             array(
+                'header_controls_tab_toggle' => new WP_Customize_Controls_Tab_Toggle(
+                    $this->wp_customize,
+                    $this->option_prefix . '[header_controls_tab_toggle]',
+                    apply_filters('mailoptin_template_customizer_header_controls_tab_toggle_args', array(
+                            'section' => $this->customizerClassInstance->campaign_header_section_id,
+                            'settings' => $this->option_prefix . '[header_controls_tab_toggle]',
+                            'priority' => 2
+                        )
+                    )
+                ),
                 'header_removal' => new WP_Customize_Toggle_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[header_removal]',
@@ -467,6 +501,16 @@ class CustomizerControls
         $content_control_args = apply_filters(
             "mailoptin_template_customizer_content_controls",
             array(
+                'content_controls_tab_toggle' => new WP_Customize_Controls_Tab_Toggle(
+                    $this->wp_customize,
+                    $this->option_prefix . '[content_controls_tab_toggle]',
+                    apply_filters('mailoptin_template_customizer_header_content_controls_tab_toggle_args', array(
+                            'section' => $this->customizerClassInstance->campaign_content_section_id,
+                            'settings' => $this->option_prefix . '[content_controls_tab_toggle]',
+                            'priority' => 2
+                        )
+                    )
+                ),
                 'content_background_color' => new \WP_Customize_Color_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[content_background_color]',

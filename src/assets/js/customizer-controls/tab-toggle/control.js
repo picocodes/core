@@ -1,17 +1,15 @@
-console.log('tab toggle yes');
-
 (function ($) {
 
     function hide_all_controls(parent) {
-        _.each(mailoptin_tab_control_config.style, function (value, key) {
-            $('li[id*="' + value + '"]', parent).hide();
+        _.each(mailoptin_tab_control_config.style, function (value) {
+            $('li[id$="' + value + '"]', parent).hide();
         });
-        _.each(mailoptin_tab_control_config.general, function (value, key) {
-            $('li[id*="' + value + '"]', parent).hide();
+        _.each(mailoptin_tab_control_config.general, function (value) {
+            $('li[id$="' + value + '"]', parent).hide();
         });
 
-        _.each(mailoptin_tab_control_config.advance, function (value, key) {
-            $('li[id*="' + value + '"]', parent).hide();
+        _.each(mailoptin_tab_control_config.advance, function (value) {
+            $('li[id$="' + value + '"]', parent).hide();
         });
     }
 
@@ -34,7 +32,7 @@ console.log('tab toggle yes');
             });
 
             _.each(mailoptin_tab_control_config[active_tab], function (value) {
-                $('li[id*="' + value + '"]', parent).show();
+                $('li[id$="' + value + '"]', parent).show();
             });
 
             $('input.mailoptin-toggle-control-radio', parent).on('click', function () {
@@ -43,7 +41,7 @@ console.log('tab toggle yes');
                 hide_all_controls(parent);
 
                 _.each(mailoptin_tab_control_config[active_tab], function (value) {
-                    $('li[id*="' + value + '"]', parent).show();
+                    $('li[id$="' + value + '"]', parent).show();
                 });
             });
         });
