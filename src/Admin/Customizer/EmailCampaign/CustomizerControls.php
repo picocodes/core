@@ -9,6 +9,7 @@ use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Custom_Content;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Custom_Input_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Email_Schedule_Time_Fields_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Range_Value_Control;
+use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Tinymce_Expanded_Editor;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Toggle_Control;
 use MailOptin\Core\Repositories\ConnectionsRepository;
 use MailOptin\Core\Repositories\EmailCampaignRepository;
@@ -62,12 +63,11 @@ class CustomizerControls
                     'header_web_version_link_label',
                     'header_text',
 
+                    'content_before_main_body',
                     'content_remove_feature_image',
                     'default_image_url',
                     'post_content_length',
-                    'content_alignment',
                     'content_remove_ellipsis_button',
-                    'content_ellipsis_button_alignment',
                     'content_ellipsis_button_label'
                 ]),
                 'style' => apply_filters('mailoptin_email_campaign_tab_toggle_style_config', [
@@ -80,6 +80,8 @@ class CustomizerControls
                     'header_text_color',
                     'header_web_version_link_color',
 
+                    'content_alignment',
+                    'content_ellipsis_button_alignment',
                     'content_background_color',
                     'content_text_color',
                     'content_title_font_size',
@@ -508,6 +510,17 @@ class CustomizerControls
                             'section' => $this->customizerClassInstance->campaign_content_section_id,
                             'settings' => $this->option_prefix . '[content_controls_tab_toggle]',
                             'priority' => 2
+                        )
+                    )
+                ),
+                'content_before_main_body' => new WP_Customize_Tinymce_Expanded_Editor(
+                    $this->wp_customize,
+                    $this->option_prefix . '[content_before_main_body]',
+                    apply_filters('mailoptin_template_customizer_content_before_main_body_args', array(
+                            'label' => __('Before Main Content', 'mailoptin'),
+                            'section' => $this->customizerClassInstance->campaign_content_section_id,
+                            'settings' => $this->option_prefix . '[content_before_main_body]',
+                            'priority' => 4
                         )
                     )
                 ),

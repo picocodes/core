@@ -20,11 +20,19 @@
         $('.mailoptin-toggle-control-tab').each(function () {
             var parent = $(this).parents('ul.customize-pane-child');
 
+            hide_all_controls(parent);
+
+            var active_tab = wp.customize('mo_email_campaigns[' + mailoptin_email_campaign_id + '][footer_controls_tab_toggle]').get();
+
             $('.mo-toggle-tab-wrapper', parent).hide();
             _.each(mailoptin_tab_control_config, function (value, key) {
                 if (typeof mailoptin_tab_control_config[key] !== 'undefined') {
                     $('.mo-toggle-tab-wrapper.mo-' + key, parent).show();
                 }
+            });
+
+            _.each(mailoptin_tab_control_config[active_tab], function (value) {
+                $('li[id$="' + value + '"]', parent).show();
             });
 
             $('input.mailoptin-toggle-control-radio', parent).on('click', function () {

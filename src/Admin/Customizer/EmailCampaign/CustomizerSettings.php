@@ -187,6 +187,11 @@ class CustomizerSettings extends AbstractCustomizer
                     'type' => 'option',
                     'transport' => 'postMessage',
                 ),
+                'content_before_main_body' => array(
+                    'default' => $this->customizer_defaults['content_before_main_body'],
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
                 'default_image_url' => array(
                     'default' => $this->customizer_defaults['default_image_url'],
                     'type' => 'option',
