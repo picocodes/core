@@ -20,11 +20,19 @@
         $('.mailoptin-toggle-control-tab').each(function () {
             var parent = $(this).parents('ul.customize-pane-child');
 
+            var active_tab = $('.mailoptin-toggle-control-radio:checked', parent).val();
+
+            hide_all_controls(parent);
+
             $('.mo-toggle-tab-wrapper', parent).hide();
             _.each(mailoptin_tab_control_config, function (value, key) {
                 if (typeof mailoptin_tab_control_config[key] !== 'undefined') {
                     $('.mo-toggle-tab-wrapper.mo-' + key, parent).show();
                 }
+            });
+
+            _.each(mailoptin_tab_control_config[active_tab], function (value) {
+                $('li[id$="' + value + '"]', parent).show();
             });
 
             $('input.mailoptin-toggle-control-radio', parent).on('click', function () {

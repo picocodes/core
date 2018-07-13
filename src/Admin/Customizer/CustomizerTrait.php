@@ -181,9 +181,30 @@ trait CustomizerTrait
                 remove_action('customize_controls_print_footer_scripts', 'td_customize_js');
             }
 
+            add_action('customize_controls_enqueue_scripts', array($this, 'mo_customizer_js'));
+
         }, 9999999999999);
 
         add_action('customize_controls_print_footer_scripts', [$this, 'js_script']);
+        add_action('customize_controls_print_footer_scripts', [$this, 'js_wp_editor']);
+    }
+
+    public function mo_customizer_js()
+    {
+        wp_enqueue_script(
+            'mailoptin-wp-editor',
+            MAILOPTIN_ASSETS_URL . 'js/customizer-controls/mo-wp-editor.js',
+            array('customize-controls'),
+            MAILOPTIN_VERSION_NUMBER
+        );
+
+        wp_localize_script('mailoptin-wp-editor', 'moWPEditor_globals', array(
+            'url' => get_home_url(),
+            'includes_url' => includes_url(),
+            'wpeditor_texttab_label' => __('Text', 'mailoptin'),
+            'wpeditor_visualtab_label' => __('Visual', 'mailoptin'),
+            'wpeditor_addmedia_label' => __('Add Media', 'mailoptin')
+        ));
     }
 
     /**
@@ -280,6 +301,36 @@ trait CustomizerTrait
             )(jQuery);
         </script>
         <?php
-        $flag = true;
+    }
+
+    public function js_wp_editor()
+    {
+        if (!class_exists('\_WP_Editors')) {
+            require(ABSPATH . WPINC . '/class-wp-editor.php');
+        }
+
+        $set = \_WP_Editors::parse_settings('mo_autoresponder_message', []);
+
+        if (!current_user_can('upload_files')) {
+            $set['media_buttons'] = false;
+        }
+
+        if ($set['media_buttons']) {
+            wp_enqueue_style('buttons');
+            wp_enqueue_script('thickbox');
+            wp_enqueue_style('thickbox');
+            wp_enqueue_script('media-upload');
+            wp_enqueue_script('wp-embed');
+
+            $post = get_post(1);
+            if (!$post && !empty($GLOBALS['post_ID'])) {
+                $post = $GLOBALS['post_ID'];
+            }
+            wp_enqueue_media(array(
+                'post' => $post,
+            ));
+        }
+
+        \_WP_Editors::editor_settings('mo_autoresponder_message', $set);
     }
 }

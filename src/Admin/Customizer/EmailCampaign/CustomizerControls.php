@@ -63,7 +63,7 @@ class CustomizerControls
                     'header_web_version_link_label',
                     'header_text',
 
-                    'content_before_main_body',
+                    'content_before_main_content',
                     'content_remove_feature_image',
                     'default_image_url',
                     'post_content_length',
@@ -513,13 +513,13 @@ class CustomizerControls
                         )
                     )
                 ),
-                'content_before_main_body' => new WP_Customize_Tinymce_Expanded_Editor(
+                'content_before_main_content' => new WP_Customize_Tinymce_Expanded_Editor(
                     $this->wp_customize,
-                    $this->option_prefix . '[content_before_main_body]',
-                    apply_filters('mailoptin_template_customizer_content_before_main_body_args', array(
+                    $this->option_prefix . '[content_before_main_content]',
+                    apply_filters('mailoptin_template_customizer_content_before_main_content_args', array(
                             'label' => __('Before Main Content', 'mailoptin'),
                             'section' => $this->customizerClassInstance->campaign_content_section_id,
-                            'settings' => $this->option_prefix . '[content_before_main_body]',
+                            'settings' => $this->option_prefix . '[content_before_main_content]',
                             'priority' => 4
                         )
                     )

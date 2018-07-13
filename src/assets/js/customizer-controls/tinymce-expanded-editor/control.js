@@ -1,50 +1,34 @@
 (function ($) {
 
-    function hide_all_controls(parent) {
-        _.each(mailoptin_tab_control_config.style, function (value) {
-            $('li[id$="' + value + '"]', parent).hide();
-        });
-        _.each(mailoptin_tab_control_config.general, function (value) {
-            $('li[id$="' + value + '"]', parent).hide();
-        });
-
-        _.each(mailoptin_tab_control_config.advance, function (value) {
-            $('li[id$="' + value + '"]', parent).hide();
-        });
-    }
-
     wp.customize.bind('ready', function () {
+        var editor_open_flag = false;
 
-        if (typeof mailoptin_tab_control_config === "undefined") return;
+        $(document).on('click', '.mo-tinymce-expanded-editor-btn', function (e) {
+            e.preventDefault();
+            var content_editor,
+                editor_button = $(this);
+            var editor_button_icon = editor_button.find('span.dashicons');
+            var editor_button_id = this.id;
 
-        $('.mailoptin-toggle-control-tab').each(function () {
-            var parent = $(this).parents('ul.customize-pane-child');
+            editor_open_flag = !editor_open_flag;
 
-            hide_all_controls(parent);
+            if (editor_open_flag === true) {
 
-            var active_tab = wp.customize('mo_email_campaigns[' + mailoptin_email_campaign_id + '][footer_controls_tab_toggle]').get();
+                editor_button.addClass('editor-open');
 
-            $('.mo-toggle-tab-wrapper', parent).hide();
-            _.each(mailoptin_tab_control_config, function (value, key) {
-                if (typeof mailoptin_tab_control_config[key] !== 'undefined') {
-                    $('.mo-toggle-tab-wrapper.mo-' + key, parent).show();
-                }
-            });
+                content_editor = '<div class="mo-tinymce-expanded-editor"><textarea style="height: 300px" id="mo-tinymce-expanded-textarea">hello</textarea></div>';
+                $('.wp-full-overlay').prepend(content_editor);
+                $('#mo-tinymce-expanded-textarea').mo_wp_editor({mode: 'tmce'});
 
-            _.each(mailoptin_tab_control_config[active_tab], function (value) {
-                $('li[id$="' + value + '"]', parent).show();
-            });
+                editor_button_icon.removeClass('dashicons-edit').addClass('dashicons-hidden');
+                editor_button.find('span:not(.dashicons)').text(moTinyMceExpandedEditor.button_close_text);
+            } else {
+                editor_button.removeClass('editor-open');
+                editor_button_icon.removeClass('dashicons-hidden').addClass('dashicons-edit');
+                editor_button.find('span:not(.dashicons)').text(moTinyMceExpandedEditor.button_open_text);
 
-            $('input.mailoptin-toggle-control-radio', parent).on('click', function () {
-                var parent = $(this).parents('ul.customize-pane-child');
-                active_tab = this.value;
-                hide_all_controls(parent);
-
-                _.each(mailoptin_tab_control_config[active_tab], function (value) {
-                    $('li[id$="' + value + '"]', parent).show();
-                });
-            });
-        });
-
+                $('.mo-tinymce-expanded-editor').remove();
+            }
+        })
     });
 })(jQuery);

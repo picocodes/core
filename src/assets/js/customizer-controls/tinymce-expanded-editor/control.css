@@ -30,9 +30,13 @@
 
 .mo-tinymce-expanded-editor {
     position: absolute;
-    bottom: 10px;
+    bottom: 0;
     color: #000;
     right: 0;
     left: 0;
-    z-index: 99999;
+    z-index: 99;
+}
+
+.mo-tinymce-expanded-editor .wp-editor-tools  {
+    padding: 0 18px 0 5px;
 }
