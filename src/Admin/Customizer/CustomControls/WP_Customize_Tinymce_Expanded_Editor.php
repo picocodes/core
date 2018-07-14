@@ -22,19 +22,12 @@ class WP_Customize_Tinymce_Expanded_Editor extends WP_Customize_Control
     {
         ?>
         <label class="customize-control-title"><?php echo esc_html($this->label); ?></label>
-        <a href="#" class="button button-hero mo-tinymce-expanded-editor-btn" id="<?= $this->id; ?>">
+        <a href="#" class="button button-hero mo-tinymce-expanded-editor-btn" data-control-id="<?= $this->id; ?>">
             <div class="mo-tinymce-expanded-control-wrapper">
                 <span class="dashicons dashicons-edit"></span>
                 <span><?php esc_html_e('Open content editor', 'mailoptin'); ?></span>
             </div>
         </a>
-        <input
-                class="mo-tinymce-expanded-hidden-settings"
-                id="mo-tinymce-expanded-settings-<?= $this->id; ?>"
-                type="hidden"
-                value="<?php echo $this->value(); ?>"
-            <?php $this->link(); ?>
-        />
         <?php
     }
 }
