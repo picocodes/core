@@ -33,8 +33,7 @@ class WP_Customize_Controls_Tab_Toggle extends WP_Customize_Control
                     name="<?= $name; ?>"
                     style="display: none"
                     value="<?php echo $key ?>"
-                <?php $this->link();
-                checked($this->value(), $key); ?>
+                <?php checked($this->value(), $key); ?>
             />
             <div class="mo-toggle-tab-wrapper mo-<?= $key; ?>">
                 <label for="<?= $this->id . $key; ?>" class="mo-single-toggle-tab">

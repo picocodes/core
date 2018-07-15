@@ -4,6 +4,7 @@ namespace MailOptin\Core\EmailCampaigns\NewPublishPost\Templates;
 
 
 use MailOptin\Core\EmailCampaigns\AbstractTemplate;
+use MailOptin\Core\Repositories\EmailCampaignRepository;
 
 class Lucid extends AbstractTemplate
 {
@@ -170,6 +171,7 @@ class Lucid extends AbstractTemplate
         $view_web_version = apply_filters('mo_email_template_view_web_version', '<a class="webversion-label mo-header-web-version-label mo-header-web-version-color" href="{{webversion}}">[mo_header_web_version_link_label]</a>');
         $unsubscribe_link = apply_filters('mo_email_template_unsubscribe_link', '<a class="unsubscribe mo-footer-unsubscribe-link-label mo-footer-unsubscribe-link-color" href="{{unsubscribe}}">[mo_footer_unsubscribe_link_label]</a>');
 
+        $before_main_content = EmailCampaignRepository::get_merged_customizer_value($this->email_campaign_id,'content_before_main_content');
         return <<<HTML
   <table class="email-wrapper mo-page-bg-color" width="100%" cellpadding="0" cellspacing="0">
     <tr>
@@ -190,6 +192,7 @@ class Lucid extends AbstractTemplate
                 <!-- Body content -->
                 <tr>
                   <td class="content-cell mo-content-text-color">
+                  <div class="mo-before-main-content">$before_main_content</div>
                     <a href="{{post.url}}">
                     <h1 class="mo-content-title-font-size">{{post.title}}</h1>
                     <img class"mo-imgix" src="{{post.feature.image}}">

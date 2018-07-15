@@ -55,6 +55,7 @@ class AbstractCustomizer
         $defaults['header_web_version_link_label'] = apply_filters('mailoptin_header_web_version_link_label_default', __('View this email in your browser', 'mailoptin'),$this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
         $defaults['header_web_version_link_color'] = apply_filters('mailoptin_header_web_version_link_color_default', '',$this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
 
+        $defaults['content_before_main_content'] = apply_filters('mailoptin_content_before_main_content_default', '',$this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
         $defaults['content_remove_ellipsis_button'] = apply_filters('mailoptin_content_remove_ellipsis_button_default', false,$this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
         $defaults['content_remove_feature_image'] = apply_filters('mailoptin_content_remove_feature_image_default', false,$this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
         $defaults['content_background_color'] = apply_filters('mailoptin_content_background_color_default', '',$this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);

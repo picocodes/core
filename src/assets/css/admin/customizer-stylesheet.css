@@ -282,11 +282,6 @@ input.button.mo-autoresponder-btn {
     font-size: 13px;
 }
 
-.mo-autoresponder-modal-overlay #mo_autoresponder_message_ifr,
-.mo-autoresponder-modal-overlay #mo_autoresponder_message {
-    min-height: 300px;
-}
-
 .mo-autoresponder-modal {
     background: #fff;
     min-height: 500px;

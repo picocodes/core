@@ -38,6 +38,13 @@
         });
     });
 
+    wp.customize(mailoptin_email_campaign_option_prefix + '[' + mailoptin_email_campaign_id + '][content_before_main_content]', function (value) {
+        value.bind(function (to) {
+            to = $.parseHTML(to);
+            $('.mo-before-main-content').html(to);
+        });
+    });
+
     wp.customize(mailoptin_email_campaign_option_prefix + '[' + mailoptin_email_campaign_id + '][content_background_color]', function (value) {
         value.bind(function (to) {
             $('.mo-content-background-color').css('background-color', to);
@@ -82,8 +89,9 @@
 
     wp.customize(mailoptin_email_campaign_option_prefix + '[' + mailoptin_email_campaign_id + '][content_ellipsis_button_alignment]', function (value) {
         value.bind(function (to) {
-            $('div.mo-content-button-alignment').attr('align', to);
-            $('div.mo-content-button-alignment').css('text-align', to);
+            var cache = $('div.mo-content-button-alignment');
+            cache.attr('align', to);
+            cache.css('text-align', to);
         });
     });
 

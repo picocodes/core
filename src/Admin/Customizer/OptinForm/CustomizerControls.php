@@ -198,7 +198,7 @@ class CustomizerControls
         $headline_control_args = apply_filters(
             "mo_optin_form_customizer_headline_controls",
             array(
-                'hide_headline' => new WP_Customize_Controls_Tab_Toggle(
+                'hide_headline' => new WP_Customize_Toggle_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[hide_headline]',
                     apply_filters('mo_optin_form_customizer_hide_headline_args', array(
