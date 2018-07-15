@@ -2,6 +2,8 @@
 
 namespace MailOptin\Core\Admin\SettingsPage\LiteToPremiumUpgrade;
 
+use MailOptin\Core\Admin\SettingsPage\LicenseControl;
+
 class DoUpgrade
 {
     public function __construct()
@@ -73,6 +75,8 @@ class DoUpgrade
         if (!check_admin_referer('mo_plugin_nonce', 'mo_plugin_nonce')) return wp_nonce_ays('');;
 
         $license_key = sanitize_key($_POST['mo_license_key']);
+
+        LicenseControl::get_instance($license_key)->activate_license();
 
         $response = wp_remote_get(
             sprintf('https://my.mailoptin.io/?edd_action=get_version&item_id=%s&license=%s', EDD_MO_ITEM_ID, $license_key),
