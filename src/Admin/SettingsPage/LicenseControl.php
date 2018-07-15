@@ -2,6 +2,7 @@
 
 namespace MailOptin\Core\Admin\SettingsPage;
 
+use MailOptin\Libsodium\EDD_SL_Plugin_Updater;
 use WP_Error;
 
 class LicenseControl
