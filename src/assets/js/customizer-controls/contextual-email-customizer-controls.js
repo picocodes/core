@@ -50,6 +50,49 @@
             api.control('mo_email_campaigns[' + mailoptin_email_campaign_id + '][footer_description]', linkSettingValueToControlActiveState);
         });
 
+        api('mo_email_campaigns[' + mailoptin_email_campaign_id + '][content_remove_feature_image]', function (setting) {
+            var is_display_fallback_image, linkSettingValueToControlActiveState;
+
+            is_display_fallback_image = function () {
+                return !setting.get();
+            };
+
+            linkSettingValueToControlActiveState = function (control) {
+                var setActiveState = function () {
+                    control.active.set(is_display_fallback_image());
+                };
+
+                control.active.validate = is_display_fallback_image;
+
+                setActiveState();
+
+                setting.bind(setActiveState);
+            };
+
+            api.control('mo_email_campaigns[' + mailoptin_email_campaign_id + '][default_image_url]', linkSettingValueToControlActiveState);
+        });
+
+        api('mo_email_campaigns[' + mailoptin_email_campaign_id + '][content_remove_ellipsis_button]', function (setting) {
+            var is_display, linkSettingValueToControlActiveState;
+
+            is_display = function () {
+                return !setting.get();
+            };
+
+            linkSettingValueToControlActiveState = function (control) {
+                var setActiveState = function () {
+                    control.active.set(is_display());
+                };
+
+                control.active.validate = is_display;
+
+                setActiveState();
+
+                setting.bind(setActiveState);
+            };
+
+            api.control('mo_email_campaigns[' + mailoptin_email_campaign_id + '][content_ellipsis_button_label]', linkSettingValueToControlActiveState);
+        });
 
         // handles activation and deactivation of optin
         $('#mo-automation-activate-switch').on('change', function () {
