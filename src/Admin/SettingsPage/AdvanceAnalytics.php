@@ -26,7 +26,7 @@ class AdvanceAnalytics extends AbstractSettingsPage
 
         do_action("mailoptin_advance_analytics_settings_page", $hook);
 
-        if (!defined('MAILOPTIN_PRO_PLUGIN_TYPE')) {
+        if (!defined('MAILOPTIN_PRO_PLUGIN_TYPE') || !defined('MAILOPTIN_DETACH_LIBSODIUM')) {
             add_filter('wp_cspa_main_content_area', array($this, 'upsell_settings_page'), 10, 2);
         }
     }
@@ -90,7 +90,7 @@ class AdvanceAnalytics extends AbstractSettingsPage
         $instance->option_name('mo_analytics');
         $instance->page_header(__('Optin Analytics', 'mailoptin'));
         $this->register_core_settings($instance, true);
-        if (defined('MAILOPTIN_PRO_PLUGIN_TYPE') && method_exists(SettingsPage::get_instance(), 'analytic_chart_sidebar')) {
+        if (defined('MAILOPTIN_PRO_PLUGIN_TYPE') && defined('MAILOPTIN_DETACH_LIBSODIUM') && method_exists(SettingsPage::get_instance(), 'analytic_chart_sidebar')) {
             $instance->sidebar(SettingsPage::get_instance()->analytic_chart_sidebar());
         }
         $instance->build(!defined('MAILOPTIN_PRO_PLUGIN_TYPE'));

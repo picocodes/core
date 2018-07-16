@@ -26,7 +26,7 @@ class LeadBank extends AbstractSettingsPage
 
         do_action("mailoptin_leadbank_settings_page", $hook);
 
-        if (!defined('MAILOPTIN_PRO_PLUGIN_TYPE')) {
+        if (!defined('MAILOPTIN_PRO_PLUGIN_TYPE') || !defined('MAILOPTIN_DETACH_LIBSODIUM')) {
             add_filter('wp_cspa_main_content_area', array($this, 'upsell_settings_page'), 10, 2);
         }
     }
