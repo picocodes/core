@@ -86,8 +86,13 @@
 
     window.onload = function () {
         var preview_iframe_name = $('.wp-full-overlay-main').find('iframe').prop('name');
+
+        if (typeof preview_iframe_name === 'undefined') return;
+
         // source https://stackoverflow.com/a/16019605/2648410
         var preview_iframe_window = document.getElementsByName(preview_iframe_name)[0].contentWindow.window;
+
+        if (typeof preview_iframe_window === 'undefined') return;
 
         // this script is loaded inside preview iframe where heartbeat isn't available hence parent.document
         $(document).on('heartbeat-send', function () {
