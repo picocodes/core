@@ -38,6 +38,12 @@ class CustomizerSettings extends AbstractCustomizer
                     'type' => 'option',
                     'transport' => 'postMessage',
                 ),
+                'post_content_length' => array(
+                    'default' => $this->customizer_defaults['post_content_length'],
+                    'type' => 'option',
+                    'transport' => 'refresh',
+                    'sanitize_callback' => 'absint',
+                ),
                 'post_categories' => array(
                     'default' => $this->customizer_defaults['post_categories'],
                     'type' => 'option',
@@ -196,12 +202,6 @@ class CustomizerSettings extends AbstractCustomizer
                     'default' => $this->customizer_defaults['default_image_url'],
                     'type' => 'option',
                     'transport' => 'postMessage',
-                ),
-                'post_content_length' => array(
-                    'default' => $this->customizer_defaults['post_content_length'],
-                    'type' => 'option',
-                    'transport' => 'refresh',
-                    'sanitize_callback' => 'absint',
                 ),
                 'content_background_color' => array(
                     'default' => $this->customizer_defaults['content_background_color'],

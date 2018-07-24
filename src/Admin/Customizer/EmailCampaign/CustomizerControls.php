@@ -129,15 +129,23 @@ class CustomizerControls
                 $this->wp_customize,
                 'email_campaign_subject',
                 apply_filters('mailoptin_customizer_settings_campaign_subject_args', array(
-                        'label' => __('Email Campaign Subject', 'mailoptin'),
+                        'label' => __('Email Subject', 'mailoptin'),
                         'section' => $this->customizerClassInstance->campaign_settings_section_id,
                         'settings' => $this->option_prefix . '[email_campaign_subject]',
-                        'description' => __('Enter a subject or title for this automation email campaigns.', 'mailoptin'),
-                        'sub_description' => apply_filters('mailoptin_customizer_settings_email_campaign_subject_description', __('Subject of email campaign.', 'mailoptin'),
-                            $campaign_type
-                        ),
+                        'description' => __('Enter a subject for the email newsletters.', 'mailoptin'),
+                        'sub_description' => apply_filters('mailoptin_customizer_settings_email_campaign_subject_description', '', $campaign_type),
                         'priority' => 20
                     )
+                )
+            ),
+            'post_content_length' => apply_filters('mailoptin_customizer_settings_campaign_post_content_length_args',
+                array(
+                    'type' => 'number',
+                    'label' => __('Post Content Length', 'mailoptin'),
+                    'section' => $this->customizerClassInstance->campaign_settings_section_id,
+                    'settings' => $this->option_prefix . '[post_content_length]',
+                    'description' => __('Enter the number of words to limit the post content to. Set to "0" for full post content.', 'mailoptin'),
+                    'priority' => 30
                 )
             ),
             'post_categories' => new WP_Customize_Chosen_Select_Control(
@@ -193,7 +201,7 @@ class CustomizerControls
                         'label' => __('Send Immediately', 'mailoptin'),
                         'section' => $this->customizerClassInstance->campaign_settings_section_id,
                         'settings' => $this->option_prefix . '[send_immediately]',
-                        'description' => __('Check to enable sending of "new post newsletter" immediately after publication.', 'mailoptin'),
+                        'description' => __('Enable to send newsletter immediately after a post is published.', 'mailoptin'),
                         'priority' => 70,
                     )
                 )
@@ -520,7 +528,7 @@ class CustomizerControls
                             'label' => __('Before Main Content', 'mailoptin'),
                             'section' => $this->customizerClassInstance->campaign_content_section_id,
                             'settings' => $this->option_prefix . '[content_before_main_content]',
-                            'priority' => 4
+                            'priority' => 8
                         )
                     )
                 ),
@@ -565,16 +573,6 @@ class CustomizerControls
                         'settings' => $this->option_prefix . '[default_image_url]',
                         'description' => __('Enter URL of an image to use when a post lack a feature image.', 'mailoptin'),
                         'priority' => 40
-                    )
-                ),
-                'post_content_length' => apply_filters('mailoptin_customizer_settings_campaign_post_content_length_args',
-                    array(
-                        'type' => 'number',
-                        'label' => __('Post Content Length', 'mailoptin'),
-                        'section' => $this->customizerClassInstance->campaign_content_section_id,
-                        'settings' => $this->option_prefix . '[post_content_length]',
-                        'description' => __('Enter the number of words to limit the post content to. Set to "0" for full post content. Default is 150.', 'mailoptin'),
-                        'priority' => 50
                     )
                 ),
                 'content_title_font_size' => new WP_Customize_Range_Value_Control(
@@ -627,7 +625,7 @@ class CustomizerControls
                     $this->wp_customize,
                     $this->option_prefix . '[content_remove_ellipsis_button]',
                     apply_filters('mailoptin_template_customizer_content_remove_ellipsis_button_args', array(
-                            'label' => esc_html__('Remove Ellipsis Button', 'mailoptin'),
+                            'label' => esc_html__('Remove Read More Button', 'mailoptin'),
                             'section' => $this->customizerClassInstance->campaign_content_section_id,
                             'settings' => $this->option_prefix . '[content_remove_ellipsis_button]',
                             'type' => 'light',// light, ios, flat
@@ -636,7 +634,7 @@ class CustomizerControls
                     )
                 ),
                 'content_ellipsis_button_alignment' => array(
-                    'label' => __('Ellipsis Button Alignment', 'mailoptin'),
+                    'label' => __('Read More Button Alignment', 'mailoptin'),
                     'section' => $this->customizerClassInstance->campaign_content_section_id,
                     'settings' => $this->option_prefix . '[content_ellipsis_button_alignment]',
                     'type' => 'select',
@@ -651,7 +649,7 @@ class CustomizerControls
                     $this->wp_customize,
                     $this->option_prefix . '[content_ellipsis_button_background_color]',
                     array(
-                        'label' => __('Ellipsis Button Background Color', 'mailoptin'),
+                        'label' => __('Read More Button Background Color', 'mailoptin'),
                         'section' => $this->customizerClassInstance->campaign_content_section_id,
                         'settings' => $this->option_prefix . '[content_ellipsis_button_background_color]',
                         'priority' => 160
@@ -661,14 +659,14 @@ class CustomizerControls
                     $this->wp_customize,
                     $this->option_prefix . '[content_ellipsis_button_text_color]',
                     array(
-                        'label' => __('Ellipsis Button Text Color', 'mailoptin'),
+                        'label' => __('Read More Button Text Color', 'mailoptin'),
                         'section' => $this->customizerClassInstance->campaign_content_section_id,
                         'settings' => $this->option_prefix . '[content_ellipsis_button_text_color]',
                         'priority' => 180
                     )
                 ),
                 'content_ellipsis_button_label' => array(
-                    'label' => __('Ellipsis Button Label', 'mailoptin'),
+                    'label' => __('Read More Button Label', 'mailoptin'),
                     'type' => 'text',
                     'section' => $this->customizerClassInstance->campaign_content_section_id,
                     'settings' => $this->option_prefix . '[content_ellipsis_button_label]',

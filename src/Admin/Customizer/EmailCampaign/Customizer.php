@@ -211,7 +211,7 @@ class Customizer
     {
         if (strpos($text, 'Customizer allows you to preview changes to your site')) {
             $translations = __(
-                'The customizer allows you to configure, make and preview changes to email templates.',
+                'The customizer allows you to design, preview and set up to email campaigns.',
                 'mailoptin'
             );
         }
@@ -320,30 +320,30 @@ class Customizer
 
         $wp_customize->add_section($this->campaign_settings_section_id, array(
                 'title'    => __('Settings', 'mailoptin'),
-                'priority' => 55,
+                'priority' => 10,
             )
         );
 
         $wp_customize->add_section($this->campaign_page_section_id, array(
-                'title'    => __('Template Page', 'mailoptin'),
+                'title'    => __('Body', 'mailoptin'),
                 'priority' => 20,
             )
         );
 
         $wp_customize->add_section($this->campaign_header_section_id, array(
-                'title'    => __('Template Header', 'mailoptin'),
+                'title'    => __('Header', 'mailoptin'),
                 'priority' => 30,
             )
         );
 
         $wp_customize->add_section($this->campaign_content_section_id, array(
-                'title'    => __('Template Content', 'mailoptin'),
+                'title'    => __('Content', 'mailoptin'),
                 'priority' => 40,
             )
         );
 
         $wp_customize->add_section($this->campaign_footer_section_id, array(
-                'title'    => __('Template Footer', 'mailoptin'),
+                'title'    => __('Footer', 'mailoptin'),
                 'priority' => 50,
             )
         );

@@ -70,7 +70,7 @@ class AdminNotices
             return;
 
         if (isset($_GET['email-campaign-error']) && $_GET['email-campaign-error'] == 'class-not-found') : ?>
-            <div id="message" class="updated notice is-dismissible">
+            <div id="message" class="notice notice-error is-dismissible">
                 <p>
                     <?php
                     _e('There was an error fetching email campaign template dependency.', 'mailoptin');
@@ -89,7 +89,7 @@ class AdminNotices
             return;
 
         if (isset($_GET['optin-error']) && $_GET['optin-error'] == 'class-not-found') : ?>
-            <div id="message" class="updated notice is-dismissible">
+            <div id="message" class="notice notice-error is-dismissible">
                 <p>
                     <?php _e('There was an error fetching optin dependency. Try again or select another template.', 'mailoptin'); ?>
                 </p>

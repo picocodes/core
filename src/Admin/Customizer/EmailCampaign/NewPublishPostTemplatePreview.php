@@ -3,13 +3,11 @@
 namespace MailOptin\Core\Admin\Customizer\EmailCampaign;
 
 
-use MailOptin\Core\EmailCampaigns\NewPublishPost\TemplatifyNewPostPublish;
+use MailOptin\Core\EmailCampaigns\NewPublishPost\Templatify;
 use MailOptin\Core\EmailCampaigns\TemplateTrait;
 
-class TemplatePreview extends TemplatifyNewPostPublish
+class NewPublishPostTemplatePreview extends Templatify
 {
-    use TemplateTrait;
-
     public function __construct($post, $email_campaign_id = null, $template_class = null)
     {
         parent::__construct($post, $email_campaign_id, $template_class);
@@ -28,5 +26,11 @@ class TemplatePreview extends TemplatifyNewPostPublish
     public function post_url()
     {
         return '#';
+    }
+
+    public function feature_image($post_id)
+    {
+        // we need the default image shown, so we are gonna supply invalid post ID
+        return parent::feature_image('');
     }
 }

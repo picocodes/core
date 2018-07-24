@@ -94,6 +94,28 @@
             api.control('mo_email_campaigns[' + mailoptin_email_campaign_id + '][content_ellipsis_button_label]', linkSettingValueToControlActiveState);
         });
 
+        api('mo_email_campaigns[' + mailoptin_email_campaign_id + '][send_immediately]', function (setting) {
+            var is_display, linkSettingValueToControlActiveState;
+
+            is_display = function () {
+                return !setting.get();
+            };
+
+            linkSettingValueToControlActiveState = function (control) {
+                var setActiveState = function () {
+                    control.active.set(is_display());
+                };
+
+                control.active.validate = is_display;
+
+                setActiveState();
+
+                setting.bind(setActiveState);
+            };
+
+            api.control('mo_email_campaigns[' + mailoptin_email_campaign_id + '][email_campaign_schedule]', linkSettingValueToControlActiveState);
+        });
+
         // handles activation and deactivation of optin
         $('#mo-automation-activate-switch').on('change', function () {
             $.post(ajaxurl, {

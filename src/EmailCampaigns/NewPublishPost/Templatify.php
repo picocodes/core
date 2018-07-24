@@ -3,19 +3,22 @@
 namespace MailOptin\Core\EmailCampaigns\NewPublishPost;
 
 use MailOptin\Core\Admin\Customizer\EmailCampaign\EmailCampaignFactory;
+use MailOptin\Core\EmailCampaigns\TemplateTrait;
+use MailOptin\Core\EmailCampaigns\TemplatifyInterface;
 use MailOptin\Core\EmailCampaigns\VideoToImageLink;
 use MailOptin\Core\Repositories\EmailCampaignRepository as ER;
 use WP_Post;
 
 
-class TemplatifyNewPostPublish
+class Templatify implements TemplatifyInterface
 {
+    use TemplateTrait;
+
     protected $post;
     protected $email_campaign_id;
     protected $template_class;
     protected $campaign_type;
     protected $post_content_length;
-    protected $default_feature_image;
 
     /**
      * @param mixed $post could be WP_Post object, post ID or stdClass for customizer preview
@@ -35,18 +38,10 @@ class TemplatifyNewPostPublish
         $this->template_class = !is_null($template_class) ? $template_class : ER::get_template_class($email_campaign_id);
         $this->campaign_type = !is_null($campaign_type) ? $campaign_type : ER::get_email_campaign_type($email_campaign_id);
         $this->post_content_length = ER::get_customizer_value($email_campaign_id, 'post_content_length');
-        $this->default_feature_image = ER::get_merged_customizer_value($email_campaign_id, 'default_image_url');
     }
 
     /**
-     * @return int
-     */
-    public function post_id()
-    {
-        return $this->post->ID;
-    }
-
-    /**
+     *
      * @return string
      */
     public function post_title()
@@ -63,14 +58,6 @@ class TemplatifyNewPostPublish
     }
 
     /**
-     * @return int
-     */
-    public function post_content_length()
-    {
-        return absint($this->post_content_length);
-    }
-
-    /**
      * @return false|mixed|string
      */
     public function post_url()
@@ -80,28 +67,6 @@ class TemplatifyNewPostPublish
         }
 
         return get_permalink($this->post->ID);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function feature_image()
-    {
-        $is_remove_featured_image = ER::get_merged_customizer_value(
-            $this->email_campaign_id,
-            'content_remove_feature_image'
-        );
-
-        if ($is_remove_featured_image) return '';
-
-        if (has_post_thumbnail($this->post_id())) {
-            $image_data = wp_get_attachment_image_src(get_post_thumbnail_id($this->post_id()), 'full');
-            if (!empty($image_data[0])) {
-                return $image_data[0];
-            }
-        }
-
-        return $this->default_feature_image;
     }
 
     /**
@@ -125,19 +90,21 @@ class TemplatifyNewPostPublish
             '{{post.url}}',
         );
 
-        if (0 === $this->post_content_length()) {
+        $post_content_length = absint($this->post_content_length);
+
+        if (0 === $post_content_length) {
             $post_content = $this->post_content();
         } else {
             $post_content = \MailOptin\Core\limit_text(
                 $this->post_content(),
-                $this->post_content_length()
+                $post_content_length
             );
         }
 
         $replace = array(
             $this->post_title(),
             wpautop($post_content),
-            $this->feature_image(),
+            $this->feature_image($this->post->ID),
             $this->post_url(),
         );
 

@@ -43,4 +43,9 @@ class EmailCampaignFactory
         return new $email_campaign_class($email_campaign_id, $wp_customize);
     }
 
+    public static function get_campaign_type_namespace($email_campaign_type)
+    {
+        return str_replace(' ', '', ucwords(str_replace('_', ' ', $email_campaign_type)));
+    }
+
 }

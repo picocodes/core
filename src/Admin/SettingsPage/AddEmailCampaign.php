@@ -21,7 +21,8 @@ class AddEmailCampaign extends AbstractSettingsPage
     public function email_campaign_types()
     {
         return apply_filters('mo_email_campaign_types', [
-            EmailCampaignRepository::NEW_PUBLISH_POST => __('New Post Notification', 'mailoptin')
+            EmailCampaignRepository::NEW_PUBLISH_POST => __('New Post Notification', 'mailoptin'),
+            EmailCampaignRepository::POSTS_EMAIL_DIGEST => __('Posts Email Digest', 'mailoptin')
         ]);
     }
 
@@ -86,20 +87,16 @@ class AddEmailCampaign extends AbstractSettingsPage
      */
     public function campaign_available_email_templates()
     {
-        $this->new_publish_post_email_templates();
+        $this->template_listing_tmpl(EmailCampaignRepository::NEW_PUBLISH_POST);
+        $this->template_listing_tmpl(EmailCampaignRepository::POSTS_EMAIL_DIGEST);
 
         do_action('mo_campaign_available_email_templates');
     }
 
-    /**
-     * New publish post email templates.
-     */
-    public function new_publish_post_email_templates()
+    public function template_listing_tmpl($campaign_type)
     {
-        $campaign_type = EmailCampaignRepository::NEW_PUBLISH_POST;
-
-        echo '<div id="notifType_new_publish_post" class="mailoptin-email-templates mailoptin-template-clear" style="display:none">';
-        foreach (EmailTemplatesRepository::get_all() as $email_template) {
+        echo "<div id=\"notifType_{$campaign_type}\" class=\"mailoptin-email-templates mailoptin-template-clear\" style=\"display:none\">";
+        foreach (EmailTemplatesRepository::get_by_type($campaign_type) as $email_template) {
 
             $template_name = $email_template['name'];
             $template_class = $email_template['template_class'];

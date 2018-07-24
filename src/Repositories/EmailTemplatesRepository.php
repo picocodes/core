@@ -16,6 +16,12 @@ class EmailTemplatesRepository extends AbstractRepository
                     'template_class' => 'Lucid',
                     'campaign_type' => EmailCampaignRepository::NEW_PUBLISH_POST,
                     'screenshot' => MAILOPTIN_ASSETS_URL . 'images/email-templates/lucid.png'
+                ),
+                array(
+                    'name' => 'Lucid',
+                    'template_class' => 'Lucid',
+                    'campaign_type' => EmailCampaignRepository::POSTS_EMAIL_DIGEST,
+                    'screenshot' => MAILOPTIN_ASSETS_URL . 'images/email-templates/lucid.png'
                 )
             ));
         }
@@ -49,7 +55,7 @@ class EmailTemplatesRepository extends AbstractRepository
             $campaign_type_array = array_map('trim', explode(',', $item['campaign_type']));
 
             if (in_array($campaign_type, $campaign_type_array)) {
-                $carry = $item;
+                $carry[] = $item;
             }
 
             return $carry;

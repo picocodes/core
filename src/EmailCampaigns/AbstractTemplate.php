@@ -2,9 +2,10 @@
 
 namespace MailOptin\Core\EmailCampaigns;
 
-use \MailOptin\Core\Admin\Customizer\EmailCampaign\Customizer;
+use WP_Post;
+use MailOptin\Core\Admin\Customizer\EmailCampaign\Customizer;
 use MailOptin\Core\Admin\Customizer\EmailCampaign\AbstractCustomizer;
-use MailOptin\Core\Repositories\EmailCampaignRepository;
+use MailOptin\Core\Repositories\EmailCampaignRepository as ER;
 
 /**
  * @method string page_background_color()
@@ -52,10 +53,10 @@ abstract class AbstractTemplate extends AbstractCustomizer implements TemplateIn
         $this->template_shortcodes();
 
         if (!empty($_REQUEST['mailoptin_email_campaign_id'])) {
-            add_filter('mailoptin_template_customizer_page_settings', array($this, 'customizer_page_settings'));
-            add_filter('mailoptin_template_customizer_header_settings', array($this, 'customizer_header_settings'));
-            add_filter('mailoptin_template_customizer_content_settings', array($this, 'customizer_content_settings'));
-            add_filter('mailoptin_template_customizer_footer_settings', array($this, 'customizer_footer_settings'));
+            add_filter('mailoptin_email_campaign_customizer_page_settings', array($this, 'customizer_page_settings'));
+            add_filter('mailoptin_email_campaign_customizer_header_settings', array($this, 'customizer_header_settings'));
+            add_filter('mailoptin_email_campaign_customizer_content_settings', array($this, 'customizer_content_settings'));
+            add_filter('mailoptin_email_campaign_customizer_footer_settings', array($this, 'customizer_footer_settings'));
 
             add_filter('mailoptin_template_customizer_page_controls', array($this, 'customizer_page_controls'), 10, 4);
             add_filter('mailoptin_template_customizer_header_controls', array($this, 'customizer_header_controls'), 10, 4);
@@ -287,7 +288,7 @@ CSS;
      */
     public function email_template_customizer_javascript()
     {
-        $template_name = EmailCampaignRepository::get_email_campaign_name($this->email_campaign_id);
+        $template_name = ER::get_email_campaign_name($this->email_campaign_id);
         $template_name = preg_replace('/\s+/', '-', $template_name);
 
         wp_enqueue_script(
@@ -327,7 +328,7 @@ CSS;
     {
         $default = isset($this->customizer_defaults[$template_setting]) ? $this->customizer_defaults[$template_setting] : '';
 
-        return EmailCampaignRepository::get_customizer_value($this->email_campaign_id, $template_setting, $default);
+        return ER::get_customizer_value($this->email_campaign_id, $template_setting, $default);
     }
 
 
@@ -363,7 +364,7 @@ CSS;
 
     protected function customizer_custom_css()
     {
-        return EmailCampaignRepository::get_customizer_value($this->email_campaign_id, 'custom_css');
+        return ER::get_customizer_value($this->email_campaign_id, 'custom_css');
 
     }
 
@@ -377,33 +378,28 @@ CSS;
     {
         ob_start();
         ?>
-        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-                "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-        <html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>{{post.title}}</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-        <style type="text/css">
-            <?php $template_style = apply_filters('mailoptin_email_template_css', $this->get_styles(), $this->email_campaign_id, $this); ?>
-            <?php $custom_css_style = apply_filters('mailoptin_email_template_custom_css', $this->customizer_custom_css(), $this->email_campaign_id, $this); ?>
-            <?php $combined_style = $template_style . "\r\n". $this->get_template_core_css() . "\r\n" . $custom_css_style; ?>
-            <?php echo apply_filters('mailoptin_email_template_style', $combined_style, $this->email_campaign_id, $this); ?>
-        </style>
-    </head>
-    <body>
-    <?php echo do_shortcode($this->get_body()); ?>
-    <?php echo $this->branding_attribute(); ?>
-    </body>
+        <head>
+            <title>{{post.title}}</title>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+            <style type="text/css">
+                <?php $template_style = apply_filters('mailoptin_email_template_css', $this->get_styles(), $this->email_campaign_id, $this); ?>
+                <?php $custom_css_style = apply_filters('mailoptin_email_template_custom_css', $this->customizer_custom_css(), $this->email_campaign_id, $this); ?>
+                <?php $combined_style = $template_style . "\r\n". $this->get_template_core_css() . "\r\n" . $custom_css_style; ?>
+                <?php echo apply_filters('mailoptin_email_template_style', $combined_style, $this->email_campaign_id, $this); ?>
+            </style>
+        </head>
+        <body>
+        <?php echo do_shortcode($this->get_body()); ?>
+        <?php echo $this->branding_attribute(); ?>
+        </body>
         <?php
         return ob_get_clean();
     }
 
     public function branding_attribute()
     {
-        if ($this->get_customizer_value('remove_branding') === true) {
-            return;
-        }
+        if ($this->get_customizer_value('remove_branding') === true) return;
         $remove_branding_text = __('Newsletter Powered by', 'mailoptin');
         $mailoptin_logo_url = MAILOPTIN_ASSETS_URL . 'images/mailoptin-blue.png';
         $mailoptin_url = 'https://mailoptin.io/?ref=email-branding';

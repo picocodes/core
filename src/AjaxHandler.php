@@ -10,7 +10,7 @@ use MailOptin\Core\Admin\SettingsPage\SplitTestOptinCampaign;
 use MailOptin\Core\Connections\AbstractConnect;
 use MailOptin\Core\Connections\ConnectionFactory;
 use MailOptin\Core\EmailCampaigns\NewPublishPost\NewPublishPost;
-use MailOptin\Core\EmailCampaigns\NewPublishPost\TemplatifyNewPostPublish;
+use MailOptin\Core\EmailCampaigns\NewPublishPost\Templatify;
 use MailOptin\Core\OptinForms\ConversionDataBuilder;
 use MailOptin\Core\PluginSettings\Settings;
 use MailOptin\Core\Repositories\ConnectionsRepository;
@@ -209,7 +209,7 @@ class AjaxHandler
         $mock_post->post_url = home_url();
 
         return [
-            (new TemplatifyNewPostPublish($mock_post, $email_campaign_id))->forge(),
+            (new Templatify($mock_post, $email_campaign_id))->forge(),
             NewPublishPost::format_campaign_subject($email_campaign_subject, $mock_post)
         ];
     }

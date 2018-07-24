@@ -7,7 +7,7 @@ use MailOptin\Core\Admin\Customizer\EmailCampaign\AbstractCustomizer;
 class EmailCampaignRepository extends AbstractRepository
 {
     const NEW_PUBLISH_POST = 'new_publish_post';
-    const POSTS_EMAIL_DIGEST = 'post_email_digest';
+    const POSTS_EMAIL_DIGEST = 'posts_email_digest';
 
     /**
      * Return a human readable name for campaign identifier/key/type.
@@ -21,6 +21,9 @@ class EmailCampaignRepository extends AbstractRepository
         switch ($type) {
             case self::NEW_PUBLISH_POST:
                 $value = __('New Post Notification', 'mailoptin');
+                break;
+            case self::POSTS_EMAIL_DIGEST:
+                $value = __('Posts Email Digest', 'mailoptin');
                 break;
             default:
                 $value = '';
