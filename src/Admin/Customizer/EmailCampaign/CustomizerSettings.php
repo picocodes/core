@@ -33,6 +33,11 @@ class CustomizerSettings extends AbstractCustomizer
     public function campaign_settings()
     {
         $email_campaign_settings_args = apply_filters("mailoptin_email_campaign_customizer_page_settings", array(
+                'settings_controls_tab_toggle' => array(
+                    'default' => 'general',
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
                 'email_campaign_subject' => array(
                     'default' => $this->customizer_defaults['email_campaign_subject'],
                     'type' => 'option',

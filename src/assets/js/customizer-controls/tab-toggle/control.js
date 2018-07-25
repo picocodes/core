@@ -27,6 +27,8 @@
             $('.mo-toggle-tab-wrapper', parent).hide();
             _.each(mailoptin_tab_control_config, function (value, key) {
                 if (typeof mailoptin_tab_control_config[key] !== 'undefined') {
+                    if (key === 'advance' && parent.is('[id*="mailoptin_campaign_settings_section"]') === false) return;
+                    if (key === 'style' && parent.is('[id*="mailoptin_campaign_settings_section"]') === true) return;
                     $('.mo-toggle-tab-wrapper.mo-' + key, parent).show();
                 }
             });

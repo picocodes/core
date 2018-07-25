@@ -68,7 +68,15 @@ class CustomizerControls
                     'default_image_url',
                     'post_content_length',
                     'content_remove_ellipsis_button',
-                    'content_ellipsis_button_label'
+                    'content_ellipsis_button_label',
+
+                    'email_campaign_subject',
+                    'post_content_length',
+                    'connection_service',
+                    'connection_email_list',
+                    'send_immediately',
+                    'email_campaign_schedule',
+                    'email_campaign_settings_notice'
                 ]),
                 'style' => apply_filters('mailoptin_email_campaign_tab_toggle_style_config', [
                     'footer_background_color',
@@ -88,6 +96,11 @@ class CustomizerControls
                     'content_body_font_size',
                     'content_ellipsis_button_text_color',
                     'content_ellipsis_button_background_color'
+                ]),
+                'advance' => apply_filters('mailoptin_email_campaign_tab_toggle_advance_config', [
+                    'post_categories',
+                    'post_tags',
+                    'remove_branding'
                 ]),
             ]);
     }
@@ -125,6 +138,17 @@ class CustomizerControls
         $campaign_type = $this->customizerClassInstance->email_campaign_type;
 
         $campaign_settings_controls = array(
+
+            'settings_controls_tab_toggle' => new WP_Customize_Controls_Tab_Toggle(
+                $this->wp_customize,
+                $this->option_prefix . '[settings_controls_tab_toggle]',
+                apply_filters('mailoptin_template_customizer_settings_controls_tab_toggle_args', array(
+                        'section' => $this->customizerClassInstance->campaign_settings_section_id,
+                        'settings' => $this->option_prefix . '[settings_controls_tab_toggle]',
+                        'priority' => 2
+                    )
+                )
+            ),
             'email_campaign_subject' => new WP_Customize_Custom_Input_Control(
                 $this->wp_customize,
                 'email_campaign_subject',
@@ -153,6 +177,7 @@ class CustomizerControls
                 $this->option_prefix . '[post_categories]',
                 apply_filters('mo_optin_form_customizer_post_categories_args', array(
                         'label' => __('Restrict to selected categories', 'mailoptin'),
+                        'description' => __('Only include post of selected categories', 'mailoptin'),
                         'section' => $this->customizerClassInstance->campaign_settings_section_id,
                         'settings' => $this->option_prefix . '[post_categories]',
                         'choices' => ControlsHelpers::get_categories(),
@@ -165,6 +190,7 @@ class CustomizerControls
                 $this->option_prefix . '[post_tags]',
                 apply_filters('mo_optin_form_customizer_post_tags_args', array(
                         'label' => __('Restrict to selected tags', 'mailoptin'),
+                        'description' => __('Only include post of selected tags', 'mailoptin'),
                         'section' => $this->customizerClassInstance->campaign_settings_section_id,
                         'settings' => $this->option_prefix . '[post_tags]',
                         'choices' => ControlsHelpers::get_tags(),
@@ -230,7 +256,7 @@ class CustomizerControls
                             'hours' => __('Hours', 'mailoptin'),
                             'days' => __('Days', 'mailoptin'),
                         ],
-                        'description' => apply_filters('mailoptin_customizer_settings_email_campaign_schedule_description', __('Configure when email campaign will be sent out after post publication. Example: setting the input field to "5", and selecting "hours" will send the email 5 hours after post publication.', 'mailoptin'), $campaign_type),
+                        'description' => apply_filters('mailoptin_customizer_settings_email_campaign_schedule_description', __('Configure when email will be sent after a post is published. Example: setting the input field to "5", and selecting "hours" will send the email 5 hours after publication.', 'mailoptin'), $campaign_type),
                         'priority' => 80
                     )
                 )
