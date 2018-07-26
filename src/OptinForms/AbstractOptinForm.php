@@ -441,7 +441,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
                 'width: 100%',
                 'margin: 0',
                 'background: 0 0',
-                'z-index: 99999'
+                'z-index: 999999999'
             ];
 
             $barWrapperStyle = implode(';', $bar_wrapper_style_properties);
@@ -459,7 +459,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
                 'width: auto',
                 'margin: 0',
                 'background: 0 0',
-                'z-index: 99999'
+                'z-index: 999999999'
             ];
             $slideinWrapperStyle = implode(';', $slidein_wrapper_style_properties);
             $optin_form .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type}{$display_only_button_class_indicator}{$position_class}\" data-optin-type='{$this->optin_campaign_type}' style='$slideinWrapperStyle'>";

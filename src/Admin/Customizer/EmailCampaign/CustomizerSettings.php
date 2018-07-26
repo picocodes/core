@@ -43,6 +43,12 @@ class CustomizerSettings extends AbstractCustomizer
                     'type' => 'option',
                     'transport' => 'postMessage',
                 ),
+                'item_number' => array(
+                    'default' => $this->customizer_defaults['item_number'],
+                    'type' => 'option',
+                    'transport' => 'refresh',
+                    'sanitize_callback' => 'absint',
+                ),
                 'post_content_length' => array(
                     'default' => $this->customizer_defaults['post_content_length'],
                     'type' => 'option',
@@ -75,12 +81,12 @@ class CustomizerSettings extends AbstractCustomizer
                     'transport' => 'postMessage',
                 ),
                 'schedule_type' => array(
-                    'default' => $this->customizer_defaults['send_immediately'],
+                    'default' => $this->customizer_defaults['schedule_type'],
                     'type' => 'option',
                     'transport' => 'postMessage',
                 ),
                 'schedule_digit' => array(
-                    'default' => $this->customizer_defaults['send_immediately'],
+                    'default' => $this->customizer_defaults['schedule_digit'],
                     'type' => 'option',
                     'transport' => 'postMessage',
                     'sanitize_callback' => 'absint',

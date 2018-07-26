@@ -4,6 +4,7 @@ namespace MailOptin\Core\EmailCampaigns\PostsEmailDigest;
 
 use MailOptin\Core\EmailCampaigns\AbstractTemplate as ParentAbstractTemplate;
 use MailOptin\Core\EmailCampaigns\TemplateTrait;
+use MailOptin\Core\Repositories\EmailCampaignRepository;
 use WP_Post;
 
 abstract class AbstractTemplate extends ParentAbstractTemplate
@@ -26,8 +27,10 @@ abstract class AbstractTemplate extends ParentAbstractTemplate
 
     public function posts_email_digest()
     {
+        $item_count = EmailCampaignRepository::get_merged_customizer_value($this->email_campaign_id, 'item_number');
+
         return get_posts([
-            'numberposts' => 5
+            'numberposts' => $item_count
         ]);
     }
 
@@ -43,6 +46,8 @@ abstract class AbstractTemplate extends ParentAbstractTemplate
          * @var WP_Post $post
          */
         foreach ($posts as $index => $post) {
+            // index starts at 0. so we increment by one.
+            $index++;
 
             $search = array(
                 '{{post.title}}',
@@ -60,7 +65,7 @@ abstract class AbstractTemplate extends ParentAbstractTemplate
 
             echo str_replace($search, $replace, $this->single_post_item());
 
-            if (!empty($delimiter) && $index < ($posts_count - 1)) echo $delimiter;
+            if (!empty($delimiter) && ($index % $posts_count) > 0) echo $delimiter;
         }
 
         return ob_get_clean();

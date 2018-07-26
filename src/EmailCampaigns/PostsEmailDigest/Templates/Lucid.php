@@ -4,7 +4,6 @@ namespace MailOptin\Core\EmailCampaigns\PostsEmailDigest\Templates;
 
 
 use MailOptin\Core\EmailCampaigns\PostsEmailDigest\AbstractTemplate;
-use MailOptin\Core\EmailCampaigns\TemplateTrait;
 use MailOptin\Core\Repositories\EmailCampaignRepository;
 
 class Lucid extends AbstractTemplate

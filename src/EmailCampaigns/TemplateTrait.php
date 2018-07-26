@@ -45,8 +45,7 @@ trait TemplateTrait
         }
 
         $content = do_shortcode($post->post_content);
-        $post_content_length = ER::get_customizer_value($this->email_campaign_id, 'post_content_length');
-
+        $post_content_length = ER::get_merged_customizer_value($this->email_campaign_id, 'post_content_length');
 
         if (0 === $post_content_length) {
             $post_content = $content;

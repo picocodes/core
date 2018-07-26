@@ -162,13 +162,29 @@ class CustomizerControls
                     )
                 )
             ),
+            'item_number' => apply_filters('mailoptin_customizer_settings_campaign_item_number_args',
+                array(
+                    'type' => 'number',
+                    'label' => __('Number of Posts', 'mailoptin'),
+                    'section' => $this->customizerClassInstance->campaign_settings_section_id,
+                    'settings' => $this->option_prefix . '[item_number]',
+                    'input_attrs' => [
+                        'min' => 0,
+                    ],
+                    'description' => __('Maximum number of posts to show.', 'mailoptin'),
+                    'priority' => 25
+                )
+            ),
             'post_content_length' => apply_filters('mailoptin_customizer_settings_campaign_post_content_length_args',
                 array(
                     'type' => 'number',
+                    'input_attrs' => [
+                        'min' => 0,
+                    ],
                     'label' => __('Post Content Length', 'mailoptin'),
                     'section' => $this->customizerClassInstance->campaign_settings_section_id,
                     'settings' => $this->option_prefix . '[post_content_length]',
-                    'description' => __('Enter the number of words to limit the post content to. Set to "0" for full post content.', 'mailoptin'),
+                    'description' => __('Number of words to limit the post content to. Set to "0" for full post content.', 'mailoptin'),
                     'priority' => 30
                 )
             ),
@@ -177,7 +193,7 @@ class CustomizerControls
                 $this->option_prefix . '[post_categories]',
                 apply_filters('mo_optin_form_customizer_post_categories_args', array(
                         'label' => __('Restrict to selected categories', 'mailoptin'),
-                        'description' => __('Only include post of selected categories', 'mailoptin'),
+                        'description' => __('Only include post of selected categories.', 'mailoptin'),
                         'section' => $this->customizerClassInstance->campaign_settings_section_id,
                         'settings' => $this->option_prefix . '[post_categories]',
                         'choices' => ControlsHelpers::get_categories(),
@@ -190,7 +206,7 @@ class CustomizerControls
                 $this->option_prefix . '[post_tags]',
                 apply_filters('mo_optin_form_customizer_post_tags_args', array(
                         'label' => __('Restrict to selected tags', 'mailoptin'),
-                        'description' => __('Only include post of selected tags', 'mailoptin'),
+                        'description' => __('Only include post of selected tags.', 'mailoptin'),
                         'section' => $this->customizerClassInstance->campaign_settings_section_id,
                         'settings' => $this->option_prefix . '[post_tags]',
                         'choices' => ControlsHelpers::get_tags(),
@@ -236,7 +252,7 @@ class CustomizerControls
                 $this->wp_customize,
                 $this->option_prefix . '[email_campaign_schedule]',
                 apply_filters('mailoptin_customizer_settings_campaign_schedule_args', array(
-                        'label' => __('Schedule Email Campaign', 'mailoptin'),
+                        'label' => __('Schedule Email', 'mailoptin'),
                         'section' => $this->customizerClassInstance->campaign_settings_section_id,
                         'settings' => [
                             'schedule_digit' => $this->option_prefix . '[schedule_digit]',
@@ -256,7 +272,7 @@ class CustomizerControls
                             'hours' => __('Hours', 'mailoptin'),
                             'days' => __('Days', 'mailoptin'),
                         ],
-                        'description' => apply_filters('mailoptin_customizer_settings_email_campaign_schedule_description', __('Configure when email will be sent after a post is published. Example: setting the input field to "5", and selecting "hours" will send the email 5 hours after publication.', 'mailoptin'), $campaign_type),
+                        'description' => apply_filters('mailoptin_customizer_settings_email_campaign_schedule_description', __('Configure when email will be sent after a post is published. Example, setting the fields to "5", and "hours" will send the email 5 hours later.', 'mailoptin'), $campaign_type),
                         'priority' => 80
                     )
                 )
