@@ -269,7 +269,8 @@ class CustomizerControls
                         'label' => __('When should we send?', 'mailoptin'),
                         'section' => $this->customizerClassInstance->campaign_settings_section_id,
                         'settings' => [
-                            'schedule_interval' => $this->option_prefix . '[schedule_interval]'
+                            'schedule_interval' => $this->option_prefix . '[schedule_interval]',
+                            'every_day_time' => $this->option_prefix . '[every_day_time]'
                         ],
                         'format' => EmailCampaignRepository::POSTS_EMAIL_DIGEST,
                         'priority' => 310
@@ -299,6 +300,8 @@ class CustomizerControls
             unset($campaign_settings_controls['item_number']);
             unset($campaign_settings_controls['email_digest_schedule']);
         }
+
+        wp_schedule_single_event()
 
         if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
             unset($campaign_settings_controls['post_categories']);
