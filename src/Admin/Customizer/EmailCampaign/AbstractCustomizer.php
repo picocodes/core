@@ -48,6 +48,8 @@ class AbstractCustomizer
         $defaults['schedule_type'] = apply_filters('mailoptin_customizer_email_campaign_schedule_type', 'hours', $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
         $defaults['schedule_digit'] = apply_filters('mailoptin_customizer_email_campaign_schedule_digit', '', $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
 
+        $defaults['schedule_interval'] = apply_filters('mailoptin_customizer_email_campaign_schedule_interval', 'every_day', $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
+
         $defaults['page_background_color'] = apply_filters('mailoptin_page_background_color_default', '', $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
 
         $defaults['header_removal'] = apply_filters('mailoptin_header_removal_default', false, $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);

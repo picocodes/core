@@ -169,7 +169,7 @@ class CustomizerControls
                     'section' => $this->customizerClassInstance->campaign_settings_section_id,
                     'settings' => $this->option_prefix . '[item_number]',
                     'input_attrs' => [
-                        'min' => 0,
+                        'min' => 1,
                     ],
                     'description' => __('Maximum number of posts to show.', 'mailoptin'),
                     'priority' => 25
@@ -179,7 +179,7 @@ class CustomizerControls
                 array(
                     'type' => 'number',
                     'input_attrs' => [
-                        'min' => 0,
+                        'min' => 1,
                     ],
                     'label' => __('Post Content Length', 'mailoptin'),
                     'section' => $this->customizerClassInstance->campaign_settings_section_id,
@@ -244,7 +244,7 @@ class CustomizerControls
                         'section' => $this->customizerClassInstance->campaign_settings_section_id,
                         'settings' => $this->option_prefix . '[send_immediately]',
                         'description' => __('Enable to send newsletter immediately after a post is published.', 'mailoptin'),
-                        'priority' => 70,
+                        'priority' => 300,
                     )
                 )
             ),
@@ -252,28 +252,27 @@ class CustomizerControls
                 $this->wp_customize,
                 $this->option_prefix . '[email_campaign_schedule]',
                 apply_filters('mailoptin_customizer_settings_campaign_schedule_args', array(
-                        'label' => __('Schedule Email', 'mailoptin'),
+                        'label' => __('Send Email', 'mailoptin'),
                         'section' => $this->customizerClassInstance->campaign_settings_section_id,
                         'settings' => [
                             'schedule_digit' => $this->option_prefix . '[schedule_digit]',
                             'schedule_type' => $this->option_prefix . '[schedule_type]'
                         ],
-                        // specify the kind of input field
-                        'type' => 'text',
-                        'input_attrs' => [
-                            'size' => 2,
-                            'maxlength' => 2,
-                            'style' => 'width:auto',
-                            'pattern' => '([0-9]){2}'
+                        'priority' => 310
+                    )
+                )
+            ),
+            'email_digest_schedule' => new WP_Customize_Email_Schedule_Time_Fields_Control(
+                $this->wp_customize,
+                $this->option_prefix . '[email_digest_schedule]',
+                apply_filters('mailoptin_customizer_settings_email_digest_schedule_args', array(
+                        'label' => __('When should we send?', 'mailoptin'),
+                        'section' => $this->customizerClassInstance->campaign_settings_section_id,
+                        'settings' => [
+                            'schedule_interval' => $this->option_prefix . '[schedule_interval]'
                         ],
-                        'select_attrs' => ['style' => 'width:auto'],
-                        'select_choices' => [
-                            'minutes' => __('Minutes', 'mailoptin'),
-                            'hours' => __('Hours', 'mailoptin'),
-                            'days' => __('Days', 'mailoptin'),
-                        ],
-                        'description' => apply_filters('mailoptin_customizer_settings_email_campaign_schedule_description', __('Configure when email will be sent after a post is published. Example, setting the fields to "5", and "hours" will send the email 5 hours later.', 'mailoptin'), $campaign_type),
-                        'priority' => 80
+                        'format' => EmailCampaignRepository::POSTS_EMAIL_DIGEST,
+                        'priority' => 310
                     )
                 )
             ),
@@ -288,6 +287,18 @@ class CustomizerControls
                 )
             )
         );
+
+        $email_campaign_type = EmailCampaignRepository::get_email_campaign_type($this->customizerClassInstance->email_campaign_id);
+
+        if ($email_campaign_type !== EmailCampaignRepository::NEW_PUBLISH_POST) {
+            unset($campaign_settings_controls['send_immediately']);
+            unset($campaign_settings_controls['email_campaign_schedule']);
+        }
+
+        if ($email_campaign_type != EmailCampaignRepository::POSTS_EMAIL_DIGEST) {
+            unset($campaign_settings_controls['item_number']);
+            unset($campaign_settings_controls['email_digest_schedule']);
+        }
 
         if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
             unset($campaign_settings_controls['post_categories']);

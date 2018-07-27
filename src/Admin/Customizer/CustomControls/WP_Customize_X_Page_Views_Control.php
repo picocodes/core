@@ -20,7 +20,7 @@ class WP_Customize_X_Page_Views_Control extends WP_Customize_Control
      */
     public $select_attrs = array();
 
-    public $type = 'email_campaign_schedule';
+    public $type = 'mailoptin_x_page_views';
 
     public function select_attrs()
     {

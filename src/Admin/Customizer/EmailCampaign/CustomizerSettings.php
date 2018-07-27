@@ -91,6 +91,11 @@ class CustomizerSettings extends AbstractCustomizer
                     'transport' => 'postMessage',
                     'sanitize_callback' => 'absint',
                 ),
+                'schedule_interval' => array(
+                    'default' => $this->customizer_defaults['schedule_interval'],
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
                 'email_campaign_settings_notice' => array(
                     'default' => false,
                     'type' => 'option',
