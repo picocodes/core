@@ -301,8 +301,6 @@ class CustomizerControls
             unset($campaign_settings_controls['email_digest_schedule']);
         }
 
-        wp_schedule_single_event()
-
         if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
             unset($campaign_settings_controls['post_categories']);
             unset($campaign_settings_controls['post_tags']);
