@@ -34,11 +34,11 @@ class WP_Customize_Email_Schedule_Time_Fields_Control extends WP_Customize_Contr
 
                     var value = this.value || val;
 
-                    $(this).css('width', '');
+                    $('#schedule_interval').css('width', '');
                     $('.schedule-subselect').hide().css('width', '');
 
                     if (value === 'every_day') {
-                        $(this).css('width', 'auto');
+                        $('#schedule_interval').css('width', 'auto');
                         $('#schedule_time').show().css('width', 'auto');
                     }
 
