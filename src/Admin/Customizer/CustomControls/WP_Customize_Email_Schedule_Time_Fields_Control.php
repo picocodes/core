@@ -25,6 +25,42 @@ class WP_Customize_Email_Schedule_Time_Fields_Control extends WP_Customize_Contr
         }
     }
 
+    public function digest_control_script()
+    {
+        ?>
+        <script type="text/javascript">
+            (function ($) {
+                var do_action = function (val) {
+
+                    var value = this.value || val;
+
+                    $(this).css('width', '');
+                    $('.schedule-subselect').hide().css('width', '');
+
+                    if (value === 'every_day') {
+                        $(this).css('width', 'auto');
+                        $('#schedule_time').show().css('width', 'auto');
+                    }
+
+                    if (value === 'every_week') {
+                        $('#schedule_day').show();
+                        $('#schedule_time').show();
+                    }
+
+                    if (value === 'every_month') {
+                        $('#schedule_month_date').show();
+                        $('#schedule_time').show();
+                    }
+                };
+
+                do_action($('#schedule_interval').val());
+                $(document).on('change', '#schedule_interval', do_action);
+
+            })(jQuery);
+        </script>
+        <?php
+    }
+
     public function new_publish_post_format()
     {
         if ($this->format !== EmailCampaignRepository::NEW_PUBLISH_POST) return;
@@ -71,7 +107,7 @@ class WP_Customize_Email_Schedule_Time_Fields_Control extends WP_Customize_Contr
             'every_month' => __('Every Month', 'mailoptin'),
         ];
 
-        $every_day_time_choices = [
+        $time_choices = [
             '00' => __('12:00 am', 'mailoptin'),
             '01' => __('1:00 am', 'mailoptin'),
             '02' => __('2:00 am', 'mailoptin'),
@@ -97,20 +133,82 @@ class WP_Customize_Email_Schedule_Time_Fields_Control extends WP_Customize_Contr
             '22' => __('10:00 pm', 'mailoptin'),
             '23' => __('11:00 pm', 'mailoptin'),
         ];
+
+        $day_choices = [
+            '0' => __('Sunday', 'mailoptin'),
+            '1' => __('Monday', 'mailoptin'),
+            '2' => __('Tuesday', 'mailoptin'),
+            '3' => __('Wednesday', 'mailoptin'),
+            '4' => __('Thursday', 'mailoptin'),
+            '5' => __('Friday', 'mailoptin'),
+            '6' => __('Saturday', 'mailoptin')
+        ];
+
+        $month_date_choices = [
+            '1' => __('1st', 'mailoptin'),
+            '2' => __('2nd', 'mailoptin'),
+            '3' => __('3rd', 'mailoptin'),
+            '4' => __('4th', 'mailoptin'),
+            '5' => __('5th', 'mailoptin'),
+            '6' => __('6th', 'mailoptin'),
+            '7' => __('7th', 'mailoptin'),
+            '8' => __('8th', 'mailoptin'),
+            '9' => __('9th', 'mailoptin'),
+            '10' => __('10th', 'mailoptin'),
+            '11' => __('11th', 'mailoptin'),
+            '12' => __('12th', 'mailoptin'),
+            '13' => __('13th', 'mailoptin'),
+            '14' => __('14th', 'mailoptin'),
+            '15' => __('15th', 'mailoptin'),
+            '16' => __('16th', 'mailoptin'),
+            '17' => __('17th', 'mailoptin'),
+            '18' => __('18th', 'mailoptin'),
+            '19' => __('19th', 'mailoptin'),
+            '20' => __('20th', 'mailoptin'),
+            '21' => __('21st', 'mailoptin'),
+            '22' => __('22nd', 'mailoptin'),
+            '23' => __('23rd', 'mailoptin'),
+            '24' => __('24th', 'mailoptin'),
+            '25' => __('25th', 'mailoptin'),
+            '26' => __('26th', 'mailoptin'),
+            '27' => __('27th', 'mailoptin'),
+            '28' => __('28th', 'mailoptin'),
+        ];
+
+        $input_attrs = $select_attrs = [];
+
         ?>
-        <select <?php $this->link($settings[0]); ?>>
+
+        <select <?php $this->link($settings[0]); ?> id="<?= $settings[0] ?>" <?php echo $this->select_attrs($select_attrs); ?>>
             <?php
             foreach ($schedule_interval_choices as $value => $label)
                 echo '<option value="' . esc_attr($value) . '"' . selected($this->value($settings[0]), $value, false) . '>' . $label . '</option>';
             ?>
         </select>
-        <select <?php $this->link($settings[1]); ?> id="every_day_time">
+
+        <select class="schedule-subselect" <?php $this->link('schedule_month_date'); ?> id="<?= 'schedule_month_date' ?>">
             <?php
-            foreach ($every_day_time_choices as $value => $label)
-                echo '<option value="' . esc_attr($value) . '"' . selected($this->value($settings[1]), $value, false) . '>' . $label . '</option>';
+            foreach ($month_date_choices as $value => $label)
+                echo '<option value="' . esc_attr($value) . '"' . selected($this->value('schedule_month_date'), $value, false) . '>' . $label . '</option>';
+            ?>
+        </select>
+
+        <select class="schedule-subselect" <?php $this->link('schedule_day'); ?> id="<?= 'schedule_day' ?>">
+            <?php
+            foreach ($day_choices as $value => $label)
+                echo '<option value="' . esc_attr($value) . '"' . selected($this->value('schedule_day'), $value, false) . '>' . $label . '</option>';
+            ?>
+        </select>
+
+        <select class="schedule-subselect" <?php $this->link('schedule_time'); ?> id="<?= 'schedule_time' ?>" <?php echo $this->select_attrs($select_attrs); ?>>
+            <?php
+            foreach ($time_choices as $value => $label)
+                echo '<option value="' . esc_attr($value) . '"' . selected($this->value('schedule_time'), $value, false) . '>' . $label . '</option>';
             ?>
         </select>
         <?php
+
+        $this->digest_control_script();
     }
 
     public function render_content()

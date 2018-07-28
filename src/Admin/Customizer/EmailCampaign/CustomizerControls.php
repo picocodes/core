@@ -270,7 +270,9 @@ class CustomizerControls
                         'section' => $this->customizerClassInstance->campaign_settings_section_id,
                         'settings' => [
                             'schedule_interval' => $this->option_prefix . '[schedule_interval]',
-                            'every_day_time' => $this->option_prefix . '[every_day_time]'
+                            'schedule_time' => $this->option_prefix . '[schedule_time]',
+                            'schedule_day' => $this->option_prefix . '[schedule_day]',
+                            'schedule_month_date' => $this->option_prefix . '[schedule_month_date]'
                         ],
                         'format' => EmailCampaignRepository::POSTS_EMAIL_DIGEST,
                         'priority' => 310

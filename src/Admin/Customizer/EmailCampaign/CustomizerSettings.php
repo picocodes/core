@@ -97,8 +97,18 @@ class CustomizerSettings extends AbstractCustomizer
                     'type' => 'option',
                     'transport' => 'postMessage',
                 ),
-                'every_day_time' => array(
-                    'default' => $this->customizer_defaults['every_day_time'],
+                'schedule_time' => array(
+                    'default' => $this->customizer_defaults['schedule_time'],
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'schedule_day' => array(
+                    'default' => $this->customizer_defaults['schedule_day'],
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'schedule_month_date' => array(
+                    'default' => $this->customizer_defaults['schedule_month_date'],
                     'type' => 'option',
                     'transport' => 'postMessage',
                 ),
