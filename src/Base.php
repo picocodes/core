@@ -80,6 +80,7 @@ class Base
 
         RegisterScripts::get_instance();
         AjaxHandler::get_instance();
+        Cron::get_instance();
 
         $this->admin_hooks();
         Admin\Customizer\EmailCampaign\Customizer::instance();

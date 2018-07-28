@@ -1,19 +1,17 @@
 <?php
 
-namespace MailOptin\Core\EmailCampaigns\NewPublishPost;
+namespace MailOptin\Core\EmailCampaigns\PostsEmailDigest;
 
 use MailOptin\Core\Connections\ConnectionFactory;
 use MailOptin\Core\EmailCampaigns\AbstractTriggers;
 use MailOptin\Core\Repositories\EmailCampaignRepository as ER;
 use WP_Post;
 
-class NewPublishPost extends AbstractTriggers
+class PostsEmailDigest extends AbstractTriggers
 {
     public function __construct()
     {
         parent::__construct();
-
-        add_action('transition_post_status', array($this, 'new_publish_post'), 10, 3);
     }
 
     /**
