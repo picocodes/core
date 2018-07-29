@@ -19,8 +19,6 @@ abstract class AbstractTriggers implements TriggerInterface
     public function __construct()
     {
         $this->CampaignLogRepository = CampaignLogRepository::instance();
-
-        add_action('mailoptin_send_scheduled_email_campaign', array($this, 'send_scheduled_email_campaign'), 10, 2);
     }
 
     /**
@@ -37,30 +35,6 @@ abstract class AbstractTriggers implements TriggerInterface
         if (!method_exists($this, $name)) {
             return ER::get_customizer_value($email_campaign_id, $name);
         }
-    }
-
-    /**
-     * Get time email campaign is set to go out.
-     *
-     * @param int $email_campaign_id
-     *
-     * @return string
-     */
-    public function schedule_time($email_campaign_id)
-    {
-        return $this->schedule_digit($email_campaign_id) . $this->schedule_type($email_campaign_id);
-    }
-
-    /**
-     * Send scheduled newsletter.
-     *
-     * @param int $email_campaign_id
-     * @param int $campaign_id
-     */
-    public function send_scheduled_email_campaign($email_campaign_id, $campaign_id)
-    {
-        // self::send_campaign()automatically update campaign status when processed or failed.
-        $this->send_campaign($email_campaign_id, $campaign_id);
     }
 
 

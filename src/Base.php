@@ -14,6 +14,7 @@ use MailOptin\Core\Admin\SettingsPage\PreviewCampaignLog;
 use MailOptin\Core\Admin\SettingsPage\ProUpgrade;
 use MailOptin\Core\Admin\SettingsPage\UsageTracking;
 use MailOptin\Core\EmailCampaigns\NewPublishPost\NewPublishPost;
+use MailOptin\Core\EmailCampaigns\PostsEmailDigest\PostsEmailDigest;
 use MailOptin\Core\OptinForms\FrontEndOutput;
 use MailOptin\Core\OptinForms\InPost;
 
@@ -88,8 +89,8 @@ class Base
         PreviewCampaignLog::get_instance();
         UsageTracking::get_instance();
 
-        // activate if new publish post module is active
         NewPublishPost::get_instance();
+        PostsEmailDigest::get_instance();
 
         FrontEndOutput::get_instance();
         InPost::get_instance();

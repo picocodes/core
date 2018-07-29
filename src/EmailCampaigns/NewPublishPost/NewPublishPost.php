@@ -14,6 +14,32 @@ class NewPublishPost extends AbstractTriggers
         parent::__construct();
 
         add_action('transition_post_status', array($this, 'new_publish_post'), 10, 3);
+
+        add_action('mailoptin_send_scheduled_email_campaign', array($this, 'send_scheduled_email_campaign'), 10, 2);
+    }
+
+    /**
+     * Send scheduled newsletter.
+     *
+     * @param int $email_campaign_id
+     * @param int $campaign_id
+     */
+    public function send_scheduled_email_campaign($email_campaign_id, $campaign_id)
+    {
+        // self::send_campaign()automatically update campaign status when processed or failed.
+        $this->send_campaign($email_campaign_id, $campaign_id);
+    }
+
+    /**
+     * Get time email campaign is set to go out.
+     *
+     * @param int $email_campaign_id
+     *
+     * @return string
+     */
+    public function schedule_time($email_campaign_id)
+    {
+        return $this->schedule_digit($email_campaign_id) . $this->schedule_type($email_campaign_id);
     }
 
     /**

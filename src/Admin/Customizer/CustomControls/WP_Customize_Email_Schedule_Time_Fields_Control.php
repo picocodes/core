@@ -2,6 +2,7 @@
 
 namespace MailOptin\Core\Admin\Customizer\CustomControls;
 
+use Carbon\Carbon;
 use MailOptin\Core\Repositories\EmailCampaignRepository;
 use WP_Customize_Control;
 
@@ -135,13 +136,13 @@ class WP_Customize_Email_Schedule_Time_Fields_Control extends WP_Customize_Contr
         ];
 
         $day_choices = [
-            '0' => __('Sunday', 'mailoptin'),
-            '1' => __('Monday', 'mailoptin'),
-            '2' => __('Tuesday', 'mailoptin'),
-            '3' => __('Wednesday', 'mailoptin'),
-            '4' => __('Thursday', 'mailoptin'),
-            '5' => __('Friday', 'mailoptin'),
-            '6' => __('Saturday', 'mailoptin')
+            Carbon::SUNDAY => __('Sunday', 'mailoptin'),
+            Carbon::MONDAY => __('Monday', 'mailoptin'),
+            Carbon::TUESDAY => __('Tuesday', 'mailoptin'),
+            Carbon::WEDNESDAY => __('Wednesday', 'mailoptin'),
+            Carbon::THURSDAY => __('Thursday', 'mailoptin'),
+            Carbon::FRIDAY => __('Friday', 'mailoptin'),
+            Carbon::SATURDAY => __('Saturday', 'mailoptin')
         ];
 
         $month_date_choices = [

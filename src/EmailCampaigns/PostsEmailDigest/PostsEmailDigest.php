@@ -2,9 +2,11 @@
 
 namespace MailOptin\Core\EmailCampaigns\PostsEmailDigest;
 
+use Carbon\Carbon;
 use MailOptin\Core\Connections\ConnectionFactory;
 use MailOptin\Core\EmailCampaigns\AbstractTriggers;
 use MailOptin\Core\Repositories\EmailCampaignRepository as ER;
+use MailOptin\Core\Repositories\EmailCampaignRepository;
 use WP_Post;
 
 class PostsEmailDigest extends AbstractTriggers
@@ -12,18 +14,44 @@ class PostsEmailDigest extends AbstractTriggers
     public function __construct()
     {
         parent::__construct();
+
+        add_action('init', [$this, 'run_job']);
+//        add_action('mo_hourly_recurring_job', [$this, 'run_job']);
     }
 
-    /**
-     * @param string $new_status New post status.
-     * @param string $old_status Old post status.
-     * @param WP_Post $post Post object.
-     */
-    public function new_publish_post($new_status, $old_status, $post)
+    public function run_job()
     {
-        if (defined('DOING_AJAX')) return;
+        $postDigests = EmailCampaignRepository::get_by_email_campaign_type(ER::POSTS_EMAIL_DIGEST);
 
-        $post_type_support = apply_filters('mo_new_publish_post_post_types_support', ['post']);
+        if (empty($postDigestAutomations)) return;
+
+        foreach ($postDigests as $postDigest) {
+
+            $email_campaign_id = absint($postDigest['id']);
+            if (ER::is_campaign_active($email_campaign_id) === false) continue;
+
+            $schedule_interval = ER::get_merged_customizer_value($email_campaign_id, 'schedule_interval');
+            $schedule_time = ER::get_merged_customizer_value($email_campaign_id, 'schedule_time');
+            $schedule_day = ER::get_merged_customizer_value($email_campaign_id, 'schedule_day');
+            $schedule_month_date = ER::get_merged_customizer_value($email_campaign_id, 'schedule_month_date');
+
+            $timezone = get_option('timezone_string');
+            if (empty($timezone)) {
+                $timezone = get_option('gmt_offset');
+            }
+
+            $current_timestamp = Carbon::now($timezone)->timestamp;
+
+            switch ($schedule_interval) {
+                case 'every_day':
+                    $schedule_timestamp = Carbon::createFromTime(12, 0, 0, $timezone);
+                    break;
+                case 'every_week':
+                    $schedule_timestamp = Carbon::today($timezone)->isDayOfWeek(Carbon::SUNDAY);
+                    break;
+            }
+        }
+
 
         if ($new_status == 'publish' && $old_status != 'publish' && in_array($post->post_type, $post_type_support)) {
 
@@ -128,7 +156,7 @@ class PostsEmailDigest extends AbstractTriggers
     /**
      * Singleton.
      *
-     * @return NewPublishPost
+     * @return PostsEmailDigest
      */
     public static function get_instance()
     {
