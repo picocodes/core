@@ -72,10 +72,12 @@ class CustomizerControls
 
                     'email_campaign_subject',
                     'post_content_length',
+                    'item_number',
                     'connection_service',
                     'connection_email_list',
                     'send_immediately',
                     'email_campaign_schedule',
+                    'email_digest_schedule',
                     'email_campaign_settings_notice'
                 ]),
                 'style' => apply_filters('mailoptin_email_campaign_tab_toggle_style_config', [
@@ -156,7 +158,7 @@ class CustomizerControls
                         'label' => __('Email Subject', 'mailoptin'),
                         'section' => $this->customizerClassInstance->campaign_settings_section_id,
                         'settings' => $this->option_prefix . '[email_campaign_subject]',
-                        'description' => __('Enter a subject for the email newsletters.', 'mailoptin'),
+                        'description' => __('Enter a subject for the email.', 'mailoptin'),
                         'sub_description' => apply_filters('mailoptin_customizer_settings_email_campaign_subject_description', '', $campaign_type),
                         'priority' => 20
                     )
@@ -165,13 +167,12 @@ class CustomizerControls
             'item_number' => apply_filters('mailoptin_customizer_settings_campaign_item_number_args',
                 array(
                     'type' => 'number',
-                    'label' => __('Number of Posts', 'mailoptin'),
+                    'label' => __('Maximum Number of Posts', 'mailoptin'),
                     'section' => $this->customizerClassInstance->campaign_settings_section_id,
                     'settings' => $this->option_prefix . '[item_number]',
                     'input_attrs' => [
                         'min' => 1,
                     ],
-                    'description' => __('Maximum number of posts to show.', 'mailoptin'),
                     'priority' => 25
                 )
             ),
@@ -232,7 +233,7 @@ class CustomizerControls
                     'section' => $this->customizerClassInstance->campaign_settings_section_id,
                     'settings' => $this->option_prefix . '[connection_email_list]',
                     'choices' => $connection_email_list,
-                    'description' => __('Choose the specific email list that email campaign will be sent to.', 'mailoptin'),
+                    'description' => __('Email list that newsletter will be sent to.', 'mailoptin'),
                     'priority' => 60
                 )
             ),
@@ -627,7 +628,7 @@ class CustomizerControls
                         'label' => __('Fallback Featured Image', 'mailoptin'),
                         'section' => $this->customizerClassInstance->campaign_content_section_id,
                         'settings' => $this->option_prefix . '[default_image_url]',
-                        'description' => __('Enter URL of an image to use when a post lack a feature image.', 'mailoptin'),
+                        'description' => __('Enter URL of an image to use when a post lacks a feature image.', 'mailoptin'),
                         'priority' => 40
                     )
                 ),

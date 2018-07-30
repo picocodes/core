@@ -31,83 +31,55 @@ class PostsEmailDigest extends AbstractTriggers
             if (ER::is_campaign_active($email_campaign_id) === false) continue;
 
             $schedule_interval = ER::get_merged_customizer_value($email_campaign_id, 'schedule_interval');
-            $schedule_time = ER::get_merged_customizer_value($email_campaign_id, 'schedule_time');
-            $schedule_day = ER::get_merged_customizer_value($email_campaign_id, 'schedule_day');
-            $schedule_month_date = ER::get_merged_customizer_value($email_campaign_id, 'schedule_month_date');
+            $schedule_time = absint(ER::get_merged_customizer_value($email_campaign_id, 'schedule_time'));
+            $schedule_day = absint(ER::get_merged_customizer_value($email_campaign_id, 'schedule_day'));
+            $schedule_month_date = absint(ER::get_merged_customizer_value($email_campaign_id, 'schedule_month_date'));
 
             $timezone = get_option('timezone_string');
             if (empty($timezone)) {
                 $timezone = get_option('gmt_offset');
             }
 
-            $current_timestamp = Carbon::now($timezone)->timestamp;
+            $carbon_now = Carbon::now($timezone);
+            $carbon_today = Carbon::today($timezone);
+
 
             switch ($schedule_interval) {
                 case 'every_day':
-                    $schedule_timestamp = Carbon::createFromTime(12, 0, 0, $timezone);
+                    $schedule_timestamp = Carbon::createFromTime($schedule_time, 0, 0, $timezone);
+                    if ($schedule_timestamp->lessThanOrEqualTo($carbon_now)) {
+                        // send email
+                    }
                     break;
                 case 'every_week':
-                    $schedule_timestamp = Carbon::today($timezone)->isDayOfWeek(Carbon::SUNDAY);
+                    if ($carbon_today->isDayOfWeek($schedule_day) && $carbon_today->hour($schedule_time)->lessThanOrEqualTo($carbon_now)) {
+                        // send email
+                    }
+                    break;
+                case 'every_month':
+                    if ($carbon_now->day == $schedule_month_date && $carbon_today->hour($schedule_time)->lessThanOrEqualTo($carbon_now)) {
+                        // send email
+                    }
                     break;
             }
+
+            $email_subject = ER::get_merged_customizer_value($email_campaign_id, 'email_campaign_subject');
+
+            $content_html = (new Templatify($post, $email_campaign_id))->forge();
+
+            $campaign_id = $this->save_campaign_log(
+                $email_campaign_id,
+                self::format_campaign_subject($email_subject, $post),
+                $content_html
+            );
+
+            $this->send_campaign($email_campaign_id, $campaign_id);
         }
+    }
 
+    public function send_email()
+    {
 
-        if ($new_status == 'publish' && $old_status != 'publish' && in_array($post->post_type, $post_type_support)) {
-
-            $new_publish_post_campaigns = ER::get_by_email_campaign_type(ER::NEW_PUBLISH_POST);
-
-            foreach ($new_publish_post_campaigns as $npp_campaign) {
-                $email_campaign_id = absint($npp_campaign['id']);
-                if (ER::is_campaign_active($email_campaign_id) === false) continue;
-
-                $npp_categories = ER::get_customizer_value($email_campaign_id, 'post_categories', []);
-                $npp_tags = ER::get_customizer_value($email_campaign_id, 'post_tags', []);
-                $post_categories = wp_get_post_categories($post->ID, ['fields' => 'ids']);
-                $post_tags = wp_get_post_tags($post->ID, ['fields' => 'ids']);
-
-                if (is_array($npp_categories) && is_array($post_categories) && !empty($npp_categories) && !empty($post_categories)) {
-                    // use intersect to check if categories match.
-                    $result = array_intersect($post_categories, $npp_categories);
-                    if (empty($result)) continue;
-                }
-
-                if (is_array($npp_tags) && is_array($post_tags) && !empty($npp_tags) && !empty($post_tags)) {
-                    // use intersect to check if categories match.
-                    $result = array_intersect($post_tags, $npp_tags);
-                    if (empty($result)) continue;
-                }
-
-                $send_immediately_active = $this->send_immediately($email_campaign_id);
-                $email_subject = ER::get_customizer_value($email_campaign_id, 'email_campaign_subject');
-
-                $content_html = (new Templatify($post, $email_campaign_id))->forge();
-
-                $campaign_id = $this->save_campaign_log(
-                    $email_campaign_id,
-                    self::format_campaign_subject($email_subject, $post),
-                    $content_html
-                );
-
-                if ($send_immediately_active) {
-                    $this->send_campaign($email_campaign_id, $campaign_id);
-                } else {
-                    // convert schedule time to timestamp.
-                    $schedule_time_timestamp = strtotime($this->schedule_time($email_campaign_id));
-
-                    $response = wp_schedule_single_event(
-                        $schedule_time_timestamp,
-                        'mailoptin_send_scheduled_email_campaign',
-                        [$email_campaign_id, $campaign_id]
-                    );
-
-                    // wp_schedule_single_event() return false if event wasn't scheduled.
-                    if (false !== $response) {
-                        $this->update_campaign_status($campaign_id, 'queued', $schedule_time_timestamp);
-                    }
-                }
-            }
-        }
     }
 
     /**

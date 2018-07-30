@@ -39,7 +39,11 @@ class NewPublishPost extends AbstractTriggers
      */
     public function schedule_time($email_campaign_id)
     {
-        return $this->schedule_digit($email_campaign_id) . $this->schedule_type($email_campaign_id);
+        $schedule_digit = $this->schedule_digit($email_campaign_id);
+        $schedule_type = $this->schedule_type($email_campaign_id);
+        if (empty($schedule_digit) || empty($schedule_type)) return false;
+
+        return $schedule_digit . $schedule_type;
     }
 
     /**
@@ -61,8 +65,8 @@ class NewPublishPost extends AbstractTriggers
                 $email_campaign_id = absint($npp_campaign['id']);
                 if (ER::is_campaign_active($email_campaign_id) === false) continue;
 
-                $npp_categories = ER::get_customizer_value($email_campaign_id, 'post_categories', []);
-                $npp_tags = ER::get_customizer_value($email_campaign_id, 'post_tags', []);
+                $npp_categories = ER::get_merged_customizer_value($email_campaign_id, 'post_categories');
+                $npp_tags = ER::get_merged_customizer_value($email_campaign_id, 'post_tags');
                 $post_categories = wp_get_post_categories($post->ID, ['fields' => 'ids']);
                 $post_tags = wp_get_post_tags($post->ID, ['fields' => 'ids']);
 
@@ -79,7 +83,7 @@ class NewPublishPost extends AbstractTriggers
                 }
 
                 $send_immediately_active = $this->send_immediately($email_campaign_id);
-                $email_subject = ER::get_customizer_value($email_campaign_id, 'email_campaign_subject');
+                $email_subject = ER::get_merged_customizer_value($email_campaign_id, 'email_campaign_subject');
 
                 $content_html = (new Templatify($post, $email_campaign_id))->forge();
 
@@ -92,6 +96,9 @@ class NewPublishPost extends AbstractTriggers
                 if ($send_immediately_active) {
                     $this->send_campaign($email_campaign_id, $campaign_id);
                 } else {
+
+                    if (!$this->schedule_time($email_campaign_id)) continue;
+
                     // convert schedule time to timestamp.
                     $schedule_time_timestamp = strtotime($this->schedule_time($email_campaign_id));
 

@@ -29,9 +29,15 @@ abstract class AbstractTemplate extends ParentAbstractTemplate
     {
         $item_count = EmailCampaignRepository::get_merged_customizer_value($this->email_campaign_id, 'item_number');
 
-        return get_posts([
-            'numberposts' => $item_count
-        ]);
+        return get_posts(
+            apply_filters('mo_post_digest_get_posts_args', [
+                'posts_per_page' => $item_count,
+                'post_status' => 'publish',
+                'post_type' => 'post',
+                'order' => 'DESC',
+                'orderby' => 'post_date'
+            ])
+        );
     }
 
     public function parsed_post_list()

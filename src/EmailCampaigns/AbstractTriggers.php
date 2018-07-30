@@ -33,7 +33,7 @@ abstract class AbstractTriggers implements TriggerInterface
     {
         $email_campaign_id = absint($arguments[0]);
         if (!method_exists($this, $name)) {
-            return ER::get_customizer_value($email_campaign_id, $name);
+            return ER::get_merged_customizer_value($email_campaign_id, $name);
         }
     }
 
