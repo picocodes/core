@@ -13,19 +13,15 @@ class Templatify implements TemplatifyInterface
 {
     use TemplateTrait;
 
-    protected $post;
     protected $email_campaign_id;
-    protected $template_class;
 
     /**
      * @param mixed $post could be WP_Post object, post ID or stdClass for customizer preview
      * @param null|int $email_campaign_id
-     * @param null|string $template_class
      */
-    public function __construct($post, $email_campaign_id = null, $template_class = null)
+    public function __construct($email_campaign_id = null)
     {
         $this->email_campaign_id = $email_campaign_id;
-        $this->template_class = !is_null($template_class) ? $template_class : ER::get_template_class($email_campaign_id);
     }
 
     /**
@@ -35,7 +31,7 @@ class Templatify implements TemplatifyInterface
      */
     public function forge()
     {
-        do_action('mailoptin_email_template_before_forge', $this->email_campaign_id, $this->template_class);
+        do_action('mailoptin_email_template_before_forge', $this->email_campaign_id);
 
         $instance = EmailCampaignFactory::make($this->email_campaign_id);
 
