@@ -8,7 +8,7 @@ use MailOptin\Core\Repositories\OptinCampaignsRepository;
 
 abstract class AbstractOptinTheme extends AbstractOptinForm
 {
-    public function __construct($optin_campaign_id, $wp_customize = null)
+    public function __construct($optin_campaign_id)
     {
         add_shortcode('mo-optin-form-wrapper', [$this, 'shortcode_optin_form_wrapper']);
         add_shortcode('mo-optin-form-fields-wrapper', [$this, 'shortcode_optin_form_fields_wrapper']);
@@ -25,9 +25,9 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         add_shortcode('mo-optin-form-cta-button', [$this, 'shortcode_optin_form_cta_button']);
         add_shortcode('mo-optin-form-note', [$this, 'shortcode_optin_form_note']);
 
-        do_action('mo_optin_theme_shortcodes_add', $optin_campaign_id, $wp_customize);
+        do_action('mo_optin_theme_shortcodes_add', $optin_campaign_id);
 
-        parent::__construct($optin_campaign_id, $wp_customize);
+        parent::__construct($optin_campaign_id);
     }
 
     /**

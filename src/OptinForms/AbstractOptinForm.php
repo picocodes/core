@@ -33,9 +33,8 @@ abstract class AbstractOptinForm extends AbstractCustomizer implements OptinForm
      * ID of optin form.
      *
      * @param int $optin_campaign_id
-     * @param \WP_Customize_Manager $wp_customize
      */
-    public function __construct($optin_campaign_id = 0, $wp_customize = null)
+    public function __construct($optin_campaign_id = 0)
     {
         // isn't included in if condition below because it is reused by front end optin output.
         $this->optin_campaign_id = $optin_campaign_id;

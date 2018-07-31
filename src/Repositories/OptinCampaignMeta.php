@@ -61,12 +61,12 @@ class OptinCampaignMeta
     }
 
     /**
-     * Get meta value by optin_campaign_id and meta key.
+     * Get optin campaign ID by meta value and meta key.
      *
      * @param string $meta_key
      * @param int $parent_optin_id
      */
-    public static function get_meta_value_by_key($meta_key, $parent_optin_id)
+    public static function get_optin_id_by_meta_key_value($meta_key, $parent_optin_id)
     {
         global $wpdb;
 

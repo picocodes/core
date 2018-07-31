@@ -147,6 +147,7 @@ class Base
         $tables[] = $db_prefix . Core::optin_campaigns_table_name;
         $tables[] = $db_prefix . Core::conversions_table_name;
         $tables[] = $db_prefix . Core::email_campaigns_table_name;
+        $tables[] = $db_prefix . Core::email_campaign_meta_table_name;
 
         $tables = apply_filters('mo_drop_mu_database_tables', $tables, $db_prefix);
 
@@ -160,6 +161,7 @@ class Base
     {
         global $wpdb;
         $wpdb->optin_campaignmeta = $wpdb->prefix . Core::optin_campaign_meta_table_name;
+        $wpdb->email_campaignmeta = $wpdb->prefix . Core::email_campaign_meta_table_name;
         $wpdb->campaign_logmeta = $wpdb->prefix . Core::campaign_log_meta_table_name;
     }
 

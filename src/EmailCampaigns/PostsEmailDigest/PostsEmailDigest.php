@@ -15,7 +15,7 @@ class PostsEmailDigest extends AbstractTriggers
     {
         parent::__construct();
 
-        add_action('init', [$this, 'run_job']);
+//        add_action('init', [$this, 'run_job']);
 //        add_action('mo_hourly_recurring_job', [$this, 'run_job']);
     }
 

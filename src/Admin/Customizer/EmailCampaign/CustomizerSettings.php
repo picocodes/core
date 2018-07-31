@@ -91,7 +91,6 @@ class CustomizerSettings extends AbstractCustomizer
                     'transport' => 'postMessage',
                     'sanitize_callback' => 'absint',
                 ),
-                /** @todo set default for these values. */
                 'schedule_interval' => array(
                     'default' => $this->customizer_defaults['schedule_interval'],
                     'type' => 'option',

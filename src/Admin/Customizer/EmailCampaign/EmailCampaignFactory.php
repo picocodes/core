@@ -14,11 +14,10 @@ class EmailCampaignFactory
 {
     /**
      * @param int $optin_campaign_id
-     * @param null|\WP_Customize_Manager $wp_customize
      *
      * @return false|AbstractTemplate
      */
-    public static function make($email_campaign_id, $wp_customize = null)
+    public static function make($email_campaign_id)
     {
         $db_email_template_class = EmailCampaignRepository::get_template_class($email_campaign_id);
         $email_campaign_type = EmailCampaignRepository::get_email_campaign_type($email_campaign_id);
@@ -40,7 +39,7 @@ class EmailCampaignFactory
             return false;
         }
 
-        return new $email_campaign_class($email_campaign_id, $wp_customize);
+        return new $email_campaign_class($email_campaign_id);
     }
 
     public static function get_campaign_type_namespace($email_campaign_type)

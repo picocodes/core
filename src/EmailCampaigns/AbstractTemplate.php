@@ -41,9 +41,8 @@ abstract class AbstractTemplate extends AbstractCustomizer implements TemplateIn
      * ID of email template.
      *
      * @param int $email_campaign_id
-     * @param \WP_Customize_Manager $wp_customize
      */
-    public function __construct($email_campaign_id, $wp_customize = null)
+    public function __construct($email_campaign_id)
     {
         // this line must not go under any conditional statement.
         $this->email_campaign_id = $email_campaign_id;
@@ -66,7 +65,7 @@ abstract class AbstractTemplate extends AbstractCustomizer implements TemplateIn
             add_action('customize_preview_init', array($this, 'email_template_customizer_javascript'), 99);
         }
 
-        parent::__construct();
+        parent::__construct($email_campaign_id);
     }
 
     /**

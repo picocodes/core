@@ -24,13 +24,6 @@ class Templatify implements TemplatifyInterface
      */
     public function __construct($post, $email_campaign_id = null, $template_class = null)
     {
-        //used for sending test emails.
-        if ($post instanceof \stdClass) {
-            $this->post = $post;
-        } else {
-            $this->post = get_post($post);
-        }
-
         $this->email_campaign_id = $email_campaign_id;
         $this->template_class = !is_null($template_class) ? $template_class : ER::get_template_class($email_campaign_id);
     }

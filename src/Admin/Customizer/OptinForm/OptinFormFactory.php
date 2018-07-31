@@ -14,11 +14,10 @@ class OptinFormFactory
 {
     /**
      * @param int $optin_campaign_id
-     * @param null|\WP_Customize_Manager $wp_customize
      *
      * @return false|AbstractOptinForm
      */
-    public static function make($optin_campaign_id, $wp_customize = null)
+    public static function make($optin_campaign_id)
     {
         $db_optin_class = OptinCampaignsRepository::get_optin_campaign_class($optin_campaign_id);
         $optin_type = ucfirst(OptinCampaignsRepository::get_optin_campaign_type($optin_campaign_id));
@@ -36,7 +35,7 @@ class OptinFormFactory
             return false;
         }
 
-        return new $optin_class($optin_campaign_id, $wp_customize);
+        return new $optin_class($optin_campaign_id);
     }
 
     /**

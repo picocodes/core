@@ -76,7 +76,7 @@ class OptinCampaignsRepository extends AbstractRepository
         if (!is_customize_preview() && isset(self::$cache[$cache_key])) {
             $response = self::$cache[$cache_key];
         } else {
-            $response = self::$cache[$cache_key] = OptinCampaignMeta::get_meta_value_by_key('split_test_parent', $parent_optin_id);
+            $response = self::$cache[$cache_key] = OptinCampaignMeta::get_optin_id_by_meta_key_value('split_test_parent', $parent_optin_id);
         }
 
         if (!empty($response)) {
@@ -99,7 +99,7 @@ class OptinCampaignsRepository extends AbstractRepository
             return self::$cache[$cache_key];
         }
 
-        return self::$cache[$cache_key] = OptinCampaignMeta::get_meta_value_by_key('split_test_parent', $parent_optin_id);
+        return self::$cache[$cache_key] = OptinCampaignMeta::get_optin_id_by_meta_key_value('split_test_parent', $parent_optin_id);
     }
 
     /**

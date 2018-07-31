@@ -10,7 +10,7 @@ class Lucid extends AbstractTemplate
 {
     public $template_name = 'Lucid';
 
-    public function __construct($email_campaign_id, $wp_customize = '')
+    public function __construct($email_campaign_id)
     {
         // -------------- Template header logo width and height dimension --------------------------------- //
         add_filter('mailoptin_template_customizer_header_logo_args', function ($args) {

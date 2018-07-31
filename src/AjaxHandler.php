@@ -14,6 +14,7 @@ use MailOptin\Core\EmailCampaigns\NewPublishPost\Templatify;
 use MailOptin\Core\OptinForms\ConversionDataBuilder;
 use MailOptin\Core\PluginSettings\Settings;
 use MailOptin\Core\Repositories\ConnectionsRepository;
+use MailOptin\Core\Repositories\EmailCampaignMeta;
 use MailOptin\Core\Repositories\EmailCampaignRepository;
 use MailOptin\Core\Repositories\OptinCampaignMeta;
 use MailOptin\Core\Repositories\OptinCampaignsRepository;
@@ -494,6 +495,7 @@ class AjaxHandler
         $email_campaign_id = EmailCampaignRepository::add_email_campaign($title, $type, $template);
 
         if (is_int($email_campaign_id)) {
+            EmailCampaignMeta::add_meta_data($email_campaign_id, 'created_at', time());
             wp_send_json_success(
                 array('redirect' => Email_Campaign_List::_campaign_customize_url($email_campaign_id))
             );

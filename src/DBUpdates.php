@@ -8,7 +8,7 @@ class DBUpdates
 {
     public static $instance;
 
-    const DB_VER = 6;
+    const DB_VER = 7;
 
     public function init_options()
     {
@@ -160,6 +160,30 @@ class DBUpdates
         }
 
         OptinCampaignsRepository::updateSettings($all_optin_settings);
+    }
+
+    public function update_routine_7()
+    {
+        global $wpdb;
+
+        $collate = '';
+        if ($wpdb->has_cap('collation')) {
+            $collate = $wpdb->get_charset_collate();
+        }
+
+        $email_campaign_meta_table = $wpdb->prefix . Core::email_campaign_meta_table_name;
+
+        $sql = "CREATE TABLE IF NOT EXISTS $email_campaign_meta_table (
+                  meta_id bigint(20) NOT NULL AUTO_INCREMENT,
+                  PRIMARY KEY  (meta_id),
+                  email_campaign_id bigint(20) NOT NULL,
+                  meta_key varchar(255) NULL,
+                  meta_value longtext NULL
+				) $collate;
+				";
+
+        require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+        dbDelta($sql);
     }
 
     /** Singleton poop */
