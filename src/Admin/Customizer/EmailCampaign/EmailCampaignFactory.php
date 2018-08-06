@@ -14,10 +14,11 @@ class EmailCampaignFactory
 {
     /**
      * @param int $optin_campaign_id
+     * @param mixed $posts
      *
      * @return false|AbstractTemplate
      */
-    public static function make($email_campaign_id)
+    public static function make($email_campaign_id, $posts = null)
     {
         $db_email_template_class = EmailCampaignRepository::get_template_class($email_campaign_id);
         $email_campaign_type = EmailCampaignRepository::get_email_campaign_type($email_campaign_id);
@@ -39,7 +40,7 @@ class EmailCampaignFactory
             return false;
         }
 
-        return new $email_campaign_class($email_campaign_id);
+        return new $email_campaign_class($email_campaign_id, $posts);
     }
 
     public static function get_campaign_type_namespace($email_campaign_type)

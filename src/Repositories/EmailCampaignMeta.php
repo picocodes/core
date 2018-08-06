@@ -3,6 +3,8 @@
 namespace MailOptin\Core\Repositories;
 
 
+use MailOptin\Core\Core;
+
 class EmailCampaignMeta
 {
     /**
@@ -45,6 +47,24 @@ class EmailCampaignMeta
     public static function delete_meta_data($email_campaign_id, $meta_key, $meta_value = '', $delete_all = false)
     {
         return delete_metadata('email_campaign', $email_campaign_id, $meta_key, $meta_value, $delete_all);
+    }
+
+
+    /**
+     * Delete all meta data belonging to an email campaign.
+     * @param $email_campaign_id
+     * @return bool
+     */
+    public static function delete_all_meta_data($email_campaign_id)
+    {
+        if (!isset($email_campaign_id)) return false;
+
+        global $wpdb;
+
+        return $wpdb->delete(
+            $wpdb->prefix . Core::email_campaign_meta_table_name,
+            array('email_campaign_id' => $email_campaign_id)
+        );
     }
 
     /**

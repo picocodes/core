@@ -4,15 +4,9 @@ namespace MailOptin\Core\Admin\Customizer\EmailCampaign;
 
 
 use MailOptin\Core\EmailCampaigns\NewPublishPost\Templatify;
-use MailOptin\Core\EmailCampaigns\TemplateTrait;
 
 class NewPublishPostTemplatePreview extends Templatify
 {
-    public function __construct($post, $email_campaign_id = null, $template_class = null)
-    {
-        parent::__construct($post, $email_campaign_id, $template_class);
-    }
-
     public function post_title()
     {
         return SolitaryDummyContent::title();

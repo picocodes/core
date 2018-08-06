@@ -85,7 +85,7 @@ class NewPublishPost extends AbstractTriggers
                 $send_immediately_active = $this->send_immediately($email_campaign_id);
                 $email_subject = ER::get_merged_customizer_value($email_campaign_id, 'email_campaign_subject');
 
-                $content_html = (new Templatify($post, $email_campaign_id))->forge();
+                $content_html = (new Templatify($email_campaign_id, $post))->forge();
 
                 $campaign_id = $this->save_campaign_log(
                     $email_campaign_id,

@@ -6,7 +6,6 @@ use MailOptin\Core\Admin\Customizer\EmailCampaign\EmailCampaignFactory;
 use MailOptin\Core\EmailCampaigns\TemplateTrait;
 use MailOptin\Core\EmailCampaigns\TemplatifyInterface;
 use MailOptin\Core\EmailCampaigns\VideoToImageLink;
-use MailOptin\Core\Repositories\EmailCampaignRepository as ER;
 
 
 class Templatify implements TemplatifyInterface
@@ -14,26 +13,23 @@ class Templatify implements TemplatifyInterface
     use TemplateTrait;
 
     protected $email_campaign_id;
+    protected $posts;
 
     /**
-     * @param mixed $post could be WP_Post object, post ID or stdClass for customizer preview
-     * @param null|int $email_campaign_id
+     * @param int $email_campaign_id
+     * @param array $posts
      */
-    public function __construct($email_campaign_id = null)
+    public function __construct($email_campaign_id, $posts = [])
     {
         $this->email_campaign_id = $email_campaign_id;
+        $this->posts = $posts;
     }
 
-    /**
-     * Turn {@see WP_Post} object to email campaign template.
-     *
-     * @return mixed
-     */
     public function forge()
     {
         do_action('mailoptin_email_template_before_forge', $this->email_campaign_id);
 
-        $instance = EmailCampaignFactory::make($this->email_campaign_id);
+        $instance = EmailCampaignFactory::make($this->email_campaign_id, $this->posts);
 
         $templatified_content = $instance->get_preview_structure();
 

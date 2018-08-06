@@ -46,7 +46,7 @@ abstract class AbstractTriggers implements TriggerInterface
      * @param string $content_html
      * @param string $content_text
      *
-     * @return mixed
+     * @return int
      */
     public function save_campaign_log($email_campaign_id, $subject, $content_html, $content_text = '')
     {
@@ -64,7 +64,7 @@ abstract class AbstractTriggers implements TriggerInterface
         // save the campaign
         $campaign_id = $this->CampaignLogRepository->save($campaign);
 
-        return $campaign_id;
+        return absint($campaign_id);
     }
 
 

@@ -194,7 +194,7 @@ class Customizer
         <script type="text/javascript">
             jQuery(function () {
                 var template = wp.template('mo-optin-trigger-upsell');
-                $('#sub-accordion-panel-mo_display_rules_panel_section').append(template());
+                jQuery('#sub-accordion-panel-mo_display_rules_panel_section').append(template());
             });
         </script>
         <?php

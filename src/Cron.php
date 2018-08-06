@@ -9,6 +9,8 @@ class Cron
     public function __construct()
     {
         add_action('init', [$this, 'create_recurring_schedule']);
+
+//        add_action('mo_hourly_recurring_job', [$this, 'run_job']);
     }
 
     public function create_recurring_schedule()
@@ -19,6 +21,11 @@ class Cron
         if (!wp_next_scheduled('mo_hourly_recurring_job')) {
             wp_schedule_event($tz, 'hourly', 'mo_hourly_recurring_job');
         }
+    }
+
+    public function run_job()
+    {
+        error_log(time() . ' logging cron' . "\r\n", 3, WP_CONTENT_DIR . '/plugins/mo-text.txt');
     }
 
     /**

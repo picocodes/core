@@ -17,15 +17,14 @@ class Templatify implements TemplatifyInterface
     protected $post;
     protected $email_campaign_id;
     protected $template_class;
-    protected $campaign_type;
     protected $post_content_length;
 
     /**
-     * @param mixed $post could be WP_Post object, post ID or stdClass for customizer preview
      * @param null|int $email_campaign_id
+     * @param mixed $post could be WP_Post object, post ID or stdClass for customizer preview
      * @param null|string $template_class
      */
-    public function __construct($post, $email_campaign_id = null, $template_class = null, $campaign_type = null)
+    public function __construct($email_campaign_id, $post = null, $template_class = null)
     {
         //used for sending test emails.
         if ($post instanceof \stdClass) {
@@ -36,7 +35,6 @@ class Templatify implements TemplatifyInterface
 
         $this->email_campaign_id = $email_campaign_id;
         $this->template_class = !is_null($template_class) ? $template_class : ER::get_template_class($email_campaign_id);
-        $this->campaign_type = !is_null($campaign_type) ? $campaign_type : ER::get_email_campaign_type($email_campaign_id);
         $this->post_content_length = ER::get_customizer_value($email_campaign_id, 'post_content_length');
     }
 

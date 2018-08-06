@@ -210,7 +210,7 @@ class AjaxHandler
         $mock_post->post_url = home_url();
 
         return [
-            (new Templatify($mock_post, $email_campaign_id))->forge(),
+            (new Templatify($email_campaign_id, $mock_post))->forge(),
             NewPublishPost::format_campaign_subject($email_campaign_subject, $mock_post)
         ];
     }
@@ -495,7 +495,7 @@ class AjaxHandler
         $email_campaign_id = EmailCampaignRepository::add_email_campaign($title, $type, $template);
 
         if (is_int($email_campaign_id)) {
-            EmailCampaignMeta::add_meta_data($email_campaign_id, 'created_at', time());
+            EmailCampaignMeta::add_meta_data($email_campaign_id, 'created_at', current_time('mysql'));
             wp_send_json_success(
                 array('redirect' => Email_Campaign_List::_campaign_customize_url($email_campaign_id))
             );

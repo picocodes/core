@@ -10,7 +10,7 @@ class Lucid extends AbstractTemplate
 {
     public $template_name = 'Lucid';
 
-    public function __construct($email_campaign_id)
+    public function __construct($email_campaign_id, $posts)
     {
         // -------------- Template header logo width and height dimension --------------------------------- //
         add_filter('mailoptin_template_customizer_header_logo_args', function ($args) {
@@ -20,11 +20,11 @@ class Lucid extends AbstractTemplate
             return $args;
         });
 
-        add_filter('mailoptin_customizer_email_campaign_post_content_length', function() {
+        add_filter('mailoptin_customizer_email_campaign_post_content_length', function () {
             return 60;
         });
 
-        parent::__construct($email_campaign_id);
+        parent::__construct($email_campaign_id, $posts);
     }
 
     /**

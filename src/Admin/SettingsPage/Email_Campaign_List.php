@@ -3,6 +3,7 @@
 namespace MailOptin\Core\Admin\SettingsPage;
 
 use MailOptin\Core\Core;
+use MailOptin\Core\Repositories\EmailCampaignMeta;
 use MailOptin\Core\Repositories\EmailCampaignRepository;
 
 if ( ! class_exists('WP_List_Table')) {
@@ -73,6 +74,8 @@ class Email_Campaign_List extends \WP_List_Table
 
         // remove the campaign meta data.
         EmailCampaignRepository::delete_settings_by_id($email_campaign_id);
+
+        EmailCampaignMeta::delete_all_meta_data($email_campaign_id);
     }
 
     /**
