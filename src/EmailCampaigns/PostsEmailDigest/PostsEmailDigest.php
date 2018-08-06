@@ -88,7 +88,7 @@ class PostsEmailDigest extends AbstractTriggers
                 case 'every_week':
                     if ($carbon_today->isDayOfWeek($schedule_day) &&
                         $schedule_hour->lessThanOrEqualTo($carbon_now) &&
-                        // add an hour grace so missed schedule can run.
+                        // add an hour grace...
                         $schedule_hour->diffInRealHours($carbon_now) <= 1) {
                         $this->create_and_send_campaign($email_campaign_id);
                     }
@@ -96,7 +96,7 @@ class PostsEmailDigest extends AbstractTriggers
                 case 'every_month':
                     if ($carbon_now->day == $schedule_month_date &&
                         $schedule_hour->lessThanOrEqualTo($carbon_now) &&
-                        // add an hour grace so missed schedule can run.
+                        // add an hour grace...
                         $schedule_hour->diffInRealHours($carbon_now) <= 1) {
                         $this->create_and_send_campaign($email_campaign_id);
                     }
@@ -121,8 +121,6 @@ class PostsEmailDigest extends AbstractTriggers
     {
         $email_subject = ER::get_merged_customizer_value($email_campaign_id, 'email_campaign_subject');
         $post_collection = $this->post_collection($email_campaign_id);
-        var_dump($post_collection);
-        exit;
         if (empty($post_collection)) return false;
 
         $content_html = (new Templatify($email_campaign_id, $post_collection))->forge();
@@ -147,7 +145,7 @@ class PostsEmailDigest extends AbstractTriggers
 
         $connection_instance = ConnectionFactory::make($connection_service);
 
-        EmailCampaignMeta::add_meta_data($email_campaign_id, 'last_processed_at', current_time('mysql'));
+        EmailCampaignMeta::update_meta_data($email_campaign_id, 'last_processed_at', current_time('mysql'));
 
         $response = $connection_instance->send_newsletter(
             $email_campaign_id,

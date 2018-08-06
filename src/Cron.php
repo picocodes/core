@@ -15,7 +15,7 @@ class Cron
 
     public function create_recurring_schedule()
     {
-        // we are adding 10 mins to give room for timestamp checking to be correct.
+        // we are adding 10 mins to give room for timestamp/hourly checking to be correct.
         $tz = Carbon::now(0)->endOfHour()->addMinute(10)->timestamp;
 
         if (!wp_next_scheduled('mo_hourly_recurring_job')) {
