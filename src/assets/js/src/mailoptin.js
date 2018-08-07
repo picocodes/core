@@ -158,7 +158,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                                 $('#' + $optin_uuid).removeClass('mo-cta-button-flag');
                             }
 
-                            else if ($.inArray(optin_js_config.cta_action, ['close_optin', 'close_optin_reload_page'] !== -1)) {
+                            else if ($.inArray(optin_js_config.cta_action, ['close_optin', 'close_optin_reload_page']) !== -1) {
                                 $.MoModalBox.close();
                                 mailoptin_optin._close_optin(optin_container);
 
