@@ -24,7 +24,7 @@ class CustomizerSettings extends AbstractCustomizer
         $this->customizerClassInstance = $customizerClassInstance;
         $this->option_prefix = $option_prefix;
 
-        parent::__construct();
+        parent::__construct($customizerClassInstance->email_campaign_id);
     }
 
     /**
