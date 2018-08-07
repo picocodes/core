@@ -115,6 +115,8 @@ class Templatify implements TemplatifyInterface
 
         $content = $emogrifier->emogrify();
 
-        return str_replace(['%5B', '%5D', '%7B', '%7D'], ['[', ']', '{', '}'], $content);
+        return $this->replace_footer_placeholder_tags(
+            str_replace(['%5B', '%5D', '%7B', '%7D'], ['[', ']', '{', '}'], $content)
+        );
     }
 }

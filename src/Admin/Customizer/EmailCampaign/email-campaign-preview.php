@@ -27,7 +27,7 @@ switch ($email_campaign_type) {
         break;
 }
 
-echo $template_preview_instance->replace_footer_placeholder_tags($template_preview_instance->forge());
+echo $template_preview_instance->forge();
 
 // this is not in AbstractTemplate as in AbstractOptinForm so it doesn't get templatified/emogrified along with the email template
 // on customizer preview.

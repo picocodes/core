@@ -3,6 +3,8 @@
 namespace MailOptin\Core;
 
 use MailOptin\Core\Admin\Customizer\CustomControls\ControlsHelpers;
+use MailOptin\Core\Admin\Customizer\EmailCampaign\NewPublishPostTemplatePreview;
+use MailOptin\Core\Admin\Customizer\EmailCampaign\PostsEmailDigestTemplatePreview;
 use MailOptin\Core\Admin\Customizer\EmailCampaign\SolitaryDummyContent;
 use MailOptin\Core\Admin\SettingsPage\Email_Campaign_List;
 use MailOptin\Core\Admin\SettingsPage\OptinCampaign_List;
@@ -10,7 +12,6 @@ use MailOptin\Core\Admin\SettingsPage\SplitTestOptinCampaign;
 use MailOptin\Core\Connections\AbstractConnect;
 use MailOptin\Core\Connections\ConnectionFactory;
 use MailOptin\Core\EmailCampaigns\NewPublishPost\NewPublishPost;
-use MailOptin\Core\EmailCampaigns\NewPublishPost\Templatify;
 use MailOptin\Core\OptinForms\ConversionDataBuilder;
 use MailOptin\Core\PluginSettings\Settings;
 use MailOptin\Core\Repositories\ConnectionsRepository;
@@ -204,14 +205,27 @@ class AjaxHandler
     public function new_publish_post_preview($email_campaign_id, $email_campaign_subject)
     {
         $mock_post = new \stdClass();
-        $mock_post->ID = 0;
         $mock_post->post_title = SolitaryDummyContent::title();
-        $mock_post->post_content = SolitaryDummyContent::content();
-        $mock_post->post_url = home_url();
 
         return [
-            (new Templatify($email_campaign_id, $mock_post))->forge(),
+            (new NewPublishPostTemplatePreview($email_campaign_id))->forge(),
             NewPublishPost::format_campaign_subject($email_campaign_subject, $mock_post)
+        ];
+    }
+
+    /**
+     * Handles generating preview of "posts email digest" email campaign for test email sending
+     *
+     * @param int $email_campaign_id
+     * @param string $email_campaign_subject
+     *
+     * @return array index0 is content_html index1 is email campaign subject.
+     */
+    public function posts_email_digest_preview($email_campaign_id, $email_campaign_subject)
+    {
+        return [
+            (new PostsEmailDigestTemplatePreview($email_campaign_id))->forge(),
+            $email_campaign_subject
         ];
     }
 
