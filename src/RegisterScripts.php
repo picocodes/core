@@ -16,7 +16,8 @@ class RegisterScripts
 
     public function fancybox_assets()
     {
-        if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) return;
+        if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM'))
+            return;
 
         wp_register_script('mailoptin-fancybox', MAILOPTIN_LIBSODIUM_ASSETS_URL . 'fancybox/jquery.fancybox.min.js', ['jquery'], false, true);
         wp_register_script('mailoptin-init-fancybox', MAILOPTIN_ASSETS_URL . 'js/admin/fancybox-init.js', ['jquery'], false, true);
@@ -26,7 +27,8 @@ class RegisterScripts
 
     public static function fancybox_scripts()
     {
-        if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) return;
+        if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM'))
+            return;
 
         wp_enqueue_script('mailoptin-fancybox');
         wp_enqueue_script('mailoptin-init-fancybox');
@@ -79,7 +81,13 @@ class RegisterScripts
             wp_enqueue_script('mailoptin', MAILOPTIN_ASSETS_URL . 'js/src/main.js', ['jquery', 'mo-requirejs'], MAILOPTIN_VERSION_NUMBER, true);
         } else {
             wp_enqueue_style('mailoptin', MAILOPTIN_ASSETS_URL . 'css/mailoptin.min.css', false, MAILOPTIN_VERSION_NUMBER);
-            wp_enqueue_script('mailoptin', MAILOPTIN_ASSETS_URL . 'js/mailoptin.min.js', ['jquery'], MAILOPTIN_VERSION_NUMBER, true);
+            if (is_customize_preview()) {
+                // when plugin like nextgen gallery is active, loading mailoptin.js in footer do not make lightbox, slidein, bar load
+                // in customizer. but on header works.
+                wp_enqueue_script('mailoptin', MAILOPTIN_ASSETS_URL . 'js/mailoptin.min.js', ['jquery'], MAILOPTIN_VERSION_NUMBER);
+            } else {
+                wp_enqueue_script('mailoptin', MAILOPTIN_ASSETS_URL . 'js/mailoptin.min.js', ['jquery'], MAILOPTIN_VERSION_NUMBER, true);
+            }
         }
 
         $this->global_js_variables('mailoptin');
@@ -95,19 +103,19 @@ class RegisterScripts
         wp_localize_script(
             $handle, 'mailoptin_globals',
             apply_filters('mo_mailoptin_js_globals', array(
-                'admin_url' => admin_url(),
-                'public_js' => MAILOPTIN_ASSETS_URL . 'js/src',
-                'nonce' => wp_create_nonce('mailoptin-admin-nonce'),
-                'mailoptin_ajaxurl' => AjaxHandler::get_endpoint(),
-                'ajaxurl' => admin_url('admin-ajax.php'),
-                'split_test_start_label' => __('Start Test', 'mailoptin'),
-                'split_test_pause_label' => __('Pause Test', 'mailoptin'),
-                'is_customize_preview' => is_customize_preview() ? 'true' : 'false',
+                'admin_url'                   => admin_url(),
+                'public_js'                   => MAILOPTIN_ASSETS_URL . 'js/src',
+                'nonce'                       => wp_create_nonce('mailoptin-admin-nonce'),
+                'mailoptin_ajaxurl'           => AjaxHandler::get_endpoint(),
+                'ajaxurl'                     => admin_url('admin-ajax.php'),
+                'split_test_start_label'      => __('Start Test', 'mailoptin'),
+                'split_test_pause_label'      => __('Pause Test', 'mailoptin'),
+                'is_customize_preview'        => is_customize_preview() ? 'true' : 'false',
                 // for some weird reason, boolen false is converted to empty and true to "1" hence the use of 'false' in string form.
                 'disable_impression_tracking' => apply_filters('mo_disable_impression_tracking', 'false'),
-                'chosen_search_placeholder' => __('Type to search', 'mailoptin'),
-                'js_confirm_text' => __('Are you sure you want to do this?', 'mailoptin'),
-                'js_clear_stat_text' => __('Are you sure you want to do this? Clicking OK will delete all your optin analytics records.', 'mailoptin')
+                'chosen_search_placeholder'   => __('Type to search', 'mailoptin'),
+                'js_confirm_text'             => __('Are you sure you want to do this?', 'mailoptin'),
+                'js_clear_stat_text'          => __('Are you sure you want to do this? Clicking OK will delete all your optin analytics records.', 'mailoptin')
             ))
         );
     }

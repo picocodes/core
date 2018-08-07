@@ -562,9 +562,7 @@ class Customizer
      */
     public function include_optin_form_customizer_template($template)
     {
-        if (is_customize_preview() &&
-            wp_verify_nonce($_REQUEST['_wpnonce'], 'mailoptin-preview-optin-form')
-        ) {
+        if (is_customize_preview() && wp_verify_nonce($_REQUEST['_wpnonce'], 'mailoptin-preview-optin-form')) {
             $template = MAILOPTIN_SRC . 'Admin/Customizer/OptinForm/optin-form-preview.php';
         } else {
             wp_redirect(MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE);
