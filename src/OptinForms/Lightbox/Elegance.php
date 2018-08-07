@@ -468,6 +468,7 @@ div#$optin_css_id.moEleganceModal input.moEleganceModal_button {
   text-transform: uppercase;
   background: #2785C8;
   color: #ffffff;
+  line-height: normal;
   border: 0 none;
   border-radius: 0;
   outline: 1px solid #2785C8;
