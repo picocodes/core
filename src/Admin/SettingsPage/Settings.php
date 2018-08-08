@@ -6,7 +6,7 @@ namespace MailOptin\Core\Admin\SettingsPage;
 use MailOptin\Core\Repositories\OptinCampaignsRepository;
 use W3Guy\Custom_Settings_Page_Api;
 
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -37,7 +37,8 @@ class Settings extends AbstractSettingsPage
      */
     public function clear_optin_cache()
     {
-        if (defined('DOING_AJAX')) return;
+        if (defined('DOING_AJAX'))
+            return;
 
         if (isset($_GET['clear-optin-cache']) && $_GET['clear-optin-cache'] == 'true') {
             OptinCampaignsRepository::burst_all_cache();
@@ -64,23 +65,23 @@ class Settings extends AbstractSettingsPage
     public function settings_admin_page_callback()
     {
         $clear_optin_cache_url = add_query_arg('clear-optin-cache', 'true', MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE);
-        $args = [
-            'general_settings' => apply_filters('mailoptin_settings_general_settings_page', [
-                    'tab_title' => __('General', 'mailoptin'),
-                    'section_title' => __('General Settings', 'mailoptin'),
-                    'remove_plugin_data' => [
-                        'type' => 'checkbox',
-                        'label' => __('Remove Data on Uninstall?', 'mailoptin'),
+        $args                  = [
+            'general_settings'        => apply_filters('mailoptin_settings_general_settings_page', [
+                    'tab_title'               => __('General', 'mailoptin'),
+                    'section_title'           => __('General Settings', 'mailoptin'),
+                    'remove_plugin_data'      => [
+                        'type'        => 'checkbox',
+                        'label'       => __('Remove Data on Uninstall?', 'mailoptin'),
                         'description' => __('Check this box if you would like MailOptin to completely remove all of its data when uninstalled.', 'mailoptin'),
                     ],
-                    'allow_tracking' => [
-                        'type' => 'checkbox',
-                        'label' => __('Allow Usage Tracking?', 'mailoptin'),
+                    'allow_tracking'          => [
+                        'type'        => 'checkbox',
+                        'label'       => __('Allow Usage Tracking?', 'mailoptin'),
                         'description' => __('Allow MailOptin to anonymously track how this plugin is used and help us make the plugin better. Opt-in to tracking and our newsletter. No sensitive data is tracked.', 'mailoptin'),
                     ],
                     'mailoptin_affiliate_url' => [
-                        'type' => 'text',
-                        'label' => __('MailOptin Affiliate Link', 'mailoptin'),
+                        'type'        => 'text',
+                        'label'       => __('MailOptin Affiliate Link', 'mailoptin'),
                         'description' => sprintf(
                             __('You can earn money by promoting MailOptin! %1$sJoin our affiliate program%2$s, and paste your %1$saffiliate link here%2$s. Once entered, it will replace the default MailOptin branding link on your optins.', 'mailoptin'),
                             '<a href="https://mailoptin.io/affiliates/" target="_blank">',
@@ -92,23 +93,23 @@ class Settings extends AbstractSettingsPage
             'optin_campaign_settings' => apply_filters('mailoptin_settings_optin_campaign_settings_page', [
                     'tab_title' => __('Optin Campaign', 'mailoptin'),
                     [
-                        'section_title' => __('Optin Campaign Settings', 'mailoptin'),
-                        'clear_optin_cache' => [
-                            'type' => 'custom_field_block',
-                            'label' => __('Clear Optin Cache', 'mailoptin'),
-                            'data' => "<a href='$clear_optin_cache_url' class='button action'>" . __('Clear Cache', 'mailoptin') . '</a>',
+                        'section_title'         => __('Optin Campaign Settings', 'mailoptin'),
+                        'clear_optin_cache'     => [
+                            'type'        => 'custom_field_block',
+                            'label'       => __('Clear Optin Cache', 'mailoptin'),
+                            'data'        => "<a href='$clear_optin_cache_url' class='button action'>" . __('Clear Cache', 'mailoptin') . '</a>',
                             'description' => '<p class="description">' .
-                                sprintf(
-                                    __('Each time you create and make changes to your %soptin campaigns%s, MailOptin caches the designs so it doesn\'t hurt your website speed and performance. If for some reasons changes you made to your campaigns are not reflected on your website frontend, use this button to clear the cache.', 'mailoptin'),
-                                    '<a href="' . MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE . '">',
-                                    '</a>'
-                                ) .
-                                '</p>',
+                                             sprintf(
+                                                 __('Each time you create and make changes to your %soptin campaigns%s, MailOptin caches the designs so it doesn\'t hurt your website speed and performance. If for some reasons changes you made to your campaigns are not reflected on your website frontend, use this button to clear the cache.', 'mailoptin'),
+                                                 '<a href="' . MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE . '">',
+                                                 '</a>'
+                                             ) .
+                                             '</p>',
                         ],
-                        'global_cookie' => [
-                            'type' => 'number',
-                            'value' => 0,
-                            'label' => __('Global Interaction Cookie', 'mailoptin'),
+                        'global_cookie'         => [
+                            'type'        => 'number',
+                            'value'       => 0,
+                            'label'       => __('Global Interaction Cookie', 'mailoptin'),
                             'description' => __(
                                 'Entering a number of days (e.g. 30) will set a global cookie once any optin is closed by a user or visitor.
                             This global cookie will prevent any other optins from loading on your site for that visitor until the cookie expires. Defaults to 0 (no global interaction cookie).',
@@ -116,9 +117,9 @@ class Settings extends AbstractSettingsPage
                             ),
                         ],
                         'global_success_cookie' => [
-                            'type' => 'number',
-                            'value' => 0,
-                            'label' => __('Global Success Cookie', 'mailoptin'),
+                            'type'        => 'number',
+                            'value'       => 0,
+                            'label'       => __('Global Success Cookie', 'mailoptin'),
                             'description' => __(
                                 'Entering a number of days (e.g. 30) will set a global cookie once any optin has resulted in a successful conversion. This global cookie will prevent any other optins from loading on your site for that visitor until the cookie expires. Defaults to 0 (no global success cookie).',
                                 'mailoptin'
@@ -128,70 +129,70 @@ class Settings extends AbstractSettingsPage
                 ]
             ),
             'email_campaign_settings' => apply_filters('mailoptin_settings_email_campaign_settings_page', [
-                    'tab_title' => __('Email Campaign', 'mailoptin'),
-                    'section_title' => __('Email Campaign Settings', 'mailoptin'),
-                    'from_name' => [
-                        'type' => 'text',
-                        'label' => __('From Name', 'mailoptin'),
+                    'tab_title'         => __('Email Campaign', 'mailoptin'),
+                    'section_title'     => __('Email Campaign Settings', 'mailoptin'),
+                    'from_name'         => [
+                        'type'        => 'text',
+                        'label'       => __('From Name', 'mailoptin'),
                         'description' => sprintf(__('Enter the sender name to be used as the "From Name".', 'mailoptin')),
                     ],
-                    'from_email' => [
-                        'type' => 'text',
-                        'label' => __('From Email', 'mailoptin'),
+                    'from_email'        => [
+                        'type'        => 'text',
+                        'label'       => __('From Email', 'mailoptin'),
                         'description' => __('Enter the email address to be used as the "From Email"', 'mailoptin'),
                     ],
-                    'reply_to' => [
-                        'type' => 'text',
-                        'label' => __('Reply To', 'mailoptin'),
+                    'reply_to'          => [
+                        'type'        => 'text',
+                        'label'       => __('Reply To', 'mailoptin'),
                         'description' => __('Enter the email address to be used as the "Reply To"', 'mailoptin'),
                     ],
-                    'company_name' => [
-                        'type' => 'text',
-                        'label' => __('Company / Organization', 'mailoptin'),
+                    'company_name'      => [
+                        'type'        => 'text',
+                        'label'       => __('Company / Organization', 'mailoptin'),
                         'description' => __('Enter the name of your company or organization.', 'mailoptin'),
                     ],
-                    'company_address' => [
-                        'type' => 'text',
+                    'company_address'   => [
+                        'type'  => 'text',
                         'label' => __('Address', 'mailoptin'),
                     ],
                     'company_address_2' => [
-                        'type' => 'text',
+                        'type'  => 'text',
                         'label' => __('Address 2', 'mailoptin'),
                     ],
-                    'company_city' => [
-                        'type' => 'text',
+                    'company_city'      => [
+                        'type'  => 'text',
                         'label' => __('City', 'mailoptin'),
                     ],
-                    'company_state' => [
-                        'type' => 'text',
+                    'company_state'     => [
+                        'type'  => 'text',
                         'label' => __('State / Province / Region', 'mailoptin'),
                     ],
-                    'company_zip' => [
-                        'type' => 'text',
+                    'company_zip'       => [
+                        'type'  => 'text',
                         'label' => __('Zip / Postal code', 'mailoptin')
                     ],
-                    'company_country' => [
-                        'type' => 'select',
-                        'label' => __('Country', 'mailoptin'),
+                    'company_country'   => [
+                        'type'    => 'select',
+                        'label'   => __('Country', 'mailoptin'),
                         'options' => \MailOptin\Core\countries_array()
                     ]
                 ]
             )
         ];
 
-        if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
+        if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM')) {
             unset($args['optin_campaign_settings']);
         }
 
         do_action('mailoptin_before_settings_page', MAILOPTIN_SETTINGS_DB_OPTION_NAME);
-        $settings_args = apply_filters('mailoptin_settings_page', $args);
-        $nav_tabs = '';
+        $settings_args    = apply_filters('mailoptin_settings_page', $args);
+        $nav_tabs         = '';
         $tab_content_area = '';
 
-        if (!empty($settings_args)) {
-            $instance = Custom_Settings_Page_Api::instance([], MAILOPTIN_SETTINGS_DB_OPTION_NAME, __('MailOptin - Settings', 'mailoptin'));
+        if ( ! empty($settings_args)) {
+            $instance = Custom_Settings_Page_Api::instance([], MAILOPTIN_SETTINGS_DB_OPTION_NAME, __('Settings', 'mailoptin'));
             foreach ($settings_args as $key => $settings_arg) {
-                $tab_title = $settings_arg['tab_title'];
+                $tab_title     = $settings_arg['tab_title'];
                 $section_title = $settings_arg['tab_title'];
                 unset($settings_arg['tab_title']);
                 unset($settings_arg['section_title']);
@@ -205,21 +206,18 @@ class Settings extends AbstractSettingsPage
                     $tab_content_area .= '</div>';
                 } else {
                     $settings_arg['section_title'] = $section_title;
-                    $tab_content_area .= sprintf('<div id="%s" class="mailoptin-group-wrapper">', $key);
-                    $tab_content_area .= $instance->metax_box_instance($settings_arg);
-                    $tab_content_area .= '</div>';
+                    $tab_content_area              .= sprintf('<div id="%s" class="mailoptin-group-wrapper">', $key);
+                    $tab_content_area              .= $instance->metax_box_instance($settings_arg);
+                    $tab_content_area              .= '</div>';
                 }
             }
 
-            $this->register_core_settings($instance, true);
             $instance->persist_plugin_settings();
-
-            echo '<div class="wrap">';
-            $instance->settings_page_heading();
+            $this->register_core_settings($instance, true);
             $instance->do_settings_errors();
             settings_errors('wp_csa_notice');
-            $instance->settings_page_tab();
-
+            echo '<div class="wrap">';
+            $instance->settings_page_heading();
             echo '<div class="mailoptin-settings-wrap" data-option-name="' . MAILOPTIN_SETTINGS_DB_OPTION_NAME . '">';
             echo '<h2 class="nav-tab-wrapper">' . $nav_tabs . '</h2>';
             echo '<div class="metabox-holder mailoptin-tab-settings">';

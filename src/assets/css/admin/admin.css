@@ -101,7 +101,7 @@
 }
 
 .mailoptin-optin-theme a {
-    text-decoration:none;
+    text-decoration: none;
 }
 
 /* hide ajax_nonce hidden field containing nonce. musn't be displayed */
@@ -634,7 +634,6 @@ form.mo-inline {
 .mailoptin-settings-wrap {
     display: flex;
     border: 1px solid #c8d7e1;
-    border-top: 0;
 }
 
 .mailoptin-settings-wrap .dashicons {
@@ -944,8 +943,11 @@ form.mo-inline {
     color: #ffa506 !important;
 }
 
-/* stylish header */
+.mailoptin-admin #mailoptin-sub-bar + .mailoptin-settings-wrap {
+    border-top: 0;
+}
 
+/* stylish header */
 .mo-admin-banner {
     background-color: #2980b9;
     -webkit-box-sizing: border-box;
@@ -953,32 +955,45 @@ form.mo-inline {
     overflow: hidden;
     position: relative;
     top: 0;
-    width: 100%
+    width: 100%;
+    padding: 15px;
 }
 
-
-.mailoptin_page_mailoptin-connections .wrap {
+.mailoptin-admin .wrap {
     padding-left: 20px;
+    margin: 0 20px 0 2px;
 }
 
-.wp-admin.mailoptin_page_mailoptin-connections #wpcontent {
+.wp-admin.mailoptin-admin #wpcontent {
     padding: 0;
 }
 
-.wp-csa-heading {
+.mailoptin-admin #wpbody #wpbody-content .wrap h2.wp-csa-heading {
     background-color: #fff;
     padding: 15px 20px;
     font-size: 2em;
-    font-weight: 400;
-    margin: 0;
-    line-height: 29px;
+    margin: 0 -20px 20px;
 }
 
-.mo-admin-banner__logo img {
-    width: 300px;
-    height:auto;
+.mailoptin-admin .mo-admin-banner__logo img {
+    width: 250px;
+    height: auto;
+    float: left;
 }
 
-.mo-admin-banner__logo {
-    padding: 10px;
+.mo-admin-banner__helplinks {
+    float: right;
+    padding: 20px;
+}
+
+.mo-admin-banner__helplinks a {
+    color: #ffffffe3;
+    text-decoration: none;
+    padding-right: 15px;
+}
+
+.mailoptin-admin div#screen-meta-links {
+    position: absolute;
+    right: 0;
+    z-index: 9;
 }

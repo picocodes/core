@@ -48,6 +48,8 @@ class Custom_Settings_Page_Api
     /** @var string header title of the page */
     private $page_header = '';
 
+    private $exclude_top_tav_nav = false;
+
     protected function __construct($main_content_config = array(), $option_name = '', $page_header = '')
     {
         $this->db_options          = get_option($option_name, array());
@@ -92,6 +94,9 @@ class Custom_Settings_Page_Api
      */
     public function settings_page_tab()
     {
+        if ($this->exclude_top_tav_nav)
+            return;
+
         $args = $this->tabs_config;
         echo '<h2 class="nav-tab-wrapper">';
         if ( ! empty($args)) {
@@ -285,9 +290,11 @@ class Custom_Settings_Page_Api
      *
      * @param bool $exclude_sidebar set to true to remove sidebar markup (.column-2)
      */
-    public function build($exclude_sidebar = false)
+    public function build($exclude_sidebar = false, $exclude_top_tav_nav = false)
     {
         $this->persist_plugin_settings();
+
+        $this->exclude_top_tav_nav = $exclude_top_tav_nav;
 
         $columns2_class = ! $exclude_sidebar ? ' columns-2' : null;
         ?>

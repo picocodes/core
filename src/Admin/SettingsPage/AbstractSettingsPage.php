@@ -28,6 +28,8 @@ abstract class AbstractSettingsPage
             '',
             'dashicons-email-alt'
         );
+
+        add_filter('admin_body_class', array($this, 'add_admin_body_class'));
     }
 
     public function stylish_header()
@@ -36,9 +38,17 @@ abstract class AbstractSettingsPage
         ?>
         <div class="mo-admin-banner">
             <div class="mo-admin-banner__logo">
-                <img src="<?=$logo_url?>" alt="">
+                <img src="<?= $logo_url ?>" alt="">
             </div>
-            <div class="mo-admin-banner__body js-wpbr-help-container"></div>
+            <div class="mo-admin-banner__helplinks">
+                <a rel="noopener" href="https://mailoptin.io/docs/" target="_blank">
+                    <span class="dashicons dashicons-book"></span> <?= __('Documentation', 'mailoptin'); ?>
+                </a>
+                <a rel="noopener" href="https://mailoptin.io/submit-ticket/" target="_blank">
+                    <span class="dashicons dashicons-admin-users"></span> <?= __('Request Support', 'mailoptin'); ?>
+                </a>
+            </div>
+            <div class="clear"></div>
         </div>
         <?php
     }
@@ -49,13 +59,40 @@ abstract class AbstractSettingsPage
      * @param Custom_Settings_Page_Api $instance
      * @param bool $remove_sidebar
      */
-    public function register_core_settings(Custom_Settings_Page_Api $instance, $remove_sidebar = false)
+    public function register_core_settings(Custom_Settings_Page_Api $instance, $remove_sidebar = false, $add_top_menu_tab = false)
     {
         if ( ! $remove_sidebar) {
             $instance->sidebar($this->sidebar_args());
         }
 
-//        $instance->tab($this->tab_args());
+        $instance->tab($this->tab_args());
+
+        $this->stylish_header();
+    }
+
+    /**
+     * Adds admin body class to all admin pages created by the plugin.
+     *
+     * @since 0.1.0
+     *
+     * @param  string $classes Space-separated list of CSS classes.
+     *
+     * @return string Filtered body classes.
+     */
+    public function add_admin_body_class($classes)
+    {
+        $current_screen = get_current_screen();
+
+        if (empty ($current_screen)) {
+            return;
+        }
+
+        if (false !== strpos($current_screen->id, 'mailoptin')) {
+            // Leave space on both sides so other plugins do not conflict.
+            $classes .= ' mailoptin-admin ';
+        }
+
+        return $classes;
     }
 
     public function sidebar_args()

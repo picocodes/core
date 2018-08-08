@@ -6,7 +6,7 @@ namespace MailOptin\Core\Admin\SettingsPage;
 use MailOptin\Core\Connections\AbstractConnect;
 use W3Guy\Custom_Settings_Page_Api;
 
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -57,17 +57,17 @@ class Connections extends AbstractSettingsPage
     public function filter_sub_menu()
     {
         $emailmarketing_url = add_query_arg('connect-type', AbstractConnect::EMAIL_MARKETING_TYPE, MAILOPTIN_CONNECTIONS_SETTINGS_PAGE);
-        $social_url = add_query_arg('connect-type', AbstractConnect::SOCIAL_TYPE, MAILOPTIN_CONNECTIONS_SETTINGS_PAGE);
-        $analytics_url = add_query_arg('connect-type', AbstractConnect::ANALYTICS_TYPE, MAILOPTIN_CONNECTIONS_SETTINGS_PAGE);
-        $crm_url = add_query_arg('connect-type', AbstractConnect::CRM_TYPE, MAILOPTIN_CONNECTIONS_SETTINGS_PAGE);
-        $other_url = add_query_arg('connect-type', AbstractConnect::OTHER_TYPE, MAILOPTIN_CONNECTIONS_SETTINGS_PAGE);
+        $social_url         = add_query_arg('connect-type', AbstractConnect::SOCIAL_TYPE, MAILOPTIN_CONNECTIONS_SETTINGS_PAGE);
+        $analytics_url      = add_query_arg('connect-type', AbstractConnect::ANALYTICS_TYPE, MAILOPTIN_CONNECTIONS_SETTINGS_PAGE);
+        $crm_url            = add_query_arg('connect-type', AbstractConnect::CRM_TYPE, MAILOPTIN_CONNECTIONS_SETTINGS_PAGE);
+        $other_url          = add_query_arg('connect-type', AbstractConnect::OTHER_TYPE, MAILOPTIN_CONNECTIONS_SETTINGS_PAGE);
 
-        $all_menu_active = isset($_GET['page']) && !isset($_GET['connect-type']) ? 'mailoptin-type-active' : null;
+        $all_menu_active            = isset($_GET['page']) && ! isset($_GET['connect-type']) ? 'mailoptin-type-active' : null;
         $emailmarketing_menu_active = isset($_GET['connect-type']) && $_GET['page'] == MAILOPTIN_CONNECTIONS_SETTINGS_SLUG && $_GET['connect-type'] == 'emailmarketing' ? 'mailoptin-type-active' : null;
-        $social_menu_active = isset($_GET['connect-type']) && $_GET['page'] == MAILOPTIN_CONNECTIONS_SETTINGS_SLUG && $_GET['connect-type'] == 'social' ? 'mailoptin-type-active' : null;
-        $crm_menu_active = isset($_GET['connect-type']) && $_GET['page'] == MAILOPTIN_CONNECTIONS_SETTINGS_SLUG && $_GET['connect-type'] == 'crm' ? 'mailoptin-type-active' : null;
-        $other_menu_active = isset($_GET['connect-type']) && $_GET['page'] == MAILOPTIN_CONNECTIONS_SETTINGS_SLUG && $_GET['connect-type'] == 'other' ? 'mailoptin-type-active' : null;
-        $analytics_menu_active = isset($_GET['connect-type']) && $_GET['page'] == MAILOPTIN_CONNECTIONS_SETTINGS_SLUG && $_GET['connect-type'] == 'analytics' ? 'mailoptin-type-active' : null;
+        $social_menu_active         = isset($_GET['connect-type']) && $_GET['page'] == MAILOPTIN_CONNECTIONS_SETTINGS_SLUG && $_GET['connect-type'] == 'social' ? 'mailoptin-type-active' : null;
+        $crm_menu_active            = isset($_GET['connect-type']) && $_GET['page'] == MAILOPTIN_CONNECTIONS_SETTINGS_SLUG && $_GET['connect-type'] == 'crm' ? 'mailoptin-type-active' : null;
+        $other_menu_active          = isset($_GET['connect-type']) && $_GET['page'] == MAILOPTIN_CONNECTIONS_SETTINGS_SLUG && $_GET['connect-type'] == 'other' ? 'mailoptin-type-active' : null;
+        $analytics_menu_active      = isset($_GET['connect-type']) && $_GET['page'] == MAILOPTIN_CONNECTIONS_SETTINGS_SLUG && $_GET['connect-type'] == 'analytics' ? 'mailoptin-type-active' : null;
         ?>
         <div id="mailoptin-sub-bar">
             <div class="mailoptin-new-toolbar mailoptin-clear" style="border-top: 0;margin-bottom:0">
@@ -111,15 +111,14 @@ class Connections extends AbstractSettingsPage
 
     public function settings_admin_page_callback()
     {
-        $this->stylish_header();
         do_action('mailoptin_before_connections_settings_page', MAILOPTIN_CONNECTIONS_DB_OPTION_NAME);
         $connection_args = apply_filters('mailoptin_connections_settings_page', array());
         usort($connection_args, function ($a, $b) {
             return strcmp($a["section_title"], $b["section_title"]);
         });
-        $nav_tabs = '';
+        $nav_tabs         = '';
         $tab_content_area = '';
-        if (!empty($connection_args)) {
+        if ( ! empty($connection_args)) {
             $instance = Custom_Settings_Page_Api::instance([], MAILOPTIN_CONNECTIONS_DB_OPTION_NAME, __('Connections', 'mailoptin'));
             foreach ($connection_args as $key => $connection_arg) {
                 $type = isset($connection_arg['type']) ? $connection_arg['type'] : '';
@@ -137,22 +136,21 @@ class Connections extends AbstractSettingsPage
                 $key = key($connection_arg);
                 // re-add section title after we've gotten key.
                 $connection_arg['section_title'] = $section_title;
-                $nav_tabs .= sprintf('<a href="#%1$s" class="nav-tab" id="%1$s-tab"><span class="dashicons dashicons-admin-settings"></span> %2$s</a>', $key, $section_title_without_status);
-                $tab_content_area .= sprintf('<div id="%s" class="mailoptin-group-wrapper">', $key);
-                $tab_content_area .= $instance->metax_box_instance($connection_arg);
-                $tab_content_area .= '</div>';
+                $nav_tabs                        .= sprintf('<a href="#%1$s" class="nav-tab" id="%1$s-tab"><span class="dashicons dashicons-admin-settings"></span> %2$s</a>', $key, $section_title_without_status);
+                $tab_content_area                .= sprintf('<div id="%s" class="mailoptin-group-wrapper">', $key);
+                $tab_content_area                .= $instance->metax_box_instance($connection_arg);
+                $tab_content_area                .= '</div>';
             }
 
-            $this->register_core_settings($instance, true);
             $instance->persist_plugin_settings();
-            $instance->settings_page_heading();
-            echo '<div class="wrap">';
+            $this->register_core_settings($instance, true);
             $instance->do_settings_errors();
             settings_errors('wp_csa_notice');
-            $instance->settings_page_tab();
+            echo '<div class="wrap">';
+            $instance->settings_page_heading();
             $this->filter_sub_menu();
 
-            if (!empty($connection_args)) {
+            if ( ! empty($connection_args)) {
                 echo '<div class="mailoptin-settings-wrap" data-option-name="' . MAILOPTIN_CONNECTIONS_DB_OPTION_NAME . '">';
                 echo '<h2 class="nav-tab-wrapper">' . $nav_tabs . '</h2>';
                 echo '<div class="metabox-holder mailoptin-tab-settings">';
@@ -173,7 +171,7 @@ class Connections extends AbstractSettingsPage
     {
         // handle oauth errors.
         if (isset($_GET['mo-oauth-provider'], $_GET['mo-oauth-error'])) {
-            $provider = ucfirst(sanitize_text_field($_GET['mo-oauth-provider']));
+            $provider      = ucfirst(sanitize_text_field($_GET['mo-oauth-provider']));
             $error_message = strtolower(sanitize_text_field($_GET['mo-oauth-error']));
 
             echo '<div id="message" class="updated notice is-dismissible">';

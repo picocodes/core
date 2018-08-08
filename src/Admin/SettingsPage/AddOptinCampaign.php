@@ -27,7 +27,7 @@ class AddOptinCampaign extends AbstractSettingsPage
         $instance = Custom_Settings_Page_Api::instance();
         $instance->page_header(__('Add New Optin', 'mailoptin'));
         $this->register_core_settings($instance, true);
-        $instance->build(true);
+        $instance->build(true, true);
     }
 
     /**
