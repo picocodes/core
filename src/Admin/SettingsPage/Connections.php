@@ -111,6 +111,7 @@ class Connections extends AbstractSettingsPage
 
     public function settings_admin_page_callback()
     {
+        $this->stylish_header();
         do_action('mailoptin_before_connections_settings_page', MAILOPTIN_CONNECTIONS_DB_OPTION_NAME);
         $connection_args = apply_filters('mailoptin_connections_settings_page', array());
         usort($connection_args, function ($a, $b) {
@@ -144,9 +145,8 @@ class Connections extends AbstractSettingsPage
 
             $this->register_core_settings($instance, true);
             $instance->persist_plugin_settings();
-
-            echo '<div class="wrap">';
             $instance->settings_page_heading();
+            echo '<div class="wrap">';
             $instance->do_settings_errors();
             settings_errors('wp_csa_notice');
             $instance->settings_page_tab();

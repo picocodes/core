@@ -5,7 +5,7 @@ namespace MailOptin\Core\Admin\SettingsPage;
 // Exit if accessed directly
 use W3Guy\Custom_Settings_Page_Api;
 
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -16,11 +16,6 @@ abstract class AbstractSettingsPage
     public function init_menu()
     {
         add_action('admin_menu', array($this, 'register_core_menu'));
-
-        /**
-         * @todo consider removing since it's not used. investigate first though.
-         */
-        add_action('wp_cspa_after_settings_tab', [$this, 'toggle_buttons']);
     }
 
     public function register_core_menu()
@@ -35,13 +30,15 @@ abstract class AbstractSettingsPage
         );
     }
 
-    public function toggle_buttons($option_name)
+    public function stylish_header()
     {
-        if (!in_array($option_name, [MAILOPTIN_SETTINGS_DB_OPTION_NAME])) return;
+        $logo_url = MAILOPTIN_ASSETS_URL . 'images/mailoptin-white.png';
         ?>
-        <div style="margin: 10px">
-            <a href="#" id="mo-metabox-expand" class="button"><?php _e('Expand All', 'mailoptin'); ?></a>
-            <a href="#" id="mo-metabox-collapse" class="button"><?php _e('Collapse All', 'mailoptin'); ?></a>
+        <div class="mo-admin-banner">
+            <div class="mo-admin-banner__logo">
+                <img src="<?=$logo_url?>" alt="">
+            </div>
+            <div class="mo-admin-banner__body js-wpbr-help-container"></div>
         </div>
         <?php
     }
@@ -54,11 +51,11 @@ abstract class AbstractSettingsPage
      */
     public function register_core_settings(Custom_Settings_Page_Api $instance, $remove_sidebar = false)
     {
-        if (!$remove_sidebar) {
+        if ( ! $remove_sidebar) {
             $instance->sidebar($this->sidebar_args());
         }
 
-        $instance->tab($this->tab_args());
+//        $instance->tab($this->tab_args());
     }
 
     public function sidebar_args()
@@ -66,30 +63,30 @@ abstract class AbstractSettingsPage
         $sidebar_args = array(
             array(
                 'section_title' => __('Help / Support', 'mailoptin'),
-                'content' => $this->sidebar_support_docs(),
+                'content'       => $this->sidebar_support_docs(),
             )
         );
 
         $sidebar_args[] = array(
             'section_title' => __('Plugin Need Your Help', 'mailoptin'),
-            'content' => self::rate_review_ad(),
+            'content'       => self::rate_review_ad(),
         );
 
-        if (!apply_filters('mailoptin_disable_sidebar_ads', false)) {
+        if ( ! apply_filters('mailoptin_disable_sidebar_ads', false)) {
             $sidebar_args[] = array(
                 'section_title' => __('Why Upgrade to PRO', 'mailoptin'),
-                'content' => self::why_upgrade_to_pro(),
+                'content'       => self::why_upgrade_to_pro(),
             );
             $sidebar_args[] = array(
                 'section_title' => __('Upgrade to MailOptin PRO', 'mailoptin'),
-                'content' => self::mailoptin_pro_ad(),
+                'content'       => self::mailoptin_pro_ad(),
             );
         }
 
-        if (!is_plugin_active('profilepress/profilepress.php')) {
+        if ( ! is_plugin_active('profilepress/profilepress.php')) {
             $sidebar_args[] = array(
                 'section_title' => __('Get ProfilePress', 'mailoptin'),
-                'content' => self::profilepress_ad(),
+                'content'       => self::profilepress_ad(),
             );
         }
 
@@ -99,12 +96,12 @@ abstract class AbstractSettingsPage
     public function tab_args()
     {
         $tabs = apply_filters('mailoptin_settings_page_tabs', array(
-            20 => array('url' => MAILOPTIN_SETTINGS_SETTINGS_PAGE, 'label' => __('Settings', 'mailoptin')),
-            40 => array('url' => MAILOPTIN_CONNECTIONS_SETTINGS_PAGE, 'label' => __('Connections', 'mailoptin')),
-            60 => array('url' => MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE, 'label' => __('Optin Campaigns', 'mailoptin')),
-            63 => array('url' => MAILOPTIN_LEAD_BANK_SETTINGS_PAGE, 'label' => __('Lead Bank', 'mailoptin')),
-            65 => array('url' => MAILOPTIN_ADVANCE_ANALYTICS_SETTINGS_PAGE, 'label' => __('Optin Analytics', 'mailoptin')),
-            80 => array('url' => MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE, 'label' => __('Email Automations', 'mailoptin')),
+            20  => array('url' => MAILOPTIN_SETTINGS_SETTINGS_PAGE, 'label' => __('Settings', 'mailoptin')),
+            40  => array('url' => MAILOPTIN_CONNECTIONS_SETTINGS_PAGE, 'label' => __('Connections', 'mailoptin')),
+            60  => array('url' => MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE, 'label' => __('Optin Campaigns', 'mailoptin')),
+            63  => array('url' => MAILOPTIN_LEAD_BANK_SETTINGS_PAGE, 'label' => __('Lead Bank', 'mailoptin')),
+            65  => array('url' => MAILOPTIN_ADVANCE_ANALYTICS_SETTINGS_PAGE, 'label' => __('Optin Analytics', 'mailoptin')),
+            80  => array('url' => MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE, 'label' => __('Email Automations', 'mailoptin')),
             100 => array('url' => MAILOPTIN_CAMPAIGN_LOG_SETTINGS_PAGE, 'label' => __('Email Log', 'mailoptin')),
         ));
 
@@ -159,9 +156,9 @@ abstract class AbstractSettingsPage
     public function rate_review_ad()
     {
         ob_start();
-        $review_url = 'https://wordpress.org/support/view/plugin-reviews/mailoptin';
+        $review_url        = 'https://wordpress.org/support/view/plugin-reviews/mailoptin';
         $compatibility_url = 'https://wordpress.org/plugins/mailoptin/#compatibility';
-        $twitter_url = 'https://twitter.com/home?status=I%20love%20this%20WordPress%20plugin!%20https://wordpress.org/plugins/mailoptin/';
+        $twitter_url       = 'https://twitter.com/home?status=I%20love%20this%20WordPress%20plugin!%20https://wordpress.org/plugins/mailoptin/';
 
         ?>
         <div style="text-align: center; margin: auto">
@@ -171,7 +168,7 @@ abstract class AbstractSettingsPage
                         wp_kses(__('Is this plugin useful for you? Leave a positive review on the plugin\'s <a href="%s" target="_blank">WordPress listing</a>', 'mailoptin'),
                             array(
                                 'a' => array(
-                                    'href' => array(),
+                                    'href'   => array(),
                                     'target' => array('_blank'),
                                 ),
                             )
@@ -183,7 +180,7 @@ abstract class AbstractSettingsPage
                         'mailoptin'),
                         array(
                             'a' => array(
-                                'href' => array(),
+                                'href'   => array(),
                                 'target' => array('_blank'),
                             ),
                         )),

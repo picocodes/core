@@ -943,3 +943,42 @@ form.mo-inline {
 #adminmenu a[href="admin.php?page=mailoptin-premium-upgrade"] {
     color: #ffa506 !important;
 }
+
+/* stylish header */
+
+.mo-admin-banner {
+    background-color: #2980b9;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    overflow: hidden;
+    position: relative;
+    top: 0;
+    width: 100%
+}
+
+
+.mailoptin_page_mailoptin-connections .wrap {
+    padding-left: 20px;
+}
+
+.wp-admin.mailoptin_page_mailoptin-connections #wpcontent {
+    padding: 0;
+}
+
+.wp-csa-heading {
+    background-color: #fff;
+    padding: 15px 20px;
+    font-size: 2em;
+    font-weight: 400;
+    margin: 0;
+    line-height: 29px;
+}
+
+.mo-admin-banner__logo img {
+    width: 350px;
+    height:auto;
+}
+
+.mo-admin-banner__logo {
+    padding: 10px;
+}

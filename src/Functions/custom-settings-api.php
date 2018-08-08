@@ -50,10 +50,10 @@ class Custom_Settings_Page_Api
 
     protected function __construct($main_content_config = array(), $option_name = '', $page_header = '')
     {
-        $this->db_options = get_option($option_name, array());
-        $this->option_name = $option_name;
+        $this->db_options          = get_option($option_name, array());
+        $this->option_name         = $option_name;
         $this->main_content_config = $main_content_config;
-        $this->page_header = $page_header;
+        $this->page_header         = $page_header;
     }
 
     public function option_name($val)
@@ -94,12 +94,12 @@ class Custom_Settings_Page_Api
     {
         $args = $this->tabs_config;
         echo '<h2 class="nav-tab-wrapper">';
-        if (!empty($args)) {
+        if ( ! empty($args)) {
             foreach ($args as $arg) {
-                $url = esc_url_raw(@$arg['url']);
-                $label = esc_html(@$arg['label']);
-                $class = esc_attr(@$arg['class']);
-                $style = esc_attr(@$arg['style']);
+                $url    = esc_url_raw(@$arg['url']);
+                $label  = esc_html(@$arg['label']);
+                $class  = esc_attr(@$arg['class']);
+                $style  = esc_attr(@$arg['style']);
                 $active = strpos($this->current_page_url(), $url) !== false ? ' nav-tab-active' : null;
                 echo "<a href=\"$url\" class=\"$class nav-tab{$active}\" style='$style'>$label</a>";
             }
@@ -124,11 +124,12 @@ class Custom_Settings_Page_Api
     {
         $custom = apply_filters('wp_cspa_setting_page_sidebar', '', $this->option_name);
 
-        if (!empty($custom)) return $custom;
+        if ( ! empty($custom))
+            return $custom;
         ?>
         <div id="postbox-container-1" class="postbox-container">
             <div class="meta-box-sortables" style="text-align: center; margin: auto">
-                <?php if (!empty($this->sidebar_config)): ?>
+                <?php if ( ! empty($this->sidebar_config)): ?>
                     <?php foreach ($this->sidebar_config as $arg) : ?>
                         <div class="postbox">
                             <button type="button" class="handlediv button-link" aria-expanded="true">
@@ -191,7 +192,7 @@ class Custom_Settings_Page_Api
     {
         add_action('admin_notices', array($this, 'do_settings_errors'));
 
-        if (!current_user_can('administrator')) {
+        if ( ! current_user_can('administrator')) {
             return;
         }
 
@@ -208,7 +209,7 @@ class Custom_Settings_Page_Api
         do_action('wp_cspa_validate_data', $_POST[$this->option_name]);
 
         $settings_error = get_settings_errors('wp_csa_notice');
-        if (!empty($settings_error)) {
+        if ( ! empty($settings_error)) {
             return;
         }
 
@@ -229,7 +230,7 @@ class Custom_Settings_Page_Api
 
         do_action('wp_cspa_persist_settings', $sanitized_data, $this->option_name);
 
-        if (!apply_filters('wp_cspa_disable_default_persistence', false)) {
+        if ( ! apply_filters('wp_cspa_disable_default_persistence', false)) {
 
             update_option($this->option_name, array_replace($this->db_options, $sanitized_data));
 
@@ -267,7 +268,8 @@ class Custom_Settings_Page_Api
 
     public function settings_page_heading()
     {
-        echo '<h2>';
+        do_action('wp_cspa_before_header');
+        echo '<h2 class="wp-csa-heading">';
         echo $this->page_header;
         do_action('wp_cspa_before_closing_header');
         echo '</h2>';
@@ -287,7 +289,7 @@ class Custom_Settings_Page_Api
     {
         $this->persist_plugin_settings();
 
-        $columns2_class = !$exclude_sidebar ? ' columns-2' : null;
+        $columns2_class = ! $exclude_sidebar ? ' columns-2' : null;
         ?>
         <div class="wrap">
             <?php $this->settings_page_heading(); ?>
@@ -355,7 +357,7 @@ class Custom_Settings_Page_Api
         // variable declaration
         $html = '';
 
-        if (!empty($args_arrays)) {
+        if ( ! empty($args_arrays)) {
             foreach ($args_arrays as $args_array) {
                 $html .= $this->metax_box_instance($args_array);
             }
@@ -379,7 +381,7 @@ class Custom_Settings_Page_Api
 
         $html = '';
 
-        if (!empty($args['section_title'])) {
+        if ( ! empty($args['section_title'])) {
             $html .= $this->_header($args['section_title']);
         }
 
@@ -397,7 +399,7 @@ class Custom_Settings_Page_Api
         foreach ($args as $key => $value) {
 
             $field_type = '_' . $args[$key]['type'];
-            $html .= $this->{$field_type}($db_options, $key, $args[$key]);
+            $html       .= $this->{$field_type}($db_options, $key, $args[$key]);
         }
 
         if ($disable_submit_button) {
@@ -420,17 +422,17 @@ class Custom_Settings_Page_Api
      */
     public function _repeatable($db_options, $key, $args)
     {
-        $key = sanitize_key($key);
-        $label = esc_attr($args['label']);
+        $key         = sanitize_key($key);
+        $label       = esc_attr($args['label']);
         $description = @$args['description'];
         $option_name = $this->option_name;
-        $tr_id = isset($args['tr_id']) ? $args['tr_id'] : "{$key}_row";
+        $tr_id       = isset($args['tr_id']) ? $args['tr_id'] : "{$key}_row";
 
         $fields = (array)$args['fields'];
 
         // if we have any repeatable fields saved to DB, use its array structure from DB to build out the repeatable fields
         // otherwise use the default array config for the field as defined in MailOptin\SendyConnect\ConnectSettingsPage class.
-        if ((array)isset($db_options[$key]) && !empty($db_options[$key])) {
+        if ((array)isset($db_options[$key]) && ! empty($db_options[$key])) {
             $repeatable_fields = $db_options[$key];
         } else {
             // we are adding an array with key 1 and empty value because repeatable field must begin with an index of 1.
@@ -488,9 +490,9 @@ class Custom_Settings_Page_Api
      */
     public function _text_field($id, $name, $value, $class = 'regular-text', $placeholder = '', $data_key = '')
     {
-        $id = !empty($id) ? $id : '';
-        $data_key = !empty($data_key) ? "data-index='$data_key'" : null;
-        $value = !empty($value) ? $value : null;
+        $id       = ! empty($id) ? $id : '';
+        $data_key = ! empty($data_key) ? "data-index='$data_key'" : null;
+        $value    = ! empty($value) ? $value : null;
         ?>
         <input type="text" placeholder="<?php echo $placeholder; ?>" id="<?php echo $id; ?>" name="<?php echo $name; ?>" class="<?php echo $class; ?>" value="<?php echo $value; ?>" <?php echo $data_key; ?>/>
         <?php
@@ -505,7 +507,7 @@ class Custom_Settings_Page_Api
      */
     public function _arbitrary($db_options, $key, $args)
     {
-        $data = @$args['data'];
+        $data        = @$args['data'];
         $description = @$args['description'];
 
         return $data . $description;
@@ -522,14 +524,14 @@ class Custom_Settings_Page_Api
      */
     public function _text($db_options, $key, $args)
     {
-        $key = sanitize_key($key);
-        $label = esc_attr($args['label']);
-        $defvalue = sanitize_text_field(@$args['value']);
+        $key         = sanitize_key($key);
+        $label       = esc_attr($args['label']);
+        $defvalue    = sanitize_text_field(@$args['value']);
         $description = @$args['description'];
-        $tr_id = isset($args['tr_id']) ? $args['tr_id'] : "{$key}_row";
+        $tr_id       = isset($args['tr_id']) ? $args['tr_id'] : "{$key}_row";
         $option_name = $this->option_name;
-        $name_attr = $option_name . '[' . $key . ']';
-        $value = !empty($db_options[$key]) ? $db_options[$key] : $defvalue;
+        $name_attr   = $option_name . '[' . $key . ']';
+        $value       = ! empty($db_options[$key]) ? $db_options[$key] : $defvalue;
 
         if (isset($args['obfuscate_val']) && in_array($args['obfuscate_val'], [true, 'true'])) {
             $value = $this->obfuscate_string($value);
@@ -551,9 +553,9 @@ class Custom_Settings_Page_Api
 
     public function obfuscate_string($string)
     {
-        $length = strlen($string);
+        $length            = strlen($string);
         $obfuscated_length = ceil($length / 2);
-        $string = str_repeat('*', $obfuscated_length) . substr($string, $obfuscated_length);
+        $string            = str_repeat('*', $obfuscated_length) . substr($string, $obfuscated_length);
 
         return $string;
     }
@@ -569,10 +571,10 @@ class Custom_Settings_Page_Api
      */
     public function _custom_field_block($db_options, $key, $args)
     {
-        $key = sanitize_key($key);
-        $label = esc_attr(@$args['label']);
+        $key         = sanitize_key($key);
+        $label       = esc_attr(@$args['label']);
         $description = @$args['description'];
-        $tr_id = isset($args['tr_id']) ? $args['tr_id'] : "{$key}_row";
+        $tr_id       = isset($args['tr_id']) ? $args['tr_id'] : "{$key}_row";
         $option_name = $this->option_name;
 
         $data = @$args['data'];
@@ -602,13 +604,13 @@ class Custom_Settings_Page_Api
      */
     public function _number($db_options, $key, $args)
     {
-        $key = esc_attr($key);
-        $label = esc_attr($args['label']);
-        $defvalue = sanitize_text_field(@$args['value']);
-        $tr_id = isset($args['tr_id']) ? $args['tr_id'] : "{$key}_row";
+        $key         = esc_attr($key);
+        $label       = esc_attr($args['label']);
+        $defvalue    = sanitize_text_field(@$args['value']);
+        $tr_id       = isset($args['tr_id']) ? $args['tr_id'] : "{$key}_row";
         $description = @$args['description'];
         $option_name = $this->option_name;
-        $value = !empty($db_options[$key]) ? $db_options[$key] : $defvalue;
+        $value       = ! empty($db_options[$key]) ? $db_options[$key] : $defvalue;
         ob_start(); ?>
         <tr id="<?php echo $tr_id; ?>">
             <th scope="row"><label for="<?php echo $key; ?>"><?php echo $label; ?></label></th>
@@ -636,14 +638,14 @@ class Custom_Settings_Page_Api
      */
     public function _password($db_options, $key, $args)
     {
-        $key = esc_attr($key);
-        $label = esc_attr($args['label']);
-        $defvalue = sanitize_text_field(@$args['value']);
-        $tr_id = isset($args['tr_id']) ? $args['tr_id'] : "{$key}_row";
-        $disabled = isset($args['disabled']) && $args['disabled'] === true ? 'disabled="disabled"' : '';
+        $key         = esc_attr($key);
+        $label       = esc_attr($args['label']);
+        $defvalue    = sanitize_text_field(@$args['value']);
+        $tr_id       = isset($args['tr_id']) ? $args['tr_id'] : "{$key}_row";
+        $disabled    = isset($args['disabled']) && $args['disabled'] === true ? 'disabled="disabled"' : '';
         $description = @$args['description'];
         $option_name = $this->option_name;
-        $value = !empty($db_options[$key]) ? $db_options[$key] : $defvalue;
+        $value       = ! empty($db_options[$key]) ? $db_options[$key] : $defvalue;
         ob_start(); ?>
         <tr id="<?php echo $tr_id; ?>">
             <th scope="row"><label for="<?php echo $key; ?>"><?php echo $label; ?></label></th>
@@ -671,15 +673,15 @@ class Custom_Settings_Page_Api
      */
     public function _hidden($db_options, $key, $args)
     {
-        $key = esc_attr($key);
-        $label = esc_attr($args['label']);
+        $key         = esc_attr($key);
+        $label       = esc_attr($args['label']);
         $description = @$args['description'];
-        $tr_id = isset($args['tr_id']) ? $args['tr_id'] : "{$key}_row";
+        $tr_id       = isset($args['tr_id']) ? $args['tr_id'] : "{$key}_row";
         $option_name = $this->option_name;
         /**
          * @todo add default value support to other field types.
          */
-        $value = !empty($db_options[$key]) ? $db_options[$key] : $args['value'];
+        $value = ! empty($db_options[$key]) ? $db_options[$key] : $args['value'];
         ob_start(); ?>
         <tr id="<?php echo $tr_id; ?>">
             <th scope="row"><label for="<?php echo $key; ?>"><?php echo $label; ?></label></th>
@@ -706,14 +708,14 @@ class Custom_Settings_Page_Api
      */
     public function _textarea($db_options, $key, $args)
     {
-        $key = esc_attr($key);
-        $label = esc_attr($args['label']);
+        $key         = esc_attr($key);
+        $label       = esc_attr($args['label']);
         $description = @$args['description'];
-        $tr_id = isset($args['tr_id']) ? $args['tr_id'] : "{$key}_row";
-        $rows = !empty($args['rows']) ? $args['rows'] : 5;
-        $cols = !empty($args['column']) ? $args['column'] : '';
+        $tr_id       = isset($args['tr_id']) ? $args['tr_id'] : "{$key}_row";
+        $rows        = ! empty($args['rows']) ? $args['rows'] : 5;
+        $cols        = ! empty($args['column']) ? $args['column'] : '';
         $option_name = $this->option_name;
-        $value = !empty($db_options[$key]) ? stripslashes($db_options[$key]) : @$args['value'];
+        $value       = ! empty($db_options[$key]) ? stripslashes($db_options[$key]) : @$args['value'];
         ob_start();
         ?>
         <tr id="<?php echo $tr_id; ?>">
@@ -743,13 +745,13 @@ class Custom_Settings_Page_Api
      */
     public function _wp_editor($db_options, $key, $args)
     {
-        $key = esc_attr($key);
-        $label = esc_attr($args['label']);
+        $key         = esc_attr($key);
+        $label       = esc_attr($args['label']);
         $description = @$args['description'];
-        $tr_id = isset($args['tr_id']) ? $args['tr_id'] : "{$key}_row";
+        $tr_id       = isset($args['tr_id']) ? $args['tr_id'] : "{$key}_row";
         $option_name = $this->option_name;
-        $value = !empty($db_options[$key]) ? stripslashes($db_options[$key]) : @$args['value'];
-        $settings = !empty($args['settings']) ? $args['settings'] : [];
+        $value       = ! empty($db_options[$key]) ? stripslashes($db_options[$key]) : @$args['value'];
+        $settings    = ! empty($args['settings']) ? $args['settings'] : [];
 
         $settings = array_replace(['textarea_name' => $option_name . '[' . $key . ']'], $settings);
         ob_start();
@@ -780,14 +782,14 @@ class Custom_Settings_Page_Api
      */
     public function _select($db_options, $key, $args)
     {
-        $key = esc_attr($key);
-        $label = esc_attr($args['label']);
-        $description = @$args['description'];
-        $tr_id = isset($args['tr_id']) ? $args['tr_id'] : "{$key}_row";
-        $disabled = isset($args['disabled']) && $args['disabled'] === true ? 'disabled="disabled"' : '';
-        $options = $args['options'];
+        $key                  = esc_attr($key);
+        $label                = esc_attr($args['label']);
+        $description          = @$args['description'];
+        $tr_id                = isset($args['tr_id']) ? $args['tr_id'] : "{$key}_row";
+        $disabled             = isset($args['disabled']) && $args['disabled'] === true ? 'disabled="disabled"' : '';
+        $options              = $args['options'];
         $default_select_value = @$args['value'];
-        $option_name = $this->option_name;
+        $option_name          = $this->option_name;
         ob_start() ?>
         <tr id="<?php echo $tr_id; ?>">
             <th scope="row"><label for="<?php echo $key; ?>"><?php echo $label; ?></label></th>
@@ -797,7 +799,7 @@ class Custom_Settings_Page_Api
                 <select id="<?php echo $key; ?>"
                         name="<?php echo $option_name, '[', $key, ']'; ?>" <?php echo $disabled; ?>>
                     <?php foreach ($options as $option_key => $option_value) : ?>
-                        <option value="<?php echo $option_key; ?>" <?php !empty($db_options[$key]) ? selected($db_options[$key], $option_key) : selected($option_key, $default_select_value); ?>><?php echo esc_attr($option_value); ?></option>
+                        <option value="<?php echo $option_key; ?>" <?php ! empty($db_options[$key]) ? selected($db_options[$key], $option_key) : selected($option_key, $default_select_value); ?>><?php echo esc_attr($option_value); ?></option>
                     <?php endforeach; ?>
                 </select>
                 <?php do_action('wp_cspa_after_select_dropdown', $db_options, $option_name, $key, $args); ?>
@@ -820,13 +822,13 @@ class Custom_Settings_Page_Api
      */
     public function _checkbox($db_options, $key, $args)
     {
-        $key = esc_attr($key);
-        $label = esc_attr($args['label']);
-        $description = @$args['description'];
-        $tr_id = isset($args['tr_id']) ? $args['tr_id'] : "{$key}_row";
-        $checkbox_label = !empty($args['checkbox_label']) ? sanitize_text_field($args['checkbox_label']) : __('Activate', 'wp_cspa');
-        $value = !empty($args['value']) ? esc_attr($args['value']) : 'true';
-        $option_name = $this->option_name;
+        $key            = esc_attr($key);
+        $label          = esc_attr($args['label']);
+        $description    = @$args['description'];
+        $tr_id          = isset($args['tr_id']) ? $args['tr_id'] : "{$key}_row";
+        $checkbox_label = ! empty($args['checkbox_label']) ? sanitize_text_field($args['checkbox_label']) : __('Activate', 'wp_cspa');
+        $value          = ! empty($args['value']) ? esc_attr($args['value']) : 'true';
+        $option_name    = $this->option_name;
         ob_start();
         ?>
         <tr id="<?php echo $tr_id; ?>">
@@ -835,7 +837,7 @@ class Custom_Settings_Page_Api
                 <?php do_action('wp_cspa_before_checkbox_field', $db_options, $option_name, $key, $args); ?>
                 <strong><label for="<?php echo $key; ?>"><?php echo $checkbox_label; ?></label></strong>
                 <input type="hidden" name="<?php echo $option_name, '[', $key, ']'; ?>" value="false">
-                <input type="checkbox" id="<?php echo $key; ?>" name="<?php echo $option_name, '[', $key, ']'; ?>" value="<?php echo $value; ?>" <?php !empty($db_options[$key]) ? checked($db_options[$key], $value) : ''; ?> />
+                <input type="checkbox" id="<?php echo $key; ?>" name="<?php echo $option_name, '[', $key, ']'; ?>" value="<?php echo $value; ?>" <?php ! empty($db_options[$key]) ? checked($db_options[$key], $value) : ''; ?> />
                 <?php do_action('wp_cspa_after_checkbox_field', $db_options, $option_name, $key, $args); ?>
 
                 <p class="description"><?php echo $description; ?></p>
@@ -916,15 +918,15 @@ public function _header($section_title)
     public function build_sidebar_tab_style()
     {
         $settings_args = $this->main_content_config;
-        $option_name = $this->option_name;
+        $option_name   = $this->option_name;
 
         do_action('mailoptin_before_settings_page', $option_name);
-        $nav_tabs = '';
+        $nav_tabs         = '';
         $tab_content_area = '';
 
-        if (!empty($settings_args)) {
+        if ( ! empty($settings_args)) {
             foreach ($settings_args as $key => $settings_arg) {
-                $tab_title = @$settings_arg['tab_title'];
+                $tab_title     = @$settings_arg['tab_title'];
                 $section_title = @$settings_arg['section_title'];
                 unset($settings_arg['tab_title']);
                 unset($settings_arg['section_title']);
@@ -938,9 +940,9 @@ public function _header($section_title)
                     $tab_content_area .= '</div>';
                 } else {
                     $settings_arg['section_title'] = $section_title;
-                    $tab_content_area .= sprintf('<div id="%s" class="mailoptin-group-wrapper">', $key);
-                    $tab_content_area .= $this->metax_box_instance($settings_arg);
-                    $tab_content_area .= '</div>';
+                    $tab_content_area              .= sprintf('<div id="%s" class="mailoptin-group-wrapper">', $key);
+                    $tab_content_area              .= $this->metax_box_instance($settings_arg);
+                    $tab_content_area              .= '</div>';
                 }
             }
 
