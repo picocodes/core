@@ -37,6 +37,8 @@ class OptinCampaigns extends AbstractSettingsPage
             array($this, 'settings_admin_page_callback')
         );
 
+        do_action("mailoptin_register_optin_campaign_settings_page", $hook);
+
         add_action("load-$hook", array($this, 'screen_option'));
 
         add_action("load-$hook", function () {
@@ -123,20 +125,19 @@ class OptinCampaigns extends AbstractSettingsPage
      */
     public function screen_option()
     {
-        if (isset($_GET['view']) && $_GET['view'] == 'add-new-optin')
-            return;
+        if (isset($_GET['page']) && $_GET['page'] == MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_SLUG && ! isset($_GET['view'])) {
 
-        $option = 'per_page';
-        $args   = array(
-            'label'   => __('Optin Campaigns', 'mailoptin'),
-            'default' => 8,
-            'option'  => 'optin_forms_per_page',
-        );
+            $option = 'per_page';
+            $args   = array(
+                'label'   => __('Optin Campaigns', 'mailoptin'),
+                'default' => 8,
+                'option'  => 'optin_forms_per_page',
+            );
 
-        add_screen_option($option, $args);
-        $this->optin_forms_instance = OptinCampaign_List::get_instance();
+            add_screen_option($option, $args);
+            $this->optin_forms_instance = OptinCampaign_List::get_instance();
+        }
     }
-
 
     /**
      * Build the settings page structure. I.e tab, sidebar.
@@ -145,6 +146,8 @@ class OptinCampaigns extends AbstractSettingsPage
     {
         if ( ! empty($_GET['view']) && $_GET['view'] == 'add-new-optin') {
             AddOptinCampaign::get_instance()->settings_admin_page();
+        } elseif ( ! empty($_GET['view']) && $_GET['view'] == MAILOPTIN_LEAD_BANK_SETTINGS_SLUG) {
+            LeadBank::get_instance()->settings_admin_page();
         } else {
             // Hook the OptinCampaign_List table to Custom_Settings_Page_Api main content filter.
             add_action('wp_cspa_main_content_area', array($this, 'wp_list_table'), 10, 2);

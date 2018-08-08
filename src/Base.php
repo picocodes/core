@@ -2,7 +2,7 @@
 
 namespace MailOptin\Core;
 
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -58,7 +58,7 @@ define('MAILOPTIN_CONNECTIONS_SETTINGS_SLUG', 'mailoptin-connections');
 define('MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_SLUG', 'mailoptin-email-automations');
 define('MAILOPTIN_CAMPAIGN_LOG_SETTINGS_SLUG', 'mailoptin-campaign-log');
 define('MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_SLUG', 'mailoptin-optin-campaigns');
-define('MAILOPTIN_LEAD_BANK_SETTINGS_SLUG', 'mailoptin-lead-bank');
+define('MAILOPTIN_LEAD_BANK_SETTINGS_SLUG', 'lead-bank');
 define('MAILOPTIN_ADVANCE_ANALYTICS_SETTINGS_SLUG', 'mailoptin-analytics');
 define('MAILOPTIN_LICENSE_SETTINGS_SLUG', 'mailoptin-license');
 
@@ -67,7 +67,7 @@ define('MAILOPTIN_CONNECTIONS_SETTINGS_PAGE', admin_url('admin.php?page=' . MAIL
 define('MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE', admin_url('admin.php?page=' . MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_SLUG));
 define('MAILOPTIN_CAMPAIGN_LOG_SETTINGS_PAGE', admin_url('admin.php?page=' . MAILOPTIN_CAMPAIGN_LOG_SETTINGS_SLUG));
 define('MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE', admin_url('admin.php?page=' . MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_SLUG));
-define('MAILOPTIN_LEAD_BANK_SETTINGS_PAGE', admin_url('admin.php?page=' . MAILOPTIN_LEAD_BANK_SETTINGS_SLUG));
+define('MAILOPTIN_LEAD_BANK_SETTINGS_PAGE', add_query_arg('view', MAILOPTIN_LEAD_BANK_SETTINGS_SLUG, MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE));
 define('MAILOPTIN_ADVANCE_ANALYTICS_SETTINGS_PAGE', admin_url('admin.php?page=' . MAILOPTIN_ADVANCE_ANALYTICS_SETTINGS_SLUG));
 define('MAILOPTIN_LICENSE_SETTINGS_PAGE', admin_url('admin.php?page=' . MAILOPTIN_LICENSE_SETTINGS_SLUG));
 
@@ -107,7 +107,7 @@ class Base
 
     public function db_updates()
     {
-        if (!is_admin()) {
+        if ( ! is_admin()) {
             return;
         }
 
@@ -116,7 +116,7 @@ class Base
 
     public function admin_hooks()
     {
-        if (!is_admin()) {
+        if ( ! is_admin()) {
             return;
         }
 
@@ -162,7 +162,7 @@ class Base
         global $wpdb;
         $wpdb->optin_campaignmeta = $wpdb->prefix . Core::optin_campaign_meta_table_name;
         $wpdb->email_campaignmeta = $wpdb->prefix . Core::email_campaign_meta_table_name;
-        $wpdb->campaign_logmeta = $wpdb->prefix . Core::campaign_log_meta_table_name;
+        $wpdb->campaign_logmeta   = $wpdb->prefix . Core::campaign_log_meta_table_name;
     }
 
     /**

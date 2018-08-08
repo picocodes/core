@@ -7,28 +7,19 @@ use W3Guy\Custom_Settings_Page_Api;
 
 class LeadBank extends AbstractSettingsPage
 {
-
-    public function __construct()
+    public function settings_admin_page()
     {
-        add_action('admin_menu', array($this, 'register_settings_page'));
-    }
-
-    public function register_settings_page()
-    {
-        $hook = add_submenu_page(
-            MAILOPTIN_SETTINGS_SETTINGS_SLUG,
-            __('Lead Bank - MailOptin', 'mailoptin'),
-            __('Lead Bank', 'mailoptin'),
-            'manage_options',
-            MAILOPTIN_LEAD_BANK_SETTINGS_SLUG,
-            array($this, 'settings_admin_page_callback')
-        );
-
-        do_action("mailoptin_leadbank_settings_page", $hook);
-
         if (!defined('MAILOPTIN_PRO_PLUGIN_TYPE') || !defined('MAILOPTIN_DETACH_LIBSODIUM')) {
             add_filter('wp_cspa_main_content_area', array($this, 'upsell_settings_page'), 10, 2);
         }
+
+        do_action("mailoptin_leadbank_settings_page");
+
+        $instance = Custom_Settings_Page_Api::instance();
+        $instance->option_name('mo_leads');
+        $instance->page_header(__('Lead Bank', 'mailoptin'));
+        $this->register_core_settings($instance, true);
+        $instance->build(true);
     }
 
     public function upsell_settings_page($content, $option_name)
@@ -79,18 +70,6 @@ class LeadBank extends AbstractSettingsPage
         <?php
 
         return ob_get_clean();
-    }
-
-    /**
-     * Build the settings page structure. I.e tab, sidebar.
-     */
-    public function settings_admin_page_callback()
-    {
-        $instance = Custom_Settings_Page_Api::instance();
-        $instance->option_name('mo_leads');
-        $instance->page_header(__('Lead Bank', 'mailoptin'));
-        $this->register_core_settings($instance, true);
-        $instance->build(true);
     }
 
     /**
