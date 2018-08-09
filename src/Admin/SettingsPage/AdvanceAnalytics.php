@@ -10,15 +10,17 @@ class AdvanceAnalytics extends AbstractSettingsPage
 {
     public function __construct()
     {
-        add_action('admin_menu', array($this, 'register_settings_page'));
+        add_action('plugins_loaded', function () {
+            add_action('admin_menu', array($this, 'register_settings_page'));
+        }, 20);
     }
 
     public function register_settings_page()
     {
         $hook = add_submenu_page(
             MAILOPTIN_SETTINGS_SETTINGS_SLUG,
-            __('Optin Analytics - MailOptin', 'mailoptin'),
-            __('Optin Analytics', 'mailoptin'),
+            __('Statistics - MailOptin', 'mailoptin'),
+            __('Statistics', 'mailoptin'),
             'manage_options',
             MAILOPTIN_ADVANCE_ANALYTICS_SETTINGS_SLUG,
             array($this, 'settings_admin_page_callback')
@@ -88,7 +90,7 @@ class AdvanceAnalytics extends AbstractSettingsPage
     {
         $instance = Custom_Settings_Page_Api::instance();
         $instance->option_name('mo_analytics');
-        $instance->page_header(__('Optin Analytics', 'mailoptin'));
+        $instance->page_header(__('Optin Statistics', 'mailoptin'));
         $this->register_core_settings($instance, true);
         if (defined('MAILOPTIN_PRO_PLUGIN_TYPE') && defined('MAILOPTIN_DETACH_LIBSODIUM') && method_exists(SettingsPage::get_instance(), 'analytic_chart_sidebar')) {
             $instance->sidebar(SettingsPage::get_instance()->analytic_chart_sidebar());

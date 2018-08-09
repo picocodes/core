@@ -59,7 +59,7 @@ define('MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_SLUG', 'mailoptin-email-automations')
 define('MAILOPTIN_CAMPAIGN_LOG_SETTINGS_SLUG', 'mailoptin-campaign-log');
 define('MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_SLUG', 'mailoptin-optin-campaigns');
 define('MAILOPTIN_LEAD_BANK_SETTINGS_SLUG', 'lead-bank');
-define('MAILOPTIN_ADVANCE_ANALYTICS_SETTINGS_SLUG', 'mailoptin-analytics');
+define('MAILOPTIN_ADVANCE_ANALYTICS_SETTINGS_SLUG', 'mailoptin-statistics');
 define('MAILOPTIN_LICENSE_SETTINGS_SLUG', 'mailoptin-license');
 
 define('MAILOPTIN_SETTINGS_SETTINGS_PAGE', admin_url('admin.php?page=' . MAILOPTIN_SETTINGS_SETTINGS_SLUG));
