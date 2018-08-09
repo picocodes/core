@@ -46,8 +46,8 @@ class Connections extends AbstractSettingsPage
     {
         add_submenu_page(
             MAILOPTIN_SETTINGS_SETTINGS_SLUG,
-            __('Connections - MailOptin', 'mailoptin'),
-            __('Connections', 'mailoptin'),
+            __('Integrations - MailOptin', 'mailoptin'),
+            __('Integrations', 'mailoptin'),
             'manage_options',
             MAILOPTIN_CONNECTIONS_SETTINGS_SLUG,
             array($this, 'settings_admin_page_callback')
@@ -119,7 +119,7 @@ class Connections extends AbstractSettingsPage
         $nav_tabs         = '';
         $tab_content_area = '';
         if ( ! empty($connection_args)) {
-            $instance = Custom_Settings_Page_Api::instance([], MAILOPTIN_CONNECTIONS_DB_OPTION_NAME, __('Connections', 'mailoptin'));
+            $instance = Custom_Settings_Page_Api::instance([], MAILOPTIN_CONNECTIONS_DB_OPTION_NAME, __('Integrations', 'mailoptin'));
             foreach ($connection_args as $key => $connection_arg) {
                 $type = isset($connection_arg['type']) ? $connection_arg['type'] : '';
                 if (isset($_GET['connect-type']) && $type != $_GET['connect-type']) {

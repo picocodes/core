@@ -54,7 +54,7 @@ define('MAILOPTIN_CAMPAIGN_ERROR_LOG', WP_CONTENT_DIR . "/uploads/mailoptin-camp
 define('MAILOPTIN_OPTIN_ERROR_LOG', WP_CONTENT_DIR . "/uploads/mailoptin-optin-log/");
 
 define('MAILOPTIN_SETTINGS_SETTINGS_SLUG', 'mailoptin-settings');
-define('MAILOPTIN_CONNECTIONS_SETTINGS_SLUG', 'mailoptin-connections');
+define('MAILOPTIN_CONNECTIONS_SETTINGS_SLUG', 'mailoptin-integrations');
 define('MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_SLUG', 'mailoptin-email-automations');
 define('MAILOPTIN_CAMPAIGN_LOG_SETTINGS_SLUG', 'mailoptin-campaign-log');
 define('MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_SLUG', 'mailoptin-optin-campaigns');
