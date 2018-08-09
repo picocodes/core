@@ -33,7 +33,7 @@ class ControlsHelpers
                 $result[$post_type] = self::get_post_type_posts($post_type, $total_per_post_types, 'publish', $search);
             }
 
-            set_transient($cache_key, $result, apply_filters('mo_get_all_post_types_posts_cache_expiration', HOUR_IN_SECONDS));
+            set_transient($cache_key, $result, apply_filters('mo_get_all_post_types_posts_cache_expiration', MINUTE_IN_SECONDS));
         }
 
         return $result;
@@ -83,7 +83,7 @@ class ControlsHelpers
                 $data[$result['ID']] = $result['post_title'];
             }
 
-            set_transient($cache_key, $data, apply_filters('mo_get_post_type_posts_cache_expiration', HOUR_IN_SECONDS));
+            set_transient($cache_key, $data, apply_filters('mo_get_post_type_posts_cache_expiration', MINUTE_IN_SECONDS));
         }
 
         return $data;
@@ -104,7 +104,7 @@ class ControlsHelpers
                 'fields' => 'id=>name'
             ]);
 
-            set_transient('mo_get_categories', $data, apply_filters('mo_get_categories_cache_expiration', HOUR_IN_SECONDS));
+            set_transient('mo_get_categories', $data, apply_filters('mo_get_categories_cache_expiration', MINUTE_IN_SECONDS));
         }
 
         return $data;
@@ -143,7 +143,7 @@ class ControlsHelpers
 
             ]);
 
-            set_transient('mo_get_tags', $data, apply_filters('mo_get_tags_cache_expiration', HOUR_IN_SECONDS));
+            set_transient('mo_get_tags', $data, apply_filters('mo_get_tags_cache_expiration', MINUTE_IN_SECONDS));
         }
 
         return $data;
@@ -167,7 +167,7 @@ class ControlsHelpers
                 return $carry;
             });
 
-            set_transient('mo_get_post_types', $data, apply_filters('mo_get_post_types_cache_expiration', HOUR_IN_SECONDS));
+            set_transient('mo_get_post_types', $data, apply_filters('mo_get_post_types_cache_expiration', MINUTE_IN_SECONDS));
         }
 
         return $data;
