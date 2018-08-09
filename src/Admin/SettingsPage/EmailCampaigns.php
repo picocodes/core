@@ -23,6 +23,18 @@ class EmailCampaigns extends AbstractSettingsPage
         }, 20);
 
         add_filter('set-screen-option', array($this, 'set_screen'), 10, 3);
+
+        add_filter('wp_cspa_active_tab_class', function ($active_tab_class, $tab_url, $current_page_url) {
+            // hack to make email automation not active if other sub tab eg lead bank is active.
+                if (strpos($current_page_url, MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE) !== false &&
+                strpos($current_page_url, '&view') !== false &&
+                $tab_url == MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE
+            ) {
+                $active_tab_class = null;
+            }
+
+            return $active_tab_class;
+        }, 10, 3);
     }
 
     public function register_settings_page()
@@ -36,8 +48,9 @@ class EmailCampaigns extends AbstractSettingsPage
             array($this, 'settings_admin_page_callback')
         );
 
-
         add_action("load-$hook", array($this, 'screen_option'));
+
+        do_action("mailoptin_register_email_campaign_settings_page", $hook);
 
     }
 
@@ -60,14 +73,17 @@ class EmailCampaigns extends AbstractSettingsPage
      */
     public function screen_option()
     {
-        $option = 'per_page';
-        $args   = array(
-            'label'   => __('Email Automations', 'mailoptin'),
-            'default' => 8,
-            'option'  => 'email_campaign_per_page',
-        );
-        add_screen_option($option, $args);
-        $this->email_campaigns_instance = Email_Campaign_List::get_instance();
+        if (isset($_GET['page']) && $_GET['page'] == MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_SLUG && ! isset($_GET['view'])) {
+
+            $option = 'per_page';
+            $args   = array(
+                'label'   => __('Email Automations', 'mailoptin'),
+                'default' => 8,
+                'option'  => 'email_campaign_per_page',
+            );
+            add_screen_option($option, $args);
+            $this->email_campaigns_instance = Email_Campaign_List::get_instance();
+        }
     }
 
 
@@ -78,6 +94,8 @@ class EmailCampaigns extends AbstractSettingsPage
     {
         if ( ! empty($_GET['view']) && $_GET['view'] == 'add-new-email-automation') {
             AddEmailCampaign::get_instance()->settings_admin_page();
+        } elseif ( ! empty($_GET['view']) && $_GET['view'] == MAILOPTIN_CAMPAIGN_LOG_SETTINGS_SLUG) {
+            CampaignLog::get_instance()->settings_admin_page();
         } else {
 
             // Hook the OptinCampaign_List table to Custom_Settings_Page_Api main content filter.

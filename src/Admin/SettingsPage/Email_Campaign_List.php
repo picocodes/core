@@ -106,9 +106,13 @@ class Email_Campaign_List extends \WP_List_Table
     {
         $delete_nonce = wp_create_nonce('mailoptin_delete_email_campaign');
 
-        return sprintf(
-            '?page=%s&action=%s&email-campaign-id=%s&_wpnonce=%s"',
-            sanitize_text_field($_REQUEST['page']), 'delete', absint($item_id), $delete_nonce
+        return add_query_arg(
+            [
+                'action'            => 'delete',
+                'email-campaign-id' => absint($item_id),
+                '_wpnonce'          => $delete_nonce
+            ],
+            MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE
         );
     }
 
@@ -123,9 +127,13 @@ class Email_Campaign_List extends \WP_List_Table
     {
         $clone_nonce = wp_create_nonce('mailoptin_clone_email_campaign');
 
-        return sprintf(
-            '?page=%s&action=%s&email-campaign-id=%s&_wpnonce=%s"',
-            sanitize_text_field($_REQUEST['page']), 'clone', absint($item_id), $clone_nonce
+        return add_query_arg(
+            [
+                'action'            => 'clone',
+                'email-campaign-id' => absint($item_id),
+                '_wpnonce'          => $clone_nonce
+            ],
+            MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE
         );
     }
 
@@ -158,9 +166,13 @@ class Email_Campaign_List extends \WP_List_Table
     {
         $deactivate_nonce = wp_create_nonce('mailoptin_deactivate_email_campaign');
 
-        return sprintf(
-            '?page=%s&action=%s&email-campaign-id=%s&_wpnonce=%s"',
-            sanitize_text_field($_REQUEST['page']), 'deactivate', absint($item_id), $deactivate_nonce
+        return add_query_arg(
+            [
+                'action'            => 'deactivate',
+                'email-campaign-id' => absint($item_id),
+                '_wpnonce'          => $deactivate_nonce
+            ],
+            MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE
         );
     }
 
@@ -175,9 +187,13 @@ class Email_Campaign_List extends \WP_List_Table
     {
         $activate_nonce = wp_create_nonce('mailoptin_activate_email_campaign');
 
-        return sprintf(
-            '?page=%s&action=%s&email-campaign-id=%s&_wpnonce=%s"',
-            sanitize_text_field($_REQUEST['page']), 'activate', absint($item_id), $activate_nonce
+        return add_query_arg(
+            [
+                'action'            => 'deactivate',
+                'email-campaign-id' => absint($item_id),
+                '_wpnonce'          => $activate_nonce
+            ],
+            MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE
         );
     }
 
@@ -345,9 +361,7 @@ class Email_Campaign_List extends \WP_List_Table
     public function get_bulk_actions()
     {
         $actions = array(
-            'bulk-delete'     => __('Delete', 'mailoptin'),
-            'bulk-activate'   => __('Activate', 'mailoptin'),
-            'bulk-deactivate' => __('Deactivate', 'mailoptin'),
+            'bulk-delete' => __('Delete', 'mailoptin'),
         );
 
         return $actions;
@@ -362,8 +376,8 @@ class Email_Campaign_List extends \WP_List_Table
         $this->process_actions();
 
         $campaign_type = isset($_GET['page']) && $_GET['page'] == MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_SLUG && ! empty($_GET['type']) ? sanitize_text_field($_GET['type']) : '';
-        
-        if(isset($_POST['mo_email_automations_filter'])) {
+
+        if (isset($_POST['mo_email_automations_filter'])) {
             check_admin_referer('wp-csa-nonce', 'wp_csa_nonce');
             $campaign_type = sanitize_text_field($_POST['mo_email_automations_filter']);
         }
@@ -480,28 +494,6 @@ class Email_Campaign_List extends \WP_List_Table
             // loop over the array of record IDs and delete them
             foreach ($delete_ids as $id) {
                 self::delete_email_campaign($id);
-            }
-            wp_redirect(esc_url_raw(add_query_arg()));
-            exit;
-        }
-
-        // If the activate bulk action is triggered
-        if ('bulk-activate' === $this->current_action()) {
-            $activate_ids = array_map('absint', $_POST['email_campaign_ids']);
-            // loop over the array of campaign IDs and actvate them
-            foreach ($activate_ids as $id) {
-                ER::activate_email_campaign($id);
-            }
-            wp_redirect(esc_url_raw(add_query_arg()));
-            exit;
-        }
-
-        // If the deactivate bulk action is triggered
-        if ('bulk-deactivate' === $this->current_action()) {
-            $deactivate_ids = array_map('absint', $_POST['email_campaign_ids']);
-            // loop over the array of campaign IDs and deactivate them
-            foreach ($deactivate_ids as $id) {
-                ER::deactivate_email_campaign($id);
             }
             wp_redirect(esc_url_raw(add_query_arg()));
             exit;
