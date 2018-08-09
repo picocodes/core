@@ -4,7 +4,7 @@ namespace MailOptin\Core\Admin\SettingsPage;
 
 use MailOptin\Core\Core;
 use MailOptin\Core\Repositories\EmailCampaignMeta;
-use MailOptin\Core\Repositories\EmailCampaignRepository;
+use MailOptin\Core\Repositories\EmailCampaignRepository as ER;
 
 if ( ! class_exists('WP_List_Table')) {
     require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
@@ -70,10 +70,10 @@ class Email_Campaign_List extends \WP_List_Table
      */
     public function delete_email_campaign($email_campaign_id)
     {
-        EmailCampaignRepository::delete_campaign_by_id($email_campaign_id);
+        ER::delete_campaign_by_id($email_campaign_id);
 
         // remove the campaign meta data.
-        EmailCampaignRepository::delete_settings_by_id($email_campaign_id);
+        ER::delete_settings_by_id($email_campaign_id);
 
         EmailCampaignMeta::delete_all_meta_data($email_campaign_id);
     }
@@ -272,7 +272,7 @@ class Email_Campaign_List extends \WP_List_Table
     {
         $email_campaign_id = absint($item['id']);
 
-        $input_value = EmailCampaignRepository::is_campaign_active($email_campaign_id) ? 'yes' : 'no';
+        $input_value = ER::is_campaign_active($email_campaign_id) ? 'yes' : 'no';
         $checked     = ($input_value == 'yes') ? 'checked="checked"' : null;
 
         $switch = sprintf(
@@ -300,7 +300,7 @@ class Email_Campaign_List extends \WP_List_Table
      */
     public function column_default($item, $column_name)
     {
-        return EmailCampaignRepository::get_type_name(
+        return ER::get_type_name(
             sanitize_text_field($item[$column_name])
         );
     }
@@ -362,6 +362,11 @@ class Email_Campaign_List extends \WP_List_Table
         $this->process_actions();
 
         $campaign_type = isset($_GET['page']) && $_GET['page'] == MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_SLUG && ! empty($_GET['type']) ? sanitize_text_field($_GET['type']) : '';
+        
+        if(isset($_POST['mo_email_automations_filter'])) {
+            check_admin_referer('wp-csa-nonce', 'wp_csa_nonce');
+            $campaign_type = sanitize_text_field($_POST['mo_email_automations_filter']);
+        }
 
         $this->_column_headers = $this->get_column_info();
         $per_page              = defined('MAILOPTIN_DETACH_LIBSODIUM') ? $this->get_items_per_page('email_campaign_per_page', 15) : 1;
@@ -374,6 +379,30 @@ class Email_Campaign_List extends \WP_List_Table
         );
 
         $this->items = $this->get_email_campaigns($per_page, $current_page, $campaign_type);
+    }
+
+    public function extra_tablenav($which)
+    {
+        if ($which != 'top') return;
+        ?>
+        <div class="alignleft actions bulkactions" style="line-height: 2em;font-size: 15px">
+            <strong style="font-weight:500;"><?php _e('Filter By:', 'mailoptin'); ?></strong>
+        </div>
+        <div class="alignleft actions bulkactions">
+            <label for="mo-listing-filter" class="screen-reader-text">
+                <?php _e('Filter email automations by', 'mailoptin'); ?>
+            </label>
+            <select name="mo_email_automations_filter" id="mo-listing-filter">
+                <option value="<?= ER::NEW_PUBLISH_POST; ?>">
+                    <?= ER::get_type_name(ER::NEW_PUBLISH_POST) ?>
+                </option>
+                <option value="<?= ER::POSTS_EMAIL_DIGEST; ?>">
+                    <?= ER::get_type_name(ER::POSTS_EMAIL_DIGEST) ?>
+                </option>
+            </select>
+            <input type="submit" class="button action" value="<?php _e('Apply', 'mailoptin'); ?>">
+        </div>
+        <?php
     }
 
     public function process_actions()
@@ -403,7 +432,7 @@ class Email_Campaign_List extends \WP_List_Table
         // clone when the current action is clone.
         if ('clone' === $this->current_action()) {
 
-            if (apply_filters('mailoptin_add_new_email_campaign_limit', true) && EmailCampaignRepository::campaign_count() > 1) {
+            if (apply_filters('mailoptin_add_new_email_campaign_limit', true) && ER::campaign_count() > 1) {
                 return;
             }
 
@@ -425,7 +454,7 @@ class Email_Campaign_List extends \WP_List_Table
             if ( ! wp_verify_nonce($nonce, 'mailoptin_activate_email_campaign')) {
                 wp_nonce_ays('mailoptin_activate_email_campaign');
             } else {
-                EmailCampaignRepository::activate_email_campaign($email_campaign_id);
+                ER::activate_email_campaign($email_campaign_id);
                 wp_redirect(esc_url_raw(MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE));
                 exit;
             }
@@ -438,7 +467,7 @@ class Email_Campaign_List extends \WP_List_Table
             if ( ! wp_verify_nonce($nonce, 'mailoptin_deactivate_email_campaign')) {
                 wp_nonce_ays('mailoptin_deactivate_email_campaign');
             } else {
-                EmailCampaignRepository::deactivate_email_campaign($email_campaign_id);
+                ER::deactivate_email_campaign($email_campaign_id);
                 wp_redirect(esc_url_raw(MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE));
                 exit;
             }
@@ -461,7 +490,7 @@ class Email_Campaign_List extends \WP_List_Table
             $activate_ids = array_map('absint', $_POST['email_campaign_ids']);
             // loop over the array of campaign IDs and actvate them
             foreach ($activate_ids as $id) {
-                EmailCampaignRepository::activate_email_campaign($id);
+                ER::activate_email_campaign($id);
             }
             wp_redirect(esc_url_raw(add_query_arg()));
             exit;
@@ -472,7 +501,7 @@ class Email_Campaign_List extends \WP_List_Table
             $deactivate_ids = array_map('absint', $_POST['email_campaign_ids']);
             // loop over the array of campaign IDs and deactivate them
             foreach ($deactivate_ids as $id) {
-                EmailCampaignRepository::deactivate_email_campaign($id);
+                ER::deactivate_email_campaign($id);
             }
             wp_redirect(esc_url_raw(add_query_arg()));
             exit;

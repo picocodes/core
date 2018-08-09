@@ -3,7 +3,7 @@
 namespace MailOptin\Core\Admin\SettingsPage;
 
 // Exit if accessed directly
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -61,10 +61,10 @@ class EmailCampaigns extends AbstractSettingsPage
     public function screen_option()
     {
         $option = 'per_page';
-        $args = array(
-            'label' => __('Email Automations', 'mailoptin'),
+        $args   = array(
+            'label'   => __('Email Automations', 'mailoptin'),
             'default' => 8,
-            'option' => 'email_campaign_per_page',
+            'option'  => 'email_campaign_per_page',
         );
         add_screen_option($option, $args);
         $this->email_campaigns_instance = Email_Campaign_List::get_instance();
@@ -76,9 +76,10 @@ class EmailCampaigns extends AbstractSettingsPage
      */
     public function settings_admin_page_callback()
     {
-        if (!empty($_GET['view']) && $_GET['view'] == 'add-new-email-automation') {
+        if ( ! empty($_GET['view']) && $_GET['view'] == 'add-new-email-automation') {
             AddEmailCampaign::get_instance()->settings_admin_page();
         } else {
+
             // Hook the OptinCampaign_List table to Custom_Settings_Page_Api main content filter.
             add_action('wp_cspa_main_content_area', array($this, 'wp_list_table'), 10, 2);
             add_action('wp_cspa_before_closing_header', [$this, 'add_new_email_campaign']);
