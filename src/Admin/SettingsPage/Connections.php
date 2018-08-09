@@ -71,7 +71,7 @@ class Connections extends AbstractSettingsPage
         ?>
         <div id="mailoptin-sub-bar">
             <div class="mailoptin-new-toolbar mailoptin-clear" style="border-top: 0;margin-bottom:0">
-                <h4><?php _e('Filter by:', 'mailoptin'); ?></h4>
+                <h4><?php _e('Filter By:', 'mailoptin'); ?></h4>
                 <ul class="mailoptin-design-options">
                     <li>
                         <a href="<?php echo MAILOPTIN_CONNECTIONS_SETTINGS_PAGE; ?>" class="<?php echo $all_menu_active; ?>">

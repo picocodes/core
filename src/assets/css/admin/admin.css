@@ -125,7 +125,7 @@ tr#ajax_nonce_row {
 }
 
 #mailoptin-sub-bar .mailoptin-new-toolbar {
-    min-height: 38px;
+    min-height: 30px;
     padding: 10px;
     background: #fff;
     margin-bottom: 20px;
@@ -136,7 +136,7 @@ tr#ajax_nonce_row {
 
 #mailoptin-sub-bar .mailoptin-new-toolbar h4 {
     color: #222;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     margin: 8px 0 0;
     padding: 0;
@@ -147,7 +147,7 @@ tr#ajax_nonce_row {
     float: right;
     list-style: none;
     padding: 0;
-    margin: 10px 0 0;
+    margin: 6px 0 0;
 }
 
 #mailoptin-sub-bar .mailoptin-new-toolbar ul li {
@@ -158,20 +158,19 @@ tr#ajax_nonce_row {
 }
 
 #mailoptin-sub-bar .mailoptin-new-toolbar ul li a {
-    color: #e35950;
+    color: #2980b9;
     text-decoration: none;
     text-transform: uppercase;
     font-size: 13px;
     letter-spacing: 1px;
-    padding: 20px 15px;
-    padding: 21px 15px 22px;
+    padding: 17px 15px 17px;
     outline: none !important;
 }
 
 #mailoptin-sub-bar .mailoptin-new-toolbar ul li a:hover,
 #mailoptin-sub-bar .mailoptin-new-toolbar ul li a.mailoptin-type-active {
     color: #fff;
-    background: #e35950;
+    background: #2980b9;
 }
 
 .mailoptin-btn-red {

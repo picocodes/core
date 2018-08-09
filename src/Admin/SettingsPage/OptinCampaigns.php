@@ -44,6 +44,18 @@ class OptinCampaigns extends AbstractSettingsPage
         add_action("load-$hook", function () {
             add_action('admin_enqueue_scripts', array('MailOptin\Core\RegisterScripts', 'fancybox_scripts'));
         });
+
+        add_filter('wp_cspa_active_tab_class', function ($active_tab_class, $tab_url, $current_page_url) {
+            // hack to make optin campaign not active if other sub tab eg lead bank is active.
+            if (strpos($current_page_url, MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE) !== false &&
+                strpos($current_page_url, '&view') !== false &&
+                $tab_url == MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE
+            ) {
+                $active_tab_class = null;
+            }
+
+            return $active_tab_class;
+        }, 10, 3);
     }
 
     /**
@@ -67,7 +79,7 @@ class OptinCampaigns extends AbstractSettingsPage
             ?>
             <div id="mailoptin-sub-bar">
                 <div class="mailoptin-new-toolbar mailoptin-clear">
-                    <h4><?php _e('Filter by Optin Type', 'mailoptin'); ?></h4>
+                    <h4><?php _e('Filter By:', 'mailoptin'); ?></h4>
                     <ul class="mailoptin-design-options">
                         <li>
                             <a href="<?php echo MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE; ?>" class="<?php echo $all_menu_active; ?>">

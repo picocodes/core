@@ -362,7 +362,7 @@ class Campaign_Log_List extends \WP_List_Table
             // In our file that handles the request, verify the nonce.
             $nonce = esc_attr($_REQUEST['_wpnonce']);
             if (!wp_verify_nonce($nonce, 'mo_delete_campaign_log')) {
-                die('Go get a life script kiddies');
+                wp_nonce_ays('mo_delete_campaign_log');
             } else {
                 self::delete_a_campaign_log(absint($_GET['campaign-log-id']));
                 // esc_url_raw() is used to prevent converting ampersand in url to "#038;"
@@ -377,7 +377,7 @@ class Campaign_Log_List extends \WP_List_Table
             // In our file that handles the request, verify the nonce.
             $nonce = esc_attr($_REQUEST['_wpnonce']);
             if (!wp_verify_nonce($nonce, 'mo_retry_failed_campaign')) {
-                wp_die('Go get a life script kiddies');
+                wp_nonce_ays('mo_retry_failed_campaign');
             } else {
                 self::retry_failed_email_campaign(absint($_GET['campaign-log-id']));
                 // esc_url_raw() is used to prevent converting ampersand in url to "#038;"

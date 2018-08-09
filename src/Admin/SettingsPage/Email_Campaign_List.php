@@ -390,7 +390,7 @@ class Email_Campaign_List extends \WP_List_Table
             // In our file that handles the request, verify the nonce.
             $nonce = esc_attr($_REQUEST['_wpnonce']);
             if ( ! wp_verify_nonce($nonce, 'mailoptin_delete_email_campaign')) {
-                die('Go get a life script kiddies');
+                wp_nonce_ays('mailoptin_delete_email_campaign');
             } else {
                 self::delete_email_campaign($email_campaign_id);
                 // esc_url_raw() is used to prevent converting ampersand in url to "#038;"
@@ -410,7 +410,7 @@ class Email_Campaign_List extends \WP_List_Table
             // In our file that handles the request, verify the nonce.
             $nonce = esc_attr($_REQUEST['_wpnonce']);
             if ( ! wp_verify_nonce($nonce, 'mailoptin_clone_email_campaign')) {
-                die('Go get a life script kiddies');
+                wp_nonce_ays('mailoptin_clone_email_campaign');
             } else {
                 (new CloneEmailCampaign($email_campaign_id))->forge();
                 wp_redirect(esc_url_raw(MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE));
@@ -423,7 +423,7 @@ class Email_Campaign_List extends \WP_List_Table
             // In our file that handles the request, verify the nonce.
             $nonce = sanitize_text_field($_REQUEST['_wpnonce']);
             if ( ! wp_verify_nonce($nonce, 'mailoptin_activate_email_campaign')) {
-                die('Go get a life script kiddies');
+                wp_nonce_ays('mailoptin_activate_email_campaign');
             } else {
                 EmailCampaignRepository::activate_email_campaign($email_campaign_id);
                 wp_redirect(esc_url_raw(MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE));
@@ -436,7 +436,7 @@ class Email_Campaign_List extends \WP_List_Table
             // In our file that handles the request, verify the nonce.
             $nonce = sanitize_text_field($_REQUEST['_wpnonce']);
             if ( ! wp_verify_nonce($nonce, 'mailoptin_deactivate_email_campaign')) {
-                die('Go get a life script kiddies');
+                wp_nonce_ays('mailoptin_deactivate_email_campaign');
             } else {
                 EmailCampaignRepository::deactivate_email_campaign($email_campaign_id);
                 wp_redirect(esc_url_raw(MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE));

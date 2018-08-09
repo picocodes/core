@@ -98,14 +98,21 @@ class Custom_Settings_Page_Api
             return;
 
         $args = $this->tabs_config;
+        if (empty($args))
+            return;
+
         echo '<h2 class="nav-tab-wrapper">';
         if ( ! empty($args)) {
             foreach ($args as $arg) {
-                $url    = esc_url_raw(@$arg['url']);
-                $label  = esc_html(@$arg['label']);
-                $class  = esc_attr(@$arg['class']);
-                $style  = esc_attr(@$arg['style']);
-                $active = strpos($this->current_page_url(), $url) !== false ? ' nav-tab-active' : null;
+                $url              = esc_url_raw(@$arg['url']);
+                $label            = esc_html(@$arg['label']);
+                $class            = esc_attr(@$arg['class']);
+                $style            = esc_attr(@$arg['style']);
+                $active           = null;
+                $current_page_url = $this->current_page_url();
+                if (strpos($current_page_url, $url) !== false) {
+                    $active = apply_filters('wp_cspa_active_tab_class', ' nav-tab-active', $url, $current_page_url);
+                }
                 echo "<a href=\"$url\" class=\"$class nav-tab{$active}\" style='$style'>$label</a>";
             }
         }
@@ -961,7 +968,9 @@ public function _header($section_title)
             settings_errors('wp_csa_notice');
             $this->settings_page_tab();
             echo '<div class="mailoptin-settings-wrap" data-option-name="' . $option_name . '">';
-            echo '<h2 class="nav-tab-wrapper">' . $nav_tabs . '</h2>';
+            if ( ! empty($nav_tabs)) {
+                echo '<h2 class="nav-tab-wrapper">' . $nav_tabs . '</h2>';
+            }
             echo '<div class="metabox-holder mailoptin-tab-settings">';
             echo '<form method="post">';
             $this->nonce_field();
