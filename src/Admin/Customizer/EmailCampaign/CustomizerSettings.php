@@ -38,6 +38,11 @@ class CustomizerSettings extends AbstractCustomizer
                     'type' => 'option',
                     'transport' => 'postMessage',
                 ),
+                'email_campaign_title' => array(
+                    'default' => $this->customizer_defaults['email_campaign_title'],
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
                 'email_campaign_subject' => array(
                     'default' => $this->customizer_defaults['email_campaign_subject'],
                     'type' => 'option',

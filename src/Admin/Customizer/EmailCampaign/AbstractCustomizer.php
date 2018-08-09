@@ -22,7 +22,7 @@ class AbstractCustomizer
         $this->email_campaign_type  = EmailCampaignRepository::get_email_campaign_type($email_campaign_id);
         $this->email_campaign_class = EmailCampaignRepository::get_template_class($email_campaign_id);
 
-        $this->customizer_defaults = $this->register_customizer_defaults();
+        $this->customizer_defaults = $this->register_customizer_defaults($email_campaign_id);
     }
 
     public function campaign_title_default()
@@ -40,24 +40,28 @@ class AbstractCustomizer
      *
      * @return array
      */
-    public function register_customizer_defaults()
+    public function register_customizer_defaults($email_campaign_id = null)
     {
         $blog_name    = get_bloginfo('name');
         $current_year = date("Y");
 
         $defaults                            = [];
         $defaults['activate_email_campaign'] = apply_filters('mailoptin_customizer_email_campaign_activate', '', $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
+
+        $defaults['email_campaign_title'] = apply_filters('mailoptin_email_campaign_title_default', EmailCampaignRepository::get_email_campaign_name($email_campaign_id), $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
+
         $defaults['email_campaign_subject']  = apply_filters('mailoptin_email_campaign_subject_default', $this->campaign_title_default(), $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
-        $defaults['default_image_url']       = apply_filters('mailoptin_customizer_email_campaign_default_image_url', MAILOPTIN_ASSETS_URL . 'images/email-templates/default-feature-img.jpg', $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
-        $defaults['post_content_length']     = apply_filters('mailoptin_customizer_email_campaign_post_content_length', 150, $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
-        $defaults['item_number']             = apply_filters('mailoptin_customizer_email_campaign_item_number', 5, $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
-        $defaults['post_categories']         = apply_filters('mailoptin_customizer_email_campaign_post_categories', [], $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
-        $defaults['post_tags']               = apply_filters('mailoptin_customizer_email_campaign_post_tags', [], $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
-        $defaults['connection_service']      = apply_filters('mailoptin_customizer_email_campaign_connection_service', '', $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
-        $defaults['connection_email_list']   = apply_filters('mailoptin_customizer_email_campaign_connection_email_list', '', $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
-        $defaults['send_immediately']        = apply_filters('mailoptin_customizer_email_campaign_send_immediately', false, $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
-        $defaults['schedule_type']           = apply_filters('mailoptin_customizer_email_campaign_schedule_type', 'hours', $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
-        $defaults['schedule_digit']          = apply_filters('mailoptin_customizer_email_campaign_schedule_digit', '', $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
+
+        $defaults['default_image_url']     = apply_filters('mailoptin_customizer_email_campaign_default_image_url', MAILOPTIN_ASSETS_URL . 'images/email-templates/default-feature-img.jpg', $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
+        $defaults['post_content_length']   = apply_filters('mailoptin_customizer_email_campaign_post_content_length', 150, $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
+        $defaults['item_number']           = apply_filters('mailoptin_customizer_email_campaign_item_number', 5, $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
+        $defaults['post_categories']       = apply_filters('mailoptin_customizer_email_campaign_post_categories', [], $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
+        $defaults['post_tags']             = apply_filters('mailoptin_customizer_email_campaign_post_tags', [], $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
+        $defaults['connection_service']    = apply_filters('mailoptin_customizer_email_campaign_connection_service', '', $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
+        $defaults['connection_email_list'] = apply_filters('mailoptin_customizer_email_campaign_connection_email_list', '', $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
+        $defaults['send_immediately']      = apply_filters('mailoptin_customizer_email_campaign_send_immediately', false, $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
+        $defaults['schedule_type']         = apply_filters('mailoptin_customizer_email_campaign_schedule_type', 'hours', $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
+        $defaults['schedule_digit']        = apply_filters('mailoptin_customizer_email_campaign_schedule_digit', '', $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
 
         $defaults['schedule_interval']   = apply_filters('mailoptin_customizer_email_campaign_schedule_interval', 'every_day', $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
         $defaults['schedule_time']       = apply_filters('mailoptin_customizer_email_campaign_schedule_time', '00', $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);

@@ -70,6 +70,7 @@ class CustomizerControls
                     'content_remove_ellipsis_button',
                     'content_ellipsis_button_label',
 
+                    'email_campaign_title',
                     'email_campaign_subject',
                     'post_content_length',
                     'item_number',
@@ -149,6 +150,14 @@ class CustomizerControls
                         'settings' => $this->option_prefix . '[settings_controls_tab_toggle]',
                         'priority' => 2
                     )
+                )
+            ),
+            'email_campaign_title' => apply_filters('mo_optin_form_customizer_email_campaign_title_args', array(
+                    'type' => 'text',
+                    'label' => __('Automation Name', 'mailoptin'),
+                    'section' => $this->customizerClassInstance->campaign_settings_section_id,
+                    'settings' => $this->option_prefix . '[email_campaign_title]',
+                    'priority' => 5,
                 )
             ),
             'email_campaign_subject'       => new WP_Customize_Custom_Input_Control(

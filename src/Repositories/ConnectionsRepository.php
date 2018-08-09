@@ -83,7 +83,7 @@ class ConnectionsRepository
             set_transient(
                 "_mo_connection_cache_$connection",
                 $email_list,
-                apply_filters('mailoptin_email_list_cache_expiration', HOUR_IN_SECONDS)
+                apply_filters('mailoptin_email_list_cache_expiration', MINUTE_IN_SECONDS)
             );
         }
 
