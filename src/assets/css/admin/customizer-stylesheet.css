@@ -468,12 +468,18 @@ a.mo-autoresponder-modal-view-tags {
 .mailoptin-toggle-control-tab .mo-toggle-tab-wrapper {
     display: table-cell;
     text-align: center;
-    padding: 1em;
+    padding: 0;
 }
 
 .mailoptin-toggle-control-tab .mo-single-toggle-tab span {
     display: block;
     margin: auto;
+}
+
+label.mo-single-toggle-tab {
+    display: block;
+    padding: 1em;
+    height: auto;
 }
 
 .customize-control-mailoptin_tab_toggle {
