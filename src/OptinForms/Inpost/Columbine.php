@@ -3,6 +3,7 @@
 namespace MailOptin\Core\OptinForms\Inpost;
 
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Tinymce_Control;
+use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Toggle_Control;
 use MailOptin\Core\Admin\Customizer\OptinForm\CustomizerSettings;
 use MailOptin\Core\OptinForms\AbstractOptinTheme;
 
@@ -15,146 +16,146 @@ class Columbine extends AbstractOptinTheme
         $this->init_config_filters([
                 // -- default for design sections -- //
                 [
-                    'name' => 'mo_optin_form_background_color_default',
-                    'value' => '#ffffff',
+                    'name'        => 'mo_optin_form_background_color_default',
+                    'value'       => '#ffffff',
                     'optin_class' => 'Columbine',
-                    'optin_type' => 'inpost'
+                    'optin_type'  => 'inpost'
                 ],
                 [
-                    'name' => 'mo_optin_form_border_color_default',
-                    'value' => '#91a6bf',
+                    'name'        => 'mo_optin_form_border_color_default',
+                    'value'       => '#91a6bf',
                     'optin_class' => 'Columbine',
-                    'optin_type' => 'inpost'
-                ],
-
-                [
-                    'name' => 'mo_optin_form_name_field_placeholder_default',
-                    'value' => __("Enter your name...", 'mailoptin'),
-                    'optin_class' => 'Columbine',
-                    'optin_type' => 'inpost'
+                    'optin_type'  => 'inpost'
                 ],
 
                 [
-                    'name' => 'mo_optin_form_email_field_placeholder_default',
-                    'value' => __("Enter your email...", 'mailoptin'),
+                    'name'        => 'mo_optin_form_name_field_placeholder_default',
+                    'value'       => __("Enter your name...", 'mailoptin'),
                     'optin_class' => 'Columbine',
-                    'optin_type' => 'inpost'
+                    'optin_type'  => 'inpost'
+                ],
+
+                [
+                    'name'        => 'mo_optin_form_email_field_placeholder_default',
+                    'value'       => __("Enter your email...", 'mailoptin'),
+                    'optin_class' => 'Columbine',
+                    'optin_type'  => 'inpost'
                 ],
 
                 // -- default for headline sections -- //
                 [
-                    'name' => 'mo_optin_form_headline_default',
-                    'value' => __("Subscribe To Newsletter", 'mailoptin'),
+                    'name'        => 'mo_optin_form_headline_default',
+                    'value'       => __("Subscribe To Newsletter", 'mailoptin'),
                     'optin_class' => 'Columbine',
-                    'optin_type' => 'inpost'
+                    'optin_type'  => 'inpost'
                 ],
 
                 [
-                    'name' => 'mo_optin_form_headline_font_color_default',
-                    'value' => '#555555',
+                    'name'        => 'mo_optin_form_headline_font_color_default',
+                    'value'       => '#555555',
                     'optin_class' => 'Columbine',
-                    'optin_type' => 'inpost'
+                    'optin_type'  => 'inpost'
                 ],
 
                 [
-                    'name' => 'mo_optin_form_headline_font_default',
-                    'value' => 'Lora',
+                    'name'        => 'mo_optin_form_headline_font_default',
+                    'value'       => 'Lora',
                     'optin_class' => 'Columbine',
-                    'optin_type' => 'inpost'
+                    'optin_type'  => 'inpost'
                 ],
 
                 // -- default for description sections -- //
                 [
-                    'name' => 'mo_optin_form_description_font_default',
-                    'value' => 'Lora',
+                    'name'        => 'mo_optin_form_description_font_default',
+                    'value'       => 'Lora',
                     'optin_class' => 'Columbine',
-                    'optin_type' => 'inpost'
+                    'optin_type'  => 'inpost'
                 ],
 
                 [
-                    'name' => 'mo_optin_form_description_default',
-                    'value' => $this->_description_content(),
+                    'name'        => 'mo_optin_form_description_default',
+                    'value'       => $this->_description_content(),
                     'optin_class' => 'Columbine',
-                    'optin_type' => 'inpost'
+                    'optin_type'  => 'inpost'
                 ],
 
                 [
-                    'name' => 'mo_optin_form_description_font_color_default',
-                    'value' => '#555555',
+                    'name'        => 'mo_optin_form_description_font_color_default',
+                    'value'       => '#555555',
                     'optin_class' => 'Columbine',
-                    'optin_type' => 'inpost'
+                    'optin_type'  => 'inpost'
                 ],
 
                 // -- default for fields sections -- //
                 [
-                    'name' => 'mo_optin_form_name_field_color_default',
-                    'value' => '#555555',
+                    'name'        => 'mo_optin_form_name_field_color_default',
+                    'value'       => '#555555',
                     'optin_class' => 'Columbine',
-                    'optin_type' => 'inpost'
+                    'optin_type'  => 'inpost'
                 ],
 
                 [
-                    'name' => 'mo_optin_form_email_field_color_default',
-                    'value' => '#555555',
+                    'name'        => 'mo_optin_form_email_field_color_default',
+                    'value'       => '#555555',
                     'optin_class' => 'Columbine',
-                    'optin_type' => 'inpost'
+                    'optin_type'  => 'inpost'
                 ],
 
                 [
-                    'name' => 'mo_optin_form_submit_button_color_default',
-                    'value' => '#ffffff',
+                    'name'        => 'mo_optin_form_submit_button_color_default',
+                    'value'       => '#ffffff',
                     'optin_class' => 'Columbine',
-                    'optin_type' => 'inpost'
+                    'optin_type'  => 'inpost'
                 ],
 
                 [
-                    'name' => 'mo_optin_form_submit_button_background_default',
-                    'value' => '#54C3A5',
+                    'name'        => 'mo_optin_form_submit_button_background_default',
+                    'value'       => '#54C3A5',
                     'optin_class' => 'Columbine',
-                    'optin_type' => 'inpost'
+                    'optin_type'  => 'inpost'
                 ],
 
                 [
-                    'name' => 'mo_optin_form_submit_button_font_default',
-                    'value' => 'Lora',
+                    'name'        => 'mo_optin_form_submit_button_font_default',
+                    'value'       => 'Lora',
                     'optin_class' => 'Columbine',
-                    'optin_type' => 'inpost'
+                    'optin_type'  => 'inpost'
                 ],
 
                 [
-                    'name' => 'mo_optin_form_name_field_font_default',
-                    'value' => 'Palatino Linotype, Book Antiqua, serif',
+                    'name'        => 'mo_optin_form_name_field_font_default',
+                    'value'       => 'Palatino Linotype, Book Antiqua, serif',
                     'optin_class' => 'Columbine',
-                    'optin_type' => 'inpost'
+                    'optin_type'  => 'inpost'
                 ],
 
                 [
-                    'name' => 'mo_optin_form_email_field_font_default',
-                    'value' => 'Palatino Linotype, Book Antiqua, serif',
+                    'name'        => 'mo_optin_form_email_field_font_default',
+                    'value'       => 'Palatino Linotype, Book Antiqua, serif',
                     'optin_class' => 'Columbine',
-                    'optin_type' => 'inpost'
+                    'optin_type'  => 'inpost'
                 ],
 
                 // -- default for note sections -- //
                 [
-                    'name' => 'mo_optin_form_note_font_color_default',
-                    'value' => '#555555',
+                    'name'        => 'mo_optin_form_note_font_color_default',
+                    'value'       => '#555555',
                     'optin_class' => 'Columbine',
-                    'optin_type' => 'inpost'
+                    'optin_type'  => 'inpost'
                 ],
 
                 [
-                    'name' => 'mo_optin_form_note_default',
-                    'value' => '<em>' . __('Give it a try. You can unsubscribe at any time.', 'mailoptin') . '</em>',
+                    'name'        => 'mo_optin_form_note_default',
+                    'value'       => '<em>' . __('Give it a try. You can unsubscribe at any time.', 'mailoptin') . '</em>',
                     'optin_class' => 'Columbine',
-                    'optin_type' => 'inpost'
+                    'optin_type'  => 'inpost'
                 ],
 
                 [
-                    'name' => 'mo_optin_form_note_font_default',
-                    'value' => 'Lora',
+                    'name'        => 'mo_optin_form_note_font_default',
+                    'value'       => 'Lora',
                     'optin_class' => 'Columbine',
-                    'optin_type' => 'inpost'
+                    'optin_type'  => 'inpost'
                 ]
             ]
         );
@@ -163,12 +164,19 @@ class Columbine extends AbstractOptinTheme
             if ($font_type == 'headline_font' && $font == 'Lora') {
                 $font .= ':400,700,400italic';
             }
+
             return $font;
         }, 10, 2);
 
         add_filter('mailoptin_customizer_optin_campaign_MailChimpConnect_user_input_field_color', function () {
             return '#555555';
         });
+
+        add_action('customize_preview_init', function () {
+            add_action('wp_footer', [$this, 'customizer_preview_js']);
+        });
+
+        add_action('customize_controls_print_scripts', [$this, 'contextual_control_display']);
 
         parent::__construct($optin_campaign_id);
     }
@@ -211,10 +219,22 @@ class Columbine extends AbstractOptinTheme
     public function customizer_headline_settings($settings, $CustomizerSettingsInstance)
     {
         $settings['mini_headline'] = array(
-            'default' => __('DON\'T MISS OUT!', 'mailoptin'),
-            'type' => 'option',
-            'transport' => 'refresh',
+            'default'           => __('DON\'T MISS OUT!', 'mailoptin'),
+            'type'              => 'option',
+            'transport'         => 'refresh',
             'sanitize_callback' => [$CustomizerSettingsInstance, '_remove_paragraph_from_headline'],
+        );
+
+        $settings['hide_mini_headline'] = array(
+            'default'   => false,
+            'type'      => 'option',
+            'transport' => 'postMessage'
+        );
+
+        $settings['mini_headline_font_color'] = array(
+            'default'   => '#54C3A5',
+            'type'      => 'option',
+            'transport' => 'postMessage'
         );
 
         return $settings;
@@ -238,12 +258,37 @@ class Columbine extends AbstractOptinTheme
             $wp_customize,
             $option_prefix . '[mini_headline]',
             apply_filters('mo_optin_form_customizer_mini_headline_args', array(
-                    'label' => __('Mini Headline', 'mailoptin'),
-                    'section' => $customizerClassInstance->headline_section_id,
-                    'settings' => $option_prefix . '[mini_headline]',
-                    'editor_id' => 'mini_headline',
+                    'label'         => __('Mini Headline', 'mailoptin'),
+                    'section'       => $customizerClassInstance->headline_section_id,
+                    'settings'      => $option_prefix . '[mini_headline]',
+                    'editor_id'     => 'mini_headline',
                     'editor_height' => 50,
-                    'priority' => 5
+                    'priority'      => 4
+                )
+            )
+        );
+
+        $controls['hide_mini_headline'] = new WP_Customize_Toggle_Control(
+            $wp_customize,
+            $option_prefix . '[hide_mini_headline]',
+            apply_filters('mo_optin_form_customizer_hide_mini_headline_args', array(
+                    'label'    => __('Hide Mini Headline', 'mailoptin'),
+                    'section'  => $customizerClassInstance->headline_section_id,
+                    'settings' => $option_prefix . '[hide_mini_headline]',
+                    'type'     => 'light',
+                    'priority' => 2,
+                )
+            )
+        );
+
+        $controls['mini_headline_font_color'] = new \WP_Customize_Color_Control(
+            $wp_customize,
+            $option_prefix . '[mini_headline_font_color]',
+            apply_filters('mo_optin_form_customizer_headline_mini_headline_font_color_args', array(
+                    'label'    => __('Mini Headline Color', 'mailoptin'),
+                    'section'  => $customizerClassInstance->headline_section_id,
+                    'settings' => $option_prefix . '[mini_headline_font_color]',
+                    'priority' => 3
                 )
             )
         );
@@ -309,7 +354,7 @@ class Columbine extends AbstractOptinTheme
     {
         // change toggling of nae field to 'refresh' transport to handle switching different styling
         // for when name field is available or not.
-        $fields_settings['hide_name_field']['transport'] = 'refresh';
+        $fields_settings['hide_name_field']['transport']     = 'refresh';
         $fields_settings['display_only_button']['transport'] = 'refresh';
 
         return $fields_settings;
@@ -423,6 +468,63 @@ class Columbine extends AbstractOptinTheme
         return $content;
     }
 
+    public function contextual_control_display()
+    {
+        ?>
+        <script type="text/javascript">
+            (function ($, api) {
+                $(function () {
+                    api('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][hide_mini_headline]', function (setting) {
+                        var is_displayed, linkSettingValueToControlActiveState;
+
+                        is_displayed = function () {
+                            return !setting.get();
+                        };
+
+                        linkSettingValueToControlActiveState = function (control) {
+                            var setActiveState = function () {
+                                control.active.set(is_displayed());
+                            };
+
+                            control.active.validate = is_displayed;
+
+                            // Set initial active state.
+                            setActiveState();
+
+                            setting.bind(setActiveState);
+                        };
+
+                        api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][mini_headline_font_color]', linkSettingValueToControlActiveState);
+                        api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][mini_headline]', linkSettingValueToControlActiveState);
+                    });
+                })
+            })(jQuery, wp.customize);
+        </script>
+        <?php
+    }
+
+    public function customizer_preview_js()
+    {
+        ?>
+        <script type="text/javascript">
+            (function ($) {
+                $(function () {
+                    wp.customize(mailoptin_optin_option_prefix + '[' + mailoptin_optin_campaign_id + '][mini_headline_font_color]', function (value) {
+                        value.bind(function (to) {
+                            $('.columbine-miniText').css('color', to);
+                        });
+                    });
+                    wp.customize(mailoptin_optin_option_prefix + '[' + mailoptin_optin_campaign_id + '][hide_mini_headline]', function (value) {
+                        value.bind(function (to) {
+                            $('.columbine-miniText').toggle(!to);
+                        });
+                    });
+                })
+            })(jQuery)
+        </script>
+        <?php
+    }
+
     /**
      * Template body.
      *
@@ -430,12 +532,16 @@ class Columbine extends AbstractOptinTheme
      */
     public function optin_form()
     {
-        $mini_header = $this->get_customizer_value('mini_headline');
-        $mini_header = empty($mini_header) ? __("Don't miss out!", 'mailoptin') : $mini_header;
+        $mini_header = $this->get_customizer_value('mini_headline', __("Don't miss out!", 'mailoptin'));
+
+        $mini_header_block = '';
+        if ( ! $this->get_customizer_value('hide_mini_headline', false)) {
+            $mini_header_block = '<div class="columbine-miniText">' . $mini_header . '</div>';
+        }
 
         return <<<HTML
 [mo-optin-form-wrapper class="columbine-container"]
-     <div class="columbine-miniText">$mini_header</div>
+    $mini_header_block
     [mo-optin-form-headline tag="div" class="columbine-heading"]
     [mo-optin-form-description class="columbine-caption"]
     <div class="columbine-form">
@@ -462,6 +568,9 @@ HTML;
     public function optin_form_css()
     {
         $optin_css_id = $this->optin_css_id;
+
+        $mini_headline_font_color = $this->get_customizer_value('mini_headline_font_color', '#54C3A5');
+
         return <<<CSS
 div#$optin_css_id.columbine-container {
          background: #fff;
@@ -485,7 +594,7 @@ div#$optin_css_id.columbine-container div.columbine-miniText {
          font-size: 1em;
          line-height: 28px;
          text-transform: uppercase;
-         color: #54C3A5;
+         color: $mini_headline_font_color;
          font-weight: bold;
      }
 

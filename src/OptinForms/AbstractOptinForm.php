@@ -203,12 +203,13 @@ abstract class AbstractOptinForm extends AbstractCustomizer implements OptinForm
      * Return value of a optin form customizer settings.
      *
      * @param string $optin_form_setting
+     * @param string $default
      *
      * @return string
      */
-    public function get_customizer_value($optin_form_setting)
+    public function get_customizer_value($optin_form_setting, $default = '')
     {
-        $default = isset($this->customizer_defaults[$optin_form_setting]) ? $this->customizer_defaults[$optin_form_setting] : '';
+        $default = isset($this->customizer_defaults[$optin_form_setting]) ? $this->customizer_defaults[$optin_form_setting] : $default;
 
         return OptinCampaignsRepository::get_customizer_value($this->optin_campaign_id, $optin_form_setting, $default);
     }
