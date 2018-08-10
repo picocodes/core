@@ -54,6 +54,7 @@
                 api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][name_field_color]', linkSettingValueToControlActiveState);
                 api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][name_field_background]', linkSettingValueToControlActiveState);
                 api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][name_field_font]', linkSettingValueToControlActiveState);
+                api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][name_field_required]', linkSettingValueToControlActiveState);
             });
         }
 
