@@ -176,8 +176,6 @@ class Columbine extends AbstractOptinTheme
             add_action('wp_footer', [$this, 'customizer_preview_js']);
         });
 
-        add_action('customize_controls_print_scripts', [$this, 'contextual_control_display']);
-
         parent::__construct($optin_campaign_id);
     }
 
@@ -468,41 +466,6 @@ class Columbine extends AbstractOptinTheme
         return $content;
     }
 
-    public function contextual_control_display()
-    {
-        ?>
-        <script type="text/javascript">
-            (function ($, api) {
-                $(function () {
-                    api('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][hide_mini_headline]', function (setting) {
-                        var is_displayed, linkSettingValueToControlActiveState;
-
-                        is_displayed = function () {
-                            return !setting.get();
-                        };
-
-                        linkSettingValueToControlActiveState = function (control) {
-                            var setActiveState = function () {
-                                control.active.set(is_displayed());
-                            };
-
-                            control.active.validate = is_displayed;
-
-                            // Set initial active state.
-                            setActiveState();
-
-                            setting.bind(setActiveState);
-                        };
-
-                        api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][mini_headline_font_color]', linkSettingValueToControlActiveState);
-                        api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][mini_headline]', linkSettingValueToControlActiveState);
-                    });
-                })
-            })(jQuery, wp.customize);
-        </script>
-        <?php
-    }
-
     public function customizer_preview_js()
     {
         ?>
@@ -514,6 +477,7 @@ class Columbine extends AbstractOptinTheme
                             $('.columbine-miniText').css('color', to);
                         });
                     });
+
                     wp.customize(mailoptin_optin_option_prefix + '[' + mailoptin_optin_campaign_id + '][hide_mini_headline]', function (value) {
                         value.bind(function (to) {
                             $('.columbine-miniText').toggle(!to);
