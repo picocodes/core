@@ -154,6 +154,7 @@ class Custom_Settings_Page_Api
                             </h3>
 
                             <div class="inside">
+                                <?php do_action('wp_cspa_sidebar_before_box_content', $this->option_name); ?>
                                 <?php echo $arg['content']; ?>
                             </div>
                         </div>
@@ -879,6 +880,7 @@ public function _header($section_title)
         </button>
         <h3 class="hndle ui-sortable-handle"><span><?php echo $section_title; ?></span></h3>
         <div class="inside">
+            <?php do_action('wp_cspa_header_before_box_content', $section_title, $this->option_name); ?>
             <table class="form-table">
                 <?php
                 return ob_get_clean();
