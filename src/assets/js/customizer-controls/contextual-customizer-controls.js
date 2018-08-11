@@ -285,6 +285,48 @@
             api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][note_close_optin_onclick]', controlCloseOptinOnClick);
         });
 
+        api('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][load_optin_index]', function (setting) {
+            var is_displayed, linkSettingValueToControlActiveState, controlGlobalLoadOptin;
+
+            is_displayed = function () {
+                return !setting.get();
+            };
+
+            linkSettingValueToControlActiveState = function (control) {
+                var setActiveState = function () {
+                    control.active.set(is_displayed());
+                };
+
+                control.active.validate = is_displayed;
+
+                // Set initial active state.
+                setActiveState();
+
+                setting.bind(setActiveState);
+            };
+
+            controlGlobalLoadOptin = function (control) {
+                var setValueState = function () {
+                    if (setting.get() === true) {
+                        control.setting.set(false);
+                    }
+                };
+
+                setValueState();
+
+                setting.bind(setValueState);
+            };
+
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][exclusive_post_types_posts_load]', linkSettingValueToControlActiveState);
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][post_categories_load]', linkSettingValueToControlActiveState);
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][exclusive_post_types_load]', linkSettingValueToControlActiveState);
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][posts_never_load]', linkSettingValueToControlActiveState);
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][pages_never_load]', linkSettingValueToControlActiveState);
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][cpt_never_load]', linkSettingValueToControlActiveState);
+
+            api.control('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][load_optin_globally]', controlGlobalLoadOptin);
+        });
+
         api('mo_optin_campaign[' + mailoptin_optin_campaign_id + '][hide_mini_headline]', function (setting) {
             var is_displayed, linkSettingValueToControlActiveState;
 
