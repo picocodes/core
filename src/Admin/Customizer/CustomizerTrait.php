@@ -85,13 +85,13 @@ trait CustomizerTrait
                 return $carry;
             });
 
-            $active_plugins = !is_array($active_plugins) ? [] : $active_plugins;
+            $active_plugins = ! is_array($active_plugins) ? [] : $active_plugins;
 
             add_action('customize_controls_enqueue_scripts', function () use ($wp_get_theme, $active_plugins) {
                 global $wp_styles;
                 global $wp_scripts;
 
-                $child_theme = $wp_get_theme->get_stylesheet();
+                $child_theme  = $wp_get_theme->get_stylesheet();
                 $parent_theme = $wp_get_theme->get_template();
 
                 foreach ($wp_scripts->registered as $key => $value) {
@@ -130,11 +130,29 @@ trait CustomizerTrait
 
             }, 9999999999999);
 
+            // was surprised a theme called Awaken used this action to enqueue styles.
+            // do not change the priority from 20. that's where it seem to work.
+            add_action('customize_controls_print_styles', function () use ($wp_get_theme, $active_plugins) {
+                global $wp_styles;
+
+                $child_theme  = $wp_get_theme->get_stylesheet();
+                $parent_theme = $wp_get_theme->get_template();
+
+                foreach ($wp_styles->registered as $key => $value) {
+                    $src = $value->src;
+
+                    if (strpos($src, "themes/$child_theme/") !== false || strpos($src, "themes/$parent_theme/") !== false) {
+                        unset($wp_styles->registered[$key]);
+                    }
+                }
+
+            }, 20);
+
             add_action('wp_enqueue_scripts', function () use ($wp_get_theme, $active_plugins) {
                 global $wp_styles;
                 global $wp_scripts;
 
-                $child_theme = $wp_get_theme->get_stylesheet();
+                $child_theme  = $wp_get_theme->get_stylesheet();
                 $parent_theme = $wp_get_theme->get_template();
 
                 foreach ($wp_scripts->registered as $key => $value) {
@@ -199,11 +217,11 @@ trait CustomizerTrait
         );
 
         wp_localize_script('mailoptin-wp-editor', 'moWPEditor_globals', array(
-            'url' => get_home_url(),
-            'includes_url' => includes_url(),
-            'wpeditor_texttab_label' => __('Text', 'mailoptin'),
+            'url'                      => get_home_url(),
+            'includes_url'             => includes_url(),
+            'wpeditor_texttab_label'   => __('Text', 'mailoptin'),
             'wpeditor_visualtab_label' => __('Visual', 'mailoptin'),
-            'wpeditor_addmedia_label' => __('Add Media', 'mailoptin')
+            'wpeditor_addmedia_label'  => __('Add Media', 'mailoptin')
         ));
     }
 
@@ -212,9 +230,9 @@ trait CustomizerTrait
      */
     public function js_script()
     {
-        $ck_label = __('ConvertKit Form', 'mailoptin');
-        $drip_label = __('Drip Campaign', 'mailoptin');
-        $gr_label = __('GetResponse Campaign', 'mailoptin');
+        $ck_label      = __('ConvertKit Form', 'mailoptin');
+        $drip_label    = __('Drip Campaign', 'mailoptin');
+        $gr_label      = __('GetResponse Campaign', 'mailoptin');
         $default_label = __('Email Provider List', 'mailoptin');
         ?>
 
@@ -305,13 +323,13 @@ trait CustomizerTrait
 
     public function js_wp_editor()
     {
-        if (!class_exists('\_WP_Editors')) {
+        if ( ! class_exists('\_WP_Editors')) {
             require(ABSPATH . WPINC . '/class-wp-editor.php');
         }
 
         $set = \_WP_Editors::parse_settings('mo_autoresponder_message', []);
 
-        if (!current_user_can('upload_files')) {
+        if ( ! current_user_can('upload_files')) {
             $set['media_buttons'] = false;
         }
 
@@ -323,7 +341,7 @@ trait CustomizerTrait
             wp_enqueue_script('wp-embed');
 
             $post = get_post(1);
-            if (!$post && !empty($GLOBALS['post_ID'])) {
+            if ( ! $post && ! empty($GLOBALS['post_ID'])) {
                 $post = $GLOBALS['post_ID'];
             }
             wp_enqueue_media(array(
