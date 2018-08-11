@@ -87,7 +87,7 @@ class SidebarWidgets extends \WP_Widget
     public function form($instance)
     {
         $title = !empty($instance['title']) ? $instance['title'] : '';
-        $saved_optin_id = isset($instance['sidebar_optin_id']) ? $instance['sidebar_optin_id'] : false;
+        $saved_optin_id = isset($instance['sidebar_optin_id']) ? $instance['sidebar_optin_id'] : '';
 
         do_action('mo_sidebar_optin_widget_before_form', $instance);
         ?>
@@ -100,6 +100,7 @@ class SidebarWidgets extends \WP_Widget
         <p>
             <label for="<?php echo esc_attr($this->get_field_id('sidebar_optin_id')); ?>"><?php esc_attr_e('Select Optin:', 'mailoptin'); ?></label>
             <select id="<?php echo esc_attr($this->get_field_id('sidebar_optin_id')); ?>" name="<?php echo esc_attr($this->get_field_name('sidebar_optin_id')); ?>" style="width: 100%;">
+                <option value="" <?php selected('', $saved_optin_id); ?>><?php _e('Select...', 'mailoptin'); ?></option>
                 <?php foreach (OCR::get_sidebar_optin_ids() as $optin_campaign_id) : ?>
                     <?php $is_activated = OCR::is_activated($optin_campaign_id); ?>
                     <?php if (OCR::is_split_test_variant($optin_campaign_id)) continue; ?>

@@ -96,6 +96,16 @@ class AddEmailCampaign extends AbstractSettingsPage
     public function template_listing_tmpl($campaign_type)
     {
         echo "<div id=\"notifType_{$campaign_type}\" class=\"mailoptin-email-templates mailoptin-template-clear\" style=\"display:none\">";
+        if($campaign_type == EmailCampaignRepository::POSTS_EMAIL_DIGEST && !defined('MAILOPTIN_PRO_PLUGIN_TYPE')) {
+            echo '<div class="mo-error-box" style="padding: 87px 10px;margin:0;">';
+            printf(
+                __('Posts email digest automatically send daily, weekly or monthly round-up of published posts to your users or email list. Upgrade to %s or higher to get this cool feature.', 'mailoptin'),
+                '<a href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=posts_email_digest" target="_blank">MailOptin Pro plan</a>'
+            );
+            echo '</div>';
+            echo '</div>';
+            return;
+        }
         foreach (EmailTemplatesRepository::get_by_type($campaign_type) as $email_template) {
 
             $template_name = $email_template['name'];
