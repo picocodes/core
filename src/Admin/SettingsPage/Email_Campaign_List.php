@@ -446,7 +446,7 @@ class Email_Campaign_List extends \WP_List_Table
         // clone when the current action is clone.
         if ('clone' === $this->current_action()) {
 
-            if (apply_filters('mailoptin_add_new_email_campaign_limit', true) && ER::campaign_count() > 1) {
+            if (apply_filters('mailoptin_add_new_email_campaign_limit', true) && ER::campaign_count() >= 1) {
                 return;
             }
 

@@ -79,7 +79,6 @@ class CustomizerControls
                     'send_immediately',
                     'email_campaign_schedule',
                     'email_digest_schedule',
-                    'email_campaign_settings_notice'
                 ]),
                 'style'   => apply_filters('mailoptin_email_campaign_tab_toggle_style_config', [
                     'footer_background_color',
@@ -102,6 +101,7 @@ class CustomizerControls
                 ]),
                 'advance' => apply_filters('mailoptin_email_campaign_tab_toggle_advance_config', [
                     'post_categories',
+                    'email_campaign_settings_notice',
                     'post_tags',
                     'remove_branding'
                 ]),
