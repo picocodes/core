@@ -22,7 +22,7 @@ class Templatify implements TemplatifyInterface
     public function __construct($email_campaign_id, $posts = [])
     {
         $this->email_campaign_id = $email_campaign_id;
-        $this->posts = $posts;
+        $this->posts             = $posts;
     }
 
     public function forge()
@@ -35,10 +35,12 @@ class Templatify implements TemplatifyInterface
 
         $content = (new VideoToImageLink($templatified_content))->forge();
 
-        $emogrifier = new \Pelago\Emogrifier();
-        $emogrifier->setHtml($content);
+        if ( ! is_customize_preview()) {
+            $emogrifier = new \Pelago\Emogrifier();
+            $emogrifier->setHtml($content);
 
-        $content = $emogrifier->emogrify();
+            $content = $emogrifier->emogrify();
+        }
 
         return $this->replace_footer_placeholder_tags(
             str_replace(['%5B', '%5D', '%7B', '%7D'], ['[', ']', '{', '}'], $content)

@@ -33,8 +33,8 @@ class Templatify implements TemplatifyInterface
             $this->post = get_post($post);
         }
 
-        $this->email_campaign_id = $email_campaign_id;
-        $this->template_class = !is_null($template_class) ? $template_class : ER::get_template_class($email_campaign_id);
+        $this->email_campaign_id   = $email_campaign_id;
+        $this->template_class      = ! is_null($template_class) ? $template_class : ER::get_template_class($email_campaign_id);
         $this->post_content_length = ER::get_customizer_value($email_campaign_id, 'post_content_length');
     }
 
@@ -99,21 +99,23 @@ class Templatify implements TemplatifyInterface
             );
         }
 
-        $replace = array(
+        $replace = [
             $this->post_title(),
             wpautop($post_content),
             $this->feature_image($this->post->ID),
             $this->post_url(),
-        );
+        ];
 
         $templatified_content = str_replace($search, $replace, $instance->get_preview_structure());
 
         $content = (new VideoToImageLink($templatified_content))->forge();
 
-        $emogrifier = new \Pelago\Emogrifier();
-        $emogrifier->setHtml($content);
+        if ( ! is_customize_preview()) {
+            $emogrifier = new \Pelago\Emogrifier();
+            $emogrifier->setHtml($content);
 
-        $content = $emogrifier->emogrify();
+            $content = $emogrifier->emogrify();
+        }
 
         return $this->replace_footer_placeholder_tags(
             str_replace(['%5B', '%5D', '%7B', '%7D'], ['[', ']', '{', '}'], $content)
