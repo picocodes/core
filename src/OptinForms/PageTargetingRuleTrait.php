@@ -55,8 +55,9 @@ trait PageTargetingRuleTrait
                 return false;
             }
 
-            // for custom display rules.
-            if (apply_filters('mailoptin_sidebar_optin_output', false, $id)) {
+            // use the filter to check if a rule is not matched and then return false.
+            // if the rule matches, simply return the default filter value.
+            if (apply_filters('mailoptin_page_targeting_optin_rule', false, $id)) {
                 return false;
             }
             // if current view is neither frontpage, homepage, archive page or search page, return false.
