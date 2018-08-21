@@ -195,6 +195,9 @@ trait CustomizerTrait
                 remove_action('customize_controls_print_footer_scripts', [\Astra_Customizer::get_instance(), 'print_footer_scripts']);
             }
 
+            // flatbase theme compat
+            add_filter('nice_scripts', '__return_false');
+
             if (function_exists('td_customize_js')) {
                 remove_action('customize_controls_print_footer_scripts', 'td_customize_js');
             }
