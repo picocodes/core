@@ -498,10 +498,7 @@ class Columbine extends AbstractOptinTheme
     {
         $mini_header = $this->get_customizer_value('mini_headline', __("Don't miss out!", 'mailoptin'));
 
-        $mini_header_block = '';
-        if ( ! $this->get_customizer_value('hide_mini_headline', false)) {
-            $mini_header_block = '<div class="columbine-miniText">' . $mini_header . '</div>';
-        }
+        $mini_header_block = '<div class="columbine-miniText">' . $mini_header . '</div>';
 
         return <<<HTML
 [mo-optin-form-wrapper class="columbine-container"]
@@ -535,6 +532,11 @@ HTML;
 
         $mini_headline_font_color = $this->get_customizer_value('mini_headline_font_color', '#54C3A5');
 
+        $is_mini_hadline_display = '';
+        if ( $this->get_customizer_value('hide_mini_headline', false)) {
+            $is_mini_hadline_display = 'display:none;';
+        }
+
         return <<<CSS
 div#$optin_css_id.columbine-container {
          background: #fff;
@@ -560,6 +562,7 @@ div#$optin_css_id.columbine-container div.columbine-miniText {
          text-transform: uppercase;
          color: $mini_headline_font_color;
          font-weight: bold;
+         $is_mini_hadline_display
      }
 
 div#$optin_css_id.columbine-container div.columbine-heading {
