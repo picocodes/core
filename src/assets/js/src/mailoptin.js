@@ -1128,7 +1128,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 $('.mailoptin-click-trigger').click(function (event) {
                     event.preventDefault();
 
-                    var optin_uuid = $(this).data('optin-uuid');
+                    var optin_uuid = $(this).data('optin-uuid') || $(this).attr('id');
 
                     if (typeof optin_uuid !== 'undefined') {
 
