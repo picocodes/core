@@ -7,6 +7,7 @@ if ( ! defined('ABSPATH')) {
     exit;
 }
 
+use MailOptin\Core\Repositories\EmailCampaignRepository;
 use W3Guy\Custom_Settings_Page_Api;
 
 class EmailCampaigns extends AbstractSettingsPage
@@ -26,7 +27,7 @@ class EmailCampaigns extends AbstractSettingsPage
 
         add_filter('wp_cspa_active_tab_class', function ($active_tab_class, $tab_url, $current_page_url) {
             // hack to make email automation not active if other sub tab eg lead bank is active.
-                if (strpos($current_page_url, MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE) !== false &&
+            if (strpos($current_page_url, MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE) !== false &&
                 strpos($current_page_url, '&view') !== false &&
                 $tab_url == MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE
             ) {
@@ -35,6 +36,10 @@ class EmailCampaigns extends AbstractSettingsPage
 
             return $active_tab_class;
         }, 10, 3);
+
+        add_action('post_submitbox_misc_actions', [$this, 'new_publish_post_exclude_metabox']);
+
+        add_action('save_post', [$this, 'save_new_publish_post_exclude']);
     }
 
     public function register_settings_page()
@@ -140,6 +145,90 @@ class EmailCampaigns extends AbstractSettingsPage
         return ob_get_clean();
     }
 
+    /**
+     * @param \WP_Post $post
+     */
+    public function new_publish_post_exclude_metabox($post)
+    {
+        if (get_post_type($post) !== 'post') return;
+
+        $npps = EmailCampaignRepository::get_by_email_campaign_type(
+            EmailCampaignRepository::NEW_PUBLISH_POST
+        );
+
+        if (empty($npps)) return;
+
+        $is_any_npp_active = false;
+        foreach ($npps as $npp) {
+            if (EmailCampaignRepository::is_campaign_active(absint($npp['id']))) {
+                $is_any_npp_active = true;
+                break;
+            }
+        }
+
+        if ( ! $is_any_npp_active) return;
+
+        ?>
+        <div style="text-align: left;margin: 10px;">
+            <?php
+            printf(
+                __('Disable %sMailOptin new post notification%s for this post.', 'mailoptin'),
+                '<strong>',
+                '</strong>'
+            );
+
+            wp_nonce_field('mo-disable-npp-nonce', 'mo-disable-npp-nonce');
+            $val = get_post_meta($post->ID, '_mo_disable_npp', true);
+
+            ?>
+            <input type="hidden" name="mo-disable-npp" value="no">
+            <input name="mo-disable-npp" id="mo-disable-npp" type="checkbox" class="tgl tgl-light" value="yes" <?php checked($val, 'yes'); ?>>
+            <label for="mo-disable-npp" style="display:inline-block;" class="tgl-btn"></label>
+        </div>
+        <?php
+
+    }
+
+    public function save_new_publish_post_exclude($post_id)
+    {
+        // Check if our nonce is set.
+        if ( ! isset($_POST['mo-disable-npp-nonce'])) {
+            return;
+        }
+
+        // Verify that the nonce is valid.
+        if ( ! wp_verify_nonce($_POST['mo-disable-npp-nonce'], 'mo-disable-npp-nonce')) {
+            return;
+        }
+
+        // If this is an autosave, our form has not been submitted, so we don't want to do anything.
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+            return;
+        }
+
+        // Check the user's permissions.
+        if (isset($_POST['post_type']) && 'page' == $_POST['post_type']) {
+            if ( ! current_user_can('edit_page', $post_id)) {
+                return;
+            }
+        } else {
+
+            if ( ! current_user_can('edit_post', $post_id)) {
+                return;
+            }
+        }
+
+        // Make sure that it is set.
+        if ( ! isset($_POST['mo-disable-npp'])) {
+            return;
+        }
+
+        // Sanitize user input.
+        $val = sanitize_text_field($_POST['mo-disable-npp']);
+
+        // Update the meta field in the database.
+        update_post_meta($post_id, '_mo_disable_npp', $val);
+    }
 
     /**
      * @return EmailCampaigns

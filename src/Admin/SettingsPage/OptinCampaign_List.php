@@ -539,7 +539,7 @@ class OptinCampaign_List extends \WP_List_Table
         $checked     = ($input_value == 'yes') ? 'checked="checked"' : null;
 
         $switch = sprintf(
-            '<input data-mo-optin-id="%1$s" id="mo-optin-activate-switch-%1$s" type="checkbox" class="mo-optin-activate-switch tgl tgl-light" value="%%3$s" %3$s />',
+            '<input data-mo-optin-id="%1$s" id="mo-optin-activate-switch-%1$s" type="checkbox" class="mo-optin-activate-switch tgl tgl-light" value="%3$s" %3$s />',
             $optin_campaign_id,
             $input_value,
             $checked
