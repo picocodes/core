@@ -228,6 +228,18 @@ class CustomizerControls
                     )
                 )
             ),
+            'recipient_header' => new WP_Customize_Custom_Content(
+                $this->wp_customize,
+                $this->option_prefix . '[recipient_header]',
+                apply_filters('mo_optin_form_customizer_recipient_header_args', array(
+                        'content' => '<div class="mo-field-header">' . __("Recipient", 'mailoptin') . '</div>',
+                        'block_class' => 'mo-field-header-wrapper',
+                        'section' => $this->customizerClassInstance->campaign_settings_section_id,
+                        'settings' => $this->option_prefix . '[recipient_header]',
+                        'priority' => 49,
+                    )
+                )
+            ),
             'connection_service'           => apply_filters('mailoptin_customizer_settings_campaign_connection_service_args',
                 array(
                     'type'        => 'select',
@@ -248,6 +260,18 @@ class CustomizerControls
                     'choices'     => $connection_email_list,
                     'description' => __('Email list that newsletter will be sent to.', 'mailoptin'),
                     'priority'    => 60
+                )
+            ),
+            'schedule_header' => new WP_Customize_Custom_Content(
+                $this->wp_customize,
+                $this->option_prefix . '[schedule_header]',
+                apply_filters('mo_optin_form_customizer_schedule_header_args', array(
+                        'content' => '<div class="mo-field-header">' . __("Schedule", 'mailoptin') . '</div>',
+                        'block_class' => 'mo-field-header-wrapper',
+                        'section' => $this->customizerClassInstance->campaign_settings_section_id,
+                        'settings' => $this->option_prefix . '[schedule_header]',
+                        'priority' => 200,
+                    )
                 )
             ),
             'send_immediately'             => new WP_Customize_Toggle_Control(

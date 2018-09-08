@@ -169,6 +169,8 @@ class Customizer
             array('customize-controls'),
             MAILOPTIN_VERSION_NUMBER
         );
+
+        do_action('mailoptin_email_campaign_enqueue_customizer_js');
     }
 
     /**
