@@ -70,7 +70,7 @@ class AddEmailCampaign extends AbstractSettingsPage
     }
 
     /**
-     * Email Campaign types select dropdown
+     * Email Automation types select dropdown
      */
     protected function _build_campaign_types_select_dropdown()
     {

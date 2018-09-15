@@ -44,7 +44,7 @@ class ConnectionsRepository
         }
 
         // Remove all ESP in email campaign customizer in lite.
-        if (!defined('MAILOPTIN_DETACH_LIBSODIUM') && $customizer_type == 'email_campaign') {
+        if (!apply_filters('mailoptin_enable_email_customizer_connections', false) && $customizer_type == 'email_campaign') {
             foreach ($connections as $key => $value) {
                 if ($key == '') {
                     continue;

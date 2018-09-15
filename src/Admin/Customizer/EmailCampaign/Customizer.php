@@ -195,7 +195,7 @@ class Customizer
     {
         $campaign_name = EmailCampaignRepository::get_email_campaign_name($this->email_campaign_id);
 
-        return $campaign_name ?: __('Email Campaign', 'mailoptin');
+        return $campaign_name ?: __('Email Automation', 'mailoptin');
     }
 
     /**
