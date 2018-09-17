@@ -341,7 +341,7 @@ class OptinCampaign_List extends \WP_List_Table
             $optin_type = 'Slide In';
 
         printf(
-            __('Upgrade to %s for "%s optin" support', 'mailoptin'),
+            __('Upgrade to %s for %s support', 'mailoptin'),
             '<a href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=optin_themes_not_found" target="_blank">MailOptin Premium</a>',
             $optin_type
         );
