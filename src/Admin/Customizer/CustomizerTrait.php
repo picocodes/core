@@ -56,6 +56,7 @@ trait CustomizerTrait
             remove_all_filters('media_buttons_context');
             remove_all_filters('mce_buttons', 10);
             remove_all_filters('mce_external_plugins', 10);
+            remove_all_actions('after_wp_tiny_mce');
 
             remove_all_actions('wp_head');
             remove_all_actions('wp_print_styles');
@@ -200,6 +201,12 @@ trait CustomizerTrait
 
             if (function_exists('td_customize_js')) {
                 remove_action('customize_controls_print_footer_scripts', 'td_customize_js');
+            }
+
+            // compatibility with easy google font plugin
+            if (class_exists('EGF_Customize_Manager')) {
+                remove_action('customize_controls_enqueue_scripts', [\EGF_Customize_Manager::get_instance(), 'easy-google-fonts-customize-controls-js']);
+                remove_action( 'customize_register', [\EGF_Customize_Manager::get_instance(), 'register_font_control_type']);
             }
 
             add_action('customize_controls_enqueue_scripts', array($this, 'mo_customizer_js'));
