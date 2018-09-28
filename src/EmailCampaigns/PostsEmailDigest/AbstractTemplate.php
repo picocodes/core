@@ -47,23 +47,26 @@ abstract class AbstractTemplate extends ParentAbstractTemplate
             // index starts at 0. so we increment by one.
             $index++;
 
-            $search = array(
+            $search = apply_filters('mo_email_campaign_ped_search_args', [
                 '{{post.title}}',
                 '{{post.content}}',
                 '{{post.feature.image}}',
                 '{{post.url}}',
-            );
+            ]);
 
-            $replace = array(
+            $replace = apply_filters('mo_email_campaign_ped_replace_args', [
                 $this->post_title($post),
                 $this->post_content($post),
                 $this->feature_image($post),
                 $this->post_url($post),
+            ]);
+
+            echo apply_filters(
+                'mo_email_campaign_ped_single_post_item',
+                str_replace($search, $replace, $this->single_post_item())
             );
 
-            echo str_replace($search, $replace, $this->single_post_item());
-
-            if (!empty($delimiter) && ($index % $posts_count) > 0) echo $delimiter;
+            if ( ! empty($delimiter) && ($index % $posts_count) > 0) echo $delimiter;
         }
 
         return ob_get_clean();

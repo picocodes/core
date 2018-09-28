@@ -14,7 +14,7 @@ class Lucid extends AbstractTemplate
     {
         // -------------- Template header logo width and height dimension --------------------------------- //
         add_filter('mailoptin_template_customizer_header_logo_args', function ($args) {
-            $args['width'] = 308;
+            $args['width']  = 308;
             $args['height'] = 48;
 
             return $args;
@@ -35,15 +35,15 @@ class Lucid extends AbstractTemplate
     public function default_customizer_values()
     {
         return [
-            'page_background_color' => '#f2f4f6',
-            'header_text_color' => '#bbbfc3',
-            'header_web_version_link_color' => '#74787e',
-            'content_background_color' => '#ffffff',
-            'content_text_color' => '#74787e',
+            'page_background_color'                    => '#f2f4f6',
+            'header_text_color'                        => '#bbbfc3',
+            'header_web_version_link_color'            => '#74787e',
+            'content_background_color'                 => '#ffffff',
+            'content_text_color'                       => '#74787e',
             'content_ellipsis_button_background_color' => '#dc4d2f',
-            'content_ellipsis_button_text_color' => '#ffffff',
-            'footer_text_color' => '#aeaeae',
-            'footer_unsubscribe_link_color' => '#74787e',
+            'content_ellipsis_button_text_color'       => '#ffffff',
+            'footer_text_color'                        => '#aeaeae',
+            'footer_unsubscribe_link_color'            => '#74787e',
         ];
     }
 
@@ -213,11 +213,12 @@ class Lucid extends AbstractTemplate
      */
     public function get_body()
     {
-        $view_web_version = apply_filters('mo_email_template_view_web_version', '<a class="webversion-label mo-header-web-version-label mo-header-web-version-color" href="{{webversion}}">[mo_header_web_version_link_label]</a>');
-        $unsubscribe_link = apply_filters('mo_email_template_unsubscribe_link', '<a class="unsubscribe mo-footer-unsubscribe-link-label mo-footer-unsubscribe-link-color" href="{{unsubscribe}}">[mo_footer_unsubscribe_link_label]</a>');
+        $view_web_version    = apply_filters('mo_email_template_view_web_version', '<a class="webversion-label mo-header-web-version-label mo-header-web-version-color" href="{{webversion}}">[mo_header_web_version_link_label]</a>');
+        $unsubscribe_link    = apply_filters('mo_email_template_unsubscribe_link', '<a class="unsubscribe mo-footer-unsubscribe-link-label mo-footer-unsubscribe-link-color" href="{{unsubscribe}}">[mo_footer_unsubscribe_link_label]</a>');
         $before_main_content = EmailCampaignRepository::get_merged_customizer_value($this->email_campaign_id, 'content_before_main_content');
-        $content = $this->parsed_post_list();
-        return <<<HTML
+        $content             = $this->parsed_post_list();
+
+        $body = <<<HTML
   <table class="email-wrapper mo-page-bg-color" width="100%" cellpadding="0" cellspacing="0">
     <tr>
       <td align="center">
@@ -263,6 +264,7 @@ class Lucid extends AbstractTemplate
   </table>
 HTML;
 
+        return apply_filters('mo_ped_lucid_email_template_body', $body, $this);
     }
 
 

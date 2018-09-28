@@ -10,11 +10,12 @@ trait TemplateTrait
 {
     /**
      * @param int|WP_Post $post
+     *
      * @return string
      */
     public function post_title($post)
     {
-        if (!is_object($post) || !($post instanceof WP_Post)) {
+        if ( ! is_object($post) || ! ($post instanceof WP_Post)) {
             $post = get_post($post);
         }
 
@@ -23,11 +24,12 @@ trait TemplateTrait
 
     /**
      * @param int|WP_Post $post
+     *
      * @return false|string
      */
     public function post_url($post)
     {
-        if (!is_object($post) || !($post instanceof WP_Post)) {
+        if ( ! is_object($post) || ! ($post instanceof WP_Post)) {
             $post = get_post($post);
         }
 
@@ -36,15 +38,16 @@ trait TemplateTrait
 
     /**
      * @param int|WP_Post $post
+     *
      * @return string
      */
     public function post_content($post)
     {
-        if (!is_object($post) || !($post instanceof WP_Post)) {
+        if ( ! is_object($post) || ! ($post instanceof WP_Post)) {
             $post = get_post($post);
         }
 
-        $content = do_shortcode($post->post_content);
+        $content             = do_shortcode($post->post_content);
         $post_content_length = ER::get_merged_customizer_value($this->email_campaign_id, 'post_content_length');
 
         if (0 === $post_content_length) {
@@ -66,7 +69,7 @@ trait TemplateTrait
     {
         $default_feature_image = ER::get_merged_customizer_value($this->email_campaign_id, 'default_image_url');
 
-        if (!$post_id) return $default_feature_image;
+        if ( ! $post_id) return $default_feature_image;
 
         $is_remove_featured_image = ER::get_merged_customizer_value(
             $this->email_campaign_id,
@@ -77,7 +80,7 @@ trait TemplateTrait
 
         if (has_post_thumbnail($post_id)) {
             $image_data = wp_get_attachment_image_src(get_post_thumbnail_id($post_id), 'full');
-            if (!empty($image_data[0])) {
+            if ( ! empty($image_data[0])) {
                 return $image_data[0];
             }
         }
@@ -120,6 +123,6 @@ trait TemplateTrait
             }
         }
 
-        return str_replace($search, $replace, $content);
+        return str_replace($search, $replace, apply_filters('mailoptin_settings_replace_footer_placeholder_tags', $content));
     }
 }

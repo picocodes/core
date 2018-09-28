@@ -367,7 +367,6 @@ CSS;
 
     }
 
-
     /**
      * Full HTML doctype markup preview of a template.
      *
