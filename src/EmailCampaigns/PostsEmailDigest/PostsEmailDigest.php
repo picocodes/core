@@ -26,22 +26,22 @@ class PostsEmailDigest extends AbstractTriggers
 
         $last_processed_at = EmailCampaignMeta::get_meta_data($email_campaign_id, 'last_processed_at', true);
 
-        if (!empty($last_processed_at)) {
+        if ( ! empty($last_processed_at)) {
             $newer_than_timestamp = $last_processed_at;
         }
 
         $parameters = [
             'posts_per_page' => $item_count,
-            'post_status' => 'publish',
-            'post_type' => 'post',
-            'order' => 'DESC',
-            'orderby' => 'post_date'
+            'post_status'    => 'publish',
+            'post_type'      => 'post',
+            'order'          => 'DESC',
+            'orderby'        => 'post_date'
         ];
 
         $parameters['date_query'] = array(
             array(
                 'column' => 'post_date',
-                'after' => $newer_than_timestamp
+                'after'  => $newer_than_timestamp
             )
         );
 
@@ -60,17 +60,19 @@ class PostsEmailDigest extends AbstractTriggers
 
             if (ER::is_campaign_active($email_campaign_id) === false) continue;
 
-            $schedule_interval = ER::get_merged_customizer_value($email_campaign_id, 'schedule_interval');
-            $schedule_time = absint(ER::get_merged_customizer_value($email_campaign_id, 'schedule_time'));
-            $schedule_day = absint(ER::get_merged_customizer_value($email_campaign_id, 'schedule_day'));
+            $schedule_interval   = ER::get_merged_customizer_value($email_campaign_id, 'schedule_interval');
+            $schedule_time       = absint(ER::get_merged_customizer_value($email_campaign_id, 'schedule_time'));
+            $schedule_day        = absint(ER::get_merged_customizer_value($email_campaign_id, 'schedule_day'));
             $schedule_month_date = absint(ER::get_merged_customizer_value($email_campaign_id, 'schedule_month_date'));
+
+            $last_processed_at = EmailCampaignMeta::get_meta_data($email_campaign_id, 'last_processed_at', true);
 
             $timezone = get_option('timezone_string');
             if (empty($timezone)) {
                 $timezone = get_option('gmt_offset');
             }
 
-            $carbon_now = Carbon::now($timezone);
+            $carbon_now   = Carbon::now($timezone);
             $carbon_today = Carbon::today($timezone);
 
             $schedule_hour = $carbon_today->hour($schedule_time);
@@ -78,6 +80,8 @@ class PostsEmailDigest extends AbstractTriggers
             switch ($schedule_interval) {
                 case 'every_day':
                     if ($schedule_hour->lessThanOrEqualTo($carbon_now) &&
+                        // this ensures at least an hour will have to pass before next email digest would be published
+                        ! empty($last_processed_at) && Carbon::parse($last_processed_at, $timezone)->diffInRealHours($carbon_now) >= 1 &&
                         // add an hour grace so missed schedule can still run.
                         // the diffInRealHours condition below is important so it wont always return true even when the set
                         // hour has past.
@@ -88,6 +92,8 @@ class PostsEmailDigest extends AbstractTriggers
                 case 'every_week':
                     if ($carbon_today->isDayOfWeek($schedule_day) &&
                         $schedule_hour->lessThanOrEqualTo($carbon_now) &&
+                        // this ensures at least an hour will have to pass before next email digest would be published
+                        ! empty($last_processed_at) && Carbon::parse($last_processed_at, $timezone)->diffInRealHours($carbon_now) >= 1 &&
                         // add an hour grace...
                         $schedule_hour->diffInRealHours($carbon_now) <= 1) {
                         $this->create_and_send_campaign($email_campaign_id);
@@ -96,6 +102,8 @@ class PostsEmailDigest extends AbstractTriggers
                 case 'every_month':
                     if ($carbon_now->day == $schedule_month_date &&
                         $schedule_hour->lessThanOrEqualTo($carbon_now) &&
+                        // this ensures at least an hour will have to pass before next email digest would be published
+                        ! empty($last_processed_at) && Carbon::parse($last_processed_at, $timezone)->diffInRealHours($carbon_now) >= 1 &&
                         // add an hour grace...
                         $schedule_hour->diffInRealHours($carbon_now) <= 1) {
                         $this->create_and_send_campaign($email_campaign_id);
@@ -108,6 +116,7 @@ class PostsEmailDigest extends AbstractTriggers
     public function create_and_send_campaign($email_campaign_id)
     {
         $campaign_id = $this->create_campaign($email_campaign_id);
+
         if ($campaign_id) {
             $this->send_campaign($email_campaign_id, $campaign_id);
         }
@@ -115,11 +124,12 @@ class PostsEmailDigest extends AbstractTriggers
 
     /**
      * @param $email_campaign_id
+     *
      * @return bool|int
      */
     public function create_campaign($email_campaign_id)
     {
-        $email_subject = ER::get_merged_customizer_value($email_campaign_id, 'email_campaign_subject');
+        $email_subject   = ER::get_merged_customizer_value($email_campaign_id, 'email_campaign_subject');
         $post_collection = $this->post_collection($email_campaign_id);
         if (empty($post_collection)) return false;
 
@@ -140,7 +150,7 @@ class PostsEmailDigest extends AbstractTriggers
      */
     public function send_campaign($email_campaign_id, $campaign_log_id)
     {
-        $campaign = $this->CampaignLogRepository->getById($campaign_log_id);
+        $campaign           = $this->CampaignLogRepository->getById($campaign_log_id);
         $connection_service = $this->connection_service($email_campaign_id);
 
         $connection_instance = ConnectionFactory::make($connection_service);
