@@ -211,7 +211,7 @@ class CustomizerControls
                 $this->option_prefix . '[post_categories]',
                 apply_filters('mo_optin_form_customizer_post_categories_args', array(
                         'label'       => __('Restrict to selected categories', 'mailoptin'),
-                        'description' => __('Only include post of selected categories.', 'mailoptin'),
+                        'description' => __('Only include post that has either of the selected categories.', 'mailoptin'),
                         'section'     => $this->customizerClassInstance->campaign_settings_section_id,
                         'settings'    => $this->option_prefix . '[post_categories]',
                         'choices'     => ControlsHelpers::get_categories(),
@@ -224,7 +224,7 @@ class CustomizerControls
                 $this->option_prefix . '[post_tags]',
                 apply_filters('mo_optin_form_customizer_post_tags_args', array(
                         'label'       => __('Restrict to selected tags', 'mailoptin'),
-                        'description' => __('Only include post of selected tags.', 'mailoptin'),
+                        'description' => __('Only include post that has either of the selected tags.', 'mailoptin'),
                         'section'     => $this->customizerClassInstance->campaign_settings_section_id,
                         'settings'    => $this->option_prefix . '[post_tags]',
                         'choices'     => ControlsHelpers::get_tags(),

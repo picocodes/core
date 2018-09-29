@@ -37,6 +37,17 @@ class PostsEmailDigest extends AbstractTriggers
             'order'          => 'DESC',
             'orderby'        => 'post_date'
         ];
+        
+        $categories = ER::get_merged_customizer_value($email_campaign_id, 'post_categories');
+        $tags       = ER::get_merged_customizer_value($email_campaign_id, 'post_tags');
+
+        if ( ! empty($categories)) {
+            $parameters['category'] = implode(',', array_map('trim', $categories));
+        }
+
+        if ( ! empty($tags)) {
+            $parameters['tag_id'] = implode(',', array_map('trim', $tags));
+        }
 
         $parameters['date_query'] = array(
             array(

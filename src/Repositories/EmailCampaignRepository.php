@@ -231,7 +231,7 @@ class EmailCampaignRepository extends AbstractRepository
      * @param int $optin_campaign_id
      * @param string $optin_form_setting
      *
-     * @return string
+     * @return mixed
      */
     public static function get_merged_customizer_value($email_campaign_id, $settings_name)
     {
