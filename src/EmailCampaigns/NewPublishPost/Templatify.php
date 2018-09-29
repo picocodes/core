@@ -108,6 +108,8 @@ class Templatify implements TemplatifyInterface
 
         $templatified_content = str_replace($search, $replace, $instance->get_preview_structure());
 
+        $templatified_content = apply_filters('mo_new_publish_post_post_templatify_forge', $templatified_content, $this->post->ID, $this);
+
         $content = (new VideoToImageLink($templatified_content))->forge();
 
         if ( ! is_customize_preview()) {
