@@ -23,7 +23,7 @@ use MailOptin\Core\Repositories\OptinCampaignStat;
 use MailOptin\Core\Repositories\OptinConversionsRepository;
 use MailOptin\Core\Repositories\OptinThemesRepository;
 use MailOptin\Core\Repositories\StateRepository;
-use MailOptin\Libprodium\LeadBank\LeadBank;
+use MailOptin\Libsodium\LeadBank\LeadBank;
 
 class AjaxHandler
 {
@@ -34,22 +34,22 @@ class AjaxHandler
 
         // MailOptin_event => nopriv
         $ajax_events = array(
-            'track_optin_impression' => true,
-            'subscribe_to_email_list' => true,
-            'send_test_email' => false,
-            'create_optin_campaign' => false,
-            'create_email_campaign' => false,
-            'customizer_fetch_email_list' => false,
-            'optin_toggle_active' => false,
-            'automation_toggle_active' => false,
-            'toggle_optin_activated' => false,
-            'toggle_automation_activated' => false,
-            'optin_type_selection' => false,
-            'create_optin_split_test' => false,
-            'pause_optin_split_test' => false,
-            'end_optin_split_modal' => false,
-            'split_test_select_winner' => false,
-            'page_targeting_search' => false,
+            'track_optin_impression'       => true,
+            'subscribe_to_email_list'      => true,
+            'send_test_email'              => false,
+            'create_optin_campaign'        => false,
+            'create_email_campaign'        => false,
+            'customizer_fetch_email_list'  => false,
+            'optin_toggle_active'          => false,
+            'automation_toggle_active'     => false,
+            'toggle_optin_activated'       => false,
+            'toggle_automation_activated'  => false,
+            'optin_type_selection'         => false,
+            'create_optin_split_test'      => false,
+            'pause_optin_split_test'       => false,
+            'end_optin_split_modal'        => false,
+            'split_test_select_winner'     => false,
+            'page_targeting_search'        => false,
             'dismiss_toastr_notifications' => false,
         );
 
@@ -72,12 +72,12 @@ class AjaxHandler
 
     public static function define_ajax()
     {
-        if (!empty($_GET['mailoptin-ajax'])) {
-            if (!defined('DOING_AJAX')) {
+        if ( ! empty($_GET['mailoptin-ajax'])) {
+            if ( ! defined('DOING_AJAX')) {
                 define('DOING_AJAX', true);
             }
 
-            if (!WP_DEBUG || (WP_DEBUG && !WP_DEBUG_DISPLAY)) {
+            if ( ! WP_DEBUG || (WP_DEBUG && ! WP_DEBUG_DISPLAY)) {
                 @ini_set('display_errors', 0); // Turn off display_errors during AJAX events to prevent malformed JSON
             }
             $GLOBALS['wpdb']->hide_errors();
@@ -100,7 +100,7 @@ class AjaxHandler
     {
         global $wp_query;
 
-        if (!empty($_GET['mailoptin-ajax'])) {
+        if ( ! empty($_GET['mailoptin-ajax'])) {
             $wp_query->set('mailoptin-ajax', sanitize_text_field($_GET['mailoptin-ajax']));
         }
 
@@ -128,23 +128,23 @@ class AjaxHandler
 
     public static function do_not_cache()
     {
-        if (!defined('DONOTCACHEPAGE')) {
+        if ( ! defined('DONOTCACHEPAGE')) {
             define('DONOTCACHEPAGE', true);
         }
 
-        if (!defined('DONOTCACHEDB')) {
+        if ( ! defined('DONOTCACHEDB')) {
             define('DONOTCACHEDB', true);
         }
 
-        if (!defined('DONOTMINIFY')) {
+        if ( ! defined('DONOTMINIFY')) {
             define('DONOTMINIFY', true);
         }
 
-        if (!defined('DONOTCDN')) {
+        if ( ! defined('DONOTCDN')) {
             define('DONOTCDN', true);
         }
 
-        if (!defined('DONOTCACHCEOBJECT')) {
+        if ( ! defined('DONOTCACHCEOBJECT')) {
             define('DONOTCACHCEOBJECT', true);
         }
 
@@ -158,36 +158,36 @@ class AjaxHandler
     public function send_test_email()
     {
         // if not in admin dashboard, bail
-        if (!is_admin()) {
+        if ( ! is_admin()) {
             return;
         }
 
         check_ajax_referer('mailoptin-send-test-email-nonce', 'security');
 
-        if (!current_user_can('administrator')) {
+        if ( ! current_user_can('administrator')) {
             return;
         }
 
-        $admin_email = get_option('admin_email');
+        $admin_email       = get_option('admin_email');
         $email_campaign_id = absint($_REQUEST['email_campaign_id']);
-        $campaign_subject = EmailCampaignRepository::get_customizer_value($email_campaign_id, 'email_campaign_subject');
-        $campaign_type = EmailCampaignRepository::get_email_campaign_type($email_campaign_id);
+        $campaign_subject  = EmailCampaignRepository::get_customizer_value($email_campaign_id, 'email_campaign_subject');
+        $campaign_type     = EmailCampaignRepository::get_email_campaign_type($email_campaign_id);
 
         $plugin_settings = new Settings();
-        $from_name = $plugin_settings->from_name();
-        $from_email = $plugin_settings->from_email();
-        $headers = ["Content-Type: text/html", "From: $from_name <$from_email>"];
+        $from_name       = $plugin_settings->from_name();
+        $from_email      = $plugin_settings->from_email();
+        $headers         = ["Content-Type: text/html", "From: $from_name <$from_email>"];
 
         /** call appropriate method to get template preview. Eg @see self::new_publish_post_preview() */
         $data = $this->{"{$campaign_type}_preview"}($email_campaign_id, $campaign_subject);
 
-        $content_html = $data[0];
+        $content_html            = $data[0];
         $formatted_email_subject = $data[1];
 
         $response = wp_mail($admin_email, $formatted_email_subject, $content_html, $headers);
 
-        if (!$response) {
-            $headers = ["Content-Type: text/html"];
+        if ( ! $response) {
+            $headers  = ["Content-Type: text/html"];
             $response = wp_mail($admin_email, $formatted_email_subject, $content_html, $headers);
         }
 
@@ -204,7 +204,7 @@ class AjaxHandler
      */
     public function new_publish_post_preview($email_campaign_id, $email_campaign_subject)
     {
-        $mock_post = new \stdClass();
+        $mock_post             = new \stdClass();
         $mock_post->post_title = SolitaryDummyContent::title();
 
         return [
@@ -234,7 +234,7 @@ class AjaxHandler
      */
     public function optin_type_selection()
     {
-        if (!current_user_can('administrator')) {
+        if ( ! current_user_can('administrator')) {
             return;
         }
 
@@ -261,18 +261,18 @@ class AjaxHandler
      */
     public function create_optin_split_test()
     {
-        if (!current_user_can('administrator')) {
+        if ( ! current_user_can('administrator')) {
             return;
         }
 
         check_ajax_referer('mailoptin-admin-nonce', 'nonce');
 
-        if (!isset($_REQUEST['variant_name'], $_REQUEST['split_note'], $_REQUEST['parent_optin_id'])) {
+        if ( ! isset($_REQUEST['variant_name'], $_REQUEST['split_note'], $_REQUEST['parent_optin_id'])) {
             wp_send_json_error();
         }
 
-        $variant_name = sanitize_text_field($_REQUEST['variant_name']);
-        $split_note = sanitize_text_field($_REQUEST['split_note']);
+        $variant_name    = sanitize_text_field($_REQUEST['variant_name']);
+        $split_note      = sanitize_text_field($_REQUEST['split_note']);
         $parent_optin_id = absint($_REQUEST['parent_optin_id']);
 
         if (OptinCampaignsRepository::campaign_name_exist($variant_name)) {
@@ -281,7 +281,7 @@ class AjaxHandler
 
         $optin_campaign_id = (new SplitTestOptinCampaign($parent_optin_id, $variant_name, $split_note))->forge();
 
-        if (!$optin_campaign_id) wp_send_json_error();
+        if ( ! $optin_campaign_id) wp_send_json_error();
 
         wp_send_json_success(
             ['redirect' => OptinCampaign_List::_optin_campaign_customize_url($optin_campaign_id)]
@@ -293,17 +293,17 @@ class AjaxHandler
      */
     public function pause_optin_split_test()
     {
-        if (!current_user_can('administrator')) {
+        if ( ! current_user_can('administrator')) {
             return;
         }
 
         check_ajax_referer('mailoptin-admin-nonce', 'nonce');
 
-        if (!isset($_POST['parent_optin_id'], $_POST['split_test_action'])) {
+        if ( ! isset($_POST['parent_optin_id'], $_POST['split_test_action'])) {
             wp_send_json_error();
         }
 
-        $parent_optin_id = absint($_POST['parent_optin_id']);
+        $parent_optin_id   = absint($_POST['parent_optin_id']);
         $split_test_action = sanitize_text_field($_POST['split_test_action']);
 
         $variant_ids = OptinCampaignsRepository::get_split_test_variant_ids($parent_optin_id);
@@ -325,13 +325,13 @@ class AjaxHandler
      */
     public function split_test_select_winner()
     {
-        if (!current_user_can('administrator')) {
+        if ( ! current_user_can('administrator')) {
             return;
         }
 
         check_ajax_referer('mailoptin-admin-nonce', 'nonce');
 
-        if (!isset($_POST['parent_optin_id'], $_POST['winner_optin_id'])) {
+        if ( ! isset($_POST['parent_optin_id'], $_POST['winner_optin_id'])) {
             wp_send_json_error();
         }
 
@@ -363,13 +363,13 @@ class AjaxHandler
      */
     public function end_optin_split_modal()
     {
-        if (!current_user_can('administrator')) {
+        if ( ! current_user_can('administrator')) {
             return;
         }
 
         check_ajax_referer('mailoptin-admin-nonce', 'nonce');
 
-        if (!isset($_POST['parent_optin_id'])) {
+        if ( ! isset($_POST['parent_optin_id'])) {
             wp_send_json_error();
         }
 
@@ -431,7 +431,7 @@ class AjaxHandler
      */
     public function create_optin_campaign()
     {
-        if (!current_user_can('administrator')) {
+        if ( ! current_user_can('administrator')) {
             return;
         }
 
@@ -443,7 +443,7 @@ class AjaxHandler
 
         $title = sanitize_text_field($_REQUEST['title']);
         $theme = sanitize_text_field($_REQUEST['theme']);
-        $type = sanitize_text_field($_REQUEST['type']);
+        $type  = sanitize_text_field($_REQUEST['type']);
 
         if (OptinCampaignsRepository::campaign_name_exist($title)) {
             wp_send_json_error(__('Optin campaign with similar name exist already.', 'mailoptin'));
@@ -479,7 +479,7 @@ class AjaxHandler
      */
     public function create_email_campaign()
     {
-        if (!current_user_can('administrator')) {
+        if ( ! current_user_can('administrator')) {
             return;
         }
 
@@ -489,9 +489,9 @@ class AjaxHandler
             wp_send_json_error(__('Unexpected error. Please try again.', 'mailoptin'));
         }
 
-        $title = sanitize_text_field($_REQUEST['title']);
+        $title    = sanitize_text_field($_REQUEST['title']);
         $template = sanitize_text_field($_REQUEST['template']);
-        $type = sanitize_text_field($_REQUEST['type']);
+        $type     = sanitize_text_field($_REQUEST['type']);
 
         if (apply_filters('mailoptin_add_new_email_campaign_limit', true) && EmailCampaignRepository::campaign_count() >= 1) {
             $upgrade_url = 'https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=add_email_campaign_limit';
@@ -529,9 +529,9 @@ class AjaxHandler
      */
     public static function generateUniqueId($length = 10)
     {
-        $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $characters       = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
-        $randomString = '';
+        $randomString     = '';
         for ($i = 0; $i < $length; $i++) {
             $randomString .= $characters[mt_rand(0, $charactersLength - 1)];
         }
@@ -564,7 +564,7 @@ class AjaxHandler
         current_user_can('administrator') || exit;
 
         $optin_campaign_id = absint($_POST['id']);
-        $status = sanitize_text_field($_POST['status']);
+        $status            = sanitize_text_field($_POST['status']);
 
         if ($status == 'true') {
             OptinCampaignsRepository::activate_campaign($optin_campaign_id);
@@ -582,7 +582,7 @@ class AjaxHandler
         current_user_can('administrator') || exit;
 
         $email_campaign_id = absint($_POST['id']);
-        $status = sanitize_text_field($_POST['status']);
+        $status            = sanitize_text_field($_POST['status']);
 
         if ($status == 'true') {
             EmailCampaignRepository::activate_email_campaign($email_campaign_id);
@@ -601,7 +601,7 @@ class AjaxHandler
         current_user_can('administrator') || exit;
 
         $optin_campaign_id = absint($_POST['id']);
-        $status = sanitize_text_field($_POST['status']);
+        $status            = sanitize_text_field($_POST['status']);
 
         if ($status == 'true') {
             OptinCampaignsRepository::activate_campaign($optin_campaign_id);
@@ -617,7 +617,7 @@ class AjaxHandler
         current_user_can('administrator') || exit;
 
         $email_campaign_id = absint($_POST['id']);
-        $status = sanitize_text_field($_POST['status']);
+        $status            = sanitize_text_field($_POST['status']);
 
         if ($status == 'true') {
             EmailCampaignRepository::activate_email_campaign($email_campaign_id);
@@ -633,15 +633,15 @@ class AjaxHandler
      */
     public function subscribe_to_email_list()
     {
-        $builder = new ConversionDataBuilder();
-        $builder->payload = $payload = apply_filters('mailoptin_optin_subscription_request_body', sanitize_data($_REQUEST['optin_data']));
-        $builder->optin_uuid = $optin_uuid = $payload['optin_uuid'];
+        $builder                    = new ConversionDataBuilder();
+        $builder->payload           = $payload = apply_filters('mailoptin_optin_subscription_request_body', sanitize_data($_REQUEST['optin_data']));
+        $builder->optin_uuid        = $optin_uuid = $payload['optin_uuid'];
         $builder->optin_campaign_id = absint(OptinCampaignsRepository::get_optin_campaign_id_by_uuid($optin_uuid));
-        $builder->email = $payload['email'];
-        $builder->name = isset($payload['name']) ? $payload['name'] : '';
-        $builder->user_agent = $payload['user_agent'];
-        $builder->conversion_page = $payload['conversion_page'];
-        $builder->referrer = $payload['referrer'];
+        $builder->email             = $payload['email'];
+        $builder->name              = isset($payload['name']) ? $payload['name'] : '';
+        $builder->user_agent        = $payload['user_agent'];
+        $builder->conversion_page   = $payload['conversion_page'];
+        $builder->referrer          = $payload['referrer'];
 
         $response = self::do_optin_conversion($builder);
 
@@ -652,13 +652,14 @@ class AjaxHandler
      * Accept wide range of optin conversion data and save the lead.
      *
      * @param ConversionDataBuilder $conversion_data
+     *
      * @return array
      */
     public static function do_optin_conversion(ConversionDataBuilder $conversion_data)
     {
         $optin_campaign_id = $conversion_data->optin_campaign_id;
 
-        if (!is_email($conversion_data->email)) {
+        if ( ! is_email($conversion_data->email)) {
             return AbstractConnect::ajax_failure(
                 apply_filters('mo_subscription_invalid_email_error', __('Email address is invalid. Try again.', 'mailoptin'))
             );
@@ -678,8 +679,9 @@ class AjaxHandler
         }
 
         // flag to stop subscription if number of optin subscriber limit is exceeded or reached.
-        if (!defined('MAILOPTIN_DETACH_LIBSODIUM') && OptinConversionsRepository::month_conversion_count() >= MO_LITE_OPTIN_CONVERSION_LIMIT) {
+        if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM') && OptinConversionsRepository::month_conversion_count() >= MO_LITE_OPTIN_CONVERSION_LIMIT) {
             AbstractConnect::send_optin_error_email($optin_campaign_id, 'mo_subscription_limit_exceeded_error');
+
             return AbstractConnect::ajax_failure(
                 apply_filters('mo_subscription_limit_exceeded_error', __('You cannot be added to our email list at this time. Please try again later.', 'mailoptin'))
             );
@@ -690,16 +692,16 @@ class AjaxHandler
         $lead_bank_only = OptinCampaignsRepository::get_customizer_value($optin_campaign_id, 'lead_bank_only', false);
 
         $lead_data = [
-            'optin_campaign_id' => $optin_campaign_id,
+            'optin_campaign_id'   => $optin_campaign_id,
             'optin_campaign_type' => $optin_campaign_type,
-            'name' => $conversion_data->name,
-            'email' => $conversion_data->email,
-            'user_agent' => $conversion_data->user_agent,
-            'conversion_page' => $conversion_data->conversion_page,
-            'referrer' => $conversion_data->referrer,
+            'name'                => $conversion_data->name,
+            'email'               => $conversion_data->email,
+            'user_agent'          => $conversion_data->user_agent,
+            'conversion_page'     => $conversion_data->conversion_page,
+            'referrer'            => $conversion_data->referrer,
         ];
 
-        if (class_exists('MailOptin\Libprodium\LeadBank\LeadBank') && !LeadBank::is_leadbank_disabled()) {
+        if (class_exists('MailOptin\Libsodium\LeadBank\LeadBank') && ! LeadBank::is_leadbank_disabled()) {
             if ($conversion_data->is_leadbank_active === true) {
                 // capture optin lead / conversion
                 OptinConversionsRepository::add($lead_data);
@@ -720,9 +722,9 @@ class AjaxHandler
         // for esp such as convertfox.
         $connection_service = isset($conversion_data->connection_service) ? $conversion_data->connection_service : '';
 
-        if (!empty($connection_service)) {
+        if ( ! empty($connection_service)) {
             $connection_email_list = isset($conversion_data->connection_email_list) ? $conversion_data->connection_email_list : '';
-            $response = self::add_lead_to_connection($connection_service, $connection_email_list, $conversion_data);
+            $response              = self::add_lead_to_connection($connection_service, $connection_email_list, $conversion_data);
             if (AbstractConnect::is_ajax_success($response)) {
                 self::track_conversion($optin_campaign_id, $lead_data);
             }
@@ -731,15 +733,21 @@ class AjaxHandler
         }
 
         $integrations = json_decode(
-            OptinCampaignsRepository::get_customizer_value($optin_campaign_id, 'integrations', []),
+            OptinCampaignsRepository::get_customizer_value($optin_campaign_id, 'integrations', ''),
             true
         );
 
+        if ( ! $integrations) {
+            AbstractConnect::send_optin_error_email($optin_campaign_id, 'No email provider or list has been set for this optin.');
+
+            return AbstractConnect::ajax_failure(__('No email provider or list has been set for this optin. Please try again', 'mailoptin'));
+        }
+
         $responses = [];
-        if (is_array($integrations) && !empty($integrations)) {
+        if (is_array($integrations) && ! empty($integrations)) {
             foreach ($integrations as $integration) {
                 $conversion_data->payload['integration_data'] = $integration;
-                $responses[] = self::add_lead_to_connection(
+                $responses[]                                  = self::add_lead_to_connection(
                     $integration['connection_service'],
                     isset($integration['connection_email_list']) ? $integration['connection_email_list'] : '',
                     $conversion_data
@@ -758,6 +766,7 @@ class AjaxHandler
 
         if ($is_any_success) {
             self::track_conversion($optin_campaign_id, $lead_data);
+
             return AbstractConnect::ajax_success();
         }
 
@@ -786,18 +795,18 @@ class AjaxHandler
 
         $connection_fqn_class = ConnectionFactory::get_fqn_class($connection_service);
 
-        // !$lead_bank_only ensures error is not thrown if lead_bank_only is checked or true.
         if (empty($connection_service) ||
             // useful for service such as convertfox and in future customer.io that doesnt require an email list to be specified.
-            (!in_array('non_email_list_support', $connection_fqn_class::features_support($connection_service)) && empty($connection_email_list))
+            ( ! in_array('non_email_list_support', $connection_fqn_class::features_support($connection_service)) && empty($connection_email_list))
         ) {
             AbstractConnect::send_optin_error_email($optin_campaign_id, 'No email provider or list has been set for this optin.');
+
             return AbstractConnect::ajax_failure(__('No email provider or list has been set for this optin. Please try again', 'mailoptin'));
         }
 
-        $extras = $conversion_data->payload;
-        $extras['optin_campaign_id'] = $optin_campaign_id;
-        $extras['connection_service'] = $connection_service;
+        $extras                          = $conversion_data->payload;
+        $extras['optin_campaign_id']     = $optin_campaign_id;
+        $extras['connection_service']    = $connection_service;
         $extras['connection_email_list'] = $connection_email_list;
 
         do_action_ref_array('mailoptin_before_optin_subscription', $extras);
@@ -816,10 +825,10 @@ class AjaxHandler
      */
     public function track_optin_impression()
     {
-        $payload = sanitize_data($_REQUEST['stat_data']);
-        $optin_uuid = $payload['optin_uuid'];
+        $payload           = sanitize_data($_REQUEST['stat_data']);
+        $optin_uuid        = $payload['optin_uuid'];
         $optin_campaign_id = OptinCampaignsRepository::get_optin_campaign_id_by_uuid($optin_uuid);
-        $stat_type = 'impression';
+        $stat_type         = 'impression';
         (new OptinCampaignStat($optin_campaign_id))->save($stat_type);
 
         do_action('mailoptin_track_impressions', $payload, $optin_campaign_id, $optin_uuid);
@@ -830,9 +839,9 @@ class AjaxHandler
      */
     public function page_targeting_search()
     {
-        $q = sanitize_text_field($_REQUEST['q']);
+        $q           = sanitize_text_field($_REQUEST['q']);
         $search_type = sanitize_text_field($_REQUEST['search_type']);
-        $response = array();
+        $response    = array();
 
         switch ($search_type) {
             case 'posts_never_load' :
@@ -858,7 +867,7 @@ class AjaxHandler
     public function dismiss_toastr_notifications()
     {
         $optin_campaign_id = sanitize_text_field($_POST['optin_id']);
-        $notification = sanitize_text_field($_POST['notification']);
+        $notification      = sanitize_text_field($_POST['notification']);
         (new StateRepository())->set($notification, absint($optin_campaign_id));
     }
 
