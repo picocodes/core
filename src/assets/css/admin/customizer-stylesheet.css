@@ -1,5 +1,5 @@
-#accordion-section-mo_integration_section {
-    border: 1px solid #ff6347 !important;
+#accordion-section-mo_integration_section .accordion-section-title {
+    border-left-color: #ff6347;
 }
 
 #accordion-section-mo_integration_section:hover .accordion-section-title,

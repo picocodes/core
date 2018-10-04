@@ -468,10 +468,6 @@ class CustomizerSettings extends AbstractCustomizer
                     'type' => 'option',
                     'transport' => 'postMessage',
                 ),
-                'after_integration_notice' => array(
-                    'type' => 'option',
-                    'transport' => 'postMessage',
-                ),
                 'no_integration_notice' => array(
                     'type' => 'option',
                     'transport' => 'postMessage',

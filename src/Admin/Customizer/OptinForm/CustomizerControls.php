@@ -1009,32 +1009,6 @@ class CustomizerControls
             );
         }
 
-        if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
-            $content = sprintf(
-                '<div class="mo-pro"><a href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=integration_panel" target="_blank">%s</a></div>',
-                __('Premium Version Available', 'mailoptin')
-            );
-
-            $content .= sprintf(
-                __('Upgrade to %sMailOptin Premium%s for double-optin control, build hyper segmented list and increase automation possibilities via lead tagging (in MailChimp, via groups).', 'mailoptin'),
-                '<a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=integration_panel">',
-                '</a>'
-            );
-
-            // always prefix with the name of the connect/connection service.
-            $integration_control_args['after_integration_notice'] = new WP_Customize_Custom_Content(
-                $this->wp_customize,
-                $this->option_prefix . '[after_integration_notice]',
-                apply_filters('mo_optin_form_customizer_after_integration_notice_args', array(
-                        'content' => $content,
-                        'section' => $this->customizerClassInstance->integration_section_id,
-                        'settings' => $this->option_prefix . '[after_integration_notice]',
-                        'priority' => 299,
-                    )
-                )
-            );
-        }
-
         foreach ($integration_control_args as $id => $args) {
             if (is_object($args)) {
                 $this->wp_customize->add_control($args);
