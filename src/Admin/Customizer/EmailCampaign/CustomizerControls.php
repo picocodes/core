@@ -650,6 +650,17 @@ class CustomizerControls
                         )
                     )
                 ),
+                'content_after_main_content'              => new WP_Customize_Tinymce_Expanded_Editor(
+                    $this->wp_customize,
+                    $this->option_prefix . '[content_after_main_content]',
+                    apply_filters('mailoptin_template_customizer_content_after_main_content_args', array(
+                            'label'    => __('After Main Content', 'mailoptin'),
+                            'section'  => $this->customizerClassInstance->campaign_content_section_id,
+                            'settings' => $this->option_prefix . '[content_after_main_content]',
+                            'priority' => 9
+                        )
+                    )
+                ),
                 'content_background_color'                 => new \WP_Customize_Color_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[content_background_color]',

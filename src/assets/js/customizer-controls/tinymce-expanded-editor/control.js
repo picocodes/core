@@ -7,6 +7,7 @@
             e.preventDefault();
             var content_editor,
                 editor,
+                control_id,
                 editor_button = $(this),
                 editor_button_icon = editor_button.find('span.dashicons');
 
@@ -14,7 +15,8 @@
 
             if (editor_open_flag === true) {
 
-                content_editor = '<div class="mo-tinymce-expanded-editor"><textarea style="height:200px" id="mo-tinymce-expanded-textarea">' + api(editor_button.data('control-id')).get() + '</textarea></div>';
+                control_id = editor_button.data('control-id');
+                content_editor = '<div class="mo-tinymce-expanded-editor"><textarea style="height:200px" id="mo-tinymce-expanded-textarea" data-control-id="' + control_id + '">' + api(control_id).get() + '</textarea></div>';
                 $('.wp-full-overlay').prepend(content_editor);
 
                 $('#mo-tinymce-expanded-textarea').mo_wp_editor({mode: 'tmce'});
@@ -26,7 +28,7 @@
                 });
 
                 $(document).on('change', '#mo-tinymce-expanded-textarea', _.debounce(function () {
-                        api(editor_button.data('control-id')).set(editor.getContent());
+                        api($(this).data('control-id')).set(tinymce.get('mo-tinymce-expanded-textarea').getContent());
                     }, 300)
                 );
 

@@ -11,7 +11,6 @@
             }
         });
 
-
         $('.mailoptin-email-template').on('click', function (e) {
             var campaign_title_obj = $('#mailoptin-add-campaign-title');
             // remove input field error on change.
