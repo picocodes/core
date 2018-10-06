@@ -2,6 +2,7 @@
 
 namespace MailOptin\Core\Admin\Customizer;
 
+use MailOptin\Core\PluginSettings\Settings;
 
 trait CustomizerTrait
 {
@@ -75,122 +76,127 @@ trait CustomizerTrait
             // add core media button back.
             add_action('media_buttons', 'media_buttons');
 
-            $wp_get_theme = wp_get_theme();
+            $is_switch_loader_method = Settings::instance()->switch_customizer_loader();
 
-            $active_plugins = array_reduce(get_option('active_plugins'), function ($carry, $item) {
-                $name = dirname($item);
-                if ($name != 'mailoptin' && $name != '.') {
-                    $carry[] = $name;
-                }
+            if ($is_switch_loader_method != 'true') {
 
-                return $carry;
-            });
+                $wp_get_theme = wp_get_theme();
 
-            $active_plugins = ! is_array($active_plugins) ? [] : $active_plugins;
-
-            add_action('customize_controls_enqueue_scripts', function () use ($wp_get_theme, $active_plugins) {
-                global $wp_styles;
-                global $wp_scripts;
-
-                $child_theme  = $wp_get_theme->get_stylesheet();
-                $parent_theme = $wp_get_theme->get_template();
-
-                foreach ($wp_scripts->registered as $key => $value) {
-                    $src = $value->src;
-                    if (strpos($src, "themes/$child_theme/") !== false || strpos($src, "themes/$parent_theme/") !== false) {
-                        unset($wp_scripts->registered[$key]);
+                $active_plugins = array_reduce(get_option('active_plugins'), function ($carry, $item) {
+                    $name = dirname($item);
+                    if ($name != 'mailoptin' && $name != '.') {
+                        $carry[] = $name;
                     }
 
-                    if (strpos($src, "/uploads/$child_theme/") !== false || strpos($src, "/uploads/$parent_theme/") !== false) {
-                        unset($wp_scripts->registered[$key]);
-                    }
+                    return $carry;
+                });
 
-                    foreach ($active_plugins as $active_plugin) {
-                        if (strpos($src, "plugins/$active_plugin/") !== false) {
+                $active_plugins = ! is_array($active_plugins) ? [] : $active_plugins;
+
+                add_action('customize_controls_enqueue_scripts', function () use ($wp_get_theme, $active_plugins) {
+                    global $wp_styles;
+                    global $wp_scripts;
+
+                    $child_theme  = $wp_get_theme->get_stylesheet();
+                    $parent_theme = $wp_get_theme->get_template();
+
+                    foreach ($wp_scripts->registered as $key => $value) {
+                        $src = $value->src;
+                        if (strpos($src, "themes/$child_theme/") !== false || strpos($src, "themes/$parent_theme/") !== false) {
                             unset($wp_scripts->registered[$key]);
                         }
-                    }
-                }
 
-                foreach ($wp_styles->registered as $key => $value) {
-                    $src = $value->src;
-                    if (strpos($src, "themes/$child_theme/") !== false || strpos($src, "themes/$parent_theme/") !== false) {
-                        unset($wp_styles->registered[$key]);
+                        if (strpos($src, "/uploads/$child_theme/") !== false || strpos($src, "/uploads/$parent_theme/") !== false) {
+                            unset($wp_scripts->registered[$key]);
+                        }
+
+                        foreach ($active_plugins as $active_plugin) {
+                            if (strpos($src, "plugins/$active_plugin/") !== false) {
+                                unset($wp_scripts->registered[$key]);
+                            }
+                        }
                     }
 
-                    if (strpos($src, "/uploads/$child_theme/") !== false || strpos($src, "/uploads/$parent_theme/") !== false) {
-                        unset($wp_styles->registered[$key]);
+                    foreach ($wp_styles->registered as $key => $value) {
+                        $src = $value->src;
+                        if (strpos($src, "themes/$child_theme/") !== false || strpos($src, "themes/$parent_theme/") !== false) {
+                            unset($wp_styles->registered[$key]);
+                        }
+
+                        if (strpos($src, "/uploads/$child_theme/") !== false || strpos($src, "/uploads/$parent_theme/") !== false) {
+                            unset($wp_styles->registered[$key]);
+                        }
+
+                        foreach ($active_plugins as $active_plugin) {
+                            if (strpos($src, "plugins/$active_plugin/") !== false) {
+                                unset($wp_styles->registered[$key]);
+                            }
+                        }
                     }
 
-                    foreach ($active_plugins as $active_plugin) {
-                        if (strpos($src, "plugins/$active_plugin/") !== false) {
+                }, 9999999999999);
+
+                // was surprised a theme called Awaken used this action to enqueue styles.
+                // do not change the priority from 20. that's where it seem to work.
+                add_action('customize_controls_print_styles', function () use ($wp_get_theme, $active_plugins) {
+                    global $wp_styles;
+
+                    $child_theme  = $wp_get_theme->get_stylesheet();
+                    $parent_theme = $wp_get_theme->get_template();
+
+                    foreach ($wp_styles->registered as $key => $value) {
+                        $src = $value->src;
+
+                        if (strpos($src, "themes/$child_theme/") !== false || strpos($src, "themes/$parent_theme/") !== false) {
                             unset($wp_styles->registered[$key]);
                         }
                     }
-                }
 
-            }, 9999999999999);
+                }, 20);
 
-            // was surprised a theme called Awaken used this action to enqueue styles.
-            // do not change the priority from 20. that's where it seem to work.
-            add_action('customize_controls_print_styles', function () use ($wp_get_theme, $active_plugins) {
-                global $wp_styles;
+                add_action('wp_enqueue_scripts', function () use ($wp_get_theme, $active_plugins) {
+                    global $wp_styles;
+                    global $wp_scripts;
 
-                $child_theme  = $wp_get_theme->get_stylesheet();
-                $parent_theme = $wp_get_theme->get_template();
+                    $child_theme  = $wp_get_theme->get_stylesheet();
+                    $parent_theme = $wp_get_theme->get_template();
 
-                foreach ($wp_styles->registered as $key => $value) {
-                    $src = $value->src;
-
-                    if (strpos($src, "themes/$child_theme/") !== false || strpos($src, "themes/$parent_theme/") !== false) {
-                        unset($wp_styles->registered[$key]);
-                    }
-                }
-
-            }, 20);
-
-            add_action('wp_enqueue_scripts', function () use ($wp_get_theme, $active_plugins) {
-                global $wp_styles;
-                global $wp_scripts;
-
-                $child_theme  = $wp_get_theme->get_stylesheet();
-                $parent_theme = $wp_get_theme->get_template();
-
-                foreach ($wp_scripts->registered as $key => $value) {
-                    $src = $value->src;
-                    if (strpos($src, "themes/$child_theme/") !== false || strpos($src, "themes/$parent_theme/") !== false) {
-                        unset($wp_scripts->registered[$key]);
-                    }
-
-                    if (strpos($src, "/uploads/$child_theme/") !== false || strpos($src, "/uploads/$parent_theme/") !== false) {
-                        unset($wp_scripts->registered[$key]);
-                    }
-
-                    foreach ($active_plugins as $active_plugin) {
-                        if (strpos($src, "plugins/$active_plugin/") !== false) {
+                    foreach ($wp_scripts->registered as $key => $value) {
+                        $src = $value->src;
+                        if (strpos($src, "themes/$child_theme/") !== false || strpos($src, "themes/$parent_theme/") !== false) {
                             unset($wp_scripts->registered[$key]);
                         }
-                    }
-                }
 
-                foreach ($wp_styles->registered as $key => $value) {
-                    $src = $value->src;
-                    if (strpos($src, "themes/$child_theme/") !== false || strpos($src, "themes/$parent_theme/") !== false) {
-                        unset($wp_styles->registered[$key]);
-                    }
+                        if (strpos($src, "/uploads/$child_theme/") !== false || strpos($src, "/uploads/$parent_theme/") !== false) {
+                            unset($wp_scripts->registered[$key]);
+                        }
 
-                    if (strpos($src, "/uploads/$child_theme/") !== false || strpos($src, "/uploads/$parent_theme/") !== false) {
-                        unset($wp_styles->registered[$key]);
-                    }
-
-                    foreach ($active_plugins as $active_plugin) {
-                        if (strpos($src, "plugins/$active_plugin/") !== false) {
-                            unset($wp_styles->registered[$key]);
+                        foreach ($active_plugins as $active_plugin) {
+                            if (strpos($src, "plugins/$active_plugin/") !== false) {
+                                unset($wp_scripts->registered[$key]);
+                            }
                         }
                     }
-                }
 
-            }, 9999999999999);
+                    foreach ($wp_styles->registered as $key => $value) {
+                        $src = $value->src;
+                        if (strpos($src, "themes/$child_theme/") !== false || strpos($src, "themes/$parent_theme/") !== false) {
+                            unset($wp_styles->registered[$key]);
+                        }
+
+                        if (strpos($src, "/uploads/$child_theme/") !== false || strpos($src, "/uploads/$parent_theme/") !== false) {
+                            unset($wp_styles->registered[$key]);
+                        }
+
+                        foreach ($active_plugins as $active_plugin) {
+                            if (strpos($src, "plugins/$active_plugin/") !== false) {
+                                unset($wp_styles->registered[$key]);
+                            }
+                        }
+                    }
+
+                }, 9999999999999);
+            }
 
             if (class_exists('Astra_Customizer') && method_exists('Astra_Customizer', 'print_footer_scripts')) {
                 remove_action('customize_controls_print_footer_scripts', [\Astra_Customizer::get_instance(), 'print_footer_scripts']);
@@ -206,12 +212,17 @@ trait CustomizerTrait
             // compatibility with easy google font plugin
             if (class_exists('EGF_Customize_Manager')) {
                 remove_action('customize_controls_enqueue_scripts', [\EGF_Customize_Manager::get_instance(), 'easy-google-fonts-customize-controls-js']);
-                remove_action( 'customize_register', [\EGF_Customize_Manager::get_instance(), 'register_font_control_type']);
+                remove_action('customize_register', [\EGF_Customize_Manager::get_instance(), 'register_font_control_type']);
             }
 
-            add_action('customize_controls_enqueue_scripts', array($this, 'mo_customizer_js'));
+            $this->ini_scripts();
 
         }, 9999999999999);
+    }
+
+    public function ini_scripts()
+    {
+        add_action('customize_controls_enqueue_scripts', array($this, 'mo_customizer_js'));
 
         add_action('customize_controls_print_footer_scripts', [$this, 'js_script']);
         add_action('customize_controls_print_footer_scripts', [$this, 'js_wp_editor']);

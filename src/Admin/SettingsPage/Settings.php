@@ -67,19 +67,19 @@ class Settings extends AbstractSettingsPage
         $clear_optin_cache_url = add_query_arg('clear-optin-cache', 'true', MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE);
         $args                  = [
             'general_settings'        => apply_filters('mailoptin_settings_general_settings_page', [
-                    'tab_title'               => __('General', 'mailoptin'),
-                    'section_title'           => __('General Settings', 'mailoptin'),
-                    'remove_plugin_data'      => [
+                    'tab_title'                => __('General', 'mailoptin'),
+                    'section_title'            => __('General Settings', 'mailoptin'),
+                    'remove_plugin_data'       => [
                         'type'        => 'checkbox',
                         'label'       => __('Remove Data on Uninstall?', 'mailoptin'),
                         'description' => __('Check this box if you would like MailOptin to completely remove all of its data when uninstalled.', 'mailoptin'),
                     ],
-                    'allow_tracking'          => [
+                    'allow_tracking'           => [
                         'type'        => 'checkbox',
                         'label'       => __('Allow Usage Tracking?', 'mailoptin'),
                         'description' => __('Allow MailOptin to anonymously track how this plugin is used and help us make the plugin better. Opt-in to tracking and our newsletter. No sensitive data is tracked.', 'mailoptin'),
                     ],
-                    'mailoptin_affiliate_url' => [
+                    'mailoptin_affiliate_url'  => [
                         'type'        => 'text',
                         'label'       => __('MailOptin Affiliate Link', 'mailoptin'),
                         'description' => sprintf(
@@ -87,7 +87,13 @@ class Settings extends AbstractSettingsPage
                             '<a href="https://mailoptin.io/affiliates/" target="_blank">',
                             '</a>'
                         ),
-                    ]
+                    ],
+                    'switch_customizer_loader' => [
+                        'type'           => 'checkbox',
+                        'checkbox_label' => __('Enable', 'mailoptin'),
+                        'label'          => __('Switch Customizer Loader Method', 'mailoptin'),
+                        'description'    => __('Check this if you are having problem with Customizer not loading properly.', 'mailoptin'),
+                    ],
                 ]
             ),
             'optin_campaign_settings' => apply_filters('mailoptin_settings_optin_campaign_settings_page', [
