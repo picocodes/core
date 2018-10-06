@@ -215,14 +215,9 @@ trait CustomizerTrait
                 remove_action('customize_register', [\EGF_Customize_Manager::get_instance(), 'register_font_control_type']);
             }
 
-            $this->ini_scripts();
+            add_action('customize_controls_enqueue_scripts', array($this, 'mo_customizer_js'));
 
         }, 9999999999999);
-    }
-
-    public function ini_scripts()
-    {
-        add_action('customize_controls_enqueue_scripts', array($this, 'mo_customizer_js'));
 
         add_action('customize_controls_print_footer_scripts', [$this, 'js_script']);
         add_action('customize_controls_print_footer_scripts', [$this, 'js_wp_editor']);

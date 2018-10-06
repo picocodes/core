@@ -44,6 +44,13 @@
             $('.mo-before-main-content').html(to);
         });
     });
+    
+    wp.customize(mailoptin_email_campaign_option_prefix + '[' + mailoptin_email_campaign_id + '][content_after_main_content]', function (value) {
+        value.bind(function (to) {
+            to = $.parseHTML(to);
+            $('.mo-after-main-content').html(to);
+        });
+    });
 
     wp.customize(mailoptin_email_campaign_option_prefix + '[' + mailoptin_email_campaign_id + '][content_background_color]', function (value) {
         value.bind(function (to) {

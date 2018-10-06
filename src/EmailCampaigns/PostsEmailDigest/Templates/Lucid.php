@@ -216,6 +216,7 @@ class Lucid extends AbstractTemplate
         $view_web_version    = apply_filters('mo_email_template_view_web_version', '<a class="webversion-label mo-header-web-version-label mo-header-web-version-color" href="{{webversion}}">[mo_header_web_version_link_label]</a>');
         $unsubscribe_link    = apply_filters('mo_email_template_unsubscribe_link', '<a class="unsubscribe mo-footer-unsubscribe-link-label mo-footer-unsubscribe-link-color" href="{{unsubscribe}}">[mo_footer_unsubscribe_link_label]</a>');
         $before_main_content = EmailCampaignRepository::get_merged_customizer_value($this->email_campaign_id, 'content_before_main_content');
+        $after_main_content = EmailCampaignRepository::get_merged_customizer_value($this->email_campaign_id, 'content_after_main_content');
         $content             = $this->parsed_post_list();
 
         $body = <<<HTML
@@ -240,6 +241,7 @@ class Lucid extends AbstractTemplate
                   <td class="content-cell mo-content-text-color">
                   <div class="mo-before-main-content">$before_main_content</div>
                     $content
+                  <div class="mo-after-main-content">$after_main_content</div>
                   </td>
                 </tr>
               </table>

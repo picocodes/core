@@ -172,6 +172,7 @@ class Lucid extends AbstractTemplate
         $unsubscribe_link = apply_filters('mo_email_template_unsubscribe_link', '<a class="unsubscribe mo-footer-unsubscribe-link-label mo-footer-unsubscribe-link-color" href="{{unsubscribe}}">[mo_footer_unsubscribe_link_label]</a>');
 
         $before_main_content = EmailCampaignRepository::get_merged_customizer_value($this->email_campaign_id, 'content_before_main_content');
+        $after_main_content  = EmailCampaignRepository::get_merged_customizer_value($this->email_campaign_id, 'content_after_main_content');
         $body                = <<<HTML
   <table class="email-wrapper mo-page-bg-color" width="100%" cellpadding="0" cellspacing="0">
     <tr>
@@ -208,6 +209,7 @@ class Lucid extends AbstractTemplate
                         </td>
                       </tr>
                     </table>
+                  <div class="mo-after-main-content">$after_main_content</div>
                   </td>
                 </tr>
               </table>

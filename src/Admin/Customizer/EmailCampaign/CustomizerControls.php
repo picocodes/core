@@ -68,6 +68,7 @@ class CustomizerControls
                     'header_text',
 
                     'content_before_main_content',
+                    'content_after_main_content',
                     'content_remove_feature_image',
                     'default_image_url',
                     'post_content_length',
