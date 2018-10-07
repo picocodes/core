@@ -50,6 +50,11 @@ class CloneEmailCampaign
         // append new template settings to existing settings.
         $all_templates_settings[$new_email_campaign_id] = EmailCampaignRepository::get_settings_by_id($this->email_campaign_id);
 
+        // deactivate cloned campaign by default
+        $all_templates_settings[$new_email_campaign_id]['activate_email_campaign'] = false;
+
+        EmailCampaignRepository::deactivate_email_campaign($new_email_campaign_id);
+
         // save to DB
         return EmailCampaignRepository::updateSettings($all_templates_settings);
 
