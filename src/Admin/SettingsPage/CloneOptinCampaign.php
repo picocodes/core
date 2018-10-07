@@ -36,7 +36,10 @@ class CloneOptinCampaign
         $all_optin_campaign_settings = OptinCampaignsRepository::get_settings();
         // append new template settings to existing settings.
         $all_optin_campaign_settings[$optin_campaign_id] = OptinCampaignsRepository::get_settings_by_id($this->optin_campaign_id);
-        // save to DB
+
+        // deactivate cloned optin campaign by default
+        $all_optin_campaign_settings[$optin_campaign_id]['activate_optin'] = false;
+
         return OptinCampaignsRepository::updateSettings($all_optin_campaign_settings);
 
     }
