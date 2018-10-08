@@ -60,11 +60,11 @@ class Campaign_Log_List extends \WP_List_Table
     }
 
     /**
-     * Retry failed email campaign.
+     * Resend failed email campaign.
      *
      * @param int $campaign_log_id
      */
-    public function retry_failed_email_campaign($campaign_log_id)
+    public function resend_email_campaign($campaign_log_id)
     {
         $email_campaign_id = $this->get_email_campaign_id_from_campaign_log($campaign_log_id);
         $campaign_type     = ER::get_email_campaign_type($email_campaign_id);
@@ -95,25 +95,6 @@ class Campaign_Log_List extends \WP_List_Table
             array('id' => $id),
             array('%d')
         );
-    }
-
-    /**
-     * Can email campaign be retried?
-     *
-     * @param int $campaign_log_id
-     *
-     * @return null|string
-     */
-    public function is_retry($campaign_log_id)
-    {
-        $result = $this->wpdb->get_var(
-            $this->wpdb->prepare(
-                "SELECT status FROM $this->table WHERE id = %d",
-                $campaign_log_id
-            )
-        );
-
-        return in_array($result, ['failed', 'queued', 'draft']);
     }
 
     /**
@@ -217,23 +198,21 @@ class Campaign_Log_List extends \WP_List_Table
             ),
         ];
 
-        $retry_href = add_query_arg(
+        $resend_href = add_query_arg(
             [
-                'action'          => 'retry',
+                'action'          => 'resend',
                 'campaign-log-id' => $campaign_log_id,
-                '_wpnonce'        => wp_create_nonce('mo_retry_failed_campaign')
+                '_wpnonce'        => wp_create_nonce('mo_resend_failed_campaign')
             ],
             MAILOPTIN_CAMPAIGN_LOG_SETTINGS_PAGE
         );
 
-        if ($this->is_retry($campaign_log_id)) {
-            $actions['retry'] = sprintf(
-                '<a href="%s">%s</a>',
-                $retry_href,
-                'retry',
-                __('Retry', 'mailoptin')
-            );
-        }
+        $actions['resend'] = sprintf(
+            '<a href="%s">%s</a>',
+            $resend_href,
+            'resend',
+            __('Resend', 'mailoptin')
+        );
 
         return $name . $this->row_actions($actions);
     }
@@ -341,7 +320,7 @@ class Campaign_Log_List extends \WP_List_Table
     public function get_bulk_actions()
     {
         $actions = array(
-            'bulk-delete' => 'Delete',
+            'bulk-delete' => __('Delete', 'mailoptin'),
         );
 
         return $actions;
@@ -393,13 +372,13 @@ class Campaign_Log_List extends \WP_List_Table
         }
 
         //Detect when a bulk action is being triggered...
-        if ('retry' === $this->current_action()) {
+        if ('resend' === $this->current_action()) {
             // In our file that handles the request, verify the nonce.
             $nonce = esc_attr($_REQUEST['_wpnonce']);
-            if ( ! wp_verify_nonce($nonce, 'mo_retry_failed_campaign')) {
-                wp_nonce_ays('mo_retry_failed_campaign');
+            if ( ! wp_verify_nonce($nonce, 'mo_resend_failed_campaign')) {
+                wp_nonce_ays('mo_resend_failed_campaign');
             } else {
-                self::retry_failed_email_campaign(absint($_GET['campaign-log-id']));
+                self::resend_email_campaign(absint($_GET['campaign-log-id']));
                 // esc_url_raw() is used to prevent converting ampersand in url to "#038;"
                 // add_query_arg() return the current url
                 wp_redirect(esc_url_raw(MAILOPTIN_CAMPAIGN_LOG_SETTINGS_PAGE));

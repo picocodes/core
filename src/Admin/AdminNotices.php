@@ -107,7 +107,7 @@ class AdminNotices
         if (isset($_GET['failed-campaign']) && $_GET['failed-campaign'] == 'retried') : ?>
             <div id="message" class="updated notice is-dismissible">
                 <p>
-                    <?php _e('Failed email campaigned retried.', 'mailoptin'); ?>
+                    <?php _e('Email campaigned resent.', 'mailoptin'); ?>
                 </p>
             </div>
         <?php endif;

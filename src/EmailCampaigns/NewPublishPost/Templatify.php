@@ -115,12 +115,16 @@ class Templatify implements TemplatifyInterface
         if ( ! is_customize_preview()) {
             $emogrifier = new \Pelago\Emogrifier();
             $emogrifier->setHtml($content);
+            $emogrifier->disableInvisibleNodeRemoval();
 
             $content = $emogrifier->emogrify();
         }
 
         return $this->replace_footer_placeholder_tags(
-            str_replace(['%5B', '%5D', '%7B', '%7D'], ['[', ']', '{', '}'], $content)
+        // we found out urlendcode was been done especially to the url part. previously we were doing
+        // str_replace(['%5B', '%5D', '%7B', '%7D'], ['[', ']', '{', '}'], $content) going forward
+        // urldecode is the best way.
+            urldecode($content)
         );
     }
 }
