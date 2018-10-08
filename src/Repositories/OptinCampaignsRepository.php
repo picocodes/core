@@ -24,10 +24,10 @@ class OptinCampaignsRepository extends AbstractRepository
     public static function campaign_name_exist($name)
     {
         $campaign_name = sanitize_text_field($name);
-        $table = parent::campaigns_table();
-        $result = parent::wpdb()->get_var(parent::wpdb()->prepare("SELECT name FROM $table WHERE name = '%s'", $campaign_name));
+        $table         = parent::campaigns_table();
+        $result        = parent::wpdb()->get_var(parent::wpdb()->prepare("SELECT name FROM $table WHERE name = '%s'", $campaign_name));
 
-        return !empty($result);
+        return ! empty($result);
     }
 
     /**
@@ -45,7 +45,7 @@ class OptinCampaignsRepository extends AbstractRepository
         // in single request return previous value.
         $cache_key = 'is_split_test_' . $optin_campaign_id;
 
-        if (!is_customize_preview() && isset(self::$cache[$cache_key])) {
+        if ( ! is_customize_preview() && isset(self::$cache[$cache_key])) {
             $parent_optin_id = self::$cache[$cache_key];
         } else {
             $parent_optin_id = self::$cache[$cache_key] = OptinCampaignMeta::get_campaign_meta(
@@ -55,7 +55,7 @@ class OptinCampaignsRepository extends AbstractRepository
             );
         }
 
-        if (!empty($parent_optin_id)) {
+        if ( ! empty($parent_optin_id)) {
             return true;
         }
 
@@ -73,13 +73,13 @@ class OptinCampaignsRepository extends AbstractRepository
     {
         $cache_key = 'is_split_test_parent_' . $parent_optin_id;
 
-        if (!is_customize_preview() && isset(self::$cache[$cache_key])) {
+        if ( ! is_customize_preview() && isset(self::$cache[$cache_key])) {
             $response = self::$cache[$cache_key];
         } else {
             $response = self::$cache[$cache_key] = OptinCampaignMeta::get_optin_id_by_meta_key_value('split_test_parent', $parent_optin_id);
         }
 
-        if (!empty($response)) {
+        if ( ! empty($response)) {
             return true;
         }
 
@@ -95,7 +95,7 @@ class OptinCampaignsRepository extends AbstractRepository
     {
         $cache_key = 'get_split_test_variant_ids_' . $parent_optin_id;
 
-        if (!is_customize_preview() && isset(self::$cache[$cache_key])) {
+        if ( ! is_customize_preview() && isset(self::$cache[$cache_key])) {
             return self::$cache[$cache_key];
         }
 
@@ -112,6 +112,7 @@ class OptinCampaignsRepository extends AbstractRepository
     public static function is_split_test_active($parent_optin_id)
     {
         $variant_ids = self::get_split_test_variant_ids($parent_optin_id);
+
         // from the array of returned variants, use the first to determine if split test is active.
         return self::is_activated($variant_ids[0]);
     }
@@ -120,6 +121,7 @@ class OptinCampaignsRepository extends AbstractRepository
      * Pick a variant from group of variants including parent optin.
      *
      * @param $optin_campaign_id
+     *
      * @return int
      */
     public static function choose_split_test_variant($optin_campaign_id)
@@ -128,7 +130,7 @@ class OptinCampaignsRepository extends AbstractRepository
 
         $parent_optin_campaign_id = $optin_campaign_id;
 
-        if (!empty($variant_ids)) {
+        if ( ! empty($variant_ids)) {
             // Merge the main optin with the split tests,
             // shuffle the array, and set the optin to the first item in the array.
             $variant_ids[] = $optin_campaign_id;
@@ -136,7 +138,7 @@ class OptinCampaignsRepository extends AbstractRepository
             $optin_campaign_id = $variant_ids[0];
         }
 
-        if (!OptinCampaignsRepository::is_activated($optin_campaign_id)) {
+        if ( ! OptinCampaignsRepository::is_activated($optin_campaign_id)) {
             $optin_campaign_id = $parent_optin_campaign_id;
         }
 
@@ -151,6 +153,7 @@ class OptinCampaignsRepository extends AbstractRepository
     public static function campaign_count()
     {
         $table = parent::campaigns_table();
+
         return absint(parent::wpdb()->get_var("SELECT COUNT(*) FROM $table"));
     }
 
@@ -168,10 +171,10 @@ class OptinCampaignsRepository extends AbstractRepository
         $response = parent::wpdb()->insert(
             parent::campaigns_table(),
             array(
-                'uuid' => $uuid,
-                'name' => $name,
+                'uuid'        => $uuid,
+                'name'        => $name,
                 'optin_class' => $class,
-                'optin_type' => $type
+                'optin_type'  => $type
             ),
             array(
                 '%s',
@@ -183,7 +186,7 @@ class OptinCampaignsRepository extends AbstractRepository
 
         self::burst_optin_ids_cache();
 
-        return !$response ? $response : parent::wpdb()->insert_id;
+        return ! $response ? $response : parent::wpdb()->insert_id;
     }
 
     /**
@@ -208,6 +211,7 @@ class OptinCampaignsRepository extends AbstractRepository
         $result = parent::wpdb()->get_var("SELECT uuid FROM $table WHERE id = '$optin_campaign_id'");
         // expiration is not set thus making it not expire-able because uuid never changes. take note.
         wp_cache_set($cache_key, $result);
+
         return $result;
     }
 
@@ -236,7 +240,7 @@ class OptinCampaignsRepository extends AbstractRepository
     {
         $cache_key = 'get_optin_campaign_class_' . $optin_campaign_id;
 
-        if (!is_customize_preview() && isset(self::$cache[$cache_key])) {
+        if ( ! is_customize_preview() && isset(self::$cache[$cache_key])) {
             return self::$cache[$cache_key];
         }
 
@@ -270,7 +274,7 @@ class OptinCampaignsRepository extends AbstractRepository
     {
         $cache_key = 'get_optin_campaign_type_' . $optin_campaign_id;
 
-        if (!is_customize_preview() && isset(self::$cache[$cache_key])) {
+        if ( ! is_customize_preview() && isset(self::$cache[$cache_key])) {
             return self::$cache[$cache_key];
         }
 
@@ -292,7 +296,7 @@ class OptinCampaignsRepository extends AbstractRepository
 
         $sql = "SELECT id FROM $table";
 
-        if (!empty($optin_types_exclude)) {
+        if ( ! empty($optin_types_exclude)) {
 
             // add single quote to the imploded optin types to exclude so that SQL is correct.
             $excludes = "'" . implode("', '", $optin_types_exclude) . "'";
@@ -336,7 +340,7 @@ class OptinCampaignsRepository extends AbstractRepository
     {
         $cache_key = 'get_optin_campaigns';
 
-        if (!is_customize_preview() && isset(self::$cache[$cache_key])) {
+        if ( ! is_customize_preview() && isset(self::$cache[$cache_key])) {
             return self::$cache[$cache_key];
         }
 
@@ -370,7 +374,7 @@ class OptinCampaignsRepository extends AbstractRepository
     {
         $cache_key = 'get_optin_campaign_by_uuid' . $optin_uuid;
 
-        if (!is_customize_preview() && isset(self::$cache[$cache_key])) {
+        if ( ! is_customize_preview() && isset(self::$cache[$cache_key])) {
             return self::$cache[$cache_key];
         }
 
@@ -390,7 +394,7 @@ class OptinCampaignsRepository extends AbstractRepository
     {
         $cache_key = 'get_optin_campaign_id_by_uuid_' . $optin_uuid;
 
-        if (!is_customize_preview() && isset(self::$cache[$cache_key])) {
+        if ( ! is_customize_preview() && isset(self::$cache[$cache_key])) {
             return self::$cache[$cache_key];
         }
 
@@ -408,7 +412,7 @@ class OptinCampaignsRepository extends AbstractRepository
     {
         $cache_key = 'get_optin_saved_customizer_data';
 
-        if (!is_customize_preview() && isset(self::$cache[$cache_key])) {
+        if ( ! is_customize_preview() && isset(self::$cache[$cache_key])) {
             return self::$cache[$cache_key];
         }
 
@@ -428,9 +432,9 @@ class OptinCampaignsRepository extends AbstractRepository
     public static function get_customizer_value($optin_campaign_id, $settings_name, $default = '')
     {
         $settings = self::get_optin_saved_customizer_data();
-        $value = isset($settings[$optin_campaign_id][$settings_name]) ? $settings[$optin_campaign_id][$settings_name] : null;
+        $value    = isset($settings[$optin_campaign_id][$settings_name]) ? $settings[$optin_campaign_id][$settings_name] : null;
 
-        $data = !is_null($value) ? $value : $default;
+        $data = ! is_null($value) ? $value : $default;
 
         return apply_filters('mo_get_customizer_value', $data, $settings_name, $default, $optin_campaign_id);
     }
@@ -537,18 +541,16 @@ class OptinCampaignsRepository extends AbstractRepository
     public static function global_cookie_check_result($optin_campaign_id)
     {
         $global_exit_cookie = Settings::instance()->global_cookie();
-        $global_exit_cookie = !empty($global_exit_cookie) ? absint($global_exit_cookie) : 0;
+        $global_exit_cookie = ! empty($global_exit_cookie) ? absint($global_exit_cookie) : 0;
 
         $global_success_cookie = Settings::instance()->global_success_cookie();
-        $global_success_cookie = !empty($global_success_cookie) ? absint($global_success_cookie) : 0;
+        $global_success_cookie = ! empty($global_success_cookie) ? absint($global_success_cookie) : 0;
 
-        if (!is_customize_preview() && !OptinCampaignsRepository::is_test_mode($optin_campaign_id)) {
-            // Do not show if global interaction/exit cookie is set
-            if (isset($_COOKIE['mo_global_cookie']) && $_COOKIE['mo_global_cookie'] === 'true' && $global_exit_cookie > 0) return false;
+        // Do not show if global interaction/exit cookie is set
+        if (isset($_COOKIE['mo_global_cookie']) && $_COOKIE['mo_global_cookie'] === 'true' && $global_exit_cookie > 0) return false;
 
-            // Do not show if global success cookie is set
-            if (isset($_COOKIE['mo_global_success_cookie']) && $_COOKIE['mo_global_success_cookie'] === 'true' && $global_success_cookie > 0) return false;
-        }
+        // Do not show if global success cookie is set
+        if (isset($_COOKIE['mo_global_success_cookie']) && $_COOKIE['mo_global_success_cookie'] === 'true' && $global_success_cookie > 0) return false;
 
         return true;
     }
@@ -557,6 +559,7 @@ class OptinCampaignsRepository extends AbstractRepository
      * True if optin form has successfully received opt-in from current visitor/user.
      *
      * @param int $optin_campaign_uuid
+     *
      * @return bool
      */
     public static function user_has_successful_optin($optin_campaign_uuid)
@@ -597,8 +600,9 @@ class OptinCampaignsRepository extends AbstractRepository
     {
         $optin_campaign_id = absint($optin_campaign_id);
         // update the "activate_optin" setting to true
-        $all_settings = self::get_settings();
+        $all_settings                                       = self::get_settings();
         $all_settings[$optin_campaign_id]['activate_optin'] = false;
+
         return self::updateSettings($all_settings);
     }
 
@@ -614,7 +618,7 @@ class OptinCampaignsRepository extends AbstractRepository
     {
         $cache_key = 'is_test_mode_' . $optin_campaign_id;
 
-        if (!is_customize_preview() && isset(self::$cache[$cache_key])) {
+        if ( ! is_customize_preview() && isset(self::$cache[$cache_key])) {
             $campaign_settings = self::$cache[$cache_key];
         } else {
             $campaign_settings = self::$cache[$cache_key] = self::get_settings_by_id($optin_campaign_id);
@@ -634,8 +638,9 @@ class OptinCampaignsRepository extends AbstractRepository
     public static function enable_test_mode($optin_campaign_id)
     {
         // update the "activate_optin" setting to true
-        $all_settings = self::get_settings();
+        $all_settings                                  = self::get_settings();
         $all_settings[$optin_campaign_id]['test_mode'] = true;
+
         return self::updateSettings($all_settings);
     }
 
@@ -650,8 +655,9 @@ class OptinCampaignsRepository extends AbstractRepository
     public static function disable_test_mode($optin_campaign_id)
     {
         // update the "activate_optin" setting to true
-        $all_settings = self::get_settings();
+        $all_settings                                  = self::get_settings();
         $all_settings[$optin_campaign_id]['test_mode'] = false;
+
         return self::updateSettings($all_settings);
     }
 
@@ -686,6 +692,7 @@ class OptinCampaignsRepository extends AbstractRepository
     {
         $all_optin_campaign_settings = self::get_settings();
         unset($all_optin_campaign_settings[$optin_campaign_id]);
+
         return self::updateSettings($all_optin_campaign_settings);
     }
 

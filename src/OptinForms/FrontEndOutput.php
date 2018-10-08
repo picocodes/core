@@ -4,6 +4,7 @@ namespace MailOptin\Core\OptinForms;
 
 use MailOptin\Core\Admin\Customizer\OptinForm\OptinFormFactory;
 use MailOptin\Core\Repositories\OptinCampaignsRepository as Repository;
+use MailOptin\Core\Repositories\OptinCampaignsRepository;
 
 class FrontEndOutput
 {
@@ -39,19 +40,22 @@ class FrontEndOutput
 
             // if optin is not enabled, pass. for split test, this ensure parent is active before choosing split test
             // variant to display
-            if (!Repository::is_activated($id)) continue;
+            if ( ! Repository::is_activated($id)) continue;
 
             $id = Repository::choose_split_test_variant($id);
 
-            // if optin global exit/interaction and success cookie result fails, move to next.
-            if (!Repository::global_cookie_check_result($id)) continue;
+            if ( ! OptinCampaignsRepository::is_test_mode($id)) {
 
-            if (!$this->user_targeting_rule_checker($id)) {
-                continue;
-            }
+                // if optin global exit/interaction and success cookie result fails, move to next.
+                if ( ! Repository::global_cookie_check_result($id)) continue;
 
-            if (!$this->page_level_targeting_rule_checker($id)) {
-                continue;
+                if ( ! $this->user_targeting_rule_checker($id)) {
+                    continue;
+                }
+
+                if ( ! $this->page_level_targeting_rule_checker($id)) {
+                    continue;
+                }
             }
 
             echo OptinFormFactory::build($id);
