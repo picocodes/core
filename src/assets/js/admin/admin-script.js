@@ -194,4 +194,13 @@
         $(window).trigger('hashchange');
     });
 
+    $(function () {
+        $('.mo-delete-prompt').on('click', function (e) {
+            e.preventDefault();
+            if (confirm(mailoptin_globals.js_confirm_text)) {
+                window.location.href = $(this).attr('href');
+            }
+        });
+    });
+
 }(jQuery));

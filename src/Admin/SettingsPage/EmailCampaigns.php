@@ -91,7 +91,6 @@ class EmailCampaigns extends AbstractSettingsPage
         }
     }
 
-
     /**
      * Build the settings page structure. I.e tab, sidebar.
      */
@@ -122,7 +121,6 @@ class EmailCampaigns extends AbstractSettingsPage
         $url = add_query_arg('view', 'add-new-email-automation', MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE);
         echo "<a class=\"add-new-h2\" href=\"$url\">" . __('Add New', 'mailoptin') . '</a>';
     }
-
 
     /**
      * Callback to output content of OptinCampaign_List table.

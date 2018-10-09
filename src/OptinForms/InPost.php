@@ -19,7 +19,7 @@ class InPost
     public function insert_optin($content)
     {
         // needed to prevent the optin from showing on post excerpt (on homepage / post listing)
-        if (is_front_page() || !is_singular()) return $content;
+        if (is_front_page() || ! is_singular()) return $content;
 
         $optin_ids = get_transient('mo_get_optin_ids_inpost_display');
 
@@ -38,13 +38,13 @@ class InPost
             if (Repository::is_split_test_variant($id)) continue;
 
             // if optin is not enabled, pass.
-            if (!Repository::is_activated($id)) continue;
+            if ( ! Repository::is_activated($id)) continue;
 
             $id = Repository::choose_split_test_variant($id);
 
             $optin_position = Repository::get_merged_customizer_value($id, 'inpost_form_optin_position');
 
-            if (!OptinCampaignsRepository::is_test_mode($id)) {
+            if ( ! OptinCampaignsRepository::is_test_mode($id)) {
 
                 // if optin global exit/interaction and success cookie result fails, move to next.
                 if ( ! Repository::global_cookie_check_result($id)) continue;

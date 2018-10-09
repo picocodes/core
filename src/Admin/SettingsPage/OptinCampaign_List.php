@@ -573,8 +573,9 @@ class OptinCampaign_List extends \WP_List_Table
             __('Customize', 'mailoptin'),
             '<i class="fa fa-pencil" aria-hidden="true"></i>'
         );
+
         $action .= sprintf(
-            '<a class="mo-tooltipster button action mailoptin-btn-red" href="%s" title="%s">%s</a> &nbsp;',
+            '<a class="mo-tooltipster button action mailoptin-btn-red mo-delete-prompt" href="%s" title="%s">%s</a> &nbsp;',
             $delete_url,
             __('Delete', 'mailoptin'),
             '<i class="fa fa-trash" aria-hidden="true"></i>'
