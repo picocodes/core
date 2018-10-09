@@ -21,46 +21,46 @@ class OptinThemesRepository extends AbstractRepository
     {
         return [
             [
-                'name' => 'BareMetal',
+                'name'        => 'BareMetal',
                 'optin_class' => 'BareMetal',
-                'optin_type' => 'lightbox', // accept comma delimited values eg lightbox,sidebar,inpost
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/baremetal-lightbox.png'
+                'optin_type'  => 'lightbox', // accept comma delimited values eg lightbox,sidebar,inpost
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/baremetal-lightbox.png'
             ],
             [
-                'name' => 'Elegance',
+                'name'        => 'Elegance',
                 'optin_class' => 'Elegance',
-                'optin_type' => 'lightbox',
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/elegance-lightbox.png'
+                'optin_type'  => 'lightbox',
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/elegance-lightbox.png'
             ],
             [
-                'name' => 'Lupin',
+                'name'        => 'Lupin',
                 'optin_class' => 'Lupin',
-                'optin_type' => 'sidebar', // accept comma delimited values eg lightbox,sidebar,inpost
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/lupin-sidebar.png'
+                'optin_type'  => 'sidebar', // accept comma delimited values eg lightbox,sidebar,inpost
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/lupin-sidebar.png'
             ],
             [
-                'name' => 'Gridgum',
+                'name'        => 'Gridgum',
                 'optin_class' => 'Gridgum',
-                'optin_type' => 'sidebar',
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/gridgum-sidebar-slidein.png'
+                'optin_type'  => 'sidebar',
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/gridgum-sidebar-slidein.png'
             ],
             [
-                'name' => 'Columbine',
+                'name'        => 'Columbine',
                 'optin_class' => 'Columbine',
-                'optin_type' => 'inpost', // accept comma delimited values eg lightbox,sidebar,inpost
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/columbine-inpost.png'
+                'optin_type'  => 'inpost', // accept comma delimited values eg lightbox,sidebar,inpost
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/columbine-inpost.png'
             ],
             [
-                'name' => 'BareMetal',
+                'name'        => 'BareMetal',
                 'optin_class' => 'BareMetal',
-                'optin_type' => 'inpost',
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/baremetal-inpost.png'
+                'optin_type'  => 'inpost',
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/baremetal-inpost.png'
             ],
             [
-                'name' => 'Elegance',
+                'name'        => 'Elegance',
                 'optin_class' => 'Elegance',
-                'optin_type' => 'inpost',
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/elegance-inpost.png'
+                'optin_type'  => 'inpost',
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/elegance-inpost.png'
             ],
         ];
     }
@@ -69,165 +69,165 @@ class OptinThemesRepository extends AbstractRepository
     {
         return [
             [
-                'name' => 'Bannino',
+                'name'        => 'Bannino',
                 'optin_class' => 'Bannino',
-                'flag' => 'premium',
-                'optin_type' => 'lightbox', // accept comma delimited values eg lightbox,sidebar,inpost
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/bannino/bannino-lightbox.png'
+                'flag'        => 'premium',
+                'optin_type'  => 'lightbox', // accept comma delimited values eg lightbox,sidebar,inpost
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/bannino/bannino-lightbox.png'
             ],
             [
-                'name' => 'Bannino',
+                'name'        => 'Bannino',
                 'optin_class' => 'Bannino',
-                'flag' => 'premium',
-                'optin_type' => 'inpost', // accept comma delimited values eg lightbox,sidebar,inpost
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/bannino/bannino-inpost.png'
+                'flag'        => 'premium',
+                'optin_type'  => 'inpost', // accept comma delimited values eg lightbox,sidebar,inpost
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/bannino/bannino-inpost.png'
             ],
             [
-                'name' => 'Daisy',
+                'name'        => 'Daisy',
                 'optin_class' => 'Daisy',
-                'flag' => 'premium',
-                'optin_type' => 'lightbox',
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/daisy-lightbox.png'
+                'flag'        => 'premium',
+                'optin_type'  => 'lightbox',
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/daisy-lightbox.png'
             ],
             [
-                'name' => 'Muscari',
+                'name'        => 'Muscari',
                 'optin_class' => 'Muscari',
-                'flag' => 'premium',
-                'optin_type' => 'bar',
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/muscari-bar.png'
+                'flag'        => 'premium',
+                'optin_type'  => 'bar',
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/muscari-bar.png'
             ],
             [
-                'name' => 'Dahlia',
+                'name'        => 'Dahlia',
                 'optin_class' => 'Dahlia',
-                'flag' => 'premium',
-                'optin_type' => 'bar',
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/dahlia-bar.png'
+                'flag'        => 'premium',
+                'optin_type'  => 'bar',
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/dahlia-bar.png'
             ],
             [
-                'name' => 'Dashdot',
+                'name'        => 'Dashdot',
                 'optin_class' => 'Dashdot',
-                'flag' => 'premium',
-                'optin_type' => 'bar',
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/dashdot-bar.png'
+                'flag'        => 'premium',
+                'optin_type'  => 'bar',
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/dashdot-bar.png'
             ],
             [
-                'name' => 'Mimosa',
+                'name'        => 'Mimosa',
                 'optin_class' => 'Mimosa',
-                'flag' => 'premium',
-                'optin_type' => 'slidein',
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/mimosa-slidein.png'
+                'flag'        => 'premium',
+                'optin_type'  => 'slidein',
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/mimosa-slidein.png'
             ],
             [
-                'name' => 'Letter Box',
+                'name'        => 'Letter Box',
                 'optin_class' => 'LetterBox',
-                'flag' => 'premium',
-                'optin_type' => 'slidein',
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/letterbox-slidein.png'
+                'flag'        => 'premium',
+                'optin_type'  => 'slidein',
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/letterbox-slidein.png'
             ],
             [
-                'name' => 'Letter Box',
+                'name'        => 'Letter Box',
                 'optin_class' => 'LetterBox',
-                'flag' => 'premium',
-                'optin_type' => 'sidebar',
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/letterbox-sidebar.png'
+                'flag'        => 'premium',
+                'optin_type'  => 'sidebar',
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/letterbox-sidebar.png'
             ],
             [
-                'name' => 'Letter Box',
+                'name'        => 'Letter Box',
                 'optin_class' => 'LetterBox',
-                'flag' => 'premium',
-                'optin_type' => 'inpost',
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/letterbox-inpost.png'
+                'flag'        => 'premium',
+                'optin_type'  => 'inpost',
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/letterbox-inpost.png'
             ],
             [
-                'name' => 'Letter Box',
+                'name'        => 'Letter Box',
                 'optin_class' => 'LetterBox',
-                'flag' => 'premium',
-                'optin_type' => 'lightbox',
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/letterbox-lightbox.png'
+                'flag'        => 'premium',
+                'optin_type'  => 'lightbox',
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/letterbox-lightbox.png'
             ],
             [
-                'name' => 'Primrose',
+                'name'        => 'Primrose',
                 'optin_class' => 'Primrose',
-                'flag' => 'premium',
-                'optin_type' => 'sidebar',
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/primrose-sidebar.png'
+                'flag'        => 'premium',
+                'optin_type'  => 'sidebar',
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/primrose-sidebar.png'
             ],
             [
-                'name' => 'Gridgum',
+                'name'        => 'Gridgum',
                 'optin_class' => 'Gridgum',
-                'flag' => 'premium',
-                'optin_type' => 'inpost',
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/gridgum-inpost.png'
+                'flag'        => 'premium',
+                'optin_type'  => 'inpost',
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/gridgum-inpost.png'
             ],
             [
-                'name' => 'Gridgum',
+                'name'        => 'Gridgum',
                 'optin_class' => 'Gridgum',
-                'flag' => 'premium',
-                'optin_type' => 'lightbox',
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/gridgum-lightbox.png'
+                'flag'        => 'premium',
+                'optin_type'  => 'lightbox',
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/gridgum-lightbox.png'
             ],
             [
-                'name' => 'Gridgum',
+                'name'        => 'Gridgum',
                 'optin_class' => 'Gridgum',
-                'flag' => 'premium',
-                'optin_type' => 'slidein',
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/gridgum-sidebar-slidein.png'
+                'flag'        => 'premium',
+                'optin_type'  => 'slidein',
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/gridgum-sidebar-slidein.png'
             ],
             [
-                'name' => 'Boldy',
+                'name'        => 'Boldy',
                 'optin_class' => 'Boldy',
-                'flag' => 'premium',
-                'optin_type' => 'lightbox',
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/boldy-lightbox.png'
+                'flag'        => 'premium',
+                'optin_type'  => 'lightbox',
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/boldy-lightbox.png'
             ],
             [
-                'name' => 'Boldy',
+                'name'        => 'Boldy',
                 'optin_class' => 'Boldy',
-                'flag' => 'premium',
-                'optin_type' => 'inpost',
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/boldy-inpost.png'
+                'flag'        => 'premium',
+                'optin_type'  => 'inpost',
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/boldy-inpost.png'
             ],
             [
-                'name' => 'Boldy',
+                'name'        => 'Boldy',
                 'optin_class' => 'Boldy',
-                'flag' => 'premium',
-                'optin_type' => 'sidebar',
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/boldy-sidebar.png'
+                'flag'        => 'premium',
+                'optin_type'  => 'sidebar',
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/boldy-sidebar.png'
             ],
             [
-                'name' => 'Boldy',
+                'name'        => 'Boldy',
                 'optin_class' => 'Boldy',
-                'flag' => 'premium',
-                'optin_type' => 'slidein',
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/boldy-slidein.png'
+                'flag'        => 'premium',
+                'optin_type'  => 'slidein',
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/boldy-slidein.png'
             ],
             [
-                'name' => 'Rescript',
+                'name'        => 'Rescript',
                 'optin_class' => 'Rescript',
-                'flag' => 'premium',
-                'optin_type' => 'lightbox',
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/rescript-lightbox.png'
+                'flag'        => 'premium',
+                'optin_type'  => 'lightbox',
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/rescript-lightbox.png'
             ],
             [
-                'name' => 'Rescript',
+                'name'        => 'Rescript',
                 'optin_class' => 'Rescript',
-                'flag' => 'premium',
-                'optin_type' => 'inpost',
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/rescript-inpost.png'
+                'flag'        => 'premium',
+                'optin_type'  => 'inpost',
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/rescript-inpost.png'
             ],
             [
-                'name' => 'Rescript',
+                'name'        => 'Rescript',
                 'optin_class' => 'Rescript',
-                'flag' => 'premium',
-                'optin_type' => 'sidebar',
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/rescript-sidebar.png'
+                'flag'        => 'premium',
+                'optin_type'  => 'sidebar',
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/rescript-sidebar.png'
             ],
             [
-                'name' => 'Rescript',
+                'name'        => 'Rescript',
                 'optin_class' => 'Rescript',
-                'flag' => 'premium',
-                'optin_type' => 'slidein',
-                'screenshot' => MAILOPTIN_ASSETS_URL . 'images/optin-themes/rescript-slidein.png'
+                'flag'        => 'premium',
+                'optin_type'  => 'slidein',
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/rescript-slidein.png'
             ]
         ];
     }
@@ -240,6 +240,7 @@ class OptinThemesRepository extends AbstractRepository
     public static function get_all()
     {
         self::defaultThemes();
+
         return self::$optin_themes;
     }
 
@@ -292,7 +293,7 @@ class OptinThemesRepository extends AbstractRepository
     {
         $optin_designs = OptinThemesRepository::get_by_type($optin_type);
 
-        if (!defined('MAILOPTIN_DETACH_LIBSODIUM') && in_array($optin_type, ['bar', 'slidein'])) $optin_designs = [];
+        if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM') && in_array($optin_type, ['bar', 'slidein'])) $optin_designs = [];
 
         if (empty($optin_designs)) {
             if ($optin_type == 'bar') $optin_type = 'notification bar';
@@ -308,49 +309,33 @@ class OptinThemesRepository extends AbstractRepository
             foreach ($optin_designs as $optin_theme) {
                 $upgrade_url = 'https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=premium_optin_theme';
 
-                $theme_name = $optin_theme['name'];
+                $theme_name  = $optin_theme['name'];
                 $theme_class = $optin_theme['optin_class'];
-                $screenshot = $optin_theme['screenshot'];
+                $screenshot  = $optin_theme['screenshot'];
 
-                $is_premium_theme_disllowed = !defined('MAILOPTIN_DETACH_LIBSODIUM') && isset($optin_theme['flag']) && $optin_theme['flag'] == 'premium';
+                $is_premium_theme_disallowed = ! defined('MAILOPTIN_DETACH_LIBSODIUM') && isset($optin_theme['flag']) && $optin_theme['flag'] == 'premium';
 
-                $extra_class = $is_premium_theme_disllowed ? '' : ' mo-allow-activate';
-                $url = $is_premium_theme_disllowed ? $upgrade_url : '#';
-                $url_target = $is_premium_theme_disllowed ? ' target="_blank"' : '';
+                $extra_class = $is_premium_theme_disallowed ? '' : ' mo-allow-activate';
+                $url         = $is_premium_theme_disallowed ? $upgrade_url : '#';
+                $url_target  = $is_premium_theme_disallowed ? ' target="_blank"' : '';
                 ?>
                 <div id="mailoptin-optin-theme-list" class="mailoptin-optin-theme<?= $extra_class; ?> mailoptin-optin-theme-<?php echo $theme_class; ?>" data-optin-theme="<?php echo $theme_class; ?>" data-optin-type="<?php echo $optin_type; ?>">
                     <a <?= $url_target; ?> href="<?= $url; ?>">
                         <div class="mailoptin-optin-theme-screenshot">
                             <img src="<?php echo $screenshot; ?>" alt="<?php echo $theme_name; ?>">
                         </div>
-                        <?php if ($is_premium_theme_disllowed) : ?>
+                        <?php if ($is_premium_theme_disallowed) : ?>
                             <div class="mo-premium-flag"></div>
                         <?php endif; ?>
                         <h3 class="mailoptin-optin-theme-name"><?php echo $theme_name; ?></h3>
                         <div class="mailoptin-optin-theme-actions">
-                            <a <?= $url_target; ?> href="<?= $url; ?>" class="button button-primary mailoptin-theme-select"
-                                                   data-optin-theme="<?php echo $theme_class; ?>" data-optin-type="<?php echo $optin_type; ?>"
-                                                   title="<?php _e('Select this theme', 'mailoptin'); ?>">
+                            <a <?= $url_target; ?> href="<?= $url; ?>" class="button button-primary mailoptin-theme-select" data-optin-theme="<?php echo $theme_class; ?>" data-optin-type="<?php echo $optin_type; ?>" title="<?php _e('Select this theme', 'mailoptin'); ?>">
                                 <?php _e('Select Theme', 'mailoptin'); ?>
                             </a>
                         </div>
                     </a>
                 </div>
                 <?php
-            }
-
-            if (apply_filters('mailoptin_lite_upgrade_more_optin_themes', true)) {
-
-                if ($optin_type == 'bar') $optin_type = 'notification bar';
-                echo '<div style="cursor: pointer;float: left;margin: 0 4% 4% 0;position: relative;width: 26.6%;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;">';
-                echo '<div class="mo-error-box" style="padding: 87px 10px;margin:0;">';
-                printf(
-                    __('Upgrade to %s for more "%s" optin themes', 'mailoptin'),
-                    '<a href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=get_more_optin_themes" target="_blank">MailOptin Premium</a>',
-                    $optin_type
-                );
-                echo '</div>';
-                echo '</div>';
             }
         }
     }
