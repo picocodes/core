@@ -23,7 +23,6 @@ if (!defined('ABSPATH')) exit;
  */
 class UsageTracking
 {
-
     /**
      * The data to send to the MAILOPTIN site
      *
@@ -87,7 +86,6 @@ class UsageTracking
      */
     private function setup_data()
     {
-
         $data = array();
 
         // Retrieve current theme info
@@ -184,7 +182,6 @@ class UsageTracking
     public function check_for_settings_optin($input, $option_name)
     {
         // Send an initial check in on settings save
-
         if ($option_name == MAILOPTIN_SETTINGS_DB_OPTION_NAME && isset($input['allow_tracking']) && $input['allow_tracking'] == 'true') {
             $this->send_checkin(true);
         }

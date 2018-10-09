@@ -11,7 +11,7 @@ class AdminNotices
 {
     public function __construct()
     {
-        add_action('init', function () {
+        add_action('admin_init', function () {
             if (\MailOptin\Core\is_mailoptin_admin_page()) {
                 remove_all_actions('admin_notices');
             }
@@ -50,7 +50,7 @@ class AdminNotices
      */
     public function optin_campaigns_cache_cleared()
     {
-        if (!is_super_admin(get_current_user_id())) return;
+        if ( ! is_super_admin(get_current_user_id())) return;
 
         if (isset($_GET['optin-cache']) && $_GET['optin-cache'] == 'cleared') : ?>
             <div id="message" class="updated notice is-dismissible">
@@ -66,7 +66,7 @@ class AdminNotices
      */
     public function template_class_not_found()
     {
-        if (!is_super_admin(get_current_user_id()))
+        if ( ! is_super_admin(get_current_user_id()))
             return;
 
         if (isset($_GET['email-campaign-error']) && $_GET['email-campaign-error'] == 'class-not-found') : ?>
@@ -85,7 +85,7 @@ class AdminNotices
      */
     public function optin_class_not_found()
     {
-        if (!is_super_admin(get_current_user_id()))
+        if ( ! is_super_admin(get_current_user_id()))
             return;
 
         if (isset($_GET['optin-error']) && $_GET['optin-error'] == 'class-not-found') : ?>
@@ -102,7 +102,7 @@ class AdminNotices
      */
     public function failed_campaign_retried()
     {
-        if (!is_super_admin(get_current_user_id())) return;
+        if ( ! is_super_admin(get_current_user_id())) return;
 
         if (isset($_GET['failed-campaign']) && $_GET['failed-campaign'] == 'retried') : ?>
             <div id="message" class="updated notice is-dismissible">
@@ -118,7 +118,7 @@ class AdminNotices
      */
     public function optin_branding_added_by_default()
     {
-        if (!PAnD::is_admin_notice_active('optin-branding-added-by-default-forever')) {
+        if ( ! PAnD::is_admin_notice_active('optin-branding-added-by-default-forever')) {
             return;
         }
 
@@ -139,7 +139,7 @@ class AdminNotices
 
     public function dismiss_leave_review_notice_forever()
     {
-        if (!empty($_GET['mo_admin_action']) && $_GET['mo_admin_action'] == 'dismiss_leave_review_forever') {
+        if ( ! empty($_GET['mo_admin_action']) && $_GET['mo_admin_action'] == 'dismiss_leave_review_forever') {
             update_option('mo_dismiss_leave_review_forever', true);
 
             wp_redirect(esc_url_raw(remove_query_arg('mo_admin_action')));
@@ -152,7 +152,7 @@ class AdminNotices
      */
     public function review_plugin_notice()
     {
-        if (!PAnD::is_admin_notice_active('review-plugin-notice-forever')) return;
+        if ( ! PAnD::is_admin_notice_active('review-plugin-notice-forever')) return;
 
         if (get_option('mo_dismiss_leave_review_forever', false)) return;
 
@@ -173,7 +173,7 @@ class AdminNotices
             '<a href="' . $review_url . '" target="_blank">',
             '</a>'
         );
-        $label = __('Sure! I\'d love to give a review', 'mailoptin');
+        $label  = __('Sure! I\'d love to give a review', 'mailoptin');
 
         $dismiss_label = __('Dimiss Forever', 'mailoptin');
 
@@ -192,7 +192,7 @@ class AdminNotices
     {
         if (defined('MAILOPTIN_DETACH_LIBSODIUM')) return;
 
-        if (!PAnD::is_admin_notice_active('optin-campaign-count-limit-exceeded-7')) {
+        if ( ! PAnD::is_admin_notice_active('optin-campaign-count-limit-exceeded-7')) {
             return;
         }
 
@@ -201,7 +201,7 @@ class AdminNotices
         if (strpos(\MailOptin\Core\current_url_with_query_string(), MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE) === false) return;
 
         $upgrade_url = 'https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=optin_campaign_limit';
-        $notice = sprintf(
+        $notice      = sprintf(
             __('%sYou have exceeded the maximum of %d optin campaign that you can create%s. Upgrade now to %s to remove this limit with ton of conversion boosting features.', 'mailoptin'),
             '<strong>', MO_LITE_OPTIN_CAMPAIGN_LIMIT, '</strong>', '<a href="' . $upgrade_url . '" target="_blank"><strong>' . __('MailOptin premium', 'mailoptin') . '</strong></a>'
         );
@@ -218,7 +218,7 @@ class AdminNotices
     {
         if (defined('MAILOPTIN_DETACH_LIBSODIUM')) return;
 
-        if (!PAnD::is_admin_notice_active('email-campaign-count-limit-exceeded-3')) {
+        if ( ! PAnD::is_admin_notice_active('email-campaign-count-limit-exceeded-3')) {
             return;
         }
 
@@ -227,7 +227,7 @@ class AdminNotices
         if (strpos(\MailOptin\Core\current_url_with_query_string(), MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE) === false) return;
 
         $upgrade_url = 'https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=email_campaign_limit';
-        $notice = sprintf(__('Upgrade to %s now to create multiple email campaigns with advance targeting and availability of your email list subscribers as recipients.', 'mailoptin'),
+        $notice      = sprintf(__('Upgrade to %s now to create multiple email campaigns with advance targeting and availability of your email list subscribers as recipients.', 'mailoptin'),
             '<a href="' . $upgrade_url . '" target="_blank">' . __('MailOptin premium', 'mailoptin') . '</a>'
         );
         echo '<div data-dismissible="email-campaign-count-limit-exceeded-3" class="updated notice notice-success is-dismissible">';
@@ -239,14 +239,14 @@ class AdminNotices
     {
         if (defined('MAILOPTIN_DETACH_LIBSODIUM')) return;
 
-        if (!PAnD::is_admin_notice_active('optin-conversion-limit-exceeded-1')) {
+        if ( ! PAnD::is_admin_notice_active('optin-conversion-limit-exceeded-1')) {
             return;
         }
 
         if (OptinConversionsRepository::month_conversion_count() < MO_LITE_OPTIN_CONVERSION_LIMIT) return;
 
         $upgrade_url = 'https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=optin_conversion_limit';
-        $notice = sprintf(
+        $notice      = sprintf(
             __('The monthly limit of %2$d optin subscribers has been exceeded. %3$sUpgrade to %1$s to capture unlimited subscribers and stop losing subscribers and customers.%4$s ', 'mailoptin'),
             '<a href="' . $upgrade_url . '" target="_blank">' . __('MailOptin premium', 'mailoptin') . '</a>',
             MO_LITE_OPTIN_CONVERSION_LIMIT,
