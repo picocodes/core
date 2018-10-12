@@ -24,24 +24,6 @@ class Base
     }
 
     /**
-     * Notice shown when multisite activation fails.
-     *
-     * @return string
-     */
-    public static function multisite_deactivate_notice()
-    {
-        $data = '<div class="error"><p>';
-        $data .= sprintf(
-            __("%s cannot work on WordPress multisite. %s for multisite compatibility and usage.", 'mailoptin'),
-            '<strong>' . __('MailOptin Lite', 'mailoptin') . '</strong> ',
-            '<a href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=multisite_install" target="_blank">' . __('Upgrade to PRO or Agency package', 'mailoptin') . '</a>'
-        );
-        $data .= '</p></div>';
-
-        return $data;
-    }
-
-    /**
      * Run plugin install / activation action when new blog is created in multisite setup.
      *
      * @param int $blog_id

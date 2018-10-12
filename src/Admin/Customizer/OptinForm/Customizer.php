@@ -179,7 +179,7 @@ class Customizer
         );
 
         $content .= sprintf(
-            __('Upgrade to %sPro plan%s or higher to unlock display scheduling and advance triggers such as %3$sAdBlock Detection%4$s, %3$sNew vs Returning Visitors%4$s, %3$sReferral Detection%4$s.', 'mailoptin'),
+            __('Upgrade to unlock display scheduling and advance triggers such as %3$sAdBlock Detection%4$s, %3$sNew vs Returning Visitors%4$s, %3$sReferral Detection%4$s.', 'mailoptin'),
             '<a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=display_rules_panel_standard2">',
             '</a>',
             '<strong>',
