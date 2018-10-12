@@ -3,7 +3,7 @@
 namespace MailOptin\Core\Admin\SettingsPage;
 
 // Exit if accessed directly
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -21,7 +21,7 @@ class AddEmailCampaign extends AbstractSettingsPage
     public function email_campaign_types()
     {
         return apply_filters('mo_email_campaign_types', [
-            EmailCampaignRepository::NEW_PUBLISH_POST => __('New Post Notification', 'mailoptin'),
+            EmailCampaignRepository::NEW_PUBLISH_POST   => __('New Post Notification', 'mailoptin'),
             EmailCampaignRepository::POSTS_EMAIL_DIGEST => __('Posts Email Digest', 'mailoptin')
         ]);
     }
@@ -40,7 +40,7 @@ class AddEmailCampaign extends AbstractSettingsPage
      */
     public function add_email_campaign_settings_header()
     {
-        if (!empty($_GET['page']) && $_GET['page'] == MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_SLUG) {
+        if ( ! empty($_GET['page']) && $_GET['page'] == MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_SLUG) {
             ?>
             <div class="mailoptin-optin-new-list mailoptin-optin-clear">
                 <strong><?php _e('Automation Title', 'mailoptin'); ?></strong>
@@ -96,7 +96,7 @@ class AddEmailCampaign extends AbstractSettingsPage
     public function template_listing_tmpl($campaign_type)
     {
         echo "<div id=\"notifType_{$campaign_type}\" class=\"mailoptin-email-templates mailoptin-template-clear\" style=\"display:none\">";
-        if($campaign_type == EmailCampaignRepository::POSTS_EMAIL_DIGEST && !defined('MAILOPTIN_PRO_PLUGIN_TYPE')) {
+        if ($campaign_type == EmailCampaignRepository::POSTS_EMAIL_DIGEST && ! apply_filters('mailoptin_enable_post_email_digest', false)) {
             echo '<div class="mo-error-box" style="padding: 87px 10px;margin:0;">';
             printf(
                 __('Posts email digest automatically send daily, weekly or monthly round-up of published posts to your users or email list. Upgrade to %s or higher to get this cool feature.', 'mailoptin'),
@@ -104,13 +104,14 @@ class AddEmailCampaign extends AbstractSettingsPage
             );
             echo '</div>';
             echo '</div>';
+
             return;
         }
         foreach (EmailTemplatesRepository::get_by_type($campaign_type) as $email_template) {
 
-            $template_name = $email_template['name'];
+            $template_name  = $email_template['name'];
             $template_class = $email_template['template_class'];
-            $screenshot = $email_template['screenshot'];
+            $screenshot     = $email_template['screenshot'];
             ?>
             <div id="mailoptin-email-template-list"
                  class="mailoptin-email-template mailoptin-email-template-<?php echo $template_class; ?>"

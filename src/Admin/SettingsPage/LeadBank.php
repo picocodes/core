@@ -9,7 +9,7 @@ class LeadBank extends AbstractSettingsPage
 {
     public function settings_admin_page()
     {
-        if (!defined('MAILOPTIN_PRO_PLUGIN_TYPE') || !defined('MAILOPTIN_DETACH_LIBSODIUM')) {
+        if (!apply_filters('mailoptin_enable_leadbank', false)) {
             add_filter('wp_cspa_main_content_area', array($this, 'upsell_settings_page'), 10, 2);
         }
 
@@ -30,13 +30,6 @@ class LeadBank extends AbstractSettingsPage
 
         $url = 'https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=leadbank_btn';
 
-        if (class_exists('MailOptin\Libsodium\LibsodiumSettingsPage')) {
-            $license_key = LibsodiumSettingsPage::license_key();
-            if (!empty($license_key)) {
-                $url = sprintf('https://my.mailoptin.io/?mo_plan_upgrade=%s&license_key=%s', 'pro', $license_key);
-            }
-        }
-
         ob_start();
         ?>
         <div class="mo-settings-page-disabled">
@@ -46,16 +39,13 @@ class LeadBank extends AbstractSettingsPage
                     <h1><?php _e('Lead Bank Locked', 'mailoptin'); ?></h1>
                     <p>
                         <?php printf(
-                            __('LeadBank saves backup of all leads and conversions that happen on your site locally.', 'mailoptin'),
+                            __('LeadBank records or saves backup of all leads and conversions that happen on your site.', 'mailoptin'),
                             '<strong>',
                             '</strong>');
                         ?>
                     </p>
                     <p>
-                        <?php printf(
-                            __('This is a %sPRO plan%s feature. Your current plan does not include it.', 'mailoptin'),
-                            '<strong>',
-                            '</strong>');
+                        <?php _e('Your current plan does not include this feature.', 'mailoptin');
                         ?>
                     </p>
                     <div class="moBtncontainer mobtnUpgrade">

@@ -28,7 +28,7 @@ class AdvanceAnalytics extends AbstractSettingsPage
 
         do_action("mailoptin_advance_analytics_settings_page", $hook);
 
-        if (!defined('MAILOPTIN_PRO_PLUGIN_TYPE') || !defined('MAILOPTIN_DETACH_LIBSODIUM')) {
+        if (!apply_filters('mailoptin_enable_advance_analytics', false)) {
             add_filter('wp_cspa_main_content_area', array($this, 'upsell_settings_page'), 10, 2);
         }
     }
@@ -40,13 +40,6 @@ class AdvanceAnalytics extends AbstractSettingsPage
         }
 
         $url = 'https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=advanceanalytics_btn';
-
-        if (class_exists('MailOptin\Libsodium\LibsodiumSettingsPage')) {
-            $license_key = LibsodiumSettingsPage::license_key();
-            if (!empty($license_key)) {
-                $url = sprintf('https://my.mailoptin.io/?mo_plan_upgrade=%s&license_key=%s', 'pro', $license_key);
-            }
-        }
 
         ob_start();
         ?>
@@ -63,11 +56,7 @@ class AdvanceAnalytics extends AbstractSettingsPage
                         ); ?>
                     </p>
                     <p>
-                        <?php printf(
-                            __('This is a %sPRO plan%s feature. Your current plan does not include it.', 'mailoptin'),
-                            '<strong>',
-                            '</strong>');
-                        ?>
+                        <?php _e('Your current plan does not include it.', 'mailoptin'); ?>
                     </p>
                     <div class="moBtncontainer mobtnUpgrade">
                         <a target="_blank" href="<?= $url; ?>" class="mobutton mobtnPush mobtnGreen">
@@ -92,10 +81,10 @@ class AdvanceAnalytics extends AbstractSettingsPage
         $instance->option_name('mo_analytics');
         $instance->page_header(__('Optin Statistics', 'mailoptin'));
         $this->register_core_settings($instance, true);
-        if (defined('MAILOPTIN_PRO_PLUGIN_TYPE') && defined('MAILOPTIN_DETACH_LIBSODIUM') && method_exists(SettingsPage::get_instance(), 'analytic_chart_sidebar')) {
+        if (apply_filters('mailoptin_enable_advance_analytics', false) && method_exists(SettingsPage::get_instance(), 'analytic_chart_sidebar')) {
             $instance->sidebar(SettingsPage::get_instance()->analytic_chart_sidebar());
         }
-        $instance->build(!defined('MAILOPTIN_PRO_PLUGIN_TYPE'));
+        $instance->build(!apply_filters('mailoptin_enable_advance_analytics', false));
     }
 
     /**

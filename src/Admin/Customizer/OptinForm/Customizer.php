@@ -171,7 +171,7 @@ class Customizer
 
     public function standard_plan_upsell()
     {
-        if (defined('MAILOPTIN_PRO_PLUGIN_TYPE')) return;
+        if (defined('MAILOPTIN_OLD_PRO_PLUGIN_TYPE')) return;
 
         $content = sprintf(
             '<div class="mo-pro"><a href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=display_rules_panel_standard" target="_blank">%s</a></div>',
