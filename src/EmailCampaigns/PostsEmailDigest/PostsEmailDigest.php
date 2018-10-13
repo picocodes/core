@@ -61,6 +61,8 @@ class PostsEmailDigest extends AbstractTriggers
 
     public function run_job()
     {
+        if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM')) return;
+
         $postDigests = EmailCampaignRepository::get_by_email_campaign_type(ER::POSTS_EMAIL_DIGEST);
 
         if (empty($postDigests)) return;

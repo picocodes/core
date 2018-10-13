@@ -55,6 +55,8 @@ class NewPublishPost extends AbstractTriggers
     {
         if (defined('DOING_AJAX')) return;
 
+        if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM')) return;
+
         // hopefully this will cause all custom field to be updated before new post is triggered.
         do_action('save_post', $post->ID, $post, true);
 

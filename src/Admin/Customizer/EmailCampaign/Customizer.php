@@ -249,7 +249,6 @@ class Customizer
         return in_array($section->id, $sections_ids);
     }
 
-
     /**
      * Include template preview template.
      *
@@ -268,7 +267,6 @@ class Customizer
 
         return $template;
     }
-
 
     /**
      * Customizer registration.
