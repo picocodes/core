@@ -170,7 +170,7 @@ class OptinCampaigns extends AbstractSettingsPage
 
             $instance->option_name(MO_OPTIN_CAMPAIGN_WP_OPTION_NAME);
             $instance->page_header(__('Optin Campaigns', 'mailoptin'));
-            $this->register_core_settings($instance, true, true);
+            $this->register_core_settings($instance);
             echo '<div class="mailoptin-data-listing">';
             $instance->build(true);
             echo '</div>';

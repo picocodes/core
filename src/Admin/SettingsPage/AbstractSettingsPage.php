@@ -59,12 +59,8 @@ abstract class AbstractSettingsPage
      * @param Custom_Settings_Page_Api $instance
      * @param bool $remove_sidebar
      */
-    public function register_core_settings(Custom_Settings_Page_Api $instance, $remove_sidebar = false, $add_top_menu_tab = false)
+    public function register_core_settings(Custom_Settings_Page_Api $instance)
     {
-        if ( ! $remove_sidebar) {
-            $instance->sidebar($this->sidebar_args());
-        }
-
         $instance->tab($this->tab_args());
 
         $this->stylish_header();
@@ -83,9 +79,7 @@ abstract class AbstractSettingsPage
     {
         $current_screen = get_current_screen();
 
-        if (empty ($current_screen)) {
-            return;
-        }
+        if (empty ($current_screen)) return;
 
         if (false !== strpos($current_screen->id, 'mailoptin')) {
             // Leave space on both sides so other plugins do not conflict.
@@ -93,41 +87,6 @@ abstract class AbstractSettingsPage
         }
 
         return $classes;
-    }
-
-    public function sidebar_args()
-    {
-        $sidebar_args = array(
-            array(
-                'section_title' => __('Help / Support', 'mailoptin'),
-                'content'       => $this->sidebar_support_docs(),
-            )
-        );
-
-        $sidebar_args[] = array(
-            'section_title' => __('Plugin Need Your Help', 'mailoptin'),
-            'content'       => self::rate_review_ad(),
-        );
-
-        if ( ! apply_filters('mailoptin_disable_sidebar_ads', false)) {
-            $sidebar_args[] = array(
-                'section_title' => __('Why Upgrade to PRO', 'mailoptin'),
-                'content'       => self::why_upgrade_to_pro(),
-            );
-            $sidebar_args[] = array(
-                'section_title' => __('Upgrade to MailOptin PRO', 'mailoptin'),
-                'content'       => self::mailoptin_pro_ad(),
-            );
-        }
-
-        if ( ! is_plugin_active('profilepress/profilepress.php')) {
-            $sidebar_args[] = array(
-                'section_title' => __('Get ProfilePress', 'mailoptin'),
-                'content'       => self::profilepress_ad(),
-            );
-        }
-
-        return $sidebar_args;
     }
 
     public function tab_args()

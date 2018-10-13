@@ -42,25 +42,27 @@ class LicenseControl
      */
     protected $file_path;
 
-    public function __construct($license_key, $file_path, $version_number, $item_name, $item_id = null, $plugin_author = '', $store_url = '')
+    public function __construct($license_key, $file_path, $version_number, $item_id, $item_name = '', $plugin_author = '', $store_url = '')
     {
         $this->license_key = $license_key;
-        $this->file_path = $file_path;
-        if (!empty($store_url)) {
+        $this->file_path   = $file_path;
+        if ( ! empty($store_url)) {
             $this->store_url = $store_url;
         }
         $this->version_number = $version_number;
-        $this->item_name = $item_name;
-        $this->item_id = absint($item_id);
+        $this->item_name      = $item_name;
+        $this->item_id        = absint($item_id);
 
-        if (!empty($plugin_author)) {
+        if ( ! empty($plugin_author)) {
             $this->plugin_author = $plugin_author;
         }
     }
 
     /**
      * Activate License key
+     *
      * @param string $license_key
+     *
      * @return mixed
      */
     public function activate_license($license_key = '')
@@ -68,11 +70,15 @@ class LicenseControl
         // data to send in our API request
         $api_params = array(
             'edd_action' => 'activate_license',
-            'license' => !empty($license_key) ? $license_key : $this->license_key,
-            'item_name' => urlencode($this->item_name), // the name of our product in EDD
-            'item_id' => $this->item_id,
-            'url' => home_url()
+            'license'    => ! empty($license_key) ? $license_key : $this->license_key,
+            'item_name'  => urlencode($this->item_name), // the name of our product in EDD
+            'item_id'    => $this->item_id,
+            'url'        => home_url()
         );
+
+        if (isset($this->item_id) && ! empty($this->item_id)) {
+            unset($api_params['item_name']);
+        }
 
         // Call the custom API.
         $response = wp_remote_post($this->store_url, array('timeout' => 15, 'sslverify' => false, 'body' => $api_params));
@@ -124,7 +130,7 @@ class LicenseControl
 
         }
 
-        if (isset($error) && !empty($error)) {
+        if (isset($error) && ! empty($error)) {
             return new WP_Error('license_error', $error);
         }
 
@@ -144,11 +150,11 @@ class LicenseControl
             $this->store_url,
             $this->file_path,
             array(
-                'version' => $this->version_number,
-                'license' => $license_key,
+                'version'   => $this->version_number,
+                'license'   => $license_key,
                 'item_name' => $this->item_name,
-                'item_id' => $this->item_id,
-                'author' => $this->plugin_author
+                'item_id'   => $this->item_id,
+                'author'    => $this->plugin_author
             )
         );
 
@@ -165,10 +171,10 @@ class LicenseControl
         // data to send in our API request
         $api_params = array(
             'edd_action' => 'deactivate_license',
-            'license' => $license,
-            'item_name' => urlencode($this->item_name),
-            'item_id' => $this->item_id,
-            'url' => home_url()
+            'license'    => $license,
+            'item_name'  => urlencode($this->item_name),
+            'item_id'    => $this->item_id,
+            'url'        => home_url()
         );
 
         // Call the custom API.
@@ -196,10 +202,10 @@ class LicenseControl
     {
         $api_params = array(
             'edd_action' => 'check_license',
-            'license' => $this->license_key,
-            'item_name' => urlencode($this->item_name),
-            'item_id' => $this->item_id,
-            'url' => home_url()
+            'license'    => $this->license_key,
+            'item_name'  => urlencode($this->item_name),
+            'item_id'    => $this->item_id,
+            'url'        => home_url()
         );
 
         // Call the custom API.
@@ -230,7 +236,6 @@ class LicenseControl
             $license_key,
             MAILOPTIN_SYSTEM_FILE_PATH,
             MAILOPTIN_VERSION_NUMBER,
-            EDD_MO_ITEM_NAME,
             EDD_MO_ITEM_ID
         );
     }

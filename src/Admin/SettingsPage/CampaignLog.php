@@ -38,7 +38,7 @@ class CampaignLog extends AbstractSettingsPage
         $instance = Custom_Settings_Page_Api::instance();
         $instance->option_name('mailoptin_campaign_log');
         $instance->page_header(__('Email Log', 'mailoptin'));
-        $this->register_core_settings($instance, true);
+        $this->register_core_settings($instance);
         $instance->build(true);
     }
 

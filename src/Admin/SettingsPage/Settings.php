@@ -219,7 +219,7 @@ class Settings extends AbstractSettingsPage
             }
 
             $instance->persist_plugin_settings();
-            $this->register_core_settings($instance, true);
+            $this->register_core_settings($instance);
             $instance->do_settings_errors();
             settings_errors('wp_csa_notice');
             echo '<div class="wrap">';

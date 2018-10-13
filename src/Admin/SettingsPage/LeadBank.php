@@ -18,7 +18,7 @@ class LeadBank extends AbstractSettingsPage
         $instance = Custom_Settings_Page_Api::instance();
         $instance->option_name('mo_leads');
         $instance->page_header(__('Lead Bank', 'mailoptin'));
-        $this->register_core_settings($instance, true);
+        $this->register_core_settings($instance);
         $instance->build(true);
     }
 

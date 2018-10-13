@@ -357,14 +357,6 @@ class CustomizerControls
                 '</strong>'
             );
 
-            $content2 = sprintf(
-                __('Upgrade to %sMailOptin Premium%s to send email campaigns directly to your list in MailChimp, Campaign Monitor, Aweber, Constant Contact, Drip, MailerLite, ConvertKit etc.', 'mailoptin'),
-                '<a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=new_post_campaign_settings2">',
-                '</a>',
-                '<strong>',
-                '</strong>'
-            );
-
             // always prefix with the name of the connect/connection service.
             $campaign_settings_controls['email_campaign_settings_notice'] = new WP_Customize_Custom_Content(
                 $this->wp_customize,
@@ -376,6 +368,17 @@ class CustomizerControls
                         'priority' => 45,
                     )
                 )
+            );
+        }
+
+        if(!apply_filters('mailoptin_enable_email_customizer_connections', false)) {
+
+            $content2 = sprintf(
+                __('%sUpgrade your MailOptin plan%s to send email campaigns directly to your list in MailChimp, Campaign Monitor, Aweber, Constant Contact, Drip, MailerLite, ConvertKit etc.', 'mailoptin'),
+                '<a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=new_post_campaign_settings2">',
+                '</a>',
+                '<strong>',
+                '</strong>'
             );
 
             $campaign_settings_controls['email_campaign_settings_notice2'] = new WP_Customize_Custom_Content(

@@ -109,7 +109,7 @@ class EmailCampaigns extends AbstractSettingsPage
             $instance = Custom_Settings_Page_Api::instance();
             $instance->option_name(MO_EMAIL_CAMPAIGNS_WP_OPTION_NAME);
             $instance->page_header(__('Email Automations', 'mailoptin'));
-            $this->register_core_settings($instance, true);
+            $this->register_core_settings($instance);
             echo '<div class="mailoptin-data-listing">';
             $instance->build(true);
             echo '</div>';

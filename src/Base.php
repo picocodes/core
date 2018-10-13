@@ -8,7 +8,6 @@ if ( ! defined('ABSPATH')) {
 
 use MailOptin\Core\Admin\AdminNotices;
 use MailOptin\Core\Admin\SettingsPage\ConversionExport;
-use MailOptin\Core\Admin\SettingsPage\LiteLicenseActivation;
 use MailOptin\Core\Admin\SettingsPage\LiteToPremiumUpgrade\DoUpgrade;
 use MailOptin\Core\Admin\SettingsPage\PreviewCampaignLog;
 use MailOptin\Core\Admin\SettingsPage\ProUpgrade;
@@ -32,8 +31,9 @@ if (strpos(__FILE__, 'mailoptin/vendor') !== false) {
     define('MAILOPTIN_ASSETS_URL', MAILOPTIN_URL . '../' . dirname(substr(__FILE__, strpos(__FILE__, 'mailoptin'))) . '/assets/');
 }
 
-define('EDD_MO_ITEM_NAME', 'MailOptin', true);
-define('EDD_MO_ITEM_ID', '8', true);
+if ( ! defined('EDD_MO_ITEM_ID')) {
+    define('EDD_MO_ITEM_ID', '8', true);
+}
 
 define('MAILOPTIN_OPTIN_THEMES_ASSETS_URL', MAILOPTIN_ASSETS_URL . 'images/optin-themes');
 
