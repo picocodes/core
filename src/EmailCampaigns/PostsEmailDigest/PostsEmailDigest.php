@@ -59,6 +59,35 @@ class PostsEmailDigest extends AbstractTriggers
         return get_posts(apply_filters('mo_post_digest_get_posts_args', $parameters));
     }
 
+    /**
+     * @param $email_campaign_id
+     * @param $carbon_now
+     * @param $carbon_today
+     * @param Carbon $schedule_hour
+     * @param $timezone
+     *
+     * @return bool
+     */
+    public function should_send($email_campaign_id, $carbon_now, $schedule_hour, $timezone)
+    {
+        $status            = false;
+        $last_processed_at = EmailCampaignMeta::get_meta_data($email_campaign_id, 'last_processed_at', true);
+
+        // this ensures at least an hour will have to pass before next email digest would be published
+        if ( ! empty($last_processed_at) && Carbon::parse($last_processed_at, $timezone)->diffInRealHours($carbon_now) >= 1) {
+            $status = true;
+        }
+
+        // add an hour grace so missed schedule can still run.
+        // the diffInRealHours condition below is important so it wont always return true even when the set
+        // hour has past.
+        if ($schedule_hour->diffInRealHours($carbon_now) <= 1) {
+            $status = true;
+        }
+
+        return $status;
+    }
+
     public function run_job()
     {
         if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM')) return;
@@ -78,8 +107,6 @@ class PostsEmailDigest extends AbstractTriggers
             $schedule_day        = absint(ER::get_merged_customizer_value($email_campaign_id, 'schedule_day'));
             $schedule_month_date = absint(ER::get_merged_customizer_value($email_campaign_id, 'schedule_month_date'));
 
-            $last_processed_at = EmailCampaignMeta::get_meta_data($email_campaign_id, 'last_processed_at', true);
-
             $timezone = get_option('timezone_string');
             if (empty($timezone)) {
                 $timezone = get_option('gmt_offset');
@@ -93,32 +120,21 @@ class PostsEmailDigest extends AbstractTriggers
             switch ($schedule_interval) {
                 case 'every_day':
                     if ($schedule_hour->lessThanOrEqualTo($carbon_now) &&
-                        // this ensures at least an hour will have to pass before next email digest would be published
-                        ! empty($last_processed_at) && Carbon::parse($last_processed_at, $timezone)->diffInRealHours($carbon_now) >= 1 &&
-                        // add an hour grace so missed schedule can still run.
-                        // the diffInRealHours condition below is important so it wont always return true even when the set
-                        // hour has past.
-                        $schedule_hour->diffInRealHours($carbon_now) <= 1) {
+                        $this->should_send($email_campaign_id, $carbon_now, $schedule_hour, $timezone)) {
                         $this->create_and_send_campaign($email_campaign_id);
                     }
                     break;
                 case 'every_week':
                     if ($carbon_today->isDayOfWeek($schedule_day) &&
                         $schedule_hour->lessThanOrEqualTo($carbon_now) &&
-                        // this ensures at least an hour will have to pass before next email digest would be published
-                        ! empty($last_processed_at) && Carbon::parse($last_processed_at, $timezone)->diffInRealHours($carbon_now) >= 1 &&
-                        // add an hour grace...
-                        $schedule_hour->diffInRealHours($carbon_now) <= 1) {
+                        $this->should_send($email_campaign_id, $carbon_now, $schedule_hour, $timezone)) {
                         $this->create_and_send_campaign($email_campaign_id);
                     }
                     break;
                 case 'every_month':
                     if ($carbon_now->day == $schedule_month_date &&
                         $schedule_hour->lessThanOrEqualTo($carbon_now) &&
-                        // this ensures at least an hour will have to pass before next email digest would be published
-                        ! empty($last_processed_at) && Carbon::parse($last_processed_at, $timezone)->diffInRealHours($carbon_now) >= 1 &&
-                        // add an hour grace...
-                        $schedule_hour->diffInRealHours($carbon_now) <= 1) {
+                        $this->should_send($email_campaign_id, $carbon_now, $schedule_hour, $timezone)) {
                         $this->create_and_send_campaign($email_campaign_id);
                     }
                     break;
