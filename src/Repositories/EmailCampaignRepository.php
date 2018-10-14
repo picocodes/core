@@ -42,12 +42,12 @@ class EmailCampaignRepository extends AbstractRepository
     public static function campaign_name_exist($name)
     {
         $campaign_name = sanitize_text_field($name);
-        $table = parent::email_campaigns_table();
-        $result = parent::wpdb()->get_var(
+        $table         = parent::email_campaigns_table();
+        $result        = parent::wpdb()->get_var(
             parent::wpdb()->prepare("SELECT name FROM $table WHERE name = '%s'", $campaign_name)
         );
 
-        return !empty($result);
+        return ! empty($result);
     }
 
     /**
@@ -58,6 +58,7 @@ class EmailCampaignRepository extends AbstractRepository
     public static function campaign_count()
     {
         $table = parent::email_campaigns_table();
+
         return absint(parent::wpdb()->get_var("SELECT COUNT(*) FROM $table"));
     }
 
@@ -75,8 +76,8 @@ class EmailCampaignRepository extends AbstractRepository
         $response = parent::wpdb()->insert(
             parent::email_campaigns_table(),
             array(
-                'name' => $name,
-                'campaign_type' => $campaign_type,
+                'name'           => stripslashes($name),
+                'campaign_type'  => $campaign_type,
                 'template_class' => $class
             ),
             array(
@@ -86,7 +87,7 @@ class EmailCampaignRepository extends AbstractRepository
             )
         );
 
-        return !$response ? $response : parent::wpdb()->insert_id;
+        return ! $response ? $response : parent::wpdb()->insert_id;
     }
 
     /**
@@ -219,10 +220,11 @@ class EmailCampaignRepository extends AbstractRepository
     {
         $abstract_customizer = new AbstractCustomizer($email_campaign_id);
         $customizer_defaults = isset($abstract_customizer->customizer_defaults[$settings_name]) && $abstract_customizer->customizer_defaults[$settings_name] !== null ? $abstract_customizer->customizer_defaults[$settings_name] : '';
-        $default = !empty($default) ? $default : $customizer_defaults;
-        $settings = self::get_settings();
-        $value = isset($settings[$email_campaign_id][$settings_name]) ? $settings[$email_campaign_id][$settings_name] : null;
-        return !is_null($value) ? $value : $default;
+        $default             = ! empty($default) ? $default : $customizer_defaults;
+        $settings            = self::get_settings();
+        $value               = isset($settings[$email_campaign_id][$settings_name]) ? $settings[$email_campaign_id][$settings_name] : null;
+
+        return ! is_null($value) ? $value : $default;
     }
 
     /**
@@ -346,7 +348,7 @@ class EmailCampaignRepository extends AbstractRepository
     public static function activate_email_campaign($email_campaign_id)
     {
         // update the "activate_email_campaign" setting to true
-        $all_settings = self::get_settings();
+        $all_settings                                                = self::get_settings();
         $all_settings[$email_campaign_id]['activate_email_campaign'] = true;
 
         return self::updateSettings($all_settings);
@@ -362,7 +364,7 @@ class EmailCampaignRepository extends AbstractRepository
     public static function deactivate_email_campaign($email_campaign_id)
     {
         // update the "activate_email_campaign" setting to true
-        $all_settings = self::get_settings();
+        $all_settings                                                = self::get_settings();
         $all_settings[$email_campaign_id]['activate_email_campaign'] = false;
         self::updateSettings($all_settings);
     }
@@ -378,6 +380,7 @@ class EmailCampaignRepository extends AbstractRepository
     {
         $all_email_campaign_settings = self::get_settings();
         unset($all_email_campaign_settings[$email_campaign_id]);
+
         return self::updateSettings($all_email_campaign_settings);
     }
 }

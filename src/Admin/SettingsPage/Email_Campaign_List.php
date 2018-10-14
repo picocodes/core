@@ -200,7 +200,11 @@ class Email_Campaign_List extends \WP_List_Table
     /** Text displayed when no email campaign is available */
     public function no_items()
     {
-        _e('No email campaign is available.', 'mailoptin');
+        printf(
+            __('No email automation is currently available. %sConsider creating one%s', 'mailoptin'),
+            '<a href="' . add_query_arg('view', 'add-new-email-automation', MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE) . '">',
+            '</a>'
+        );
     }
 
     /**

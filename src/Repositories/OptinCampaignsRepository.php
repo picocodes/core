@@ -172,7 +172,7 @@ class OptinCampaignsRepository extends AbstractRepository
             parent::campaigns_table(),
             array(
                 'uuid'        => $uuid,
-                'name'        => $name,
+                'name'        => stripslashes($name),
                 'optin_class' => $class,
                 'optin_type'  => $type
             ),
