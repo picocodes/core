@@ -124,6 +124,24 @@ class CustomizerSettings extends AbstractCustomizer
                     'default' => $this->customizer_defaults['headline_font'],
                     'type' => 'option',
                     'transport' => 'refresh',
+                ),
+                'headline_font_size_mobile' => array(
+                    'default' => $this->customizer_defaults['headline_font_size_mobile'],
+                    'type' => 'option',
+                    'transport' => 'refresh',
+                    'sanitize_callback' => 'absint'
+                ),
+                'headline_font_size_tablet' => array(
+                    'default' => $this->customizer_defaults['headline_font_size_tablet'],
+                    'type' => 'option',
+                    'transport' => 'refresh',
+                    'sanitize_callback' => 'absint'
+                ),
+                'headline_font_size_desktop' => array(
+                    'default' => $this->customizer_defaults['headline_font_size_desktop'],
+                    'type' => 'option',
+                    'transport' => 'refresh',
+                    'sanitize_callback' => 'absint'
                 )
             ),
             $this
@@ -162,6 +180,24 @@ class CustomizerSettings extends AbstractCustomizer
                     'default' => $this->customizer_defaults['description_font'],
                     'type' => 'option',
                     'transport' => 'refresh',
+                ),
+                'description_font_size_mobile' => array(
+                    'default' => $this->customizer_defaults['description_font_size_mobile'],
+                    'type' => 'option',
+                    'transport' => 'refresh',
+                    'sanitize_callback' => 'absint'
+                ),
+                'description_font_size_tablet' => array(
+                    'default' => $this->customizer_defaults['description_font_size_tablet'],
+                    'type' => 'option',
+                    'transport' => 'refresh',
+                    'sanitize_callback' => 'absint'
+                ),
+                'description_font_size_desktop' => array(
+                    'default' => $this->customizer_defaults['description_font_size_desktop'],
+                    'type' => 'option',
+                    'transport' => 'refresh',
+                    'sanitize_callback' => 'absint'
                 )
             ),
             $this
@@ -200,6 +236,24 @@ class CustomizerSettings extends AbstractCustomizer
                     'default' => $this->customizer_defaults['note_font'],
                     'type' => 'option',
                     'transport' => 'refresh',
+                ),
+                'note_font_size_mobile' => array(
+                    'default' => $this->customizer_defaults['note_font_size_mobile'],
+                    'type' => 'option',
+                    'transport' => 'refresh',
+                    'sanitize_callback' => 'absint'
+                ),
+                'note_font_size_tablet' => array(
+                    'default' => $this->customizer_defaults['note_font_size_tablet'],
+                    'type' => 'option',
+                    'transport' => 'refresh',
+                    'sanitize_callback' => 'absint'
+                ),
+                'note_font_size_desktop' => array(
+                    'default' => $this->customizer_defaults['note_font_size_desktop'],
+                    'type' => 'option',
+                    'transport' => 'refresh',
+                    'sanitize_callback' => 'absint'
                 ),
                 'note_acceptance_checkbox' => array(
                     'default' => $this->customizer_defaults['note_acceptance_checkbox'],

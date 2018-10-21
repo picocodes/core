@@ -158,6 +158,48 @@ class Gridgum extends AbstractOptinTheme
                     'value'       => 'Open+Sans',
                     'optin_class' => 'Gridgum',
                     'optin_type'  => 'sidebar'
+                ],
+
+                [
+                    'name'        => 'mo_optin_form_headline_font_size_desktop_default',
+                    'value'       => 22,
+                    'optin_class' => 'Gridgum',
+                    'optin_type'  => 'sidebar'
+                ],
+
+                [
+                    'name'        => 'mo_optin_form_headline_font_size_tablet_default',
+                    'value'       => 22,
+                    'optin_class' => 'Gridgum',
+                    'optin_type'  => 'sidebar'
+                ],
+
+                [
+                    'name'        => 'mo_optin_form_headline_font_size_mobile_default',
+                    'value'       => 20,
+                    'optin_class' => 'Gridgum',
+                    'optin_type'  => 'sidebar'
+                ],
+
+                [
+                    'name'        => 'mo_optin_form_description_font_size_mobile_default',
+                    'value'       => 12,
+                    'optin_class' => 'Gridgum',
+                    'optin_type'  => 'sidebar'
+                ],
+
+                [
+                    'name'        => 'mo_optin_form_note_font_size_desktop_default',
+                    'value'       => 12,
+                    'optin_class' => 'Gridgum',
+                    'optin_type'  => 'sidebar'
+                ],
+
+                [
+                    'name'        => 'mo_optin_form_note_font_size_tablet_default',
+                    'value'       => 12,
+                    'optin_class' => 'Gridgum',
+                    'optin_type'  => 'sidebar'
                 ]
             ]
         );
@@ -565,7 +607,6 @@ div#$optin_css_id.gridgum_container .gridgum_body-inner .gridgum_header2,
 div#$optin_css_id.gridgum_container .gridgum_body-inner .gridgum_headline {
          padding-bottom: 10px;
          color: #4b4646;
-         font-size: 20px;
          text-align: center;
          text-transform: capitalize;
          display: block;
@@ -607,7 +648,6 @@ div#$optin_css_id.gridgum_container .gridgum_note {
          padding-top: 10px;
          color: #777;
          text-align: center;
-         font-size: 12px;
          font-style: italic;
          display: block;
          border: 0;
@@ -628,9 +668,6 @@ div#$optin_css_id.gridgum_container .gridgum_note {
     div#$optin_css_id.gridgum_container .gridgum_body-inner .gridgum_header2 {
              font-size: 15px;
              text-align: center;
-         }
-    div#$optin_css_id.gridgum_container .gridgum_body-inner .gridgum_headline {
-             font-size: 22px;
          }
 }
 CSS;

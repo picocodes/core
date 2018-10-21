@@ -142,6 +142,19 @@ class Elegance extends AbstractOptinTheme
                     'optin_class' => 'Elegance',
                     'optin_type' => 'inpost'
                 ],
+                [
+                    'name'        => 'mo_optin_form_description_font_size_desktop_default',
+                    'value'       => 20,
+                    'optin_class' => 'Elegance',
+                    'optin_type'  => 'inpost'
+                ],
+
+                [
+                    'name'        => 'mo_optin_form_description_font_size_tablet_default',
+                    'value'       => 20,
+                    'optin_class' => 'Elegance',
+                    'optin_type'  => 'inpost'
+                ]
             ]
         );
 
@@ -396,7 +409,6 @@ div#$optin_css_id.moEleganceModal h2.moElegance_header {
   font-family: 'Courgette', cursive;
   color: #000;
   margin: 0;
-  font-size: 32px;
   line-height: 1.5;
   text-align: center;
   text-transform: capitalize
@@ -404,7 +416,6 @@ div#$optin_css_id.moEleganceModal h2.moElegance_header {
 
 div#$optin_css_id.moEleganceModal .moElegance_description {
   font-family: 'Titillium Web', sans-serif;
-  font-size: 20px;
   line-height: 1.5;
   text-align: center;
   color: #777;
@@ -413,7 +424,6 @@ div#$optin_css_id.moEleganceModal .moElegance_description {
 
 div#$optin_css_id.moEleganceModal .moElegance_note {
   font-family: 'Titillium Web', sans-serif;
-  font-size: 16px;
   line-height: 1.5;
   text-align: center;
   color: #000;

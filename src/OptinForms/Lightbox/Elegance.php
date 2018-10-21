@@ -3,7 +3,7 @@
 namespace MailOptin\Core\OptinForms\Lightbox;
 
 // Exit if accessed directly
-if (!defined('ABSPATH')) exit;
+if ( ! defined('ABSPATH')) exit;
 
 use MailOptin\Core\Admin\Customizer\EmailCampaign\CustomizerSettings;
 use MailOptin\Core\OptinForms\AbstractOptinTheme;
@@ -17,139 +17,154 @@ class Elegance extends AbstractOptinTheme
         // remove default closeIcon
         add_filter('mo_optin_campaign_icon_close', function ($val, $optin_class, $optin_type) {
             if ($optin_class == 'Elegance' && $optin_type == 'lightbox') $val = false;
+
             return $val;
         }, 10, 3);
 
         $this->init_config_filters([
             // -- default for design sections -- //
             [
-                'name' => 'mo_optin_form_background_color_default',
-                'value' => '#ffffff',
+                'name'        => 'mo_optin_form_background_color_default',
+                'value'       => '#ffffff',
                 'optin_class' => 'Elegance',
-                'optin_type' => 'lightbox'
+                'optin_type'  => 'lightbox'
             ],
 
             [
-                'name' => 'mo_optin_form_border_color_default',
-                'value' => '#ffffff',
+                'name'        => 'mo_optin_form_border_color_default',
+                'value'       => '#ffffff',
                 'optin_class' => 'Elegance',
-                'optin_type' => 'lightbox'
+                'optin_type'  => 'lightbox'
             ],
 
             // -- default for headline sections -- //
             [
-                'name' => 'mo_optin_form_headline_default',
-                'value' => __("Subscribe For Latest Updates", 'mailoptin'),
+                'name'        => 'mo_optin_form_headline_default',
+                'value'       => __("Subscribe For Latest Updates", 'mailoptin'),
                 'optin_class' => 'Elegance',
-                'optin_type' => 'lightbox'
+                'optin_type'  => 'lightbox'
             ],
 
             [
-                'name' => 'mo_optin_form_headline_font_color_default',
-                'value' => '#000000',
+                'name'        => 'mo_optin_form_headline_font_color_default',
+                'value'       => '#000000',
                 'optin_class' => 'Elegance',
-                'optin_type' => 'lightbox'
+                'optin_type'  => 'lightbox'
             ],
 
             [
-                'name' => 'mo_optin_form_headline_font_default',
-                'value' => 'Courgette',
+                'name'        => 'mo_optin_form_headline_font_default',
+                'value'       => 'Courgette',
                 'optin_class' => 'Elegance',
-                'optin_type' => 'lightbox'
+                'optin_type'  => 'lightbox'
             ],
 
             // -- default for description sections -- //
             [
-                'name' => 'mo_optin_form_description_font_default',
-                'value' => 'Titillium Web',
+                'name'        => 'mo_optin_form_description_font_default',
+                'value'       => 'Titillium Web',
                 'optin_class' => 'Elegance',
-                'optin_type' => 'lightbox'
+                'optin_type'  => 'lightbox'
             ],
 
             [
-                'name' => 'mo_optin_form_description_default',
-                'value' => $this->_description_content(),
+                'name'        => 'mo_optin_form_description_default',
+                'value'       => $this->_description_content(),
                 'optin_class' => 'Elegance',
-                'optin_type' => 'lightbox'
+                'optin_type'  => 'lightbox'
             ],
 
             [
-                'name' => 'mo_optin_form_description_font_color_default',
-                'value' => '#777777',
+                'name'        => 'mo_optin_form_description_font_color_default',
+                'value'       => '#777777',
                 'optin_class' => 'Elegance',
-                'optin_type' => 'lightbox'
+                'optin_type'  => 'lightbox'
             ],
 
             // -- default for fields sections -- //
             [
-                'name' => 'mo_optin_form_name_field_color_default',
-                'value' => '#000',
+                'name'        => 'mo_optin_form_name_field_color_default',
+                'value'       => '#000',
                 'optin_class' => 'Elegance',
-                'optin_type' => 'lightbox'
+                'optin_type'  => 'lightbox'
             ],
 
             [
-                'name' => 'mo_optin_form_email_field_color_default',
-                'value' => '#000',
+                'name'        => 'mo_optin_form_email_field_color_default',
+                'value'       => '#000',
                 'optin_class' => 'Elegance',
-                'optin_type' => 'lightbox'
+                'optin_type'  => 'lightbox'
             ],
 
             [
-                'name' => 'mo_optin_form_submit_button_color_default',
-                'value' => '#ffffff',
+                'name'        => 'mo_optin_form_submit_button_color_default',
+                'value'       => '#ffffff',
                 'optin_class' => 'Elegance',
-                'optin_type' => 'lightbox'
+                'optin_type'  => 'lightbox'
             ],
 
             [
-                'name' => 'mo_optin_form_submit_button_background_default',
-                'value' => '#2785C8',
+                'name'        => 'mo_optin_form_submit_button_background_default',
+                'value'       => '#2785C8',
                 'optin_class' => 'Elegance',
-                'optin_type' => 'lightbox'
+                'optin_type'  => 'lightbox'
             ],
 
             [
-                'name' => 'mo_optin_form_submit_button_font_default',
-                'value' => 'Titillium+Web',
+                'name'        => 'mo_optin_form_submit_button_font_default',
+                'value'       => 'Titillium+Web',
                 'optin_class' => 'Elegance',
-                'optin_type' => 'lightbox'
+                'optin_type'  => 'lightbox'
             ],
 
             [
-                'name' => 'mo_optin_form_name_field_font_default',
-                'value' => 'Palatino Linotype, Book Antiqua, serif',
+                'name'        => 'mo_optin_form_name_field_font_default',
+                'value'       => 'Palatino Linotype, Book Antiqua, serif',
                 'optin_class' => 'Elegance',
-                'optin_type' => 'lightbox'
+                'optin_type'  => 'lightbox'
             ],
 
             [
-                'name' => 'mo_optin_form_email_field_font_default',
-                'value' => 'Palatino Linotype, Book Antiqua, serif',
+                'name'        => 'mo_optin_form_email_field_font_default',
+                'value'       => 'Palatino Linotype, Book Antiqua, serif',
                 'optin_class' => 'Elegance',
-                'optin_type' => 'lightbox'
+                'optin_type'  => 'lightbox'
             ],
 
             // -- default for note sections -- //
             [
-                'name' => 'mo_optin_form_note_font_color_default',
-                'value' => '#000000',
+                'name'        => 'mo_optin_form_note_font_color_default',
+                'value'       => '#000000',
                 'optin_class' => 'Elegance',
-                'optin_type' => 'lightbox'
+                'optin_type'  => 'lightbox'
             ],
 
             [
-                'name' => 'mo_optin_form_note_default',
-                'value' => '<em>' . __('We promise not to spam you. You can unsubscribe at any time.', 'mailoptin') . '</em>',
+                'name'        => 'mo_optin_form_note_default',
+                'value'       => '<em>' . __('We promise not to spam you. You can unsubscribe at any time.', 'mailoptin') . '</em>',
                 'optin_class' => 'Elegance',
-                'optin_type' => 'lightbox'
+                'optin_type'  => 'lightbox'
             ],
 
             [
-                'name' => 'mo_optin_form_note_font_default',
-                'value' => 'Titillium+Web',
+                'name'        => 'mo_optin_form_note_font_default',
+                'value'       => 'Titillium+Web',
                 'optin_class' => 'Elegance',
-                'optin_type' => 'lightbox'
+                'optin_type'  => 'lightbox'
+            ],
+
+            [
+                'name'        => 'mo_optin_form_description_font_size_desktop_default',
+                'value'       => 20,
+                'optin_class' => 'Elegance',
+                'optin_type'  => 'lightbox'
+            ],
+
+            [
+                'name'        => 'mo_optin_form_description_font_size_tablet_default',
+                'value'       => 20,
+                'optin_class' => 'Elegance',
+                'optin_type'  => 'lightbox'
             ]
         ]);
 
@@ -394,8 +409,9 @@ HTML;
      */
     public function optin_form_css()
     {
-        $optin_css_id = $this->optin_css_id;
+        $optin_css_id    = $this->optin_css_id;
         $image_asset_url = MAILOPTIN_OPTIN_THEMES_ASSETS_URL;
+
         return <<<CSS
 div#$optin_css_id.moEleganceModal {
   font-family: Arial, Helvetica, sans-serif;
@@ -417,7 +433,6 @@ div#$optin_css_id.moEleganceModal h2.moElegance_header {
   font-family: 'Courgette', cursive;
   color: #000;
   margin: 0;
-  font-size: 32px;
   line-height: 1.5;
   text-align: center;
   text-transform: capitalize
@@ -425,7 +440,6 @@ div#$optin_css_id.moEleganceModal h2.moElegance_header {
 
 div#$optin_css_id.moEleganceModal .moElegance_description {
   font-family: 'Titillium Web', sans-serif;
-  font-size: 20px;
   line-height: 1.5;
   text-align: center;
   color: #777;
@@ -434,7 +448,6 @@ div#$optin_css_id.moEleganceModal .moElegance_description {
 
 div#$optin_css_id.moEleganceModal .moElegance_note {
   font-family: 'Titillium Web', sans-serif;
-  font-size: 16px;
   line-height: 1.5;
   text-align: center;
   color: #000;

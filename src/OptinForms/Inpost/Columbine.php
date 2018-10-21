@@ -156,6 +156,20 @@ class Columbine extends AbstractOptinTheme
                     'value'       => 'Lora',
                     'optin_class' => 'Columbine',
                     'optin_type'  => 'inpost'
+                ],
+
+                [
+                    'name' => 'mo_optin_form_note_font_size_desktop_default',
+                    'value' => 14,
+                    'optin_class' => 'Columbine',
+                    'optin_type' => 'inpost'
+                ],
+
+                [
+                    'name' => 'mo_optin_form_note_font_size_tablet_default',
+                    'value' => 14,
+                    'optin_class' => 'Columbine',
+                    'optin_type' => 'inpost'
                 ]
             ]
         );
@@ -566,9 +580,8 @@ div#$optin_css_id.columbine-container div.columbine-miniText {
      }
 
 div#$optin_css_id.columbine-container div.columbine-heading {
-         font-size: 40px;
          font-weight: bold;
-         line-height: 50px;
+         line-height: 1.5;
      }
 
 div#$optin_css_id.columbine-container div.columbine-caption {
@@ -580,7 +593,7 @@ div#$optin_css_id.columbine-container div.columbine-caption {
 
 div#$optin_css_id.columbine-container .columbine-form {
          overflow: hidden;
-         margin-top: 30px;
+         margin-top: 20px;
      }
 div#$optin_css_id.columbine-container div.columbine-three-col1 {
          float: left;
@@ -652,7 +665,6 @@ div#$optin_css_id.columbine-container input.columbine-submit, div#$optin_css_id.
 
 div#$optin_css_id.columbine-container div.columbine-note {
          margin-top: 10px;
-         font-size: 12px;
          line-height: normal;
      }
 

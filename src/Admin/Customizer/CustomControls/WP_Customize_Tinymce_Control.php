@@ -11,7 +11,7 @@ class WP_Customize_Tinymce_Control extends \WP_Customize_Control
     protected $editor_id;
 
     /** @var string height of the tinymce editor */
-    protected $editor_height = 300;
+    protected $editor_height = 250;
 
     protected $media_buttons = true;
 

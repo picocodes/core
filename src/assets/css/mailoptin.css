@@ -85,32 +85,6 @@
     }
 }
 
-@media (max-width: 767px) {
-    div.mo-optin-form-container h1 {
-        font-size: 20px !important;
-    }
-
-    div.mo-optin-form-container h2 {
-        font-size: 20px !important;
-    }
-
-    div.mo-optin-form-container .mo-optin-form-headline {
-        font-size: 20px !important;
-    }
-
-    div.mo-optin-form-container p {
-        font-size: 16px !important;
-    }
-
-    div.mo-optin-form-container .mo-optin-form-description {
-        font-size: 16px !important;
-    }
-
-    div.mo-optin-form-container .mo-optin-form-note {
-        font-size: 12px !important;
-    }
-}
-
 /* make slide-in optin form full width and full height on mobile/small screens */
 @media only screen and (max-width: 575px) {
     div.mo-optin-form-slidein .mo-optin-form-wrapper {

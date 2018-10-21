@@ -4,6 +4,7 @@ namespace MailOptin\Core\Admin\Customizer\OptinForm;
 
 use MailOptin\Core\Admin\Customizer\CustomControls\ControlsHelpers;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Custom_Content;
+use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Font_Size_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Google_Font_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Font_Stack_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Chosen_Select_Control;
@@ -246,6 +247,36 @@ class CustomizerControls
                         )
                     )
                 ),
+                'headline_font_size_desktop' => new WP_Customize_Font_Size_Control(
+                    $this->wp_customize,
+                    $this->option_prefix . '[headline_font_size]',
+                    array(
+                        'label'	=> esc_attr__( 'Font Size', 'mailoptin' ),
+                        'section' => $this->customizerClassInstance->headline_section_id,
+                        'settings' => $this->option_prefix . '[headline_font_size_desktop]',
+                        'priority' => 40
+                    )
+                ),
+                'headline_font_size_tablet' => new WP_Customize_Font_Size_Control(
+                    $this->wp_customize,
+                    $this->option_prefix . '[headline_font_size]',
+                    array(
+                        'label'	=> esc_attr__( 'Font Size', 'mailoptin' ),
+                        'section' => $this->customizerClassInstance->headline_section_id,
+                        'settings' => $this->option_prefix . '[headline_font_size_tablet]',
+                        'priority' => 41
+                    )
+                ),
+                'headline_font_size_mobile' => new WP_Customize_Font_Size_Control(
+                    $this->wp_customize,
+                    $this->option_prefix . '[headline_font_size]',
+                    array(
+                        'label'	=> esc_attr__( 'Font Size', 'mailoptin' ),
+                        'section' => $this->customizerClassInstance->headline_section_id,
+                        'settings' => $this->option_prefix . '[headline_font_size_mobile]',
+                        'priority' => 42
+                    )
+                ),
             ),
             $this->wp_customize,
             $this->option_prefix,
@@ -319,6 +350,36 @@ class CustomizerControls
                         )
                     )
                 ),
+                'description_font_size_desktop' => new WP_Customize_Font_Size_Control(
+                    $this->wp_customize,
+                    $this->option_prefix . '[description_font_size]',
+                    array(
+                        'label'	=> esc_attr__( 'Font Size', 'mailoptin' ),
+                        'section' => $this->customizerClassInstance->description_section_id,
+                        'settings' => $this->option_prefix . '[description_font_size_desktop]',
+                        'priority' => 40
+                    )
+                ),
+                'description_font_size_tablet' => new WP_Customize_Font_Size_Control(
+                    $this->wp_customize,
+                    $this->option_prefix . '[description_font_size]',
+                    array(
+                        'label'	=> esc_attr__( 'Font Size', 'mailoptin' ),
+                        'section' => $this->customizerClassInstance->description_section_id,
+                        'settings' => $this->option_prefix . '[description_font_size_tablet]',
+                        'priority' => 41
+                    )
+                ),
+                'description_font_size_mobile' => new WP_Customize_Font_Size_Control(
+                    $this->wp_customize,
+                    $this->option_prefix . '[description_font_size]',
+                    array(
+                        'label'	=> esc_attr__( 'Font Size', 'mailoptin' ),
+                        'section' => $this->customizerClassInstance->description_section_id,
+                        'settings' => $this->option_prefix . '[description_font_size_mobile]',
+                        'priority' => 42
+                    )
+                )
             ),
             $this->wp_customize,
             $this->option_prefix,
@@ -393,6 +454,36 @@ class CustomizerControls
                         )
                     )
                 ),
+                'note_font_size_desktop' => new WP_Customize_Font_Size_Control(
+                    $this->wp_customize,
+                    $this->option_prefix . '[note_font_size]',
+                    array(
+                        'label'	=> esc_attr__( 'Font Size', 'mailoptin' ),
+                        'section' => $this->customizerClassInstance->note_section_id,
+                        'settings' => $this->option_prefix . '[note_font_size_desktop]',
+                        'priority' => 50
+                    )
+                ),
+                'note_font_size_tablet' => new WP_Customize_Font_Size_Control(
+                    $this->wp_customize,
+                    $this->option_prefix . '[note_font_size]',
+                    array(
+                        'label'	=> esc_attr__( 'Font Size', 'mailoptin' ),
+                        'section' => $this->customizerClassInstance->note_section_id,
+                        'settings' => $this->option_prefix . '[note_font_size_tablet]',
+                        'priority' => 51
+                    )
+                ),
+                'note_font_size_mobile' => new WP_Customize_Font_Size_Control(
+                    $this->wp_customize,
+                    $this->option_prefix . '[note_font_size]',
+                    array(
+                        'label'	=> esc_attr__( 'Font Size', 'mailoptin' ),
+                        'section' => $this->customizerClassInstance->note_section_id,
+                        'settings' => $this->option_prefix . '[note_font_size_mobile]',
+                        'priority' => 52
+                    )
+                ),
                 'note_close_optin_onclick' => new WP_Customize_Toggle_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[note_close_optin_onclick]',
@@ -404,7 +495,7 @@ class CustomizerControls
                                 __('Activate if you want a click on "note" to close the optin form. Particularly useful if close icon is hidden. %sLearn More%s', 'mailoptin'),
                                 '<a href="https://mailoptin.io/article/text-link-closes-popup-optin-form/" target="_blank">', '</a>'
                             ),
-                            'priority' => 40,
+                            'priority' => 55,
                         )
                     )
                 ),

@@ -141,7 +141,14 @@ class BareMetal extends AbstractOptinTheme
                     'value' => 'Source+Sans+Pro',
                     'optin_class' => 'BareMetal',
                     'optin_type' => 'inpost'
-                ]
+                ],
+
+                [
+                'name' => 'mo_optin_form_headline_font_size_mobile_default',
+                'value' => 20,
+                'optin_class' => 'BareMetal',
+                'optin_type' => 'inpost'
+        ]
             ]
         );
 
@@ -401,7 +408,6 @@ div#$optin_css_id.mo-baremetal-container h2.mo-optin-form-headline {
 color: #222222;
 font-family: "Arimo", sans-serif;
 margin: 0 0 10px;
-font-size: 24px;
 font-weight: bold;
 text-align: center;
 }
@@ -410,7 +416,6 @@ div#$optin_css_id.mo-baremetal-container .mo-baremetal-description {
 color: #000000;
 font-family: "Source Sans Pro", sans-serif;
 font-weight: normal;
-font-size: 16px;
 line-height: 1.6;
 margin-bottom: 20px;
 text-rendering: optimizeLegibility;
@@ -421,7 +426,6 @@ div#$optin_css_id .mo-baremetal-note {
   margin: 5px auto;
   text-align: center;
   font-style: italic;
-  font-size: 16px;
   font-family: "Source Sans Pro", sans-serif;
 }
 

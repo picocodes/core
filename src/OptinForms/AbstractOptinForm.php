@@ -37,13 +37,13 @@ abstract class AbstractOptinForm extends AbstractCustomizer implements OptinForm
     public function __construct($optin_campaign_id = 0)
     {
         // isn't included in if condition below because it is reused by front end optin output.
-        $this->optin_campaign_id = $optin_campaign_id;
-        $this->optin_campaign_uuid = OptinCampaignsRepository::get_optin_campaign_uuid($optin_campaign_id);
-        $this->optin_campaign_type = OptinCampaignsRepository::get_optin_campaign_type($optin_campaign_id);
+        $this->optin_campaign_id    = $optin_campaign_id;
+        $this->optin_campaign_uuid  = OptinCampaignsRepository::get_optin_campaign_uuid($optin_campaign_id);
+        $this->optin_campaign_type  = OptinCampaignsRepository::get_optin_campaign_type($optin_campaign_id);
         $this->optin_campaign_class = OptinCampaignsRepository::get_optin_campaign_class($optin_campaign_id);
-        $this->optin_css_id = "{$this->optin_campaign_uuid}_{$this->optin_campaign_type}";
+        $this->optin_css_id         = "{$this->optin_campaign_uuid}_{$this->optin_campaign_type}";
 
-        if (!empty($_REQUEST['mailoptin_optin_campaign_id'])) {
+        if ( ! empty($_REQUEST['mailoptin_optin_campaign_id'])) {
             add_filter('mo_optin_form_customizer_design_settings', [$this, 'customizer_design_settings'], 10, 2);
             add_filter('mo_optin_form_customizer_headline_settings', [$this, 'customizer_headline_settings'], 10, 2);
             add_filter('mo_optin_form_customizer_description_settings', [$this, 'customizer_description_settings'], 10, 2);
@@ -79,17 +79,22 @@ abstract class AbstractOptinForm extends AbstractCustomizer implements OptinForm
 
     /**
      * Ensure all optin class specific filters are run in the context of their instance and type.
+     * @note that optin camaign type, ID etc properties are not set or are null in this method
+     * because it is called before constructor is called.
      *
      * @param mixed $configs
+     *
      */
     public function init_config_filters($configs)
     {
+        $optin_class = (new \ReflectionClass(get_called_class()))->getShortName();
+
         foreach ($configs as $config) {
-            $filter_name = $config['name'];
-            $optin_class = isset($config['optin_class']) ? $config['optin_class'] : '';
-            $optin_type = isset($config['optin_type']) ? $config['optin_type'] : '';
+            $filter_name  = $config['name'];
+            $optin_class  = isset($config['optin_class']) ? $config['optin_class'] : $optin_class;
+            $optin_type   = isset($config['optin_type']) ? $config['optin_type'] : '';
             $filter_value = $config['value'];
-            $priority = isset($config['priority']) ? $config['priority'] : 10;
+            $priority     = isset($config['priority']) ? $config['priority'] : 10;
             $accepted_arg = isset($config['accepted_arg']) ? $config['accepted_arg'] : 1;
 
             if (is_callable($filter_value)) {
@@ -99,6 +104,7 @@ abstract class AbstractOptinForm extends AbstractCustomizer implements OptinForm
                     if ($optin_campaign_class == $optin_class && $optin_campaign_type == $optin_type) {
                         $value = $filter_value;
                     }
+
                     return $value;
                 }, 10, 4);
             }
@@ -237,7 +243,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
     {
         $optin_form_fonts = $this->get_optin_form_fonts();
 
-        if (!empty($optin_form_fonts)) {
+        if ( ! empty($optin_form_fonts)) {
             return "<script type='text/javascript'>jQuery(function(){if(typeof WebFont!=='undefined'){WebFont.load({google: {families: [$optin_form_fonts]}});}});</script>";
         }
     }
@@ -277,7 +283,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
             wp_footer();
             echo '</div>';
             // script below is below wp_footer() because jquery must have been loaded by now.
-            if (!empty($optin_form_fonts)) {
+            if ( ! empty($optin_form_fonts)) {
                 echo "<script type='text/javascript'>jQuery(function(){if(typeof WebFont!=='undefined'){WebFont.load({google: {families: [$optin_form_fonts]}})}});</script>";
             }
         }
@@ -286,17 +292,75 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         return ob_get_clean();
     }
 
+    public function font_size_css()
+    {
+        $optin_css_id        = $this->optin_css_id;
+        $optin_campaign_uuid = $this->optin_campaign_uuid;
+
+        $global_css = '';
+
+        $headline_font_size_mobile  = $this->get_customizer_value('headline_font_size_mobile');
+        $headline_font_size_tablet  = $this->get_customizer_value('headline_font_size_tablet');
+        $headline_font_size_desktop = $this->get_customizer_value('headline_font_size_desktop');
+
+        $description_font_size_mobile  = $this->get_customizer_value('description_font_size_mobile');
+        $description_font_size_tablet  = $this->get_customizer_value('description_font_size_tablet');
+        $description_font_size_desktop = $this->get_customizer_value('description_font_size_desktop');
+
+        $note_font_size_mobile  = $this->get_customizer_value('note_font_size_mobile');
+        $note_font_size_tablet  = $this->get_customizer_value('note_font_size_tablet');
+        $note_font_size_desktop = $this->get_customizer_value('note_font_size_desktop');
+
+        $global_css .= "div#$optin_campaign_uuid div#$optin_css_id .mo-optin-form-headline,
+        div#$optin_campaign_uuid div.mo-optin-form-container h2,
+        div#$optin_campaign_uuid div.mo-optin-form-container h1 { font-size: {$headline_font_size_desktop}px !important; }";
+
+        $global_css .= "div#$optin_campaign_uuid div#$optin_css_id .mo-optin-form-description,
+        div#$optin_campaign_uuid div.mo-optin-form-container div#$optin_css_id p { font-size: {$description_font_size_desktop}px !important; }";
+
+        $global_css .= "div#$optin_campaign_uuid div#$optin_css_id .mo-optin-form-note { font-size: {$note_font_size_desktop}px !important; }";
+
+        $global_css .= "@media screen and (max-width: 768px) {
+        
+        div#$optin_campaign_uuid div#$optin_css_id .mo-optin-form-headline,
+        div#$optin_campaign_uuid div.mo-optin-form-container div#$optin_css_id h2,
+        div#$optin_campaign_uuid div.mo-optin-form-container div#$optin_css_id h1 { font-size: {$headline_font_size_tablet}px !important; }
+        
+        div#$optin_campaign_uuid div#$optin_css_id .mo-optin-form-description,
+        div#$optin_campaign_uuid div.mo-optin-form-container div#$optin_css_id p { font-size: {$description_font_size_tablet}px !important; }
+        
+        div#$optin_campaign_uuid div#$optin_css_id .mo-optin-form-note { font-size: {$note_font_size_tablet}px !important; }
+        
+        }";
+
+        $global_css .= "@media screen and (max-width: 480px) {
+        
+        div#$optin_campaign_uuid div#$optin_css_id .mo-optin-form-headline,
+        div#$optin_campaign_uuid div.mo-optin-form-container div#$optin_css_id h2,
+        div#$optin_campaign_uuid div.mo-optin-form-container div#$optin_css_id h1 { font-size: {$headline_font_size_mobile}px !important; }
+        
+        div#$optin_campaign_uuid div#$optin_css_id .mo-optin-form-description,
+        div#$optin_campaign_uuid div.mo-optin-form-container div#$optin_css_id p { font-size: {$description_font_size_mobile}px !important; }
+        
+        div#$optin_campaign_uuid div#$optin_css_id .mo-optin-form-note,
+        div#$optin_campaign_uuid div#$optin_css_id .mo-optin-form-note * { font-size: {$note_font_size_mobile}px !important; }
+        
+        }";
+
+        return $global_css;
+    }
+
 
     /**
      * Global optin CSS.
      *
-     * @param string $optin_css_id
-     * @param string $optin_campaign_uuid
-     *
      * @return string
      */
-    public function global_css($optin_css_id, $optin_campaign_uuid = '')
+    public function global_css()
     {
+        $optin_css_id        = $this->optin_css_id;
+        $optin_campaign_uuid = $this->optin_campaign_uuid;
+
         $global_css = "div#{$optin_campaign_uuid} *, div#{$optin_campaign_uuid} *:before, div#{$optin_campaign_uuid} *:after {box-sizing: border-box;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;}";
         $global_css .= "div#{$optin_css_id}_container div.mo-optin-powered-by{margin:5px auto 2px;text-align:center;}";
         $global_css .= "div#{$optin_css_id}_container div.mo-optin-powered-by a {font-size:16px !important; text-decoration: none !important;box-shadow:none !important;border-bottom-width:0px !important;cursor:pointer !important;}";
@@ -324,6 +388,8 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
             $global_css .= "div#$optin_css_id #mo-optin-form-name-field {display: none !important;}";
         }
 
+        $global_css .= $this->font_size_css();
+
         return apply_filters('mo_optin_form_global_css', $global_css, $optin_campaign_uuid, $optin_css_id);
     }
 
@@ -334,17 +400,17 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
      */
     public function optin_script_and_styles()
     {
-        $custom_css = $this->get_customizer_value('form_custom_css');
+        $custom_css    = $this->get_customizer_value('form_custom_css');
         $custom_styles = '';
 
         $script = "<script type=\"text/javascript\">{$this->optin_js_config()}</script>";
 
         $styles = '<style id="mo-optin-form-stylesheet" type="text/css">';
-        $styles .= mo_minify_css($this->optin_form_css() . $this->global_css($this->optin_css_id, $this->optin_campaign_uuid));
+        $styles .= mo_minify_css($this->optin_form_css() . $this->global_css());
         $styles .= '</style>';
         $styles = apply_filters('mo_optin_form_css', $styles, $this->optin_campaign_uuid, $this->optin_campaign_id);
 
-        if (!empty($custom_css)) {
+        if ( ! empty($custom_css)) {
             $custom_styles = '<style id="mo-optin-form-custom-css" type="text/css">';
             $custom_styles .= mo_minify_css($custom_css);
             $custom_styles .= '</style>';
@@ -356,46 +422,46 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
 
     public function is_schedule_display_rule_active()
     {
-        $schedule_status = $this->get_customizer_value('schedule_status');
-        $schedule_start = $this->get_customizer_value('schedule_start');
-        $schedule_end = $this->get_customizer_value('schedule_end');
+        $schedule_status   = $this->get_customizer_value('schedule_status');
+        $schedule_start    = $this->get_customizer_value('schedule_start');
+        $schedule_end      = $this->get_customizer_value('schedule_end');
         $schedule_timezone = $this->get_customizer_value('schedule_timezone');
 
-        return (!is_customize_preview() && !empty($schedule_status) && !empty($schedule_start) && !empty($schedule_end) && !empty($schedule_timezone));
+        return ( ! is_customize_preview() && ! empty($schedule_status) && ! empty($schedule_start) && ! empty($schedule_end) && ! empty($schedule_timezone));
     }
 
     public function is_adblock_rule_active()
     {
-        $adblock_status = $this->get_customizer_value('adblock_status');
+        $adblock_status   = $this->get_customizer_value('adblock_status');
         $adblock_settings = $this->get_customizer_value('adblock_settings');
 
-        return (!is_customize_preview() && !empty($adblock_status) && !empty($adblock_settings));
+        return ( ! is_customize_preview() && ! empty($adblock_status) && ! empty($adblock_settings));
     }
 
     public function is_referral_detection_rule_active()
     {
-        $referrer_detection_status = $this->get_customizer_value('referrer_detection_status');
+        $referrer_detection_status   = $this->get_customizer_value('referrer_detection_status');
         $referrer_detection_settings = $this->get_customizer_value('referrer_detection_settings');
-        $referrer_detection_values = $this->get_customizer_value('referrer_detection_values');
+        $referrer_detection_values   = $this->get_customizer_value('referrer_detection_values');
 
-        return (!is_customize_preview() && !empty($referrer_detection_status) && !empty($referrer_detection_settings) && !empty($referrer_detection_values));
+        return ( ! is_customize_preview() && ! empty($referrer_detection_status) && ! empty($referrer_detection_settings) && ! empty($referrer_detection_values));
     }
 
     public function is_x_page_views_rule_active()
     {
-        $x_page_views_status = $this->get_customizer_value('x_page_views_status');
+        $x_page_views_status    = $this->get_customizer_value('x_page_views_status');
         $x_page_views_condition = $this->get_customizer_value('x_page_views_condition');
-        $x_page_views_value = $this->get_customizer_value('x_page_views_value');
+        $x_page_views_value     = $this->get_customizer_value('x_page_views_value');
 
-        return (!is_customize_preview() && !empty($x_page_views_status) && !empty($x_page_views_condition) && !empty($x_page_views_value));
+        return ( ! is_customize_preview() && ! empty($x_page_views_status) && ! empty($x_page_views_condition) && ! empty($x_page_views_value));
     }
 
     public function is_newvsreturn_rule_active()
     {
-        $newvsreturn_status = $this->get_customizer_value('newvsreturn_status');
+        $newvsreturn_status   = $this->get_customizer_value('newvsreturn_status');
         $newvsreturn_settings = $this->get_customizer_value('newvsreturn_settings');
 
-        return (!is_customize_preview() && !empty($newvsreturn_status) && !empty($newvsreturn_settings));
+        return ( ! is_customize_preview() && ! empty($newvsreturn_status) && ! empty($newvsreturn_settings));
     }
 
     /**
@@ -403,10 +469,10 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
      */
     protected function _get_optin_form_structure()
     {
-        $optin_css_id = $this->optin_css_id;
-        $optin_campaign_uuid = $this->optin_campaign_uuid;
-        $optin_form = '';
-        $name_email_class_indicator = $this->get_customizer_value('hide_name_field') === true ? 'mo-has-email' : 'mo-has-name-email';
+        $optin_css_id                        = $this->optin_css_id;
+        $optin_campaign_uuid                 = $this->optin_campaign_uuid;
+        $optin_form                          = '';
+        $name_email_class_indicator          = $this->get_customizer_value('hide_name_field') === true ? 'mo-has-email' : 'mo-has-name-email';
         $display_only_button_class_indicator = $this->get_customizer_value('display_only_button') === true ? ' mo-cta-button-display mo-cta-button-flag' : '';
         // set optin to display:none when schedule is active then allow mailoptinjs to decide whether to show it or not.
         $is_hidden_style = $this->is_schedule_display_rule_active() || $this->is_adblock_rule_active() || $this->is_referral_detection_rule_active() || $this->is_newvsreturn_rule_active() || $this->is_x_page_views_rule_active() ? 'display: none' : '';
@@ -430,9 +496,9 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         }
 
         if ($this->optin_campaign_type == 'bar') {
-            $position = $this->get_customizer_value('bar_position');
+            $position       = $this->get_customizer_value('bar_position');
             $position_class = ' mo-optin-form-bar-' . $position;
-            $is_sticky = $position == 'top' && $this->get_customizer_value('bar_sticky') ? ' mo-optin-form-bar-sticky' : '';
+            $is_sticky      = $position == 'top' && $this->get_customizer_value('bar_sticky') ? ' mo-optin-form-bar-sticky' : '';
 
             $bar_wrapper_style_properties = [
                 'display: none',
@@ -445,13 +511,13 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
             ];
 
             $barWrapperStyle = implode(';', $bar_wrapper_style_properties);
-            $optin_form .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type} {$name_email_class_indicator}{$display_only_button_class_indicator}{$position_class}{$is_sticky}\" data-optin-type='{$this->optin_campaign_type}' style='$barWrapperStyle'>";
+            $optin_form      .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type} {$name_email_class_indicator}{$display_only_button_class_indicator}{$position_class}{$is_sticky}\" data-optin-type='{$this->optin_campaign_type}' style='$barWrapperStyle'>";
         }
 
         if ($this->optin_campaign_type == 'slidein') {
-            $position = $this->get_customizer_value('slidein_position');
-            $position = empty($position) ? 'bottom_right' : $position;
-            $position_class = ' mo-slidein-' . $position;
+            $position                         = $this->get_customizer_value('slidein_position');
+            $position                         = empty($position) ? 'bottom_right' : $position;
+            $position_class                   = ' mo-slidein-' . $position;
             $slidein_wrapper_style_properties = [
                 'display: none',
                 'position: fixed',
@@ -461,20 +527,20 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
                 'background: 0 0',
                 'z-index: 999999999'
             ];
-            $slideinWrapperStyle = implode(';', $slidein_wrapper_style_properties);
-            $optin_form .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type}{$display_only_button_class_indicator}{$position_class}\" data-optin-type='{$this->optin_campaign_type}' style='$slideinWrapperStyle'>";
+            $slideinWrapperStyle              = implode(';', $slidein_wrapper_style_properties);
+            $optin_form                       .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type}{$display_only_button_class_indicator}{$position_class}\" data-optin-type='{$this->optin_campaign_type}' style='$slideinWrapperStyle'>";
         }
 
         if ($this->optin_campaign_type == 'sidebar') {
             $sidebar_wrapper_style_properties = [$is_hidden_style];
-            $sidebarWrapperStyle = implode(';', $sidebar_wrapper_style_properties);
-            $optin_form .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type} {$name_email_class_indicator}{$display_only_button_class_indicator}\" data-optin-type='{$this->optin_campaign_type}' style='$sidebarWrapperStyle'>";
+            $sidebarWrapperStyle              = implode(';', $sidebar_wrapper_style_properties);
+            $optin_form                       .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type} {$name_email_class_indicator}{$display_only_button_class_indicator}\" data-optin-type='{$this->optin_campaign_type}' style='$sidebarWrapperStyle'>";
         }
 
         if ($this->optin_campaign_type == 'inpost') {
             $inpost_wrapper_style_properties = [$is_hidden_style];
-            $inpostWrapperStyle = implode(';', $inpost_wrapper_style_properties);
-            $optin_form .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type} {$name_email_class_indicator}{$display_only_button_class_indicator}\" data-optin-type='{$this->optin_campaign_type}' style='$inpostWrapperStyle'>";
+            $inpostWrapperStyle              = implode(';', $inpost_wrapper_style_properties);
+            $optin_form                      .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type} {$name_email_class_indicator}{$display_only_button_class_indicator}\" data-optin-type='{$this->optin_campaign_type}' style='$inpostWrapperStyle'>";
         }
 
         $optin_form .= "<div class='mo-optin-form-container' id='{$optin_css_id}_container' style='position:relative;margin: 0 auto;'>";
@@ -525,7 +591,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         // if cache is disable, fetch fresh optin structure.
         if (apply_filters('mailoptin_disable_optin_form_cache', false)) return $this->_get_optin_form_structure() . $this->timestamp_spam_combat();
 
-        $cache_key = "mo_get_optin_form_structure_{$this->optin_campaign_id}";
+        $cache_key       = "mo_get_optin_form_structure_{$this->optin_campaign_id}";
         $optin_structure = get_transient($cache_key);
 
         if (empty($optin_structure) || false === $optin_structure) {
@@ -567,7 +633,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
             return $this->_get_optin_form_fonts();
         }
 
-        $cache_key = "mo_get_optin_form_fonts_{$this->optin_campaign_id}";
+        $cache_key       = "mo_get_optin_form_fonts_{$this->optin_campaign_id}";
         $optin_structure = get_transient($cache_key);
 
         if (empty($optin_structure) || false === $optin_structure) {
@@ -591,11 +657,11 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
      */
     protected function _get_optin_form_fonts()
     {
-        $default_headline_font = $this->customizer_defaults['headline_font'];
-        $default_description_font = $this->customizer_defaults['description_font'];
-        $default_note_font = $this->customizer_defaults['note_font'];
+        $default_headline_font      = $this->customizer_defaults['headline_font'];
+        $default_description_font   = $this->customizer_defaults['description_font'];
+        $default_note_font          = $this->customizer_defaults['note_font'];
         $default_submit_button_font = $this->customizer_defaults['submit_button_font'];
-        $default_cta_button_font = $this->customizer_defaults['cta_button_font'];
+        $default_cta_button_font    = $this->customizer_defaults['cta_button_font'];
 
         $headline_font = apply_filters('mo_get_optin_form_headline_font',
             self::_remove_web_safe_font(
@@ -644,25 +710,25 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
 
         // build the comma delimited webfonts
         $webfont = [];
-        if (!empty($headline_font)) {
+        if ( ! empty($headline_font)) {
             $webfont[] = "'$headline_font'";
         }
-        if (!empty($description_font)) {
+        if ( ! empty($description_font)) {
             $webfont [] = "'$description_font'";
         }
-        if (!empty($note_font)) {
+        if ( ! empty($note_font)) {
             $webfont[] = "'$note_font'";
         }
-        if (!empty($submit_button_font)) {
+        if ( ! empty($submit_button_font)) {
             $webfont[] = "'$submit_button_font'";
         }
-        if (!empty($cta_button_font)) {
+        if ( ! empty($cta_button_font)) {
             $webfont[] = "'$cta_button_font'";
         }
 
         $webfont = apply_filters('mo_optin_form_fonts_list', $webfont, $this->optin_campaign_id);
 
-        $delimiter = !empty($webfont) ? ',' : null;
+        $delimiter = ! empty($webfont) ? ',' : null;
 
         return implode(',', array_unique($webfont)) . $delimiter;
     }
@@ -674,53 +740,53 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
     {
         $optin_campaign_id = $this->optin_campaign_id;
 
-        $exit_cookie = $this->get_customizer_value('cookie');
+        $exit_cookie    = $this->get_customizer_value('cookie');
         $success_cookie = $this->get_customizer_value('success_cookie');
 
-        $global_exit_cookie = Settings::instance()->global_cookie();
+        $global_exit_cookie    = Settings::instance()->global_cookie();
         $global_success_cookie = Settings::instance()->global_success_cookie();
 
-        $schedule_status = $this->get_customizer_value('schedule_status');
-        $schedule_start = $this->get_customizer_value('schedule_start');
-        $schedule_end = $this->get_customizer_value('schedule_end');
+        $schedule_status   = $this->get_customizer_value('schedule_status');
+        $schedule_start    = $this->get_customizer_value('schedule_start');
+        $schedule_end      = $this->get_customizer_value('schedule_end');
         $schedule_timezone = $this->get_customizer_value('schedule_timezone');
 
-        $click_launch_status = $this->get_customizer_value('click_launch_status');
-        $x_page_views_status = $this->get_customizer_value('x_page_views_status');
+        $click_launch_status    = $this->get_customizer_value('click_launch_status');
+        $x_page_views_status    = $this->get_customizer_value('x_page_views_status');
         $x_page_views_condition = $this->get_customizer_value('x_page_views_condition');
-        $x_page_views_value = $this->get_customizer_value('x_page_views_value');
+        $x_page_views_value     = $this->get_customizer_value('x_page_views_value');
 
         $x_seconds_status = $this->get_customizer_value('x_seconds_status');
-        $x_seconds_value = $this->get_customizer_value('x_seconds_value');
+        $x_seconds_value  = $this->get_customizer_value('x_seconds_value');
 
-        if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
+        if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM')) {
             $x_seconds_status = true;
-            $x_seconds_value = 3;
+            $x_seconds_value  = 3;
         }
 
         $x_scroll_status = $this->get_customizer_value('x_scroll_status');
-        $x_scroll_value = $this->get_customizer_value('x_scroll_value');
+        $x_scroll_value  = $this->get_customizer_value('x_scroll_value');
 
         $exit_intent_status = $this->get_customizer_value('exit_intent_status');
 
         $cta_display_only_button_status = $this->get_customizer_value('display_only_button');
-        $cta_action_after_click = $this->get_customizer_value('cta_button_action');
+        $cta_action_after_click         = $this->get_customizer_value('cta_button_action');
 
-        $data = array();
-        $data['optin_uuid'] = $this->optin_campaign_uuid;
-        $data['optin_campaign_id'] = $optin_campaign_id;
+        $data                        = array();
+        $data['optin_uuid']          = $this->optin_campaign_uuid;
+        $data['optin_campaign_id']   = $optin_campaign_id;
         $data['optin_campaign_name'] = OptinCampaignsRepository::get_optin_campaign_name($optin_campaign_id);
-        $data['optin_type'] = OptinCampaignsRepository::get_optin_campaign_type($optin_campaign_id);
-        $data['post_id'] = $post_id = is_singular() || is_front_page() ? get_queried_object_id() : 0;
+        $data['optin_type']          = OptinCampaignsRepository::get_optin_campaign_type($optin_campaign_id);
+        $data['post_id']             = $post_id = is_singular() || is_front_page() ? get_queried_object_id() : 0;
         // must be of integer type for js-cookie to work.
         // am not using empty() because if cookie is set to 0, it returns true i.e 0 is empty.
         $data['cookie'] = $exit_cookie != '' ? absint($exit_cookie) : 30;
         // defaults to value of exit cookie above
-        $data['success_cookie'] = $success_cookie != '' ? absint($success_cookie) : $data['cookie'];
-        $data['global_cookie'] = $global_exit_cookie != '' ? absint($global_exit_cookie) : 0;
+        $data['success_cookie']        = $success_cookie != '' ? absint($success_cookie) : $data['cookie'];
+        $data['global_cookie']         = $global_exit_cookie != '' ? absint($global_exit_cookie) : 0;
         $data['global_success_cookie'] = $global_success_cookie != '' ? absint($global_success_cookie) : 0;
-        $data['success_message'] = $this->get_customizer_value('success_message');
-        $data['name_field_required'] = $this->get_customizer_value('name_field_required');
+        $data['success_message']       = $this->get_customizer_value('success_message');
+        $data['name_field_required']   = $this->get_customizer_value('name_field_required');
 
 
         /** click launch display rule */
@@ -729,40 +795,40 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         }
 
         /** x page view display rule */
-        if ($x_page_views_status === true && $x_page_views_condition != '...' && !empty($x_page_views_value)) {
-            $data['x_page_views_status'] = $x_page_views_status;
+        if ($x_page_views_status === true && $x_page_views_condition != '...' && ! empty($x_page_views_value)) {
+            $data['x_page_views_status']    = $x_page_views_status;
             $data['x_page_views_condition'] = $x_page_views_condition;
-            $data['x_page_views_value'] = absint($x_page_views_value);
+            $data['x_page_views_value']     = absint($x_page_views_value);
         }
 
         /** after x seconds display rule */
-        if ($x_seconds_status === true && !empty($x_seconds_value)) {
+        if ($x_seconds_status === true && ! empty($x_seconds_value)) {
             $data['x_seconds_status'] = $x_seconds_status;
-            $data['x_seconds_value'] = absint($x_seconds_value);
+            $data['x_seconds_value']  = absint($x_seconds_value);
         }
 
         /** after x scroll percentage display rule */
-        if ($x_scroll_status === true && !empty($x_scroll_value)) {
+        if ($x_scroll_status === true && ! empty($x_scroll_value)) {
             $data['x_scroll_status'] = $x_scroll_status;
-            $data['x_scroll_value'] = absint($x_scroll_value);
+            $data['x_scroll_value']  = absint($x_scroll_value);
         }
 
         /** exit intent display rule */
-        if ($exit_intent_status === true && !empty($exit_intent_status)) {
+        if ($exit_intent_status === true && ! empty($exit_intent_status)) {
             $data['exit_intent_status'] = $exit_intent_status;
         }
 
         /** after conversion / success actions */
-        $success_action = $this->get_customizer_value('success_action');
+        $success_action         = $this->get_customizer_value('success_action');
         $data['success_action'] = $success_action;
 
         if ($success_action == 'redirect_url') {
             $data['redirect_url_value'] = esc_url($this->get_customizer_value('redirect_url_value'));
-            $data['pass_lead_data'] = $this->get_customizer_value('pass_lead_data_redirect_url');
+            $data['pass_lead_data']     = $this->get_customizer_value('pass_lead_data_redirect_url');
         }
 
         $success_js_script = $this->get_customizer_value('success_js_script');
-        if (!empty($success_js_script)) {
+        if ( ! empty($success_js_script)) {
             $data['success_js_script'] = $success_js_script;
         }
 
@@ -780,7 +846,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
 
         if ($this->optin_campaign_type == 'lightbox') {
             $data['body_close'] = apply_filters('mo_optin_campaign_body_close', true);
-            $data['keyClose'] = apply_filters('mo_optin_campaign_key_close', true);
+            $data['keyClose']   = apply_filters('mo_optin_campaign_key_close', true);
         }
 
         if ($this->optin_campaign_type == 'bar') {
@@ -791,23 +857,23 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
             $data['slidein_position'] = $this->get_customizer_value('slidein_position');
         }
 
-        if ($schedule_status === true && !empty($schedule_start) && !empty($schedule_end) && !empty($schedule_timezone)) {
-            $data['schedule_status'] = $schedule_status;
-            $data['schedule_start'] = $schedule_start;
-            $data['schedule_end'] = $schedule_end;
+        if ($schedule_status === true && ! empty($schedule_start) && ! empty($schedule_end) && ! empty($schedule_timezone)) {
+            $data['schedule_status']   = $schedule_status;
+            $data['schedule_start']    = $schedule_start;
+            $data['schedule_end']      = $schedule_end;
             $data['schedule_timezone'] = $schedule_timezone;
         }
 
-        $data['unexpected_error'] = apply_filters('mo_optin_campaign_unexpected_error', __('Unexpected error. Please try again.', 'mailoptin'));
-        $data['email_missing_error'] = apply_filters('mo_optin_campaign_email_missing_error', __('Please enter a valid email.', 'mailoptin'));
-        $data['name_missing_error'] = apply_filters('mo_optin_campaign_name_missing_error', __('Please enter a valid name.', 'mailoptin'));
+        $data['unexpected_error']      = apply_filters('mo_optin_campaign_unexpected_error', __('Unexpected error. Please try again.', 'mailoptin'));
+        $data['email_missing_error']   = apply_filters('mo_optin_campaign_email_missing_error', __('Please enter a valid email.', 'mailoptin'));
+        $data['name_missing_error']    = apply_filters('mo_optin_campaign_name_missing_error', __('Please enter a valid name.', 'mailoptin'));
         $data['note_acceptance_error'] = apply_filters('mo_optin_campaign_note_acceptance_error', $this->get_customizer_value('note_acceptance_error'));
-        $data['honeypot_error'] = apply_filters('mo_optin_campaign_honeypot_error', __('Your submission has been flagged as potential spam.', 'mailoptin'));
+        $data['honeypot_error']        = apply_filters('mo_optin_campaign_honeypot_error', __('Your submission has been flagged as potential spam.', 'mailoptin'));
 
         /** CTA button: navigation url support */
         if ($cta_display_only_button_status) {
             $data['cta_display'] = true;
-            $data['cta_action'] = $cta_action_after_click;
+            $data['cta_action']  = $cta_action_after_click;
             if ($cta_action_after_click == 'navigate_to_url') {
                 $data['cta_navigate_url'] = $this->get_customizer_value('cta_button_navigation_url');
             }
