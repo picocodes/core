@@ -17,13 +17,4 @@ gulp.task('rjs', function () {
         .pipe(gulp.dest('src/assets/js'));
 });
 
-gulp.task('optimizecss', function () {
-    var concatCss = require('gulp-concat-css');
-    var cleanCSS = require('gulp-clean-css');
-    return gulp.src(['src/assets/css/mailoptin.css', 'src/assets/css/animate.css'])
-        .pipe(concatCss("mailoptin.min.css"))
-        .pipe(cleanCSS({compatibility: 'ie8'}))
-        .pipe(gulp.dest('src/assets/css'));
-});
-
-gulp.task('default', ['rjs', 'optimizecss']);
+gulp.task('default', ['rjs']);

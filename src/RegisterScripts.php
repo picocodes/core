@@ -76,11 +76,9 @@ class RegisterScripts
 
         if (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) {
             wp_enqueue_style('mo-animate', MAILOPTIN_ASSETS_URL . 'css/animate.css', false, MAILOPTIN_VERSION_NUMBER);
-            wp_enqueue_style('mo-mailoptin', MAILOPTIN_ASSETS_URL . 'css/mailoptin.css', false, MAILOPTIN_VERSION_NUMBER);
             wp_enqueue_script('mo-requirejs', MAILOPTIN_ASSETS_URL . 'js/src/require.js', [], MAILOPTIN_VERSION_NUMBER, true);
             wp_enqueue_script('mailoptin', MAILOPTIN_ASSETS_URL . 'js/src/main.js', ['jquery', 'mo-requirejs'], MAILOPTIN_VERSION_NUMBER, true);
         } else {
-            wp_enqueue_style('mailoptin', MAILOPTIN_ASSETS_URL . 'css/mailoptin.min.css', false, MAILOPTIN_VERSION_NUMBER);
             if (is_customize_preview()) {
                 // when plugin like nextgen gallery is active, loading mailoptin.js in footer do not make lightbox, slidein, bar load
                 // in customizer. but on header works.
