@@ -290,6 +290,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
                 <span class="customize-control-title"><?php echo esc_html($label); ?></span>
                 <select name="<?= $name; ?>">
                     <?php
+                    printf('<option value="inherit" %s>%s</option>', selected($this->value(), 'inherit', false), __('Inherit from Theme', 'mailoptin'));
                     foreach ($fonts as $v) {
                         $option_value = str_replace(' ', '+', $v);
                         printf('<option value="%s" %s>%s</option>', $option_value, selected($saved_value, $option_value, false), $v);
