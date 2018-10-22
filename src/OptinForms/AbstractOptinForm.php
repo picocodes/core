@@ -765,72 +765,62 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
      */
     protected function _get_optin_form_fonts()
     {
-        $default_headline_font      = $this->customizer_defaults['headline_font'];
-        $default_description_font   = $this->customizer_defaults['description_font'];
-        $default_note_font          = $this->customizer_defaults['note_font'];
-        $default_submit_button_font = $this->customizer_defaults['submit_button_font'];
-        $default_cta_button_font    = $this->customizer_defaults['cta_button_font'];
-
         $headline_font = apply_filters('mo_get_optin_form_headline_font',
             self::_remove_web_safe_font(
-                OptinCampaignsRepository::get_customizer_value($this->optin_campaign_id, 'headline_font', $default_headline_font)
+                OptinCampaignsRepository::get_merged_customizer_value($this->optin_campaign_id, 'headline_font')
             ),
             'headline_font',
-            $default_headline_font,
             $this->optin_campaign_id
         );
 
         $description_font = apply_filters('mo_get_optin_form_description_font',
             self::_remove_web_safe_font(
-                OptinCampaignsRepository::get_customizer_value($this->optin_campaign_id, 'description_font', $default_description_font)
+                OptinCampaignsRepository::get_merged_customizer_value($this->optin_campaign_id, 'description_font')
             ),
             'description_font',
-            $default_description_font,
             $this->optin_campaign_id
         );
 
         $note_font = apply_filters('mo_get_optin_form_note_font',
             self::_remove_web_safe_font(
-                OptinCampaignsRepository::get_customizer_value($this->optin_campaign_id, 'note_font', $default_note_font)
+                OptinCampaignsRepository::get_merged_customizer_value($this->optin_campaign_id, 'note_font')
             ),
             'note_font',
-            $default_note_font,
             $this->optin_campaign_id
         );
 
         $submit_button_font = apply_filters('mo_get_optin_form_submit_button_font',
             self::_remove_web_safe_font(
-                OptinCampaignsRepository::get_customizer_value($this->optin_campaign_id, 'submit_button_font', $default_submit_button_font)
+                OptinCampaignsRepository::get_merged_customizer_value($this->optin_campaign_id, 'submit_button_font')
             ),
             'submit_button_font',
-            $default_submit_button_font,
             $this->optin_campaign_id
         );
 
         $cta_button_font = apply_filters('mo_get_optin_form_cta_button_font',
             self::_remove_web_safe_font(
-                OptinCampaignsRepository::get_customizer_value($this->optin_campaign_id, 'cta_button_font', $default_cta_button_font)
+                OptinCampaignsRepository::get_merged_customizer_value($this->optin_campaign_id, 'cta_button_font')
             ),
             'cta_button_font',
-            $default_cta_button_font,
             $this->optin_campaign_id
         );
 
         // build the comma delimited webfonts
         $webfont = [];
-        if ( ! empty($headline_font)) {
+        if ( ! empty($headline_font) && $headline_font != 'inherit') {
             $webfont[] = "'$headline_font'";
         }
-        if ( ! empty($description_font)) {
+
+        if ( ! empty($description_font) && $description_font != 'inherit') {
             $webfont [] = "'$description_font'";
         }
-        if ( ! empty($note_font)) {
+        if ( ! empty($note_font) && $note_font != 'inherit') {
             $webfont[] = "'$note_font'";
         }
-        if ( ! empty($submit_button_font)) {
+        if ( ! empty($submit_button_font) && $submit_button_font != 'inherit') {
             $webfont[] = "'$submit_button_font'";
         }
-        if ( ! empty($cta_button_font)) {
+        if ( ! empty($cta_button_font) && $cta_button_font != 'inherit') {
             $webfont[] = "'$cta_button_font'";
         }
 

@@ -14,140 +14,140 @@ class BareMetal extends AbstractOptinTheme
         $this->init_config_filters([
                 // -- default for design sections -- //
                 [
-                    'name' => 'mo_optin_form_background_color_default',
-                    'value' => '#f0f0f0',
+                    'name'        => 'mo_optin_form_background_color_default',
+                    'value'       => '#f0f0f0',
                     'optin_class' => 'BareMetal',
-                    'optin_type' => 'lightbox'
+                    'optin_type'  => 'lightbox'
                 ],
 
                 [
-                    'name' => 'mo_optin_form_border_color_default',
-                    'value' => '#dd3333',
+                    'name'        => 'mo_optin_form_border_color_default',
+                    'value'       => '#dd3333',
                     'optin_class' => 'BareMetal',
-                    'optin_type' => 'lightbox'
+                    'optin_type'  => 'lightbox'
                 ],
 
                 // -- default for headline sections -- //
                 [
-                    'name' => 'mo_optin_form_headline_default',
-                    'value' => __("Get a little acid in your inbox", 'mailoptin'),
+                    'name'        => 'mo_optin_form_headline_default',
+                    'value'       => __("Get a little acid in your inbox", 'mailoptin'),
                     'optin_class' => 'BareMetal',
-                    'optin_type' => 'lightbox'
+                    'optin_type'  => 'lightbox'
                 ],
 
                 [
-                    'name' => 'mo_optin_form_headline_font_color_default',
-                    'value' => '#222222',
+                    'name'        => 'mo_optin_form_headline_font_color_default',
+                    'value'       => '#222222',
                     'optin_class' => 'BareMetal',
-                    'optin_type' => 'lightbox'
+                    'optin_type'  => 'lightbox'
                 ],
 
                 [
-                    'name' => 'mo_optin_form_headline_font_default',
-                    'value' => 'Arimo',
+                    'name'        => 'mo_optin_form_headline_font_default',
+                    'value'       => 'Arimo',
                     'optin_class' => 'BareMetal',
-                    'optin_type' => 'lightbox'
+                    'optin_type'  => 'lightbox'
                 ],
 
                 // -- default for description sections -- //
                 [
-                    'name' => 'mo_optin_form_description_font_default',
-                    'value' => 'Muli',
+                    'name'        => 'mo_optin_form_description_font_default',
+                    'value'       => 'Muli',
                     'optin_class' => 'BareMetal',
-                    'optin_type' => 'lightbox'
+                    'optin_type'  => 'lightbox'
                 ],
 
                 [
-                    'name' => 'mo_optin_form_description_default',
-                    'value' => $this->_description_content(),
+                    'name'        => 'mo_optin_form_description_default',
+                    'value'       => $this->_description_content(),
                     'optin_class' => 'BareMetal',
-                    'optin_type' => 'lightbox'
+                    'optin_type'  => 'lightbox'
                 ],
 
                 [
-                    'name' => 'mo_optin_form_description_font_color_default',
-                    'value' => '#000000',
+                    'name'        => 'mo_optin_form_description_font_color_default',
+                    'value'       => '#000000',
                     'optin_class' => 'BareMetal',
-                    'optin_type' => 'lightbox'
+                    'optin_type'  => 'lightbox'
                 ],
 
                 // -- default for fields sections -- //
                 [
-                    'name' => 'mo_optin_form_name_field_color_default',
-                    'value' => '#222222',
+                    'name'        => 'mo_optin_form_name_field_color_default',
+                    'value'       => '#222222',
                     'optin_class' => 'BareMetal',
-                    'optin_type' => 'lightbox'
+                    'optin_type'  => 'lightbox'
                 ],
 
                 [
-                    'name' => 'mo_optin_form_email_field_color_default',
-                    'value' => '#222222',
+                    'name'        => 'mo_optin_form_email_field_color_default',
+                    'value'       => '#222222',
                     'optin_class' => 'BareMetal',
-                    'optin_type' => 'lightbox'
+                    'optin_type'  => 'lightbox'
                 ],
 
                 [
-                    'name' => 'mo_optin_form_submit_button_color_default',
-                    'value' => '#ffffff',
+                    'name'        => 'mo_optin_form_submit_button_color_default',
+                    'value'       => '#ffffff',
                     'optin_class' => 'BareMetal',
-                    'optin_type' => 'lightbox'
+                    'optin_type'  => 'lightbox'
                 ],
 
                 [
-                    'name' => 'mo_optin_form_submit_button_background_default',
-                    'value' => '#0073b7',
+                    'name'        => 'mo_optin_form_submit_button_background_default',
+                    'value'       => '#0073b7',
                     'optin_class' => 'BareMetal',
-                    'optin_type' => 'lightbox'
+                    'optin_type'  => 'lightbox'
                 ],
 
                 [
-                    'name' => 'mo_optin_form_submit_button_font_default',
-                    'value' => 'Helvetica+Neue',
+                    'name'        => 'mo_optin_form_submit_button_font_default',
+                    'value'       => 'Helvetica+Neue',
                     'optin_class' => 'BareMetal',
-                    'optin_type' => 'lightbox'
+                    'optin_type'  => 'lightbox'
                 ],
 
                 [
-                    'name' => 'mo_optin_form_name_field_font_default',
-                    'value' => 'Consolas, Lucida Console, monospace',
+                    'name'        => 'mo_optin_form_name_field_font_default',
+                    'value'       => 'Consolas, Lucida Console, monospace',
                     'optin_class' => 'BareMetal',
-                    'optin_type' => 'lightbox'
+                    'optin_type'  => 'lightbox'
                 ],
 
                 [
-                    'name' => 'mo_optin_form_email_field_font_default',
-                    'value' => 'Consolas, Lucida Console, monospace',
+                    'name'        => 'mo_optin_form_email_field_font_default',
+                    'value'       => 'Consolas, Lucida Console, monospace',
                     'optin_class' => 'BareMetal',
-                    'optin_type' => 'lightbox'
+                    'optin_type'  => 'lightbox'
                 ],
 
                 // -- default for note sections -- //
                 [
-                    'name' => 'mo_optin_form_note_font_color_default',
-                    'value' => '#000000',
+                    'name'        => 'mo_optin_form_note_font_color_default',
+                    'value'       => '#000000',
                     'optin_class' => 'BareMetal',
-                    'optin_type' => 'lightbox'
+                    'optin_type'  => 'lightbox'
                 ],
 
                 [
-                    'name' => 'mo_optin_form_note_default',
-                    'value' => '<em>' . __('We promise not to spam you. You can unsubscribe at any time', 'mailoptin') . '</em>',
+                    'name'        => 'mo_optin_form_note_default',
+                    'value'       => '<em>' . __('We promise not to spam you. You can unsubscribe at any time', 'mailoptin') . '</em>',
                     'optin_class' => 'BareMetal',
-                    'optin_type' => 'lightbox'
+                    'optin_type'  => 'lightbox'
                 ],
 
                 [
-                    'name' => 'mo_optin_form_note_font_default',
-                    'value' => 'Source+Sans+Pro',
+                    'name'        => 'mo_optin_form_note_font_default',
+                    'value'       => 'Source+Sans+Pro',
                     'optin_class' => 'BareMetal',
-                    'optin_type' => 'lightbox'
+                    'optin_type'  => 'lightbox'
                 ],
 
                 [
-                    'name' => 'mo_optin_form_headline_font_size_mobile_default',
-                    'value' => 20,
+                    'name'        => 'mo_optin_form_headline_font_size_mobile_default',
+                    'value'       => 20,
                     'optin_class' => 'BareMetal',
-                    'optin_type' => 'lightbox'
+                    'optin_type'  => 'lightbox'
                 ]
             ]
         );
@@ -413,7 +413,6 @@ max-width: 650px;
 
 div#$optin_css_id.mo-baremetal-container h2.mo-optin-form-headline {
 color: #222222;
-font-family: "Arimo", sans-serif;
 margin: 0 0 10px;
 font-weight: bold;
 text-align: center;
@@ -421,7 +420,6 @@ text-align: center;
 
 div#$optin_css_id.mo-baremetal-container .mo-baremetal-description {
 color: #000000;
-font-family: "Source Sans Pro", sans-serif;
 font-weight: normal;
 line-height: 1.6;
 margin-bottom: 20px;
@@ -432,8 +430,7 @@ div#$optin_css_id .mo-baremetal-note {
   color:#000000;
   margin: 5px auto;
   text-align: center;
-  font-style: italic;
-  font-family: "Source Sans Pro", sans-serif;
+  font-style: italic
 }
 
 div#$optin_css_id.mo-baremetal-container #{$optin_css_id}_name_field,
@@ -464,7 +461,6 @@ font-size: 16px;
 
 div#$optin_css_id.mo-baremetal-container input[type="submit"].mo-optin-form-submit-button, div#$optin_css_id.mo-baremetal-container input[type="submit"].mo-optin-form-cta-button {
 border: none;
-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 line-height: normal;
 letter-spacing: normal;
 margin: 16px 0 0;

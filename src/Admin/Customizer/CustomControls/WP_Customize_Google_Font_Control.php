@@ -27,19 +27,21 @@ class WP_Customize_Google_Font_Control extends \WP_Customize_Control
     {
         $fonts = self::get_fonts($this->count);
 
-        if (!empty($fonts)) {
+        if ( ! empty($fonts)) {
             ?>
             <label>
                 <span class="customize-control-title"><?php echo esc_html($this->label); ?></span>
                 <select <?php $this->link(); ?>>
                     <?php
+                    printf('<option value="inherit" %s>%s</option>', selected($this->value(), 'inherit', false), __('Inherit from Theme', 'mailoptin'));
+
                     foreach ($fonts as $v) {
                         $option_value = str_replace(' ', '+', $v);
                         printf('<option value="%s" %s>%s</option>', $option_value, selected($this->value(), $option_value, false), $v);
                     }
                     ?>
                 </select>
-                <?php if (!empty($this->description)) : ?>
+                <?php if ( ! empty($this->description)) : ?>
                     <span class="description customize-control-description"><?php echo $this->description; ?></span>
                 <?php endif; ?>
             </label>
@@ -72,8 +74,8 @@ class WP_Customize_Google_Font_Control extends \WP_Customize_Control
             $content = json_decode(file_get_contents($fontFile));
         } else {
             $googleApi = 'https://www.googleapis.com/webfonts/v1/webfonts?sort=popularity&key=AIzaSyA-iyjXck3LdOsAcGBDBfmlMtXM6jUp1Fk';
-            $response = wp_remote_retrieve_body(wp_remote_get($googleApi, array('sslverify' => false)));
-            $fp = fopen($fontFile, 'w');
+            $response  = wp_remote_retrieve_body(wp_remote_get($googleApi, array('sslverify' => false)));
+            $fp        = fopen($fontFile, 'w');
             fwrite($fp, $response);
             fclose($fp);
             $content = json_decode($response);
