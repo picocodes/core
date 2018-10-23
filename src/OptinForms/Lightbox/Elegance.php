@@ -62,7 +62,7 @@ class Elegance extends AbstractOptinTheme
             // -- default for description sections -- //
             [
                 'name'        => 'mo_optin_form_description_font_default',
-                'value'       => 'Titillium Web',
+                'value'       => 'Titillium+Web',
                 'optin_class' => 'Elegance',
                 'optin_type'  => 'lightbox'
             ],
@@ -414,7 +414,6 @@ HTML;
 
         return <<<CSS
 div#$optin_css_id.moEleganceModal {
-  font-family: Arial, Helvetica, sans-serif;
   border: 3px solid #fff;
   width: 100%;
   max-width: 600px;
@@ -430,7 +429,6 @@ div#$optin_css_id.moEleganceModal {
 }
 
 div#$optin_css_id.moEleganceModal h2.moElegance_header {
-  font-family: 'Courgette', cursive;
   color: #000;
   margin: 0;
   line-height: 1.5;
@@ -439,7 +437,6 @@ div#$optin_css_id.moEleganceModal h2.moElegance_header {
 }
 
 div#$optin_css_id.moEleganceModal .moElegance_description {
-  font-family: 'Titillium Web', sans-serif;
   line-height: 1.5;
   text-align: center;
   color: #777;
@@ -447,7 +444,6 @@ div#$optin_css_id.moEleganceModal .moElegance_description {
 }
 
 div#$optin_css_id.moEleganceModal .moElegance_note {
-  font-family: 'Titillium Web', sans-serif;
   line-height: 1.5;
   text-align: center;
   color: #000;
@@ -455,7 +451,6 @@ div#$optin_css_id.moEleganceModal .moElegance_note {
 }
 
 div#$optin_css_id.moEleganceModal input.moEleganceModal_input_fields {
-  font-family: 'Titillium Web', sans-serif;
   display: block;
   width: 100%;
   padding: 10px;
@@ -471,7 +466,6 @@ div#$optin_css_id.moEleganceModal input.moEleganceModal_input_fields {
 }
 
 div#$optin_css_id.moEleganceModal input.moEleganceModal_button {
-  font-family: 'Titillium Web', sans-serif;
   display: block;
   margin: 10px auto 0;
   text-decoration: none;

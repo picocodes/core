@@ -406,7 +406,6 @@ width: 100%;
 
 div#$optin_css_id.mo-baremetal-container h2.mo-optin-form-headline {
 color: #222222;
-font-family: "Arimo", sans-serif;
 margin: 0 0 10px;
 font-weight: bold;
 text-align: center;
@@ -414,7 +413,6 @@ text-align: center;
 
 div#$optin_css_id.mo-baremetal-container .mo-baremetal-description {
 color: #000000;
-font-family: "Source Sans Pro", sans-serif;
 font-weight: normal;
 line-height: 1.6;
 margin-bottom: 20px;
@@ -426,7 +424,6 @@ div#$optin_css_id .mo-baremetal-note {
   margin: 5px auto;
   text-align: center;
   font-style: italic;
-  font-family: "Source Sans Pro", sans-serif;
 }
 
 div#$optin_css_id.mo-baremetal-container #{$optin_css_id}_name_field,
@@ -457,7 +454,6 @@ font-size: 16px;
 
 div#$optin_css_id.mo-baremetal-container input[type="submit"].mo-optin-form-submit-button, div#$optin_css_id.mo-baremetal-container input[type="submit"].mo-optin-form-cta-button {
 border: none;
-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 line-height: normal;
 letter-spacing: normal;
 margin: 16px 0 0;
