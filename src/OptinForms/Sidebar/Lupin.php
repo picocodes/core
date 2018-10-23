@@ -453,7 +453,6 @@ div#$optin_css_id.lupinSidebar-container {
          border: 3px solid #1998d6;
          max-width: 350px;
          padding: 10px 20px 10px;
-         font-family: 'Open Sans', arial, sans-serif;
          color: #fff;
          text-align: center;
          margin: 0 auto;
@@ -463,14 +462,12 @@ div#$optin_css_id.lupinSidebar-container {
      }
 
 div#$optin_css_id.lupinSidebar-container h2.lupinSidebar-heading {
-         font-family: 'Open Sans', arial, sans-serif;
          color: #fff;
          line-height: 50px;
          margin: 0;
      }
 
 div#$optin_css_id.lupinSidebar-container .lupinSidebar-description {
-         font-family: 'Open Sans', arial, sans-serif;
          margin-top: 12px;
          color: #fff;
      }
@@ -489,7 +486,6 @@ div#$optin_css_id.lupinSidebar-container input.lupinSidebar-input {
          -webkit-border-radius: 3px;
          -moz-border-radius: 3px;
          border-radius: 3px;
-         font-family: 'Open Sans', arial, sans-serif;
          padding: 12px 0;
          -webkit-box-sizing: border-box;
          -moz-box-sizing: border-box;
@@ -515,7 +511,6 @@ div#$optin_css_id.lupinSidebar-container input.lupinSidebar-submit, div#$optin_c
          -webkit-border-radius: 3px;
          -moz-border-radius: 3px;
          border-radius: 3px;
-         font-family: 'Open Sans', arial, sans-serif;
          padding: 12px;
          font-size: 16px;
          line-height: 16px;
@@ -528,7 +523,6 @@ div#$optin_css_id.lupinSidebar-container input.lupinSidebar-submit, div#$optin_c
      }
 
 div#$optin_css_id.lupinSidebar-container .lupinSidebar-note {
-         font-family: 'Open Sans', arial, sans-serif;
          line-height: 1.5;
          text-align: center;
          color: #fff;

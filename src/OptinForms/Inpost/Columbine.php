@@ -563,7 +563,6 @@ div#$optin_css_id.columbine-container {
          text-align: center;
          width: 100%;
          padding: 20px 30px;
-         font-family: 'Lora', times, serif;
          color: #555;
          -webkit-box-sizing: border-box;
          -moz-box-sizing: border-box;
@@ -630,7 +629,6 @@ div#$optin_css_id.columbine-container input.columbine-input {
          -webkit-border-radius: 0;
          -moz-border-radius: 0;
          border-radius: 0;
-         font-family: 'Lora', times, serif;
          padding: 11px 17px;
          font-size: 16px;
          line-height: 16px;
@@ -649,7 +647,6 @@ div#$optin_css_id.columbine-container input.columbine-submit, div#$optin_css_id.
          -webkit-appearance: none;
          border: 0;
          background: #54C3A5;
-         font-family: 'Lora', times, serif;
          padding: 13px 18px;
          font-size: 16px;
          line-height: 16px;
