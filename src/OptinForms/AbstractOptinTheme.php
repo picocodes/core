@@ -3,6 +3,8 @@
 namespace MailOptin\Core\OptinForms;
 
 
+use MailOptin\Core\Admin\Customizer\CustomControls\ControlsHelpers;
+use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Font_Stack_Control;
 use MailOptin\Core\PluginSettings\Settings;
 use MailOptin\Core\Repositories\OptinCampaignsRepository;
 
@@ -28,6 +30,19 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         do_action('mo_optin_theme_shortcodes_add', $optin_campaign_id);
 
         parent::__construct($optin_campaign_id);
+    }
+
+    public function sanitize_font_stack_family($font)
+    {
+        $system_fonts = ControlsHelpers::get_system_font_stack();
+
+        if ( ! in_array($font, $system_fonts)) {
+            // for some odd reasons, self::_construct_font_family didn't work correctly here.
+            // don't ever switched to _construct_font_family in future.
+            $font = self::_replace_plus_with_space($font);
+        }
+
+        return $font;
     }
 
     /**
@@ -145,21 +160,30 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
      */
     public function name_field_styles()
     {
-        $style_arg = apply_filters('mo_optin_form_name_field_styles',
-            [
-                'color'            => $this->get_customizer_value('name_field_color'),
-                'background-color' => $this->get_customizer_value('name_field_background'),
-                'font-family'      => $this->get_customizer_value('name_field_font'),
-                'height'           => 'auto'
-            ],
-            $this->optin_campaign_id,
-            $this->optin_campaign_type,
-            $this->optin_campaign_uuid
+        $font = $this->sanitize_font_stack_family(
+            $this->get_customizer_value('name_field_font')
         );
+
+        $style_arg = [
+            'color'            => $this->get_customizer_value('name_field_color'),
+            'background-color' => $this->get_customizer_value('name_field_background'),
+            'height'           => 'auto'
+        ];
+
+        if ($font != 'inherit') {
+            $style_arg['font-family'] = $font;
+        }
 
         if ($this->get_customizer_value('hide_name_field')) {
             $style_arg['display'] = 'none';
         }
+
+
+        $style_arg = apply_filters('mo_optin_form_name_field_styles', $style_arg,
+            $this->optin_campaign_id,
+            $this->optin_campaign_type,
+            $this->optin_campaign_uuid
+        );
 
         $style = '';
 
@@ -179,20 +203,29 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
      */
     public function email_field_styles()
     {
-        $style_arg = apply_filters('mo_optin_form_email_field_styles',
-            [
-                'color'            => $this->get_customizer_value('email_field_color'),
-                'background-color' => $this->get_customizer_value('email_field_background'),
-                'font-family'      => $this->get_customizer_value('email_field_font'),
-                'height'           => 'auto'
-            ],
+        $font = $this->sanitize_font_stack_family(
+            $this->get_customizer_value('email_field_font')
+        );
+
+        $style_arg = [
+            'color'            => $this->get_customizer_value('email_field_color'),
+            'background-color' => $this->get_customizer_value('email_field_background'),
+            'height'           => 'auto'
+        ];
+
+
+        if ($font != 'inherit') {
+            $style_arg['font-family'] = $font;
+        }
+
+
+        $style = '';
+
+        $style_arg = apply_filters('mo_optin_form_email_field_styles', $style_arg,
             $this->optin_campaign_id,
             $this->optin_campaign_type,
             $this->optin_campaign_uuid
         );
-
-
-        $style = '';
 
         foreach ($style_arg as $key => $value) {
             if ( ! empty($value)) {
@@ -256,7 +289,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
             'text-shadow' => 'none'
         ];
 
-        if($font != 'inherit') {
+        if ($font != 'inherit') {
             $style['font-family'] = $this->_construct_font_family($font);
         }
 

@@ -242,7 +242,7 @@ class CustomizerControls
                             'label' => __('Font Family', 'mailoptin'),
                             'section' => $this->customizerClassInstance->headline_section_id,
                             'settings' => $this->option_prefix . '[headline_font]',
-                            'count' => 200,
+                            'count' => 300,
                             'priority' => 20
                         )
                     )
@@ -345,7 +345,7 @@ class CustomizerControls
                             'label' => __('Font Family', 'mailoptin'),
                             'section' => $this->customizerClassInstance->description_section_id,
                             'settings' => $this->option_prefix . '[description_font]',
-                            'count' => 200,
+                            'count' => 300,
                             'priority' => 15
                         )
                     )
@@ -449,7 +449,7 @@ class CustomizerControls
                             'label' => __('Font Family', 'mailoptin'),
                             'section' => $this->customizerClassInstance->note_section_id,
                             'settings' => $this->option_prefix . '[note_font]',
-                            'count' => 200,
+                            'count' => 300,
                             'priority' => 20
                         )
                     )
@@ -771,7 +771,7 @@ class CustomizerControls
                             'section' => $this->customizerClassInstance->fields_section_id,
                             'settings' => $this->option_prefix . '[submit_button_font]',
                             'description' => __('The font family for the submit button field.', 'mailoptin'),
-                            'count' => 200,
+                            'count' => 300,
                             'priority' => 110
                         )
                     )
@@ -878,7 +878,7 @@ class CustomizerControls
                         'section' => $this->customizerClassInstance->fields_section_id,
                         'settings' => $this->option_prefix . '[cta_button_font]',
                         'description' => __('The font family for the call-to-action button field.', 'mailoptin'),
-                        'count' => 200,
+                        'count' => 300,
                         'priority' => 160
                     )
                 )

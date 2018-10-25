@@ -2,6 +2,7 @@
 
 namespace MailOptin\Core\OptinForms;
 
+use MailOptin\Core\Admin\Customizer\CustomControls\ControlsHelpers;
 use MailOptin\Core\Admin\Customizer\OptinForm\AbstractCustomizer;
 use MailOptin\Core\Admin\Customizer\OptinForm\Customizer;
 use MailOptin\Core\Admin\Customizer\OptinForm\CustomizerSettings;
@@ -119,7 +120,7 @@ abstract class AbstractOptinForm extends AbstractCustomizer implements OptinForm
      *
      * @return mixed|string
      */
-    public function _construct_font_family($val, $fallback = 'Helvetica, Arial, sans-serif;')
+    public function _construct_font_family($val, $fallback = 'Helvetica, Arial, sans-serif')
     {
         $font_family = self::_replace_plus_with_space($val);
 
@@ -175,6 +176,18 @@ abstract class AbstractOptinForm extends AbstractCustomizer implements OptinForm
         $font = self::_replace_plus_with_space($font);
 
         return in_array($font, $web_safe_font) ? '' : $font;
+    }
+
+    /**
+     * If font is system font stack, default to empty.
+     *
+     * @param string $font
+     *
+     * @return string
+     */
+    public static function _remove_system_font($font)
+    {
+        return in_array($font, ControlsHelpers::get_system_font_stack()) ? '' : $font;
     }
 
     /**
@@ -781,6 +794,26 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
             $this->optin_campaign_id
         );
 
+        $name_field_font = apply_filters('mo_get_optin_form_name_field_font',
+            self::_remove_system_font(
+                self::_remove_web_safe_font(
+                    OptinCampaignsRepository::get_merged_customizer_value($this->optin_campaign_id, 'name_field_font')
+                )
+            ),
+            'note_font',
+            $this->optin_campaign_id
+        );
+
+        $email_field_font = apply_filters('mo_get_optin_form_email_field_font',
+            self::_remove_system_font(
+                self::_remove_web_safe_font(
+                    OptinCampaignsRepository::get_merged_customizer_value($this->optin_campaign_id, 'email_field_font')
+                )
+            ),
+            'note_font',
+            $this->optin_campaign_id
+        );
+
         $note_font = apply_filters('mo_get_optin_form_note_font',
             self::_remove_web_safe_font(
                 OptinCampaignsRepository::get_merged_customizer_value($this->optin_campaign_id, 'note_font')
@@ -814,6 +847,15 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         if ( ! empty($description_font) && $description_font != 'inherit') {
             $webfont [] = "'$description_font'";
         }
+
+        if ( ! empty($name_field_font) && $name_field_font != 'inherit') {
+            $webfont [] = "'$name_field_font'";
+        }
+
+        if ( ! empty($email_field_font) && $email_field_font != 'inherit') {
+            $webfont [] = "'$email_field_font'";
+        }
+
         if ( ! empty($note_font) && $note_font != 'inherit') {
             $webfont[] = "'$note_font'";
         }

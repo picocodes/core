@@ -1,7 +1,4 @@
 <?php
-/**
- * Copyright (C) 2016  Agbonghama Collins <me@w3guy.com>
- */
 
 namespace MailOptin\Core\Admin\Customizer\CustomControls;
 
@@ -12,18 +9,18 @@ class WP_Customize_Font_Stack_Control extends \WP_Customize_Control
 {
     public function __construct($manager, $id, $args = array())
     {
-        $this->count = isset($args['count']) ? $args['count'] : $this->count;
         parent::__construct($manager, $id, $args);
     }
 
     /**
-     * Render the content of the category dropdown
-     *
      * @return string
      */
     public function render_content()
     {
-        $fonts = $this->get_font_stack();
+        $system_font_optgroup_label = __('System Fonts', 'mailoptin');
+        $google_font_optgroup_label = __('Google Fonts', 'mailoptin');
+
+        $fonts = [$system_font_optgroup_label => ControlsHelpers::get_system_font_stack()] + [$google_font_optgroup_label => WP_Customize_Google_Font_Control::get_fonts(300)];
 
         if ( ! empty($fonts)) {
             ?>
@@ -31,9 +28,22 @@ class WP_Customize_Font_Stack_Control extends \WP_Customize_Control
                 <span class="customize-control-title"><?php echo esc_html($this->label); ?></span>
                 <select <?php $this->link(); ?>>
                     <?php
-                    foreach ($fonts as $font) {
-                        printf('<option value="%s" %s>%s</option>', $font,
-                            selected($this->value(), $font, false), $font);
+
+                    printf('<option value="inherit" %s>%s</option>', selected($this->value(), 'inherit', false), __('Inherit from Theme', 'mailoptin'));
+
+                    foreach ($fonts as $key => $font) {
+                        if (is_array($font)) {
+                            printf('<optgroup label="%s">', $key);
+                            foreach ($font as $font2) {
+                                $option_value = $font2;
+                                if ($key == $google_font_optgroup_label) {
+                                    $option_value = str_replace(' ', '+', $font2);
+                                }
+                                printf('<option value="%s" %s>%s</option>', $option_value, selected($this->value(), $option_value, false), $font2);
+                            }
+                        } else {
+                            printf('<option value="%s" %s>%s</option>', $font, selected($this->value(), $font, false), $font);
+                        }
                     }
                     ?>
                 </select>
@@ -43,37 +53,5 @@ class WP_Customize_Font_Stack_Control extends \WP_Customize_Control
             </label>
             <?php
         }
-    }
-
-    /**
-     * Get the google fonts from the API or in the cache
-     *
-     * @return array
-     */
-    public function get_font_stack()
-    {
-        return array(
-            "Arial, Helvetica, sans-serif",
-            "Times New Roman, Times, serif",
-            "Tahoma, Geneva, sans-serif",
-            "Consolas, Lucida Console, monospace",
-            "Futura, Century Gothic, sans-serif",
-            "Franklin Gothic Medium, sans-serif",
-            "Courier New, Courier, monospace",
-            "Copperplate Light, serif",
-            "Cambria, Georgia, Times, serif",
-            "Georgia, Times New Roman, serif",
-            "Corbel, Lucida Grande, sans-serif",
-            "Century Gothic, Apple Gothic, sans-serif",
-            "Trebuchet MS, Arial, sans-serif",
-            "Verdana, Geneva, sans-serif",
-            "Helvetica Neue, Helvetica, Helvetica, Arial, sans-serif",
-            "Gill Sans, Calibri, sans-serif",
-            "Segoe UI, Candara, Bitstream Vera Sans, Verdana",
-            "Impact, Haettenschweiler, sans-serif",
-            "Lucida Sans, Lucida Grande, sans-serif",
-            "Garamond, Hoefler Text, serif",
-            "Palatino Linotype, Book Antiqua, serif"
-        );
     }
 }
