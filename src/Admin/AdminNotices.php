@@ -18,9 +18,6 @@ class AdminNotices
 
             do_action('mailoptin_admin_notices');
 
-            add_action('admin_init', array('PAnD', 'init'));
-            add_action('admin_init', array($this, 'dismiss_leave_review_notice_forever'));
-
             add_action('admin_notices', array($this, 'optin_campaigns_cache_cleared'));
             add_action('admin_notices', array($this, 'template_class_not_found'));
             add_action('admin_notices', array($this, 'optin_class_not_found'));
@@ -34,6 +31,9 @@ class AdminNotices
 
             add_filter('removable_query_args', array($this, 'removable_query_args'));
         });
+
+        add_action('admin_init', array('PAnD', 'init'));
+        add_action('admin_init', array($this, 'dismiss_leave_review_notice_forever'));
     }
 
     public function removable_query_args($args)
