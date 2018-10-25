@@ -385,6 +385,12 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         $global_css .= "div#{$optin_campaign_uuid} .mo-optin-form-wrapper label {color:inherit;font-weight: normal;margin: 0;padding:0;}";
         $global_css .= "div#{$optin_campaign_uuid}.mo-cta-button-flag .mo-optin-form-note .mo-acceptance-label {display:none;}";
 
+        $optin_effect = $this->get_customizer_value('modal_effects');
+
+        if(!empty($optin_effect)) {
+            $global_css .= file_get_contents(MAILOPTIN_ASSETS_URL . 'css/animate.min.css');
+        }
+
         if ($this->optin_campaign_type == 'bar') {
             $global_css .= "div#$optin_campaign_uuid.mo-optin-form-bar-top {top: 0;position: absolute;}";
             $global_css .= "div#$optin_campaign_uuid.mo-optin-form-bar-bottom {bottom: 0;position: fixed;}";
@@ -413,7 +419,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
     
             @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
                 #$optin_campaign_uuid.moModal a.mo-close-modal {
-                    background-image: url(<?php echo $close_image_url; ?>);
+                    background-image: url($close_image_url);
                 }
             }
     

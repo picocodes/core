@@ -8,7 +8,7 @@ class DBUpdates
 {
     public static $instance;
 
-    const DB_VER = 7;
+    const DB_VER = 8;
 
     public function init_options()
     {
@@ -75,7 +75,7 @@ class DBUpdates
 
     public function update_routine_3()
     {
-        $db_options = get_option(MAILOPTIN_CONNECTIONS_DB_OPTION_NAME);
+        $db_options                       = get_option(MAILOPTIN_CONNECTIONS_DB_OPTION_NAME);
         $db_options['elementor_activate'] = 'true';
         update_option(MAILOPTIN_CONNECTIONS_DB_OPTION_NAME, $db_options);
     }
@@ -85,7 +85,7 @@ class DBUpdates
         $all_optin_settings = OptinCampaignsRepository::get_settings();
 
         // UPGRADE routing for Lite version where all previous created optin are set to show globally.
-        if (!defined('MAILOPTIN_DETACH_LIBSODIUM')) {
+        if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM')) {
             $all_optin_settings = OptinCampaignsRepository::get_settings();
 
             foreach ($all_optin_settings as $optin_campaign_id => $setting) {
@@ -110,7 +110,7 @@ class DBUpdates
             $all_optin_settings = OptinCampaignsRepository::get_settings();
 
             foreach ($all_optin_settings as $optin_campaign_id => $setting) {
-                if (!isset($all_optin_settings[$optin_campaign_id]['load_optin_globally']) || $all_optin_settings[$optin_campaign_id]['load_optin_globally'] === '') {
+                if ( ! isset($all_optin_settings[$optin_campaign_id]['load_optin_globally']) || $all_optin_settings[$optin_campaign_id]['load_optin_globally'] === '') {
                     $all_optin_settings[$optin_campaign_id]['load_optin_globally'] = false;
                 }
             }
@@ -128,20 +128,20 @@ class DBUpdates
 
             $new_integration_data = [];
 
-            if (!isset($all_optin_settings[$optin_campaign_id]['connection_service'])) continue;
+            if ( ! isset($all_optin_settings[$optin_campaign_id]['connection_service'])) continue;
 
-            $connection_service = $all_optin_settings[$optin_campaign_id]['connection_service'];
+            $connection_service                            = $all_optin_settings[$optin_campaign_id]['connection_service'];
             $new_integration_data[0]['connection_service'] = $connection_service;
             unset($all_optin_settings[$optin_campaign_id]['connection_service']);
 
             if (isset($all_optin_settings[$optin_campaign_id]['connection_email_list'])) {
-                $connection_email_list = $all_optin_settings[$optin_campaign_id]['connection_email_list'];
+                $connection_email_list                            = $all_optin_settings[$optin_campaign_id]['connection_email_list'];
                 $new_integration_data[0]['connection_email_list'] = $connection_email_list;
                 unset($all_optin_settings[$optin_campaign_id]['connection_email_list']);
             }
 
             // migrate connection metadata
-            if (!is_array($all_optin_settings[$optin_campaign_id])) continue;
+            if ( ! is_array($all_optin_settings[$optin_campaign_id])) continue;
             foreach ($settings as $key => $value) {
                 if (strpos($key, $connection_service) !== false) {
                     if ($key == 'MailChimpConnect_user_input_interests') {
@@ -186,10 +186,15 @@ class DBUpdates
         dbDelta($sql);
     }
 
+    public function update_routine_8()
+    {
+        OptinCampaignsRepository::burst_all_cache();
+    }
+
     /** Singleton poop */
     public static function get_instance()
     {
-        if (!isset(self::$instance)) {
+        if ( ! isset(self::$instance)) {
             self::$instance = new self();
         }
 
