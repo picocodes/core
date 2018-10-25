@@ -40,6 +40,7 @@ class ControlsHelpers
      * @param array $exclude
      * @param int $limit
      * @param string $search
+     *
      * @return array
      */
     public static function get_all_post_types_posts($exclude = array(), $limit = 5000, $search = '')
@@ -50,7 +51,7 @@ class ControlsHelpers
 
         if (empty($result) || false === $result) {
 
-            $post_types = get_post_types(array('public' => true));
+            $post_types          = get_post_types(array('public' => true));
             $filtered_post_types = array_diff($post_types, $exclude);
 
             $result = array();
@@ -76,6 +77,7 @@ class ControlsHelpers
      * @param int $limit
      * @param string $post_status
      * @param string $search
+     *
      * @return array
      */
     public static function get_post_type_posts($post_type, $limit = 3000, $post_status = 'publish', $search = '')
@@ -94,14 +96,14 @@ class ControlsHelpers
 
             $sql = "SELECT ID, post_title FROM $table WHERE post_type = '%s' AND post_status = '%s'";
 
-            if (!empty($search)) {
+            if ( ! empty($search)) {
                 $sql .= " AND post_title LIKE '%s'";
             }
 
             $sql .= " LIMIT $limit";
 
             $prepare_args = [$post_type, $post_status];
-            if (!empty($search)) {
+            if ( ! empty($search)) {
                 $prepare_args[] = "%$search%";
             }
 
@@ -131,7 +133,8 @@ class ControlsHelpers
         if (empty($data) || false === $data) {
 
             $data = get_categories([
-                'fields' => 'id=>name'
+                'fields'     => 'id=>name',
+                'hide_empty' => false
             ]);
 
             set_transient('mo_get_categories', $data, apply_filters('mo_get_categories_cache_expiration', MINUTE_IN_SECONDS));
@@ -144,7 +147,7 @@ class ControlsHelpers
     {
         $all_roles = wp_roles()->roles;
 
-        $editable_roles = apply_filters( 'editable_roles', $all_roles );
+        $editable_roles = apply_filters('editable_roles', $all_roles);
 
         $result = [];
         foreach ($editable_roles as $key => $value) {
@@ -168,8 +171,8 @@ class ControlsHelpers
 
             $data = get_tags([
                 'orderby' => 'count',
-                'order' => 'DESC',
-                'fields' => 'id=>name'
+                'order'   => 'DESC',
+                'fields'  => 'id=>name'
 
             ]);
 
@@ -194,6 +197,7 @@ class ControlsHelpers
 
             $data = array_reduce($post_types, function ($carry, \WP_Post_Type $item) {
                 $carry[$item->name] = $item->label;
+
                 return $carry;
             });
 
