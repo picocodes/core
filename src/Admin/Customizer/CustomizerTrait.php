@@ -48,7 +48,7 @@ trait CustomizerTrait
 
     public function clean_up_customizer()
     {
-        add_action('admin_init', function () {
+        add_action('init', function () {
 
             remove_all_actions('admin_print_footer_scripts');
 
@@ -163,6 +163,7 @@ trait CustomizerTrait
 
                     foreach ($wp_scripts->registered as $key => $value) {
                         $src = $value->src;
+
                         if (strpos($src, "themes/$child_theme/") !== false || strpos($src, "themes/$parent_theme/") !== false) {
                             unset($wp_scripts->registered[$key]);
                         }

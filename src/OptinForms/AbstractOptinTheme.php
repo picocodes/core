@@ -137,7 +137,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         }
 
         if ($this->get_customizer_value('hide_note')) {
-            $style_arg['display'] = 'none';
+            $style['display'] = 'none';
         }
 
         $style_arg = apply_filters('mo_optin_form_note_styles', $style, $this->optin_campaign_id, $this->optin_campaign_type, $this->optin_campaign_uuid);
