@@ -4,7 +4,7 @@ define(["jquery"], function ($) {
     function getmeasurements() {
         winheight = $(window).height();
         docheight = $(document).height();
-        trackLength = docheight - winheight
+        trackLength = docheight - winheight;
     }
 
     function amountscrolled() {
@@ -14,14 +14,13 @@ define(["jquery"], function ($) {
         $.event.trigger('moScrollTrigger', [pctScrolled])
     }
 
-    getmeasurements();
-
     $(window).on('resize', function () {
         getmeasurements()
     });
 
     $.moScrollTrigger = function (enable) {
         if (enable === "enable") {
+            getmeasurements();
             $(window).on("scroll", function () {
                 clearTimeout(throttlescroll);
                 throttlescroll = setTimeout(function () {
