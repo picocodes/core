@@ -48,6 +48,8 @@ trait CustomizerTrait
 
     public function clean_up_customizer()
     {
+        // this should never change from init to say admin_init in future because it will
+        // cause wp_enqueue_scripts filter from taking effect cos its used in frontend.
         add_action('init', function () {
 
             remove_all_actions('admin_print_footer_scripts');
