@@ -387,7 +387,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
 
         $optin_effect = $this->get_customizer_value('modal_effects');
 
-        if(!empty($optin_effect)) {
+        if(!empty($optin_effect) || is_customize_preview()) {
             $global_css .= file_get_contents(MAILOPTIN_ASSETS_URL . 'css/animate.min.css');
         }
 
