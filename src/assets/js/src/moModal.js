@@ -16,10 +16,8 @@ define(["jquery"], function ($) {
             // show lightbox
             elm.show();
 
-            var windowWidth = $(window).width(),
-                windowHeight = $(window).height(),
+            var windowHeight = $(window).height(),
                 modal_obj = $('#' + modal_css_id + '_container'),
-                optinWidth = modal_obj.outerWidth(true),
                 optinHeight = modal_obj.outerHeight(true);
 
             // add 15px to the optin height of closIcon is set to be auto added to optin
