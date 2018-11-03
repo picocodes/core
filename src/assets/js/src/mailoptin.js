@@ -1057,34 +1057,27 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 }
 
                 if (typeof success_action !== 'undefined' && $.inArray(success_action, ['close_optin', 'redirect_url', 'close_optin_reload_page']) !== -1) {
-                    $.MoModalBox.close();
-                    mailoptin_optin._close_optin(optin_container);
-                }
 
-                if (success_action === 'close_optin_reload_page') {
-                    if (is_success_js_script || is_ga_active) {
-                        setTimeout(function () {
+                    setTimeout(function () {
+                        $.MoModalBox.close();
+                        mailoptin_optin._close_optin(optin_container);
+
+                        if (success_action === 'close_optin_reload_page') {
                             return window.location.reload();
-                        }, 1000);
-                    }
-                    else {
-                        window.location.reload();
-                    }
-                }
+                        }
+                        else {
+                            window.location.reload();
+                        }
 
-                if (success_action === 'redirect_url' && typeof redirect_url_val !== 'undefined' && redirect_url_val !== '') {
-                    if (typeof optin_js_config.pass_lead_data !== 'undefined' && true === optin_js_config.pass_lead_data) {
-                        redirect_url_val = mailoptin_optin.add_query_args(redirect_url_val, lead_data);
-                    }
+                        if (success_action === 'redirect_url' && typeof redirect_url_val !== 'undefined' && redirect_url_val !== '') {
+                            if (typeof optin_js_config.pass_lead_data !== 'undefined' && true === optin_js_config.pass_lead_data) {
+                                redirect_url_val = mailoptin_optin.add_query_args(redirect_url_val, lead_data);
+                            }
 
-                    if (is_success_js_script || is_ga_active) {
-                        setTimeout(function () {
                             window.location.assign(redirect_url_val);
-                        }, 1000);
-                    }
-                    else {
-                        window.location.assign(redirect_url_val);
-                    }
+                        }
+
+                    }, 1000);
                 }
             },
 
