@@ -429,6 +429,7 @@ div#$optin_css_id.moEleganceModal .moElegance_note {
 div#$optin_css_id.moEleganceModal input.moEleganceModal_input_fields {
   display: block;
   width: 100%;
+  max-width: 100%;
   padding: 10px;
   text-align: center;
   margin: 0.5em auto 0;

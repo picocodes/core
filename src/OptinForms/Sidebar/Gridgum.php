@@ -609,6 +609,7 @@ div#$optin_css_id.gridgum_container .gridgum_body-inner .gridgum_headline {
 
 div#$optin_css_id.gridgum_container .gridgum_body-form input.gridgum_input_field {
          width: 100%;
+         max-width: 100%;
          padding: 10px 0px;
          margin: 0;
          margin-bottom: 20px;

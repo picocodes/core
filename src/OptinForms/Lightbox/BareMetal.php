@@ -446,7 +446,7 @@ margin: 0;
 padding: 8px;
 height: 37px;
 width: 100%;
-max-width: initial;
+max-width: 100%;
 -webkit-box-sizing: border-box;
 -moz-box-sizing: border-box;
 box-sizing: border-box;
