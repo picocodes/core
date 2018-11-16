@@ -60,6 +60,16 @@ class CustomizerSettings extends AbstractCustomizer
                     'transport'         => 'refresh',
                     'sanitize_callback' => 'absint',
                 ),
+                'custom_post_type'            => array(
+                    'default'           => $this->customizer_defaults['custom_post_type'],
+                    'type'              => 'option',
+                    'transport'         => 'postMessage'
+                ),
+                'custom_post_type_settings'            => array(
+                    'default'           => $this->customizer_defaults['custom_post_type_settings'],
+                    'type'              => 'option',
+                    'transport'         => 'postMessage'
+                ),
                 'post_categories'                => array(
                     'default'   => $this->customizer_defaults['post_categories'],
                     'type'      => 'option',

@@ -38,25 +38,51 @@ class PostsEmailDigest extends AbstractTriggers
             'orderby'        => 'post_date'
         ];
 
-        $categories = ER::get_merged_customizer_value($email_campaign_id, 'post_categories');
-        $tags       = ER::get_merged_customizer_value($email_campaign_id, 'post_tags');
-
-        if ( ! empty($categories)) {
-            $parameters['category'] = implode(',', array_map('trim', $categories));
-        }
-
-        if ( ! empty($tags)) {
-            $parameters['tag_id'] = implode(',', array_map('trim', $tags));
-        }
-
-        $parameters['date_query'] = array(
-            array(
+        $parameters['date_query'] = [
+            [
                 'column' => 'post_date',
                 'after'  => $newer_than_timestamp
-            )
-        );
+            ]
+        ];
 
-        return get_posts(apply_filters('mo_post_digest_get_posts_args', $parameters));
+        $custom_post_type = ER::get_merged_customizer_value($email_campaign_id, 'custom_post_type');
+
+        if ($custom_post_type != 'post') {
+            $parameters['post_type'] = $custom_post_type;
+
+            $custom_post_type_settings = ER::get_merged_customizer_value($email_campaign_id, 'custom_post_type_settings');
+
+            if (empty($custom_post_type_settings)) return;
+
+            $custom_post_type_settings = json_decode($custom_post_type_settings, true);
+
+            if ( ! is_array($custom_post_type_settings)) return;
+
+            $parameters['tax_query'] = [];
+
+            foreach ($custom_post_type_settings as $taxonomy => $digest_terms) {
+                if ( ! empty($digest_terms)) {
+                    $parameters['tax_query'][] = [
+                        'taxonomy' => $taxonomy,
+                        'field'    => 'term_id',
+                        'terms'    => array_map('absint', $digest_terms)
+                    ];
+                }
+            }
+        } else {
+            $categories = ER::get_merged_customizer_value($email_campaign_id, 'post_categories');
+            $tags       = ER::get_merged_customizer_value($email_campaign_id, 'post_tags');
+
+            if ( ! empty($categories)) {
+                $parameters['category'] = implode(',', array_map('trim', $categories));
+            }
+
+            if ( ! empty($tags)) {
+                $parameters['tag_id'] = implode(',', array_map('trim', $tags));
+            }
+        }
+
+        return get_posts(apply_filters('mo_post_digest_get_posts_args', $parameters, $email_campaign_id));
     }
 
     /**

@@ -64,29 +64,65 @@ class NewPublishPost extends AbstractTriggers
 
         $post_type_support = apply_filters('mo_new_publish_post_post_types_support', ['post']);
 
-        if ($new_status == 'publish' && $old_status != 'publish' && in_array($post->post_type, $post_type_support)) {
+        if ($new_status == 'publish' && $old_status != 'publish') {
 
             $new_publish_post_campaigns = ER::get_by_email_campaign_type(ER::NEW_PUBLISH_POST);
 
             foreach ($new_publish_post_campaigns as $npp_campaign) {
                 $email_campaign_id = absint($npp_campaign['id']);
+
                 if (ER::is_campaign_active($email_campaign_id) === false) continue;
 
-                $npp_categories  = ER::get_merged_customizer_value($email_campaign_id, 'post_categories');
-                $npp_tags        = ER::get_merged_customizer_value($email_campaign_id, 'post_tags');
-                $post_categories = wp_get_post_categories($post->ID, ['fields' => 'ids']);
-                $post_tags       = wp_get_post_tags($post->ID, ['fields' => 'ids']);
+                $custom_post_type = ER::get_merged_customizer_value($email_campaign_id, 'custom_post_type');
 
-                if (is_array($npp_categories) && is_array($post_categories) && ! empty($npp_categories) && ! empty($post_categories)) {
-                    // use intersect to check if categories match.
-                    $result = array_intersect($post_categories, $npp_categories);
-                    if (empty($result)) continue;
+                $post_type_support = ['post'];
+
+                if ($custom_post_type != 'post') {
+                    $post_type_support = [$custom_post_type];
                 }
 
-                if (is_array($npp_tags) && is_array($post_tags) && ! empty($npp_tags) && ! empty($post_tags)) {
-                    // use intersect to check if categories match.
-                    $result = array_intersect($post_tags, $npp_tags);
-                    if (empty($result)) continue;
+                $post_type_support = apply_filters('mo_new_publish_post_post_types_support', $post_type_support, $email_campaign_id);
+
+                if ( ! in_array($post->post_type, $post_type_support)) continue;
+
+                $custom_post_type_settings = ER::get_merged_customizer_value($email_campaign_id, 'custom_post_type_settings');
+
+                if ($custom_post_type != 'post' && ! empty($custom_post_type_settings)) {
+                    $custom_post_type_settings = json_decode($custom_post_type_settings, true);
+
+                    if (is_array($custom_post_type_settings)) {
+                        foreach ($custom_post_type_settings as $taxonomy => $npp_terms) {
+                            if ( ! empty($npp_terms)) {
+                                $npp_terms  = array_map('absint', $npp_terms);
+                                $post_terms = array_map('absint', wp_get_object_terms($post->ID, $taxonomy, ['fields' => 'ids']));
+                                // do not check if $post_terms is empty because if no term is on the post, wp_get_object_terms return empty array
+                                // so we can use the empty to check against if NPP requires certain term(s)
+                                if (is_array($npp_terms) && ! empty($npp_terms)) {
+                                    $result = array_intersect($post_terms, $npp_terms);
+                                    if (empty($result)) continue 2;
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    $npp_categories  = ER::get_merged_customizer_value($email_campaign_id, 'post_categories');
+                    $npp_tags        = ER::get_merged_customizer_value($email_campaign_id, 'post_tags');
+                    $post_categories = wp_get_post_categories($post->ID, ['fields' => 'ids']);
+                    $post_tags       = wp_get_post_tags($post->ID, ['fields' => 'ids']);
+
+                    // do not check if $post_categories is empty because if no category is on the post, wp_get_post_categories return empty array
+                    // so we can use the empty to check against if NPP requires certain category(s)
+                    if (is_array($npp_categories) && ! empty($npp_categories)) {
+                        // use intersect to check if categories match.
+                        $result = array_intersect($post_categories, $npp_categories);
+                        if (empty($result)) continue;
+                    }
+
+                    if (is_array($npp_tags) && ! empty($npp_tags)) {
+                        // use intersect to check if categories match.
+                        $result = array_intersect($post_tags, $npp_tags);
+                        if (empty($result)) continue;
+                    }
                 }
 
                 $send_immediately_active = $this->send_immediately($email_campaign_id);

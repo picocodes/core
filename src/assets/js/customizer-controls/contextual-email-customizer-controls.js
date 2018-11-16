@@ -127,6 +127,57 @@
                 // do nothing
             });
         });
+
+        // CPT settings control
+        var cpt_settings_contextual_display = function (e, flag, val) {
+            e = e || false;
+            flag = flag || false;
+            val = val || this.value;
+
+            if (val === 'post') {
+                $('li[id*="custom_post_type_settings"]').hide();
+                $('li[id*="post_categories"], li[id*="post_tags"]').show();
+            }
+            else {
+                $('li[id*="post_categories"], li[id*="post_tags"]').hide();
+                if (flag === false) {
+                    $('li[id*="custom_post_type_settings"]').hide();
+                    add_spinner(this);
+
+                    $.post(ajaxurl, {
+                            action: 'mailoptin_customizer_email_automation_get_taxonomy',
+                            custom_post_type: val,
+                            security: $("input[data-customize-setting-link*='[ajax_nonce]']").val()
+                        },
+                        function (response) {
+                            if (_.isObject(response) && 'success' in response && 'data' in response) {
+                                var cache = $('li[id*="custom_post_type_settings"]');
+                                cache.find('.mo-ea-cpt-setting-container').html(response.data);
+                                cache.show();
+                                $('.mo-ea-cpt-setting-container .mailoptin-chosen').chosen();
+                            }
+
+                            remove_spinner();
+                        });
+                }
+            }
+        };
+
+        // on load
+        var custom_post_type_obj = $("select[data-customize-setting-link*='[custom_post_type]']");
+        cpt_settings_contextual_display('', true, custom_post_type_obj.val());
+        custom_post_type_obj.on('change', cpt_settings_contextual_display);
+
+
+        function add_spinner(placement) {
+            var spinner_html = $('<img class="mo-spinner fetch-email-list" src="' + mailoptin_globals.admin_url + 'images/spinner.gif">');
+            $(placement).after(spinner_html);
+        }
+
+
+        function remove_spinner() {
+            $('.mo-spinner.fetch-email-list').remove();
+        }
     });
 
 })(wp.customize, jQuery);

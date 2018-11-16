@@ -7,7 +7,9 @@
             // trigger a change state/event.
             if (!$(this).val()) {
                 data_link = $(this).attr('data-customize-setting-link');
-                wp.customize.value(data_link).set([])
+                if(typeof wp.customize.value(data_link) !== 'undefined') {
+                    wp.customize.value(data_link).set([])
+                }
             }
         });
 

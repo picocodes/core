@@ -50,10 +50,12 @@ class AbstractCustomizer
 
         $defaults['email_campaign_title'] = apply_filters('mailoptin_email_campaign_title_default', EmailCampaignRepository::get_email_campaign_name($email_campaign_id), $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
 
-        $defaults['email_campaign_subject']  = apply_filters('mailoptin_email_campaign_subject_default', $this->campaign_title_default(), $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
+        $defaults['email_campaign_subject'] = apply_filters('mailoptin_email_campaign_subject_default', $this->campaign_title_default(), $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
 
         $defaults['default_image_url']     = apply_filters('mailoptin_customizer_email_campaign_default_image_url', MAILOPTIN_ASSETS_URL . 'images/email-templates/default-feature-img.jpg', $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
         $defaults['post_content_length']   = apply_filters('mailoptin_customizer_email_campaign_post_content_length', 150, $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
+        $defaults['custom_post_type']      = apply_filters('mailoptin_customizer_email_campaign_custom_post_type', 'post', $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
+        $defaults['custom_post_type_settings']      = apply_filters('mailoptin_customizer_email_campaign_custom_post_type_settings', '', $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
         $defaults['item_number']           = apply_filters('mailoptin_customizer_email_campaign_item_number', 5, $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
         $defaults['post_categories']       = apply_filters('mailoptin_customizer_email_campaign_post_categories', [], $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
         $defaults['post_tags']             = apply_filters('mailoptin_customizer_email_campaign_post_tags', [], $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
@@ -79,7 +81,7 @@ class AbstractCustomizer
         $defaults['header_web_version_link_color'] = apply_filters('mailoptin_header_web_version_link_color_default', '', $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
 
         $defaults['content_before_main_content']              = apply_filters('mailoptin_content_before_main_content_default', '', $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
-        $defaults['content_after_main_content']              = apply_filters('mailoptin_content_after_main_content_default', '', $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
+        $defaults['content_after_main_content']               = apply_filters('mailoptin_content_after_main_content_default', '', $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
         $defaults['content_remove_ellipsis_button']           = apply_filters('mailoptin_content_remove_ellipsis_button_default', false, $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
         $defaults['content_remove_feature_image']             = apply_filters('mailoptin_content_remove_feature_image_default', false, $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);
         $defaults['content_background_color']                 = apply_filters('mailoptin_content_background_color_default', '', $this->customizer_defaults, $this->email_campaign_type, $this->email_campaign_class);

@@ -206,4 +206,19 @@ class ControlsHelpers
 
         return $data;
     }
+
+    public static function custom_post_types()
+    {
+        $post_types = self::get_post_types();
+
+        unset($post_types['post']);
+        unset($post_types['page']);
+        unset($post_types['attachment']);
+        unset($post_types['wpbf_hooks']);
+        unset($post_types['fl-builder-template']);
+        unset($post_types['elementor_library']);
+        unset($post_types['mailpoet_page']);
+
+        return $post_types;
+    }
 }

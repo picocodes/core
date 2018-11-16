@@ -3,6 +3,7 @@
 namespace MailOptin\Core;
 
 use MailOptin\Core\Admin\Customizer\CustomControls\ControlsHelpers;
+use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_EA_CPT_Control_Trait;
 use MailOptin\Core\Admin\Customizer\EmailCampaign\NewPublishPostTemplatePreview;
 use MailOptin\Core\Admin\Customizer\EmailCampaign\PostsEmailDigestTemplatePreview;
 use MailOptin\Core\Admin\Customizer\EmailCampaign\SolitaryDummyContent;
@@ -27,6 +28,8 @@ use MailOptin\Libsodium\LeadBank\LeadBank;
 
 class AjaxHandler
 {
+    use WP_Customize_EA_CPT_Control_Trait;
+
     public function __construct()
     {
         add_action('init', array($this, 'define_ajax'), 0);
@@ -34,23 +37,24 @@ class AjaxHandler
 
         // MailOptin_event => nopriv
         $ajax_events = array(
-            'track_optin_impression'       => true,
-            'subscribe_to_email_list'      => true,
-            'send_test_email'              => false,
-            'create_optin_campaign'        => false,
-            'create_email_campaign'        => false,
-            'customizer_fetch_email_list'  => false,
-            'optin_toggle_active'          => false,
-            'automation_toggle_active'     => false,
-            'toggle_optin_activated'       => false,
-            'toggle_automation_activated'  => false,
-            'optin_type_selection'         => false,
-            'create_optin_split_test'      => false,
-            'pause_optin_split_test'       => false,
-            'end_optin_split_modal'        => false,
-            'split_test_select_winner'     => false,
-            'page_targeting_search'        => false,
-            'dismiss_toastr_notifications' => false,
+            'track_optin_impression'                   => true,
+            'subscribe_to_email_list'                  => true,
+            'send_test_email'                          => false,
+            'create_optin_campaign'                    => false,
+            'create_email_campaign'                    => false,
+            'customizer_fetch_email_list'              => false,
+            'optin_toggle_active'                      => false,
+            'automation_toggle_active'                 => false,
+            'toggle_optin_activated'                   => false,
+            'toggle_automation_activated'              => false,
+            'optin_type_selection'                     => false,
+            'create_optin_split_test'                  => false,
+            'pause_optin_split_test'                   => false,
+            'end_optin_split_modal'                    => false,
+            'split_test_select_winner'                 => false,
+            'page_targeting_search'                    => false,
+            'dismiss_toastr_notifications'             => false,
+            'customizer_email_automation_get_taxonomy' => false,
         );
 
         foreach ($ajax_events as $ajax_event => $nopriv) {
@@ -832,6 +836,21 @@ class AjaxHandler
         (new OptinCampaignStat($optin_campaign_id))->save($stat_type);
 
         do_action('mailoptin_track_impressions', $payload, $optin_campaign_id, $optin_uuid);
+    }
+
+    public function customizer_email_automation_get_taxonomy()
+    {
+        check_ajax_referer('customizer-fetch-email-list', 'security');
+
+        $custom_post_type = sanitize_text_field($_POST['custom_post_type']);
+
+        if ( ! empty($custom_post_type)) {
+            ob_start();
+            $this->render_fields($custom_post_type);
+            wp_send_json_success(ob_get_clean());
+        }
+
+        wp_send_json_error();
     }
 
     /**
