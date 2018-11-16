@@ -126,6 +126,12 @@ class CustomizerControls
 
         $campaign_type = $this->customizerClassInstance->email_campaign_type;
 
+        $custom_post_type_options = [];
+
+        if (apply_filters('mailoptin_enable_email_automation_cpt_support', false)) {
+            $custom_post_type_options = ControlsHelpers::custom_post_types();
+        }
+
         $campaign_settings_controls = array(
             'email_campaign_title'      => apply_filters('mo_optin_form_customizer_email_campaign_title_args', array(
                     'type'     => 'text',
@@ -183,7 +189,7 @@ class CustomizerControls
                     'label'       => __('Select Post Type', 'mailoptin'),
                     'section'     => $this->customizerClassInstance->campaign_settings_section_id,
                     'settings'    => $this->option_prefix . '[custom_post_type]',
-                    'choices'     => ['post' => __('WordPress Posts', 'mailoptin')] + ControlsHelpers::custom_post_types(),
+                    'choices'     => ['post' => __('WordPress Posts', 'mailoptin')] + $custom_post_type_options,
                     'description' => __('By default, automation works with WordPress posts. To make it work with a custom post type instead? Select one.', 'mailoptin'),
                     'priority'    => 32
                 )
@@ -325,6 +331,11 @@ class CustomizerControls
             )
         );
 
+        if (apply_filters('mailoptin_enable_email_automation_cpt', false)) {
+            unset($campaign_settings_controls['custom_post_type']);
+            unset($campaign_settings_controls['custom_post_type_settings']);
+        }
+
         $email_campaign_type = EmailCampaignRepository::get_email_campaign_type($this->customizerClassInstance->email_campaign_id);
 
         if ($email_campaign_type !== EmailCampaignRepository::NEW_PUBLISH_POST) {
@@ -341,7 +352,7 @@ class CustomizerControls
             unset($campaign_settings_controls['post_categories']);
             unset($campaign_settings_controls['post_tags']);
             $content = sprintf(
-                __('Upgrade to %sMailOptin Premium%s to restrict by post categories and tags.', 'mailoptin'),
+                __('Upgrade to %sMailOptin Premium%s to support custom post types and restrict by post categories, tags and custom taxonomies.', 'mailoptin'),
                 '<a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=new_post_campaign_settings">',
                 '</a>',
                 '<strong>',

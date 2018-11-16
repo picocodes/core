@@ -31,6 +31,18 @@ class OptinCampaignsRepository extends AbstractRepository
     }
 
     /**
+     * Is CTA button active for optin?
+     *
+     * @param $optin_campaign_id
+     *
+     * @return string
+     */
+    public static function is_cta_button_active($optin_campaign_id)
+    {
+        return self::get_merged_customizer_value($optin_campaign_id,'display_only_button') === true;
+    }
+
+    /**
      * Is optin campaign a split test variant?
      *
      * @param int $optin_campaign_id

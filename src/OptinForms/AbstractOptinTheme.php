@@ -4,7 +4,6 @@ namespace MailOptin\Core\OptinForms;
 
 
 use MailOptin\Core\Admin\Customizer\CustomControls\ControlsHelpers;
-use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Font_Stack_Control;
 use MailOptin\Core\PluginSettings\Settings;
 use MailOptin\Core\Repositories\OptinCampaignsRepository;
 
@@ -468,7 +467,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         $class = "mo-optin-form-cta-wrapper{$class}";
 
         $style = '';
-        if ($this->get_customizer_value('display_only_button') !== true) {
+        if ( ! OptinCampaignsRepository::is_cta_button_active($this->optin_campaign_id)) {
             $style .= 'display:none;';
         }
 
