@@ -70,6 +70,6 @@ trait WP_Customize_EA_CPT_Control_Trait
 
     protected function _selected($name_attr, $key, $saved_value)
     {
-        return array_key_exists($name_attr, $saved_value) && in_array($key, $saved_value[$name_attr]) ? 'selected=selected' : null;
+        return is_array($saved_value) && array_key_exists($name_attr, $saved_value) && in_array($key, $saved_value[$name_attr]) ? 'selected=selected' : null;
     }
 }
