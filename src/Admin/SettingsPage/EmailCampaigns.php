@@ -148,8 +148,6 @@ class EmailCampaigns extends AbstractSettingsPage
      */
     public function new_publish_post_exclude_metabox($post)
     {
-        if (get_post_type($post) !== 'post') return;
-
         $npps = EmailCampaignRepository::get_by_email_campaign_type(
             EmailCampaignRepository::NEW_PUBLISH_POST
         );
@@ -157,12 +155,22 @@ class EmailCampaigns extends AbstractSettingsPage
         if (empty($npps)) return;
 
         $is_any_npp_active = false;
+        $npp_supported_cpt = [];
+
         foreach ($npps as $npp) {
+            $email_campaign_id = absint($npp['id']);
             if (EmailCampaignRepository::is_campaign_active(absint($npp['id']))) {
                 $is_any_npp_active = true;
-                break;
+
+                $npp_cpt           = EmailCampaignRepository::get_merged_customizer_value($email_campaign_id, 'custom_post_type');
+                $npp_supported_cpt[] = $npp_cpt;
             }
         }
+
+//        var_dump($is_any_npp_active,$npp_supported_cpt);
+//        exit;
+
+        if ( ! in_array(get_post_type($post), $npp_supported_cpt)) return;
 
         if ( ! $is_any_npp_active) return;
 
