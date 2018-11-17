@@ -162,13 +162,10 @@ class EmailCampaigns extends AbstractSettingsPage
             if (EmailCampaignRepository::is_campaign_active(absint($npp['id']))) {
                 $is_any_npp_active = true;
 
-                $npp_cpt           = EmailCampaignRepository::get_merged_customizer_value($email_campaign_id, 'custom_post_type');
+                $npp_cpt             = EmailCampaignRepository::get_merged_customizer_value($email_campaign_id, 'custom_post_type');
                 $npp_supported_cpt[] = $npp_cpt;
             }
         }
-
-//        var_dump($is_any_npp_active,$npp_supported_cpt);
-//        exit;
 
         if ( ! in_array(get_post_type($post), $npp_supported_cpt)) return;
 
