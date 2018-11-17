@@ -348,11 +348,11 @@ class CustomizerControls
             unset($campaign_settings_controls['email_digest_schedule']);
         }
 
-        if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM')) {
+        if ( ! apply_filters('mailoptin_enable_email_automation_cpt_support', false)) {
             unset($campaign_settings_controls['post_categories']);
             unset($campaign_settings_controls['post_tags']);
             $content = sprintf(
-                __('Upgrade to %sMailOptin Premium%s to support custom post types and restrict by post categories, tags and custom taxonomies.', 'mailoptin'),
+                __('Upgrade to %sMailOptin Pro%s to support custom post types and restrict by post categories, tags and custom taxonomies.', 'mailoptin'),
                 '<a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=new_post_campaign_settings">',
                 '</a>',
                 '<strong>',
