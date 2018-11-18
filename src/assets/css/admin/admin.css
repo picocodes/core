@@ -235,6 +235,9 @@ tr#ajax_nonce_row {
     border: 1px solid #dedede;
     -webkit-box-shadow: 0 1px 1px -1px rgba(0, 0, 0, .1);
     box-shadow: 0 1px 1px -1px rgba(0, 0, 0, .1);
+    box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
 }
 
 .mailoptin-optin-new-list h4 {
