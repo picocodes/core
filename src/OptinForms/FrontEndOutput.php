@@ -21,7 +21,6 @@ class FrontEndOutput
 
         if (apply_filters('mo_disable_frontend_optin_output', false)) return;
 
-
         $optin_ids = get_transient('mo_get_optin_ids_footer_display');
 
         if ($optin_ids === false) {
@@ -34,6 +33,8 @@ class FrontEndOutput
             $id = absint($id);
 
             do_action('mailoptin_before_footer_optin_display', $id, $optin_ids);
+
+            if ( ! apply_filters('mailoptin_show_optin_form', true, $id)) continue;
 
             // if it is a split test variant, skip
             if (Repository::is_split_test_variant($id)) continue;

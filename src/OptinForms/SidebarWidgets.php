@@ -55,6 +55,8 @@ class SidebarWidgets extends \WP_Widget
                 return '';
             }
 
+            if ( ! apply_filters('mailoptin_show_optin_form', true, $sidebar_optin_id)) return '';
+
             if ( ! $this->user_targeting_rule_checker($sidebar_optin_id)) {
                 return '';
             }
