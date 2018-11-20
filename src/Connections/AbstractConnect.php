@@ -26,10 +26,10 @@ abstract class AbstractConnect
     public function get_integration_data($data_key, $integration_data = [], $default = '')
     {
         $optin_campaign_id = isset($this->extras['optin_campaign_id']) ? absint($this->extras['optin_campaign_id']) : '';
-        $defaults = (new AbstractCustomizer($optin_campaign_id))->customizer_defaults['integrations'];
+        $defaults          = (new AbstractCustomizer($optin_campaign_id))->customizer_defaults['integrations'];
 
-        $data = $this->is_valid_data($default) ? $default : @$defaults[$data_key];
-        $bucket = is_array($integration_data) && !empty($integration_data) ? $integration_data : $this->extras['integration_data'];
+        $data   = $this->is_valid_data($default) ? $default : @$defaults[$data_key];
+        $bucket = is_array($integration_data) && ! empty($integration_data) ? $integration_data : $this->extras['integration_data'];
 
         if (isset($bucket[$data_key]) && $this->is_valid_data($bucket[$data_key])) {
             $data = $bucket[$data_key];
@@ -71,13 +71,14 @@ abstract class AbstractConnect
 
     public function data_filter($value)
     {
-        return self::is_boolean($value) || is_int($value) || !empty($value);
+        return self::is_boolean($value) || is_int($value) || ! empty($value);
     }
 
     /**
      * Helper to check if ajax response is successful.
      *
      * @param $response
+     *
      * @return bool
      */
     public static function is_ajax_success($response)
@@ -99,11 +100,13 @@ abstract class AbstractConnect
      * Check if HTTP status code is not successful.
      *
      * @param int $code
+     *
      * @return bool
      */
     public static function is_http_code_not_success($code)
     {
         $code = absint($code);
+
         return $code < 200 || $code > 299;
     }
 
@@ -111,11 +114,13 @@ abstract class AbstractConnect
      * Check if HTTP status code is successful.
      *
      * @param int $code
+     *
      * @return bool
      */
     public static function is_http_code_success($code)
     {
         $code = absint($code);
+
         return $code >= 200 && $code <= 299;
     }
 
@@ -140,18 +145,18 @@ abstract class AbstractConnect
      */
     public static function save_campaign_error_log($message, $campaign_log_id, $email_campaign_id)
     {
-        if (!isset($message) || !isset($campaign_log_id) || !isset($email_campaign_id)) {
+        if ( ! isset($message) || ! isset($campaign_log_id) || ! isset($email_campaign_id)) {
             return;
         }
 
         $email_campaign_name = EmailCampaignRepository::get_email_campaign_name($email_campaign_id);
-        $filename = md5($email_campaign_name . $campaign_log_id);
+        $filename            = md5($email_campaign_name . $campaign_log_id);
 
 
         $error_log_folder = MAILOPTIN_CAMPAIGN_ERROR_LOG;
 
         // does bugs folder exist? if NO, create it.
-        if (!file_exists($error_log_folder)) {
+        if ( ! file_exists($error_log_folder)) {
             mkdir($error_log_folder, 0755);
         }
 
@@ -172,20 +177,22 @@ abstract class AbstractConnect
         $error_log_folder = MAILOPTIN_OPTIN_ERROR_LOG;
 
         // does bugs folder exist? if NO, create it.
-        if (!file_exists($error_log_folder)) {
+        if ( ! file_exists($error_log_folder)) {
             mkdir($error_log_folder, 0755);
         }
 
         $response = error_log($message . "\r\n", 3, "{$error_log_folder}{$filename}.log");
 
-        self::send_optin_error_email($optin_campaign_id, $message);
+        if ( ! apply_filters('mailoptin_disable_send_optin_error_email', false, $optin_campaign_id)) {
+            self::send_optin_error_email($optin_campaign_id, $message);
+        }
 
         return $response;
     }
 
     public static function send_optin_error_email($optin_campaign_id, $error_message)
     {
-        if (!isset($optin_campaign_id, $error_message)) return;
+        if ( ! isset($optin_campaign_id, $error_message)) return;
 
         $email = get_option('admin_email');
 
