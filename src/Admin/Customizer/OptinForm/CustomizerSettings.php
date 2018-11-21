@@ -686,6 +686,11 @@ class CustomizerSettings extends AbstractCustomizer
                     'type' => 'option',
                     'transport' => 'postMessage',
                 ),
+                'post_tags_load' => array(
+                    'default' => apply_filters('mo_optin_form_post_tags_load', ''),
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
                 'exclusive_post_types_posts_load' => array(
                     'default' => apply_filters('mo_optin_form_exclusive_post_types_posts_load', ''),
                     'type' => 'option',

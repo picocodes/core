@@ -30,6 +30,9 @@ trait PageTargetingRuleTrait
         /** @var array $post_categories categories of current post */
         $post_categories = wp_get_post_categories($post_id);
 
+        /** @var array $post_tags tags of current post */
+        $post_tags = wp_get_post_tags($post_id, ['fields' => 'ids']);
+
         /** @var string $post_post_type post type of current post */
         $post_post_type = get_post_type($post_id);
 
@@ -39,6 +42,7 @@ trait PageTargetingRuleTrait
         $pages_never_load                = OCR::get_customizer_value($id, 'pages_never_load');
         $cpt_never_load                  = OCR::get_customizer_value($id, 'cpt_never_load');
         $post_categories_load            = OCR::get_customizer_value($id, 'post_categories_load');
+        $post_tags_load                  = OCR::get_customizer_value($id, 'post_tags_load');
         $exclusive_post_types_posts_load = OCR::get_customizer_value($id, 'exclusive_post_types_posts_load');
         $post_types_load                 = OCR::get_customizer_value($id, 'exclusive_post_types_load');
 
@@ -67,6 +71,7 @@ trait PageTargetingRuleTrait
                 empty($pages_never_load) &&
                 empty($cpt_never_load) &&
                 empty($post_categories_load) &&
+                empty($post_tags_load) &&
                 empty($exclusive_post_types_posts_load) &&
                 empty($post_types_load)
             ) {
@@ -102,6 +107,15 @@ trait PageTargetingRuleTrait
             // array_intersect() return array element that exist in both comparison arrays.
             if ( ! empty($post_categories_load)) {
                 $intersect = array_intersect($post_categories, $post_categories_load);
+                if (empty($intersect)) {
+                    return false;
+                }
+            }
+
+            // if current post category contain a category that optin should load for, return true.
+            // array_intersect() return array element that exist in both comparison arrays.
+            if ( ! empty($post_tags_load)) {
+                $intersect = array_intersect($post_tags, $post_tags_load);
                 if (empty($intersect)) {
                     return false;
                 }
