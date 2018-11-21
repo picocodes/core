@@ -65,12 +65,12 @@ function html_to_text($content)
  */
 function limit_text($text, $limit = 150)
 {
-    $limit = !is_int($limit) || 0 === $limit ? 150 : $limit;
+    $limit = ! is_int($limit) || 0 === $limit ? 150 : $limit;
 
     if (str_word_count($text, 0) > $limit) {
         $words = str_word_count($text, 2);
-        $pos = array_keys($words);
-        $text = substr($text, 0, $pos[$limit]) . apply_filters('maioptin_limit_text_ellipsis', '. . .');
+        $pos   = array_keys($words);
+        $text  = substr($text, 0, $pos[$limit]) . apply_filters('maioptin_limit_text_ellipsis', '. . .');
     }
 
     return $text;
@@ -98,12 +98,15 @@ function sanitize_data($data)
     if (is_string($data)) {
         return sanitize_text_field($data);
     }
+
     $sanitized_data = array();
-    foreach ($data as $key => $value) {
-        if (is_array($data[$key])) {
-            $sanitized_data[$key] = sanitize_data($data[$key]);
-        } else {
-            $sanitized_data[$key] = sanitize_text_field($data[$key]);
+    if (is_array($data)) {
+        foreach ($data as $key => $value) {
+            if (is_array($data[$key])) {
+                $sanitized_data[$key] = sanitize_data($data[$key]);
+            } else {
+                $sanitized_data[$key] = sanitize_text_field($data[$key]);
+            }
         }
     }
 
@@ -177,11 +180,11 @@ function get_ip_address()
 {
     $ip = '127.0.0.1';
 
-    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+    if ( ! empty($_SERVER['HTTP_CLIENT_IP'])) {
         $ip = $_SERVER['HTTP_CLIENT_IP'];
-    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+    } elseif ( ! empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
         $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-    } elseif (!empty($_SERVER['REMOTE_ADDR'])) {
+    } elseif ( ! empty($_SERVER['REMOTE_ADDR'])) {
         $ip = $_SERVER['REMOTE_ADDR'];
     }
 

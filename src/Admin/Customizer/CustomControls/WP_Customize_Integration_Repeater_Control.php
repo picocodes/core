@@ -172,15 +172,17 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
             <?php endif; ?>
             <select class="mo-optin-integration-field mailoptin-integration-chosen" name="<?php echo $name ?>" multiple>
                 <?php
-                foreach ($choices as $key => $value) {
-                    if (is_array($value)) {
-                        echo "<optgroup label='$key'>";
-                        foreach ($value as $key2 => $value2) {
-                            echo '<option value="' . esc_attr($key2) . '"' . $this->_selected($key2, $saved_value) . '>' . $value2 . '</option>';
+                if(is_array($choices)) {
+                    foreach ($choices as $key => $value) {
+                        if (is_array($value)) {
+                            echo "<optgroup label='$key'>";
+                            foreach ($value as $key2 => $value2) {
+                                echo '<option value="' . esc_attr($key2) . '"' . $this->_selected($key2, $saved_value) . '>' . $value2 . '</option>';
+                            }
+                            echo "</optgroup>";
+                        } else {
+                            echo '<option value="' . esc_attr($key) . '"' . $this->_selected($key, $saved_value) . '>' . $value . '</option>';
                         }
-                        echo "</optgroup>";
-                    } else {
-                        echo '<option value="' . esc_attr($key) . '"' . $this->_selected($key, $saved_value) . '>' . $value . '</option>';
                     }
                 }
                 ?>
