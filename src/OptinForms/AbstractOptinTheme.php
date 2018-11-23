@@ -31,6 +31,11 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         parent::__construct($optin_campaign_id);
     }
 
+    public function video_embed_html($html)
+    {
+        return '<div class="mailoptin-video-container">' . $html . '</div>';
+    }
+
     public function sanitize_font_stack_family($font)
     {
         $system_fonts = ControlsHelpers::get_system_font_stack();
@@ -42,6 +47,21 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         }
 
         return $font;
+    }
+
+    public function parse_embed($body)
+    {
+        global $wp_embed;
+
+        add_filter('embed_oembed_html', [$this, 'video_embed_html'], 10, 3);
+        add_filter('video_embed_html', [$this, 'video_embed_html']);
+
+        $content = $wp_embed->run_shortcode($body);
+
+        remove_filter('embed_oembed_html', [$this, 'video_embed_html'], 10, 3);
+        remove_filter('video_embed_html', [$this, 'video_embed_html']);
+
+        return $content;
     }
 
     /**
@@ -546,6 +566,8 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         $headline .= $this->get_customizer_value('headline');
         $headline .= apply_filters('mo_optin_form_after_headline', '', $this->optin_campaign_id, $this->optin_campaign_type, $this->optin_campaign_uuid, $atts);
 
+        // this has to come before do_shortcode.
+        $headline = $this->parse_embed($headline);
         $headline = do_shortcode($headline);
 
         $headline_styles = $this->headline_styles();
@@ -709,6 +731,8 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         $description .= $this->get_customizer_value('description');
         $description .= apply_filters('mo_optin_form_after_description', '', $this->optin_campaign_id, $this->optin_campaign_type, $this->optin_campaign_uuid, $atts);
 
+        // this has to come before do_shortcode.
+        $description = $this->parse_embed($description);
         $description = do_shortcode($description);
 
         $description_styles = $this->description_styles();

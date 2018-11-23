@@ -387,6 +387,9 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
 
         $optin_effect = $this->get_customizer_value('modal_effects');
 
+        $global_css .= "div#{$optin_campaign_uuid} .mailoptin-video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; }
+                        div#{$optin_campaign_uuid} .mailoptin-video-container iframe, div#{$optin_campaign_uuid} .mailoptin-video-container object, div#{$optin_campaign_uuid} .mailoptin-video-container embed, div#{$optin_campaign_uuid} .mailoptin-video-container video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }";
+
         if ( ! empty($optin_effect) || is_customize_preview()) {
             $global_css .= file_get_contents(MAILOPTIN_ASSETS_URL . 'css/animate.min.css');
         }
