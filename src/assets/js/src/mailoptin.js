@@ -59,15 +59,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
 
                     // add the close-optin event handler. modal/lightbox has its own so skip.
                     if (this.hasClass('mo-optin-form-lightbox') === false) {
-                        $(document).on('click.moOptin', 'a[rel~="moOptin:close"]', {
-                                'optin_uuid': $optin_uuid,
-                                'optin_type': $optin_type,
-                                'optin_js_config': optin_js_config,
-                                'self': self
-                            }, self.close_optin
-                        );
-
-                        $(document).on('click.moOptin', '.mo-close-optin', {
+                        $(document).on('click.moOptin', 'a[rel~="moOptin:close"], .mo-close-optin', {
                                 'optin_uuid': $optin_uuid,
                                 'optin_type': $optin_type,
                                 'optin_js_config': optin_js_config,
@@ -114,7 +106,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                     /** Notification bar */
                     if (this.hasClass('mo-optin-form-bar')) {
                         // only one instance of top bar can show at a time.
-                        if ($.MailOptin['isActiveMOBar_' + optin_js_config.bar_position] === true) return;
+                        if (self.is_flag_optin_type_active(optin_js_config, 'bar')) return;
 
                         self.process_optin_form_display.call(this, optin_js_config, 'bar', skip_display_checks);
                     }
@@ -122,7 +114,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                     /** Slide INs */
                     if (this.hasClass('mo-optin-form-slidein')) {
                         // only one instance of slidein type can shown at a time.
-                        if ($.MailOptin['isActiveMOSlidein_' + optin_js_config.slidein_position] === true) return;
+                        if (self.is_flag_optin_type_active(optin_js_config, 'slidein')) return;
                         self.process_optin_form_display.call(this, optin_js_config, 'slidein', skip_display_checks);
                     }
 
@@ -560,6 +552,13 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
 
                 self.animate_optin_display.call(this, optin_config.effects);
                 self.flag_optin_type_displayed(optin_config, optin_type);
+
+                if (optin_type === 'bar') {
+                    var mt = parseFloat($(document.body).css('margin-top')),
+                        optin_height = $.MailOptin.activeBarHeight = this.outerHeight();
+                    $(document.body).css('margin-top', mt + optin_height + 'px')
+                }
+
                 this.show();
                 $(this).trigger('moOptin:show', [optin_config.optin_uuid, optin_config]);
             },
@@ -571,7 +570,6 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
              * @param {string} optin_type
              */
             flag_optin_type_displayed: function (optin_config, optin_type) {
-
                 if (optin_type === 'bar') {
                     var bar_position = optin_config.bar_position;
                     $.MailOptin['isActiveMOBar_' + bar_position] = true;
@@ -598,6 +596,18 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 if (optin_type === 'slidein') {
                     var slidein_position = optin_config.slidein_position;
                     $.MailOptin['isActiveMOSlidein_' + slidein_position] = false;
+                }
+            },
+
+            is_flag_optin_type_active: function (optin_config, optin_type) {
+                if (optin_type === 'bar') {
+                    var bar_position = optin_config.bar_position;
+                    return $.MailOptin['isActiveMOBar_' + bar_position] === true;
+                }
+
+                if (optin_type === 'slidein') {
+                    var slidein_position = optin_config.slidein_position;
+                    return $.MailOptin['isActiveMOSlidein_' + slidein_position] === true;
                 }
             },
 
@@ -630,6 +640,13 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
             _close_optin: function (optin_container) {
                 optin_container.fadeOut(400, function () {
                     $(this).trigger('moOptin:close', [this]);
+
+                    var optin_type = optin_container.attr('data-optin-type');
+                    if (optin_type === 'bar') {
+                        var mt = parseFloat($(document.body).css('margin-top'));
+                        $(document.body).css('margin-top', mt - $.MailOptin.activeBarHeight + 'px');
+                        delete $.MailOptin.activeBarHeight;
+                    }
                 });
             },
 
@@ -1029,7 +1046,6 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 var redirect_url_val = optin_js_config.redirect_url_value;
                 var success_js_script = optin_js_config.success_js_script;
                 var is_success_js_script = typeof success_js_script !== 'undefined' && success_js_script !== '';
-                var is_ga_active = typeof optin_js_config.ga_active !== 'undefined';
                 var lead_data = {};
 
                 lead_data.mo_name = lead_data.mo_email = '';
