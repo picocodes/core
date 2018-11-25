@@ -12,10 +12,14 @@
                         content;
 
                     if(editor) {
-                        editor.on('keyup change undo redo SetContent', function () {
+                        editor.on('keyup change undo redo SetContent Paste', function () {
                             editor.save();
                             content = editor.getContent();
                             tArea.val(content).trigger('change');
+
+                            if(content.indexOf('[embed') !== -1) {
+                                wp.customize.previewer.refresh();
+                            }
                         });
                     }
                 });
