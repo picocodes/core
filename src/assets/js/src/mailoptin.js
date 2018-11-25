@@ -553,10 +553,17 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 self.animate_optin_display.call(this, optin_config.effects);
                 self.flag_optin_type_displayed(optin_config, optin_type);
 
-                if (optin_type === 'bar') {
-                    var mt = parseFloat($(document.body).css('margin-top')),
-                        optin_height = $.MailOptin.activeBarHeight = this.outerHeight();
-                    $(document.body).css('margin-top', mt + optin_height + 'px')
+                if (optin_type === 'bar' && optin_config.bar_position === 'top') {
+                    var originalMargin = parseFloat($(document.body).css('margin-top')),
+                        mHeight = this.outerHeight();
+
+                    if ($(window).width() <= 600) {
+                        mHeight -= $("#wpadminbar").outerHeight();
+                    }
+
+                    mHeight = $.MailOptin.activeBarHeight = originalMargin + mHeight;
+
+                    $(document.body).css('margin-top', originalMargin + mHeight + 'px');
                 }
 
                 this.show();
@@ -620,8 +627,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 var optin_container = $(this).parents('.moOptinForm');
                 var optin_uuid = optin_container.attr('id');
                 var optin_type = optin_container.attr('data-optin-type');
-                var optin_css_id = optin_uuid + '_' + optin_type;
-                var optin_config = mailoptin_optin.optin_js_config(optin_css_id);
+                var optin_config = mailoptin_optin.optin_js_config(optin_uuid);
 
                 mailoptin_optin._close_optin(optin_container);
 
@@ -641,8 +647,10 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 optin_container.fadeOut(400, function () {
                     $(this).trigger('moOptin:close', [this]);
 
-                    var optin_type = optin_container.attr('data-optin-type');
-                    if (optin_type === 'bar') {
+                    var optin_uuid = optin_container.attr('id');
+                    var optin_config = mailoptin_optin.optin_js_config(optin_uuid);
+
+                    if (optin_config.optin_type === 'bar' && optin_config.bar_position === 'top') {
                         var mt = parseFloat($(document.body).css('margin-top'));
                         $(document.body).css('margin-top', mt - $.MailOptin.activeBarHeight + 'px');
                         delete $.MailOptin.activeBarHeight;
