@@ -323,6 +323,7 @@ class CustomizerControls
                             'section'   => $this->customizerClassInstance->description_section_id,
                             'settings'  => $this->option_prefix . '[description]',
                             'editor_id' => 'description',
+                            'quicktags'     => true,
                             'priority'  => 20
                         )
                     )

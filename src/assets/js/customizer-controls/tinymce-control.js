@@ -17,6 +17,7 @@
                             content = editor.getContent();
                             tArea.val(content).trigger('change');
 
+                            // if there is a shortcode embed, refresh the preview
                             if ((new RegExp(/\[.+\]/g)).test(content) === true) {
                                 wp.customize.previewer.refresh();
                             }
