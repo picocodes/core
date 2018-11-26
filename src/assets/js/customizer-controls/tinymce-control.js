@@ -23,6 +23,11 @@
                             }
                         });
                     }
+                }).on('keyup change', function () {
+                    // if there is a shortcode embed, refresh the preview
+                    if ((new RegExp(/\[.+\]/g)).test(this.value) === true) {
+                        wp.customize.previewer.refresh();
+                    }
                 });
             });
         }
