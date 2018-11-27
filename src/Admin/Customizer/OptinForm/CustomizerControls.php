@@ -4,6 +4,7 @@ namespace MailOptin\Core\Admin\Customizer\OptinForm;
 
 use MailOptin\Core\Admin\Customizer\CustomControls\ControlsHelpers;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Custom_Content;
+use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Fields_Repeater_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Font_Size_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Google_Font_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Font_Stack_Control;
@@ -574,6 +575,19 @@ class CustomizerControls
         $field_controls_args = apply_filters(
             "mo_optin_form_customizer_fields_controls",
             array(
+                'fields' => new WP_Customize_Fields_Repeater_Control(
+                    $this->wp_customize,
+                    $this->option_prefix . '[fields]',
+                    apply_filters('mo_optin_form_customizer_fields_args', array(
+                            'section'                 => $this->customizerClassInstance->fields_section_id,
+                            'settings'                => $this->option_prefix . '[fields]',
+                            'default_values'          => (new AbstractCustomizer($this->optin_campaign_id))->customizer_defaults['fields'],
+                            'customizerClassInstance' => $this->customizerClassInstance,
+                            'optin_campaign_id'       => $this->optin_campaign_id,
+                            'priority'                => 2
+                        )
+                    )
+                ),
                 'hide_name_field'          => new WP_Customize_Toggle_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[hide_name_field]',

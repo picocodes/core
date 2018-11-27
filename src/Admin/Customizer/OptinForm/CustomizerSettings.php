@@ -289,6 +289,11 @@ class CustomizerSettings extends AbstractCustomizer
     {
         $fields_settings_args = apply_filters("mo_optin_form_customizer_fields_settings",
             array(
+                'fields' => array(
+                    'default' => '',
+                    'type' => 'option',
+                    'transport' => 'postMessage',
+                ),
                 'display_only_button' => array(
                     'default' => $this->customizer_defaults['display_only_button'],
                     'type' => 'option',
