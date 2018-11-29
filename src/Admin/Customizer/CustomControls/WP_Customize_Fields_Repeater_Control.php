@@ -519,11 +519,15 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
      */
     public function template($index = 9999999999999)
     {
-        $email_providers = ConnectionsRepository::get_connections();
+        $field_types = [
+            'text'     => __('Text', 'mailoptin'),
+            'textarea' => __('Textarea', 'mailoptin')
+        ];
 
-        $widget_title          = __('Field #4', 'mailoptin');
+        $widget_title          = sprintf(__('Field #%s', 'mailoptin'), $index);
         $connection_email_list = ['' => __('Select...', 'mailoptin')];
         if (isset($this->saved_values[$index]['connection_service'])) {
+            $email_providers      = ConnectionsRepository::get_connections();
             $saved_email_provider = $this->saved_values[$index]['connection_service'];
             $widget_title         = $email_providers[$saved_email_provider];
             // prepend 'Select...' to the array of email list.
@@ -545,8 +549,11 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
             <div class="mo-fields-widget-content">
                 <div class="mo-fields-widget-form">
                     <?php $this->parse_control($index, apply_filters('mo_optin_fields_controls_before', [], $this->optin_campaign_id, $index, $this->saved_values)); ?>
-                    <?php $this->repeater_select_field($index, 'connection_service', $email_providers, '', __('Email Provider', 'mailoptin')); ?>
-                    <?php $this->repeater_select_field($index, 'connection_email_list', $connection_email_list, '', __('Email Provider List', 'mailoptin')); ?>
+                    <?php $this->repeater_select_field($index, 'field_type', $field_types, '', __('Type', 'mailoptin')); ?>
+                    <?php $this->repeater_text_field($index, 'placeholder', '', __('Placeholder', 'mailoptin')); ?>
+                    <?php $this->repeater_color_field($index, 'color', '', __('Color', 'mailoptin')); ?>
+                    <?php $this->repeater_color_field($index, 'background', '', __('Background', 'mailoptin')); ?>
+                    <?php $this->repeater_font_field($index, 'background', '', __('Font', 'mailoptin')); ?>
                     <?php $this->parse_control($index, apply_filters('mo_optin_fields_controls_after', [], $this->optin_campaign_id, $index, $this->saved_values)); ?>
                 </div>
                 <div class="mo-fields-widget-actions">
