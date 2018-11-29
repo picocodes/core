@@ -4,6 +4,7 @@ namespace MailOptin\Core\Admin\Customizer\CustomControls;
 
 use MailOptin\Core\Admin\Customizer\OptinForm\AbstractCustomizer;
 use MailOptin\Core\Repositories\ConnectionsRepository;
+use MailOptin\Core\Repositories\OptinCampaignsRepository;
 use WP_Customize_Control;
 
 class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
@@ -39,7 +40,7 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
      */
     public function enqueue()
     {
-        add_action('customize_controls_print_footer_scripts', [$this, 'integration_template']);
+        add_action('customize_controls_print_footer_scripts', [$this, 'field_template']);
 
         wp_enqueue_script('mailoptin-customizer-fields', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/fields-control/control.js', array('jquery', 'customize-base'), false, true);
         wp_enqueue_style('mailoptin-customizer-fields', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/fields-control/style.css', null);
@@ -51,14 +52,66 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
         // color field
         wp_enqueue_script('wp-color-picker');
         wp_enqueue_style('wp-color-picker');
+    }
 
-        do_action('mo_optin_fields_control_enqueue');
+    public function font_select($settings_link, $field_value)
+    {
+        $system_font_optgroup_label = __('System Fonts', 'mailoptin');
+        $google_font_optgroup_label = __('Google Fonts', 'mailoptin');
+
+        $fonts = [$system_font_optgroup_label => ControlsHelpers::get_system_font_stack()] + [$google_font_optgroup_label => WP_Customize_Google_Font_Control::get_fonts(300)];
+
+        if ( ! empty($fonts)) {
+            ?>
+            <select data-customize-setting-link="<?php echo $settings_link; ?>">
+                <?php
+
+                printf('<option value="inherit" %s>%s</option>', selected($field_value, 'inherit', false), __('Inherit from Theme', 'mailoptin'));
+
+                foreach ($fonts as $key => $font) {
+                    if (is_array($font)) {
+                        printf('<optgroup label="%s">', $key);
+                        foreach ($font as $font2) {
+                            $option_value = $font2;
+                            if ($key == $google_font_optgroup_label) {
+                                $option_value = str_replace(' ', '+', $font2);
+                            }
+                            printf('<option value="%s" %s>%s</option>', $option_value, selected($field_value, $option_value, false), $font2);
+                        }
+
+                        echo '</optgroup>';
+
+                    } else {
+                        printf('<option value="%s" %s>%s</option>', $font, selected($field_value, $font, false), $font);
+                    }
+                }
+                ?>
+            </select>
+            <?php
+        }
     }
 
     public function name_field()
     {
-        $placeholder_setting = sprintf('mo_optin_campaign[%s][name_field_placeholder]', $this->optin_campaign_id);
-        $placeholder_default = (new AbstractCustomizer($this->optin_campaign_id))->customizer_defaults['name_field_placeholder'];
+        $placeholder_setting     = sprintf('mo_optin_campaign[%s][name_field_placeholder]', $this->optin_campaign_id);
+        $placeholder_field_value = OptinCampaignsRepository::get_merged_customizer_value($this->optin_campaign_id, 'name_field_placeholder');
+
+        $color_setting     = sprintf('mo_optin_campaign[%s][name_field_color]', $this->optin_campaign_id);
+        $color_default     = (new AbstractCustomizer($this->optin_campaign_id))->customizer_defaults['name_field_color'];
+        $color_field_value = OptinCampaignsRepository::get_merged_customizer_value($this->optin_campaign_id, 'name_field_color');
+
+        $background_setting     = sprintf('mo_optin_campaign[%s][name_field_background]', $this->optin_campaign_id);
+        $background_default     = (new AbstractCustomizer($this->optin_campaign_id))->customizer_defaults['name_field_background'];
+        $background_field_value = OptinCampaignsRepository::get_merged_customizer_value($this->optin_campaign_id, 'name_field_background');
+
+        $font_setting     = sprintf('mo_optin_campaign[%s][name_field_font]', $this->optin_campaign_id);
+        $font_field_value = OptinCampaignsRepository::get_merged_customizer_value($this->optin_campaign_id, 'name_field_font');
+
+        $required_setting     = sprintf('mo_optin_campaign[%s][name_field_required]', $this->optin_campaign_id);
+        $required_field_value = OptinCampaignsRepository::get_merged_customizer_value($this->optin_campaign_id, 'name_field_required');
+
+        $hide_field_setting = sprintf('mo_optin_campaign[%s][hide_name_field]', $this->optin_campaign_id);
+        $hide_field_value   = OptinCampaignsRepository::get_merged_customizer_value($this->optin_campaign_id, 'hide_name_field');
         ?>
         <div class="mo-fields-widget mo-fields-part-widget">
             <div class="mo-fields-widget-top mo-fields-part-widget-top ui-sortable-handle">
@@ -73,11 +126,37 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
             </div>
             <div class="mo-fields-widget-content">
                 <div class="mo-fields-widget-form">
-                    <label for="<?php echo $placeholder_setting; ?>" class="customize-control-title"><?php _e('Placeholder', 'mailoptin'); ?></label>
-                    <input id="<?php echo $placeholder_setting; ?>" type="text" value="<?php _e('Enter your name here...', 'mailoptin'); ?>" data-customize-setting-link="<?php echo $placeholder_setting; ?>">
-                    <?php $setting2 = sprintf('mo_optin_campaign[%s][name_field_color]', $this->optin_campaign_id); ?>
-                    <label for="<?php echo $setting2; ?>" class="customize-control-title"><?php _e('Color', 'mailoptin'); ?></label>
-                    <input id="<?php echo $setting2; ?>" class="mo-color-picker-hex" type="text" maxlength="7" placeholder="#222222" data-default-color="#222222" data-customize-setting-link="<?php echo $setting2; ?>">
+                    <div class="mo-fields-block">
+                        <div class="mo-fields-toggle-field" style="display:flex;flex-direction: row;justify-content: flex-start;">
+                            <span class="customize-control-title" style="flex: 2 0 0; vertical-align: middle;"><?php _e('Hide Name Field', 'mailoptin'); ?></span>
+                            <input data-customize-setting-link="<?php echo $hide_field_setting; ?>" id="<?php echo $hide_field_setting; ?>" type="checkbox" class="tgl tgl-light" <?php checked($hide_field_value); ?>>
+                            <label for="<?php echo $hide_field_setting; ?>" class="tgl-btn"></label>
+                        </div>
+                    </div>
+                    <div class="mo-fields-block">
+                        <label for="<?php echo $placeholder_setting; ?>" class="customize-control-title"><?php _e('Placeholder', 'mailoptin'); ?></label>
+                        <input id="<?php echo $placeholder_setting; ?>" type="text" value="<?php echo $placeholder_field_value; ?>" data-customize-setting-link="<?php echo $placeholder_setting; ?>">
+                    </div>
+                    <div class="mo-fields-block">
+                        <label for="<?php echo $color_setting; ?>" class="customize-control-title"><?php _e('Color', 'mailoptin'); ?></label>
+                        <input id="<?php echo $color_setting; ?>" class="mo-color-picker-hex" type="text" maxlength="7" value="<?php echo $color_field_value; ?>" placeholder="<?php echo $color_field_value; ?>" data-default-color="<?php echo $color_default; ?>" data-customize-setting-link="<?php echo $color_setting; ?>">
+                    </div>
+                    <div class="mo-fields-block">
+                        <label for="<?php echo $background_setting; ?>" class="customize-control-title"><?php _e('Background', 'mailoptin'); ?></label>
+                        <input id="<?php echo $background_setting; ?>" class="mo-color-picker-hex" type="text" maxlength="7" value="<?php echo $background_field_value; ?>" placeholder="<?php echo $background_field_value; ?>" data-default-color="<?php echo $background_default; ?>" data-customize-setting-link="<?php echo $background_setting; ?>">
+                    </div>
+                    <div class="mo-fields-block">
+                        <label for="<?php echo $font_setting; ?>" class="customize-control-title"><?php _e('Font', 'mailoptin'); ?></label>
+                        <?php $this->font_select($font_setting, $font_field_value); ?>
+                    </div>
+                    <div class="mo-fields-block">
+                        <div class="mo-fields-toggle-field" style="display:flex;flex-direction: row;justify-content: flex-start;">
+                            <span class="customize-control-title" style="flex: 2 0 0; vertical-align: middle;"><?php _e('Make Field Required', 'mailoptin'); ?></span>
+                            <input data-customize-setting-link="<?php echo $required_setting; ?>" id="<?php echo $required_setting; ?>" type="checkbox" class="tgl tgl-light" <?php checked($required_field_value); ?>>
+                            <label for="<?php echo $required_setting; ?>" class="tgl-btn"></label>
+                        </div>
+                        <span class="description customize-control-description"><?php _e('Activate to make name field required.', 'mailoptin') ?></span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -86,10 +165,56 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
 
     public function email_field()
     {
+        $placeholder_setting     = sprintf('mo_optin_campaign[%s][email_field_placeholder]', $this->optin_campaign_id);
+        $placeholder_field_value = OptinCampaignsRepository::get_merged_customizer_value($this->optin_campaign_id, 'email_field_placeholder');
 
+        $color_setting     = sprintf('mo_optin_campaign[%s][email_field_color]', $this->optin_campaign_id);
+        $color_default     = (new AbstractCustomizer($this->optin_campaign_id))->customizer_defaults['email_field_color'];
+        $color_field_value = OptinCampaignsRepository::get_merged_customizer_value($this->optin_campaign_id, 'email_field_color');
+
+        $background_setting     = sprintf('mo_optin_campaign[%s][email_field_background]', $this->optin_campaign_id);
+        $background_default     = (new AbstractCustomizer($this->optin_campaign_id))->customizer_defaults['email_field_background'];
+        $background_field_value = OptinCampaignsRepository::get_merged_customizer_value($this->optin_campaign_id, 'email_field_background');
+
+        $font_setting     = sprintf('mo_optin_campaign[%s][email_field_font]', $this->optin_campaign_id);
+        $font_field_value = OptinCampaignsRepository::get_merged_customizer_value($this->optin_campaign_id, 'email_field_font');
+        ?>
+        <div class="mo-fields-widget mo-fields-part-widget">
+            <div class="mo-fields-widget-top mo-fields-part-widget-top ui-sortable-handle">
+                <div class="mo-fields-part-widget-title-action">
+                    <button type="button" class="mo-fields-widget-action">
+                        <span class="toggle-indicator"></span>
+                    </button>
+                </div>
+                <div class="mo-fields-widget-title">
+                    <h3><?php _e('Email', 'mailoptin'); ?></h3>
+                </div>
+            </div>
+            <div class="mo-fields-widget-content">
+                <div class="mo-fields-widget-form">
+                    <div class="mo-fields-block">
+                        <label for="<?php echo $placeholder_setting; ?>" class="customize-control-title"><?php _e('Placeholder', 'mailoptin'); ?></label>
+                        <input id="<?php echo $placeholder_setting; ?>" type="text" value="<?php echo $placeholder_field_value; ?>" data-customize-setting-link="<?php echo $placeholder_setting; ?>">
+                    </div>
+                    <div class="mo-fields-block">
+                        <label for="<?php echo $color_setting; ?>" class="customize-control-title"><?php _e('Color', 'mailoptin'); ?></label>
+                        <input id="<?php echo $color_setting; ?>" class="mo-color-picker-hex" type="text" maxlength="7" value="<?php echo $color_field_value; ?>" placeholder="<?php echo $color_field_value; ?>" data-default-color="<?php echo $color_default; ?>" data-customize-setting-link="<?php echo $color_setting; ?>">
+                    </div>
+                    <div class="mo-fields-block">
+                        <label for="<?php echo $background_setting; ?>" class="customize-control-title"><?php _e('Background', 'mailoptin'); ?></label>
+                        <input id="<?php echo $background_setting; ?>" class="mo-color-picker-hex" type="text" maxlength="7" value="<?php echo $background_field_value; ?>" placeholder="<?php echo $background_field_value; ?>" data-default-color="<?php echo $background_default; ?>" data-customize-setting-link="<?php echo $background_setting; ?>">
+                    </div>
+                    <div class="mo-fields-block">
+                        <label for="<?php echo $font_setting; ?>" class="customize-control-title"><?php _e('Font', 'mailoptin'); ?></label>
+                        <?php $this->font_select($font_setting, $font_field_value); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php
     }
 
-    public function integration_template()
+    public function field_template()
     {
         ?>
         <script type="text/html" id="tmpl-mo-fields-js-template">
@@ -98,7 +223,7 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
         <?php
     }
 
-    public function text_field($index, $name, $class = '', $label = '', $description = '', $placeholder = '', $type = 'text')
+    public function repeater_text_field($index, $name, $class = '', $label = '', $description = '', $placeholder = '', $type = 'text')
     {
         $type = empty($type) ? 'text' : $type;
 
@@ -132,7 +257,7 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
         echo '</div>';
     }
 
-    public function select_field($index, $name, $choices, $class = '', $label = '', $description = '')
+    public function repeater_select_field($index, $name, $choices, $class = '', $label = '', $description = '')
     {
         if ( ! isset($index) || ! array_key_exists($index, $this->saved_values)) {
             $index = '{mo-fields-index}';
@@ -153,7 +278,7 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
         if ( ! empty($label)) : ?>
             <label for="<?php echo $random_id ?>" class="customize-control-title"><?php echo esc_html($label); ?></label>
         <?php endif; ?>
-        <select id="<?php echo $random_id ?>" class="mo-optin-integration-field" name="<?php echo $name ?>">
+        <select id="<?php echo $random_id ?>" class="mo-optin-fields-field" name="<?php echo $name ?>">
             <?php
             foreach ($choices as $value => $label) {
                 echo '<option value="' . esc_attr($value) . '"' . selected($saved_value, $value, false) . '>' . $label . '</option>';
@@ -166,7 +291,7 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
         echo '</div>';
     }
 
-    public function chosen_select_field($index, $name, $choices, $class = '', $label = '', $description = '')
+    public function repeater_chosen_select_field($index, $name, $choices, $class = '', $label = '', $description = '')
     {
         $default     = isset($this->default_values[$name]) ? $this->default_values[$name] : '';
         $saved_value = isset($this->saved_values[$index][$name]) ? $this->saved_values[$index][$name] : $default;
@@ -207,43 +332,7 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
         return in_array($key, (array)$saved_values) ? 'selected=selected' : null;
     }
 
-    public function mc_group_select($index, $name, $choices, $class = '')
-    {
-        $default     = isset($this->default_values[$name]) ? $this->default_values[$name] : '';
-        $saved_value = isset($this->saved_values[$index][$name]) ? $this->saved_values[$index][$name] : $default;
-
-        if ( ! empty($class)) {
-            $class = " $class";
-        }
-
-        echo "<div class=\"$name mo-fields-block{$class}\">";
-
-        if (empty($choices)) {
-            echo '<div style="background:#000000;color:#fff;padding:10px;font-size:14px;">' . __('No MailChimp group found. Try selecting another email list.', 'mailoptin') . '</div>';
-
-            return;
-        }
-
-        foreach ($choices as $choice) : ?>
-            <div>
-                <span class="customize-control-title"><?= $choice['title']; ?></span>
-                <?php foreach ($choice['interests'] as $interests) : ?>
-                    <div>
-                        <label>
-                            <input type="checkbox" class="mo_mc_interest" name="<?= $name; ?>[]" value="<?= $interests['id']; ?>" <?php if (is_array($saved_value) && in_array($interests['id'], array_keys($saved_value))) {
-                                echo 'checked="checked"';
-                            } ?>
-                            >
-                            <span class="mo_mc_interest_label"><?= $interests['name']; ?></span>
-                        </label>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        <?php endforeach;
-        echo '</div>';
-    }
-
-    public function color_field($index, $name, $class = '', $label = '', $description = '')
+    public function repeater_color_field($index, $name, $class = '', $label = '', $description = '')
     {
         $default     = isset($this->default_values[$name]) ? $this->default_values[$name] : '';
         $saved_value = isset($this->saved_values[$index][$name]) ? $this->saved_values[$index][$name] : $default;
@@ -281,7 +370,7 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
         echo '</div>';
     }
 
-    public function font_fields($index, $name, $class = '', $label = '', $description = '', $count = 200)
+    public function repeater_font_field($index, $name, $class = '', $label = '', $description = '', $count = 200)
     {
         $count = empty($count) ? 200 : $count;
 
@@ -316,7 +405,7 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
         echo '</div>';
     }
 
-    public function toggle_field($index, $name, $class = '', $label = '', $description = '')
+    public function repeater_toggle_field($index, $name, $class = '', $label = '', $description = '')
     {
         if ( ! isset($index) || ! array_key_exists($index, $this->saved_values)) {
             $index = '{mo-fields-index}';
@@ -350,7 +439,7 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
         foreach ($control_args as $key => $control_arg) {
             switch ($control_arg['field']) {
                 case 'text':
-                    $this->text_field(
+                    $this->repeater_text_field(
                         $index,
                         @$control_arg['name'],
                         @$control_arg['class'],
@@ -361,7 +450,7 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
                     );
                     break;
                 case 'select':
-                    $this->select_field(
+                    $this->repeater_select_field(
                         $index,
                         @$control_arg['name'],
                         @$control_arg['choices'],
@@ -371,7 +460,7 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
                     );
                     break;
                 case 'chosen_select':
-                    $this->chosen_select_field(
+                    $this->repeater_chosen_select_field(
                         $index,
                         @$control_arg['name'],
                         @$control_arg['choices'],
@@ -380,16 +469,8 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
                         @$control_arg['description']
                     );
                     break;
-                case 'mc_group_select':
-                    $this->mc_group_select(
-                        $index,
-                        @$control_arg['name'],
-                        @$control_arg['choices'],
-                        @$control_arg['class']
-                    );
-                    break;
                 case 'color':
-                    $this->color_field(
+                    $this->repeater_color_field(
                         $index,
                         @$control_arg['name'],
                         @$control_arg['class'],
@@ -398,7 +479,7 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
                     );
                     break;
                 case 'font':
-                    $this->font_fields(
+                    $this->repeater_font_field(
                         $index,
                         @$control_arg['name'],
                         @$control_arg['class'],
@@ -408,7 +489,7 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
                     );
                     break;
                 case 'toggle':
-                    $this->toggle_field(
+                    $this->repeater_toggle_field(
                         $index,
                         @$control_arg['name'],
                         @$control_arg['class'],
@@ -464,8 +545,8 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
             <div class="mo-fields-widget-content">
                 <div class="mo-fields-widget-form">
                     <?php $this->parse_control($index, apply_filters('mo_optin_integrations_controls_before', [], $this->optin_campaign_id, $index, $this->saved_values)); ?>
-                    <?php $this->select_field($index, 'connection_service', $email_providers, '', __('Email Provider', 'mailoptin')); ?>
-                    <?php $this->select_field($index, 'connection_email_list', $connection_email_list, '', __('Email Provider List', 'mailoptin')); ?>
+                    <?php $this->repeater_select_field($index, 'connection_service', $email_providers, '', __('Email Provider', 'mailoptin')); ?>
+                    <?php $this->repeater_select_field($index, 'connection_email_list', $connection_email_list, '', __('Email Provider List', 'mailoptin')); ?>
                     <?php $this->parse_control($index, apply_filters('mo_optin_integrations_controls_after', [], $this->optin_campaign_id, $index, $this->saved_values)); ?>
                 </div>
                 <div class="mo-fields-widget-actions">
@@ -484,7 +565,10 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
             '<div class="mo-fields-expand-collapse-wrap"><a href="#" class="mo-expand-collapse-all mo-expand" data-collapse-text="%1$s" data-expand-text="%2$s">%2$s</a></div>',
             $collapse_text, $expand_text
         );
+
         $this->name_field();
+        $this->email_field();
+
         if (is_array($this->saved_values) && count($this->saved_values) > 0) {
             foreach ($this->saved_values as $index => $integration) {
                 // in place to ensure empty integration isn't displayed.
