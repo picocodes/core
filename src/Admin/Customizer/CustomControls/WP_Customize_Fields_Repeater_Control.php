@@ -302,7 +302,7 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
             <?php if ( ! empty($label)) : ?>
                 <span class="customize-control-title"><?php echo esc_html($label); ?></span>
             <?php endif; ?>
-            <select class="mo-optin-integration-field mailoptin-integration-chosen" name="<?php echo $name ?>" multiple>
+            <select class="mo-optin-field-field mailoptin-field-chosen" name="<?php echo $name ?>" multiple>
                 <?php
                 if (is_array($choices)) {
                     foreach ($choices as $key => $value) {
@@ -513,7 +513,7 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
     }
 
     /**
-     * $index is high numeric value by default so new integration added wont have populated data from saved data.
+     * $index is high numeric value by default so new field added wont have populated data from saved data.
      *
      * @param string $index
      */
@@ -521,7 +521,7 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
     {
         $email_providers = ConnectionsRepository::get_connections();
 
-        $widget_title          = __('New Integration', 'mailoptin');
+        $widget_title          = __('Field #4', 'mailoptin');
         $connection_email_list = ['' => __('Select...', 'mailoptin')];
         if (isset($this->saved_values[$index]['connection_service'])) {
             $saved_email_provider = $this->saved_values[$index]['connection_service'];
@@ -531,7 +531,7 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
             $connection_email_list = $connection_email_list + ConnectionsRepository::connection_email_list($saved_email_provider);
         }
         ?>
-        <div class="mo-fields-widget mo-fields-part-widget" data-integration-index="<?= $index; ?>">
+        <div class="mo-fields-widget mo-fields-part-widget" data-field-index="<?= $index; ?>">
             <div class="mo-fields-widget-top mo-fields-part-widget-top ui-sortable-handle">
                 <div class="mo-fields-part-widget-title-action">
                     <button type="button" class="mo-fields-widget-action">
@@ -544,10 +544,10 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
             </div>
             <div class="mo-fields-widget-content">
                 <div class="mo-fields-widget-form">
-                    <?php $this->parse_control($index, apply_filters('mo_optin_integrations_controls_before', [], $this->optin_campaign_id, $index, $this->saved_values)); ?>
+                    <?php $this->parse_control($index, apply_filters('mo_optin_fields_controls_before', [], $this->optin_campaign_id, $index, $this->saved_values)); ?>
                     <?php $this->repeater_select_field($index, 'connection_service', $email_providers, '', __('Email Provider', 'mailoptin')); ?>
                     <?php $this->repeater_select_field($index, 'connection_email_list', $connection_email_list, '', __('Email Provider List', 'mailoptin')); ?>
-                    <?php $this->parse_control($index, apply_filters('mo_optin_integrations_controls_after', [], $this->optin_campaign_id, $index, $this->saved_values)); ?>
+                    <?php $this->parse_control($index, apply_filters('mo_optin_fields_controls_after', [], $this->optin_campaign_id, $index, $this->saved_values)); ?>
                 </div>
                 <div class="mo-fields-widget-actions">
                     <a href="#" class="mo-fields-delete"><?php _e('Delete', 'mailoptin'); ?></a>
@@ -570,9 +570,9 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
         $this->email_field();
 
         if (is_array($this->saved_values) && count($this->saved_values) > 0) {
-            foreach ($this->saved_values as $index => $integration) {
-                // in place to ensure empty integration isn't displayed.
-                if ( ! empty($integration['connection_service'])) {
+            foreach ($this->saved_values as $index => $field) {
+                // in place to ensure empty field isn't displayed.
+                if ( ! empty($field['connection_service'])) {
                     $this->template($index);
                 }
             }
@@ -584,11 +584,11 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
         Apparently, it is automatically inserted by customizer*/
         ?>
         <div class="mo-fields__add_new">
-            <button type="button" class="button mo-add-new-integration">
-                <?php _e('Add Another Integration', 'mailoptin') ?>
+            <button type="button" class="button mo-add-new-field">
+                <?php _e('Add Custom Field', 'mailoptin') ?>
             </button>
         </div>
-        <input class="mo-fieldss-save-field" id="<?= '_customize-input-' . $this->id; ?>" type="hidden" <?php $this->link(); ?>/>
+        <input class="mo-fields-save-field" id="<?= '_customize-input-' . $this->id; ?>" type="hidden" <?php $this->link(); ?>/>
         <?php
     }
 }

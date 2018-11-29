@@ -707,7 +707,7 @@ class CustomizerControls
             $field_controls_args['cta_button'] = apply_filters('mo_optin_form_customizer_cta_button_args',
                 array(
                     'type'        => 'text',
-                    'label'       => __('CTA Button', 'mailoptin'),
+                    'label'       => __('Button Label', 'mailoptin'),
                     'section'     => $this->customizerClassInstance->fields_section_id,
                     'settings'    => $this->option_prefix . '[cta_button]',
                     'priority'    => 130,
@@ -719,7 +719,7 @@ class CustomizerControls
                 $this->wp_customize,
                 $this->option_prefix . '[cta_button_color]',
                 apply_filters('mo_optin_form_customizer_cta_button_color_args', array(
-                        'label'       => __('CTA Button Color', 'mailoptin'),
+                        'label'       => __('Button Color', 'mailoptin'),
                         'section'     => $this->customizerClassInstance->fields_section_id,
                         'settings'    => $this->option_prefix . '[cta_button_color]',
                         'priority'    => 140,
@@ -732,7 +732,7 @@ class CustomizerControls
                 $this->wp_customize,
                 $this->option_prefix . '[cta_button_background]',
                 apply_filters('mo_optin_form_customizer_cta_button_background_args', array(
-                        'label'       => __('CTA Button Background', 'mailoptin'),
+                        'label'       => __('Button Background', 'mailoptin'),
                         'section'     => $this->customizerClassInstance->fields_section_id,
                         'settings'    => $this->option_prefix . '[cta_button_background]',
                         'priority'    => 150,
