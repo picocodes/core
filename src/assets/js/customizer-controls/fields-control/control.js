@@ -8,9 +8,12 @@
 
             var contextual_display_init = function () {
 
-                $('.mo-fields-widget').each(function (index) {
+                $('.mo-fields-widget.mo-custom-field').each(function (index) {
+                    //indexx start at 0. Increment so it stat from 1.
+                    index++;
                     // re-order index
                     $(this).attr('data-field-index', index);
+                    $(this).find('.mo-fields-widget-title h3').text(mailoptin_globals.custom_field_label.replace('{ID}', index));
                     _this.color_picker_init();
                     _this.chosen_select_init();
                 });
@@ -66,7 +69,7 @@
             $(document).on('click', '.mo-fields-widget-action', this.toggleWidget);
             $(document).on('click', '.mo-add-new-field', add_new_field);
             $(document).on('click', '.mo-fields-delete', this.remove_field);
-            $(document).on('change', '.mo-fields-widget select, .mo-fields-widget input, .mo-fields-widget textarea', this.save_changes);
+            $(document).on('change', '.mo-fields-widget.mo-custom-field select, .mo-fields-widget.mo-custom-field input, .mo-fields-widget.mo-custom-field textarea', this.save_changes);
         },
 
         save_changes: function () {
@@ -80,7 +83,7 @@
                 old_data = JSON.parse(old_data);
             }
 
-            var parent = $(this).parents('.mo-fields-widget');
+            var parent = $(this).parents('.mo-fields-widget.mo-custom-field');
             var index = parent.attr('data-field-index');
             if (typeof old_data[index] === 'undefined') {
                 old_data[index] = {};
@@ -95,20 +98,6 @@
             // shim for single checkbox
             if ($(this).attr('type') === 'checkbox' && field_name.indexOf('[]') === -1) {
                 old_data[index][field_name] = this.checked;
-            }
-            else if ($(this).hasClass('mo_mc_interest') && $(this).attr('type') === 'checkbox' && field_name.indexOf('[]') !== -1) {
-                var item_name = field_name.replace('[]', '');
-                if (this.checked === false) {
-                    delete old_data[index][item_name][field_value];
-                }
-                else {
-                    if (typeof old_data[index][item_name] === 'undefined') {
-                        old_data[index][item_name] = {};
-                        old_data[index][item_name][field_value] = $(this).next('.mo_mc_interest_label').text();
-                    } else {
-                        old_data[index][item_name][field_value] = $(this).next('.mo_mc_interest_label').text();
-                    }
-                }
             }
             else if ($(this).attr('type') === 'checkbox' && field_name.indexOf('[]') !== -1) {
                 var item_name = field_name.replace('[]', '');
@@ -150,11 +139,11 @@
 
         remove_field: function (e) {
             e.preventDefault();
-            var cache = $('.mo-fields-widget');
+            var cache = $('.mo-fields-widget.mo-custom-field');
             var fields_count = cache.length;
             if (fields_count <= 1) return;
 
-            var parent = $(this).parents('.mo-fields-widget');
+            var parent = $(this).parents('.mo-fields-widget.mo-custom-field');
             parent.slideUp(400, function () {
                 $(this).remove();
                 var index = parent.data('field-index');
@@ -167,7 +156,7 @@
                 // store the data
                 data_store.val(JSON.stringify(old_data)).trigger('change');
                 // re-order index
-                $('.mo-fields-widget').each(function (index) {
+                $('.mo-fields-widget.mo-custom-field').each(function (index) {
                     $(this).attr('data-field-index', index);
                 });
             });

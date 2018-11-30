@@ -113,9 +113,12 @@ class RegisterScripts
                 'disable_impression_tracking' => apply_filters('mo_disable_impression_tracking', 'false'),
                 'chosen_search_placeholder'   => __('Type to search', 'mailoptin'),
                 'js_confirm_text'             => __('Are you sure you want to do this?', 'mailoptin'),
-                'js_clear_stat_text'          => __('Are you sure you want to do this? Clicking OK will delete all your optin analytics records.', 'mailoptin')
+                'js_clear_stat_text'          => __('Are you sure you want to do this? Clicking OK will delete all your optin analytics records.', 'mailoptin'),
+                'custom_field_label'          => __('Field #{ID}', 'mailoptin')
             ))
         );
+
+        /** @todo check for is_admin and unset admin vars */
     }
 
     /**

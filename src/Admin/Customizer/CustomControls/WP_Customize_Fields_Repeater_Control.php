@@ -534,8 +534,9 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
             // because select control will be hidden if no choice is found.
             $connection_email_list = $connection_email_list + ConnectionsRepository::connection_email_list($saved_email_provider);
         }
+        // added .mo-custom-field to differentiate custom field from name and email fields above.
         ?>
-        <div class="mo-fields-widget mo-fields-part-widget" data-field-index="<?= $index; ?>">
+        <div class="mo-fields-widget mo-fields-part-widget mo-custom-field" data-field-index="<?= $index; ?>">
             <div class="mo-fields-widget-top mo-fields-part-widget-top ui-sortable-handle">
                 <div class="mo-fields-part-widget-title-action">
                     <button type="button" class="mo-fields-widget-action">
