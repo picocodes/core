@@ -156,49 +156,7 @@ trait CustomizerTrait
 
                 }, 20);
 
-                add_action('wp_enqueue_scripts', function () use ($wp_get_theme, $active_plugins) {
-                    global $wp_styles;
-                    global $wp_scripts;
-
-                    $child_theme  = $wp_get_theme->get_stylesheet();
-                    $parent_theme = $wp_get_theme->get_template();
-
-                    foreach ($wp_scripts->registered as $key => $value) {
-                        $src = $value->src;
-
-                        if (strpos($src, "themes/$child_theme/") !== false || strpos($src, "themes/$parent_theme/") !== false) {
-                            unset($wp_scripts->registered[$key]);
-                        }
-
-                        if (strpos($src, "/uploads/$child_theme/") !== false || strpos($src, "/uploads/$parent_theme/") !== false) {
-                            unset($wp_scripts->registered[$key]);
-                        }
-
-                        foreach ($active_plugins as $active_plugin) {
-                            if (strpos($src, "plugins/$active_plugin/") !== false) {
-                                unset($wp_scripts->registered[$key]);
-                            }
-                        }
-                    }
-
-                    foreach ($wp_styles->registered as $key => $value) {
-                        $src = $value->src;
-                        if (strpos($src, "themes/$child_theme/") !== false || strpos($src, "themes/$parent_theme/") !== false) {
-                            unset($wp_styles->registered[$key]);
-                        }
-
-                        if (strpos($src, "/uploads/$child_theme/") !== false || strpos($src, "/uploads/$parent_theme/") !== false) {
-                            unset($wp_styles->registered[$key]);
-                        }
-
-                        foreach ($active_plugins as $active_plugin) {
-                            if (strpos($src, "plugins/$active_plugin/") !== false) {
-                                unset($wp_styles->registered[$key]);
-                            }
-                        }
-                    }
-
-                }, 9999999999999);
+                remove_all_actions('wp_enqueue_scripts');
             }
 
             if (class_exists('Astra_Customizer') && method_exists('Astra_Customizer', 'print_footer_scripts')) {

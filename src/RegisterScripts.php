@@ -62,7 +62,6 @@ class RegisterScripts
      */
     public function public_js()
     {
-        wp_enqueue_script('jquery');
         $this->modal_scripts();
     }
 
@@ -71,6 +70,7 @@ class RegisterScripts
      */
     public function modal_scripts()
     {
+        wp_enqueue_script('jquery');
         // trailing "true" function argument not needed because we want it loaded before hidden optin markup display in footer.
         wp_enqueue_script('mo-google-webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js', false, MAILOPTIN_VERSION_NUMBER, true);
 
