@@ -29,6 +29,7 @@ abstract class AbstractOptinForm extends AbstractCustomizer implements OptinForm
 
     // feature support flags
     const CTA_BUTTON_SUPPORT = 'cta_button';
+    const OPTIN_CUSTOM_FIELD_SUPPORT = 'optin_custom_field';
 
     /**
      * ID of optin form.

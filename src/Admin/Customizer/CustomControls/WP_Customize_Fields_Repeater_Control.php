@@ -3,6 +3,7 @@
 namespace MailOptin\Core\Admin\Customizer\CustomControls;
 
 use MailOptin\Core\Admin\Customizer\OptinForm\AbstractCustomizer;
+use MailOptin\Core\OptinForms\AbstractOptinForm;
 use MailOptin\Core\Repositories\ConnectionsRepository;
 use MailOptin\Core\Repositories\OptinCampaignsRepository;
 use WP_Customize_Control;
@@ -16,6 +17,9 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
     public $optin_campaign_id;
 
     public $customizerClassInstance;
+
+    /** @var null|AbstractOptinForm */
+    public $optin_class_instance;
 
     public $saved_values = [];
 
@@ -569,12 +573,13 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
         $this->name_field();
         $this->email_field();
 
+        $optin_class_instance = $this->optin_class_instance;
+
+        if ( ! in_array($optin_class_instance::OPTIN_CUSTOM_FIELD_SUPPORT, $optin_class_instance->features_support())) return;
+
         if (is_array($this->saved_values) && count($this->saved_values) > 0) {
             foreach ($this->saved_values as $index => $field) {
-                // in place to ensure empty field isn't displayed.
-                if ( ! empty($field['field_type'])) {
-                    $this->template($index);
-                }
+                $this->template($index);
             }
         }
         ?>

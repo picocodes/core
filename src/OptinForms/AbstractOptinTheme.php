@@ -22,6 +22,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         add_shortcode('mo-optin-form-error', [$this, 'shortcode_optin_form_error']);
         add_shortcode('mo-optin-form-name-field', [$this, 'shortcode_optin_form_name_field']);
         add_shortcode('mo-optin-form-email-field', [$this, 'shortcode_optin_form_email_field']);
+        add_shortcode('mo-optin-form-custom-fields', [$this, 'shortcode_optin_form_custom_fields']);
         add_shortcode('mo-optin-form-submit-button', [$this, 'shortcode_optin_form_submit_button']);
         add_shortcode('mo-optin-form-cta-button', [$this, 'shortcode_optin_form_cta_button']);
         add_shortcode('mo-optin-form-note', [$this, 'shortcode_optin_form_note']);
@@ -882,6 +883,62 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         $html = apply_filters('mo_optin_form_before_form_name_field', '', $this->optin_campaign_id, $this->optin_campaign_type, $this->optin_campaign_uuid, $atts);
         $html .= "<input id=\"{$optin_css_id}_email_field\" class=\"$class\" style=\"$style\" type=\"email\" placeholder=\"$email_field_placeholder\" name=\"mo-email\" autocomplete=\"on\">";
         $html .= apply_filters('mo_optin_form_after_form_email_field', '', $this->optin_campaign_id, $this->optin_campaign_type, $this->optin_campaign_uuid, $atts);
+
+        return $html;
+    }
+
+    /**
+     * Optin custom fields shortcode.
+     *
+     * @param array $atts
+     *
+     * @return string
+     */
+    public function shortcode_optin_form_custom_fields($atts)
+    {
+        $html = '';
+
+        $atts = shortcode_atts(
+            array(
+                'class' => '',
+                'style' => '',
+            ),
+            $atts
+        );
+
+        $saved_values = $this->get_customizer_value('fields');
+
+        if ( ! empty($saved_values) && is_string($saved_values)) {
+            $result = json_decode($saved_values, true);
+            if (is_array($result)) {
+                $saved_values = $result;
+
+                foreach ($saved_values as $index => $field) {
+                    $index++;
+
+                    $field_type = empty($field_type) ? 'text' : sanitize_text_field($field['field_type']);
+
+                    switch ($field_type) {
+                        case 'text':
+
+                            $optin_css_id       = $this->optin_css_id;
+                            $email_field_styles = $this->email_field_styles();
+                            $placeholder        = $this->get_customizer_value('email_field_placeholder');
+
+
+                            $class = esc_attr($atts['class']);
+                            $class = "mo-optin-field mo-optin-form-email-field $class";
+
+                            $style = esc_attr($atts['style']);
+                            $style = "$email_field_styles $style";
+
+                            $html .= "<input id=\"{$optin_css_id}_custom_field_{$index}\" class=\"$class\" style=\"$style\" type=\"text\" placeholder=\"$placeholder\" name=\"custom_field_{$index}\" autocomplete=\"on\">";
+
+                            break;
+                    }
+                }
+            }
+        }
 
         return $html;
     }

@@ -169,7 +169,10 @@ class BareMetal extends AbstractOptinTheme
 
     public function features_support()
     {
-        return [self::CTA_BUTTON_SUPPORT];
+        return [
+            self::CTA_BUTTON_SUPPORT,
+            self::OPTIN_CUSTOM_FIELD_SUPPORT
+        ];
     }
 
     /**
@@ -375,6 +378,7 @@ class BareMetal extends AbstractOptinTheme
     [mo-optin-form-fields-wrapper]
     [mo-optin-form-name-field]
     [mo-optin-form-email-field]
+    [mo-optin-form-custom-fields]
     [mo-mailchimp-interests]
     [mo-optin-form-submit-button]
     [/mo-optin-form-fields-wrapper]

@@ -20,6 +20,10 @@
                 });
             };
 
+            var unique_id = function () {
+                return Math.random().toString(36).substring(2) + (new Date()).getTime().toString(36);
+            };
+
             var add_new_field = function (e) {
                 e.preventDefault();
                 var index = 0;
@@ -36,8 +40,26 @@
 
                 // search and replace ID of fields
                 $(this).parents('.mo-fields-block').attr('data-field-index', index);
-            };
 
+                // create a unique ID for the created field.
+                var data_store = $('.mo-fields-save-field');
+                var old_data = data_store.val();
+                if (old_data === '' || typeof old_data === 'undefined') {
+                    old_data = [];
+                }
+                else {
+                    old_data = JSON.parse(old_data);
+                }
+
+                if (typeof old_data[index] === 'undefined') {
+                    old_data[index] = {};
+                }
+
+                old_data[index]['cid'] = unique_id();
+                old_data[index]['field_type'] = 'text';
+
+                data_store.val(JSON.stringify(old_data)).trigger('change');
+            };
 
             var toggleAllWidget = function (e) {
                 e.preventDefault();

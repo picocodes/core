@@ -548,6 +548,8 @@ class CustomizerControls
 
     public function fields_controls()
     {
+        $optin_class_instance = $this->optin_class_instance;
+
         $cta_button_action_description = '';
         $cta_button_action_choices     = [
             'reveal_optin_form' => __('Reveal Optin Form', 'mailoptin'),
@@ -584,6 +586,7 @@ class CustomizerControls
                             'default_values'          => (new AbstractCustomizer($this->optin_campaign_id))->customizer_defaults['fields'],
                             'customizerClassInstance' => $this->customizerClassInstance,
                             'optin_campaign_id'       => $this->optin_campaign_id,
+                            'optin_class_instance'       => $optin_class_instance,
                             'priority'                => 20
                         )
                     )
@@ -652,8 +655,6 @@ class CustomizerControls
             $this->option_prefix,
             $this->customizerClassInstance
         );
-
-        $optin_class_instance = $this->optin_class_instance;
 
         if (in_array($optin_class_instance::CTA_BUTTON_SUPPORT, $optin_class_instance->features_support())) {
 
