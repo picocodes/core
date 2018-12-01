@@ -653,7 +653,9 @@ class CustomizerControls
             $this->customizerClassInstance
         );
 
-        if (in_array($this->optin_class_instance->cta_button, $this->optin_class_instance->features_support())) {
+        $optin_class_instance = $this->optin_class_instance;
+
+        if (in_array($optin_class_instance::CTA_BUTTON_SUPPORT, $optin_class_instance->features_support())) {
 
             $field_controls_args['display_only_button'] = new WP_Customize_Toggle_Control(
                 $this->wp_customize,
@@ -745,7 +747,7 @@ class CustomizerControls
                 $this->wp_customize,
                 $this->option_prefix . '[cta_button_font]',
                 apply_filters('mo_optin_form_customizer_cta_button_font_args', array(
-                        'label'       => __('CTA Button Font'),
+                        'label'       => __('Button Font'),
                         'section'     => $this->customizerClassInstance->fields_section_id,
                         'settings'    => $this->option_prefix . '[cta_button_font]',
                         'description' => __('The font family for the call-to-action button field.', 'mailoptin'),

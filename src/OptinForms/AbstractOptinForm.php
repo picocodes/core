@@ -28,7 +28,7 @@ abstract class AbstractOptinForm extends AbstractCustomizer implements OptinForm
     public $optin_css_id;
 
     // feature support flags
-    public $cta_button = 'cta_button';
+    const CTA_BUTTON_SUPPORT = 'cta_button';
 
     /**
      * ID of optin form.

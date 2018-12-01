@@ -524,17 +524,9 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
             'textarea' => __('Textarea', 'mailoptin')
         ];
 
-        $widget_title          = sprintf(__('Field #%s', 'mailoptin'), $index);
-        $connection_email_list = ['' => __('Select...', 'mailoptin')];
-        if (isset($this->saved_values[$index]['connection_service'])) {
-            $email_providers      = ConnectionsRepository::get_connections();
-            $saved_email_provider = $this->saved_values[$index]['connection_service'];
-            $widget_title         = $email_providers[$saved_email_provider];
-            // prepend 'Select...' to the array of email list.
-            // because select control will be hidden if no choice is found.
-            $connection_email_list = $connection_email_list + ConnectionsRepository::connection_email_list($saved_email_provider);
-        }
-        // added .mo-custom-field to differentiate custom field from name and email fields above.
+        $widget_title = sprintf(__('Field #%s', 'mailoptin'), $index + 1);
+
+        // added .mo-custom-field below to differentiate custom field from name and email fields above.
         ?>
         <div class="mo-fields-widget mo-fields-part-widget mo-custom-field" data-field-index="<?= $index; ?>">
             <div class="mo-fields-widget-top mo-fields-part-widget-top ui-sortable-handle">
@@ -554,7 +546,7 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
                     <?php $this->repeater_text_field($index, 'placeholder', '', __('Placeholder', 'mailoptin')); ?>
                     <?php $this->repeater_color_field($index, 'color', '', __('Color', 'mailoptin')); ?>
                     <?php $this->repeater_color_field($index, 'background', '', __('Background', 'mailoptin')); ?>
-                    <?php $this->repeater_font_field($index, 'background', '', __('Font', 'mailoptin')); ?>
+                    <?php $this->repeater_font_field($index, 'font', '', __('Font', 'mailoptin')); ?>
                     <?php $this->parse_control($index, apply_filters('mo_optin_fields_controls_after', [], $this->optin_campaign_id, $index, $this->saved_values)); ?>
                 </div>
                 <div class="mo-fields-widget-actions">
@@ -570,7 +562,7 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
         $collapse_text = __('Collapse all', 'mailoptin');
         $expand_text   = __('Expand all', 'mailoptin');
         printf(
-            '<div class="mo-fields-expand-collapse-wrap"><a href="#" class="mo-expand-collapse-all mo-expand" data-collapse-text="%1$s" data-expand-text="%2$s">%2$s</a></div>',
+            '<div class="mo-fields-expand-collapse-wrap"><a href="#" class="mo-fields-expand-collapse-all mo-expand" data-collapse-text="%1$s" data-expand-text="%2$s">%2$s</a></div>',
             $collapse_text, $expand_text
         );
 
@@ -580,16 +572,11 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
         if (is_array($this->saved_values) && count($this->saved_values) > 0) {
             foreach ($this->saved_values as $index => $field) {
                 // in place to ensure empty field isn't displayed.
-                if ( ! empty($field['connection_service'])) {
+                if ( ! empty($field['field_type'])) {
                     $this->template($index);
                 }
             }
-        } else {
-            $this->template();
         }
-
-        /* we normally would have added 'value="<?php $this->value();?>"
-        Apparently, it is automatically inserted by customizer*/
         ?>
         <div class="mo-fields__add_new">
             <button type="button" class="button mo-add-new-field">

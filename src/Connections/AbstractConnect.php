@@ -17,6 +17,9 @@ abstract class AbstractConnect
     const OTHER_TYPE = 'other';
     const ANALYTICS_TYPE = 'analytics';
 
+    const OPTIN_CAMPAIGN_SUPPORT = 'optin_campaign';
+    const EMAIL_CAMPAIGN_SUPPORT = 'email_campaign';
+
     public $extras = [];
 
     public function __construct()

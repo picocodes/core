@@ -9,11 +9,12 @@
             var contextual_display_init = function () {
 
                 $('.mo-fields-widget.mo-custom-field').each(function (index) {
-                    //indexx start at 0. Increment so it stat from 1.
-                    index++;
                     // re-order index
                     $(this).attr('data-field-index', index);
-                    $(this).find('.mo-fields-widget-title h3').text(mailoptin_globals.custom_field_label.replace('{ID}', index));
+
+                    //index start at 0. Increment so it start from 1. Useful only for Field h3/title.
+                    // I didnt do ++index because i dont want the new index copy to index variable.
+                    $(this).find('.mo-fields-widget-title h3').text(mailoptin_globals.custom_field_label.replace('{ID}', index + 1));
                     _this.color_picker_init();
                     _this.chosen_select_init();
                 });
@@ -62,14 +63,13 @@
                     $button.text($button.data('expand-text')).removeClass('mo-collapse').addClass('mo-expand');
                 }
             };
-
-
+            
             contextual_display_init();
-            $(document).on('click', '.mo-expand-collapse-all', toggleAllWidget);
+            $(document).on('click', '.mo-fields-expand-collapse-all', toggleAllWidget);
             $(document).on('click', '.mo-fields-widget-action', this.toggleWidget);
             $(document).on('click', '.mo-add-new-field', add_new_field);
             $(document).on('click', '.mo-fields-delete', this.remove_field);
-            $(document).on('change', '.mo-fields-widget.mo-custom-field select, .mo-fields-widget.mo-custom-field input, .mo-fields-widget.mo-custom-field textarea', this.save_changes);
+            $(document).on('change keyup', '.mo-fields-widget.mo-custom-field select, .mo-fields-widget.mo-custom-field input, .mo-fields-widget.mo-custom-field textarea', this.save_changes);
         },
 
         save_changes: function () {
@@ -141,7 +141,6 @@
             e.preventDefault();
             var cache = $('.mo-fields-widget.mo-custom-field');
             var fields_count = cache.length;
-            if (fields_count <= 1) return;
 
             var parent = $(this).parents('.mo-fields-widget.mo-custom-field');
             parent.slideUp(400, function () {
