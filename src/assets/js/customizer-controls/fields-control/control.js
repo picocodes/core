@@ -42,6 +42,7 @@
             var toggleAllWidget = function (e) {
                 e.preventDefault();
                 var $button = $(this);
+                $button.blur();
 
                 $('.mo-fields-widget').each(function () {
                     var parent = $(this);
@@ -63,7 +64,7 @@
                     $button.text($button.data('expand-text')).removeClass('mo-collapse').addClass('mo-expand');
                 }
             };
-            
+
             contextual_display_init();
             $(document).on('click', '.mo-fields-expand-collapse-all', toggleAllWidget);
             $(document).on('click', '.mo-fields-widget-action', this.toggleWidget);

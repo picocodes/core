@@ -43,6 +43,7 @@
             var toggleAllWidget = function (e) {
                 e.preventDefault();
                 var $button = $(this);
+                $button.blur();
 
                 $('.mo-integration-widget').each(function () {
                     var parent = $(this);
