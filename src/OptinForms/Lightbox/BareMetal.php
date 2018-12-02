@@ -397,9 +397,10 @@ HTML;
     public function optin_form_css()
     {
         $optin_css_id = $this->optin_css_id;
+        $optin_uuid   = $this->optin_campaign_uuid;
 
         return <<<CSS
-div#$optin_css_id.mo-baremetal-container {
+html div#$optin_uuid div#$optin_css_id.mo-baremetal-container {
 text-align:left;
 background: #f0f0f0;
 border: 4px solid #dd3333;
@@ -415,14 +416,14 @@ margin: 10px;
 max-width: 650px;
 }
 
-div#$optin_css_id.mo-baremetal-container h2.mo-optin-form-headline {
+html div#$optin_uuid div#$optin_css_id.mo-baremetal-container h2.mo-optin-form-headline {
 color: #222222;
 margin: 0 0 10px;
 font-weight: bold;
 text-align: center;
 }
 
-div#$optin_css_id.mo-baremetal-container .mo-baremetal-description {
+html div#$optin_uuid div#$optin_css_id.mo-baremetal-container .mo-baremetal-description {
 color: #000000;
 font-weight: normal;
 line-height: 1.6;
@@ -430,15 +431,17 @@ margin-bottom: 20px;
 text-rendering: optimizeLegibility;
 }
 
-div#$optin_css_id .mo-baremetal-note {
+html div#$optin_uuid div#$optin_css_id .mo-baremetal-note {
   color:#000000;
   margin: 5px auto;
   text-align: center;
   font-style: italic
 }
 
-div#$optin_css_id.mo-baremetal-container #{$optin_css_id}_name_field,
-div#$optin_css_id.mo-baremetal-container #{$optin_css_id}_email_field {
+html div#$optin_uuid div#$optin_css_id.mo-baremetal-container #{$optin_css_id}_name_field,
+html div#$optin_uuid div#$optin_css_id.mo-baremetal-container #{$optin_css_id}_email_field,
+html div#$optin_uuid div#$optin_css_id.mo-baremetal-container .mo-optin-form-custom-field.text-field,
+html div#$optin_uuid div#$optin_css_id.mo-baremetal-container .mo-optin-form-custom-field.textarea-field {
 -webkit-appearance: none;
 -webkit-border-radius: 0;
 border-radius: 0;
@@ -448,7 +451,6 @@ border: 1px solid #ccc;
 box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
 margin: 0;
 padding: 8px;
-height: 37px;
 width: 100%;
 max-width: 100%;
 -webkit-box-sizing: border-box;
@@ -463,7 +465,11 @@ transition: box-shadow 0.45s, border-color 0.45s ease-in-out;
 font-size: 16px;
 }
 
-div#$optin_css_id.mo-baremetal-container input[type="submit"].mo-optin-form-submit-button, div#$optin_css_id.mo-baremetal-container input[type="submit"].mo-optin-form-cta-button {
+html div#$optin_uuid div#$optin_css_id.mo-baremetal-container .mo-optin-form-custom-field.textarea-field {
+height: 80px !important;
+}
+
+html div#$optin_uuid div#$optin_css_id.mo-baremetal-container input[type="submit"].mo-optin-form-submit-button, div#$optin_css_id.mo-baremetal-container input[type="submit"].mo-optin-form-cta-button {
 border: none;
 line-height: normal;
 letter-spacing: normal;
@@ -497,7 +503,7 @@ cursor: pointer;
 font-weight: 600;
 }
 
-div#$optin_css_id.mo-baremetal-container .mo-optin-error {
+html div#$optin_uuid div#$optin_css_id.mo-baremetal-container .mo-optin-error {
 display: none;
 background: #FF0000;
 color: #ffffff;
@@ -511,7 +517,7 @@ font-size: 16px;
 box-sizing: border-box; 
 }
 
-div#$optin_css_id ul {
+html div#$optin_uuid div#$optin_css_id ul {
     margin: 0 0 1.6em 1.3333em;
 }
 CSS;

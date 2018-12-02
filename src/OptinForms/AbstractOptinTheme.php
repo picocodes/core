@@ -963,18 +963,28 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
 
                     switch ($field_type) {
                         case 'text':
-
-                            $field_id           = sanitize_text_field($field['cid']);
-                            $placeholder        = isset($field['placeholder']) ? sanitize_text_field($field['placeholder']) : '';
+                            $field_id    = sanitize_text_field($field['cid']);
+                            $placeholder = isset($field['placeholder']) ? sanitize_text_field($field['placeholder']) : '';
 
                             $class = esc_attr($atts['class']);
-                            $class = "mo-optin-field mo-optin-form-custom-field field-{$field_id} $class";
+                            $class = "mo-optin-field mo-optin-form-custom-field text-field field-{$field_id} $class";
 
                             $style = esc_attr($atts['style']);
                             $style = "$field_styles $style";
 
-                            $html .= "<input id=\"{$optin_css_id}_field_{$field_id}\" class=\"$class\" style=\"$style\" type=\"text\" placeholder=\"$placeholder\" name=\"$field_id\" autocomplete=\"on\">";
+                            $html .= "<input id=\"{$optin_css_id}_text_{$field_id}\" class=\"$class\" style=\"$style\" type=\"text\" placeholder=\"$placeholder\" name=\"$field_id\">";
+                            break;
+                        case 'textarea':
+                            $field_id    = sanitize_text_field($field['cid']);
+                            $placeholder = isset($field['placeholder']) ? sanitize_text_field($field['placeholder']) : '';
 
+                            $class = esc_attr($atts['class']);
+                            $class = "mo-optin-field mo-optin-form-custom-field textarea-field field-{$field_id} $class";
+
+                            $style = esc_attr($atts['style']);
+                            $style = "$field_styles $style";
+
+                            $html .= "<textarea id=\"{$optin_css_id}_textarea_{$field_id}\" class=\"$class\" style=\"$style\" placeholder=\"$placeholder\" name=\"$field_id\"></textarea>";
                             break;
                     }
                 }

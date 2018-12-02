@@ -23,9 +23,9 @@ class CustomizerSettings extends AbstractCustomizer
      */
     public function __construct($wp_customize, $option_prefix, $customizerClassInstance)
     {
-        $this->wp_customize = $wp_customize;
+        $this->wp_customize            = $wp_customize;
         $this->customizerClassInstance = $customizerClassInstance;
-        $this->option_prefix = $option_prefix;
+        $this->option_prefix           = $option_prefix;
 
         $this->optin_campaign_id = $customizerClassInstance->optin_campaign_id;
 
@@ -40,37 +40,37 @@ class CustomizerSettings extends AbstractCustomizer
         $design_settings_args = apply_filters("mo_optin_form_customizer_design_settings",
             array(
                 'form_background_image' => array(
-                    'default' => $this->customizer_defaults['form_background_image'],
-                    'type' => 'option',
+                    'default'           => $this->customizer_defaults['form_background_image'],
+                    'type'              => 'option',
                     'sanitize_callback' => 'esc_url',
-                    'transport' => 'postMessage',
+                    'transport'         => 'postMessage',
                 ),
-                'form_image' => array(
-                    'default' => $this->customizer_defaults['form_image'],
-                    'type' => 'option',
+                'form_image'            => array(
+                    'default'           => $this->customizer_defaults['form_image'],
+                    'type'              => 'option',
                     'sanitize_callback' => 'absint',
-                    'transport' => 'postMessage',
+                    'transport'         => 'postMessage',
                 ),
                 'form_background_color' => array(
-                    'default' => $this->customizer_defaults['form_background_color'],
-                    'type' => 'option',
+                    'default'           => $this->customizer_defaults['form_background_color'],
+                    'type'              => 'option',
                     'sanitize_callback' => 'sanitize_hex_color',
-                    'transport' => 'postMessage',
+                    'transport'         => 'postMessage',
                 ),
-                'form_border_color' => array(
-                    'default' => $this->customizer_defaults['form_border_color'],
-                    'type' => 'option',
+                'form_border_color'     => array(
+                    'default'           => $this->customizer_defaults['form_border_color'],
+                    'type'              => 'option',
                     'sanitize_callback' => 'sanitize_hex_color',
+                    'transport'         => 'postMessage',
+                ),
+                'form_custom_css'       => array(
+                    'default'   => $this->customizer_defaults['form_custom_css'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'form_custom_css' => array(
-                    'default' => $this->customizer_defaults['form_custom_css'],
-                    'type' => 'option',
-                    'transport' => 'postMessage',
-                ),
-                'custom_css_notice' => array(
-                    'default' => apply_filters('mo_optin_form_custom_css_notice', false),
-                    'type' => 'option',
+                'custom_css_notice'     => array(
+                    'default'   => apply_filters('mo_optin_form_custom_css_notice', false),
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
             ),
@@ -104,43 +104,43 @@ class CustomizerSettings extends AbstractCustomizer
     {
         $headline_settings_args = apply_filters("mo_optin_form_customizer_headline_settings",
             array(
-                'hide_headline' => array(
-                    'default' => $this->customizer_defaults['hide_headline'],
-                    'type' => 'option',
+                'hide_headline'              => array(
+                    'default'   => $this->customizer_defaults['hide_headline'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'headline' => array(
-                    'default' => $this->customizer_defaults['headline'],
-                    'type' => 'option',
-                    'transport' => 'postMessage',
+                'headline'                   => array(
+                    'default'           => $this->customizer_defaults['headline'],
+                    'type'              => 'option',
+                    'transport'         => 'postMessage',
                     'sanitize_callback' => array($this, '_remove_paragraph_from_headline'),
                 ),
-                'headline_font_color' => array(
-                    'default' => $this->customizer_defaults['headline_font_color'],
-                    'type' => 'option',
+                'headline_font_color'        => array(
+                    'default'   => $this->customizer_defaults['headline_font_color'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'headline_font' => array(
-                    'default' => $this->customizer_defaults['headline_font'],
-                    'type' => 'option',
+                'headline_font'              => array(
+                    'default'   => $this->customizer_defaults['headline_font'],
+                    'type'      => 'option',
                     'transport' => 'refresh',
                 ),
-                'headline_font_size_mobile' => array(
-                    'default' => $this->customizer_defaults['headline_font_size_mobile'],
-                    'type' => 'option',
-                    'transport' => 'refresh',
+                'headline_font_size_mobile'  => array(
+                    'default'           => $this->customizer_defaults['headline_font_size_mobile'],
+                    'type'              => 'option',
+                    'transport'         => 'refresh',
                     'sanitize_callback' => 'absint'
                 ),
-                'headline_font_size_tablet' => array(
-                    'default' => $this->customizer_defaults['headline_font_size_tablet'],
-                    'type' => 'option',
-                    'transport' => 'refresh',
+                'headline_font_size_tablet'  => array(
+                    'default'           => $this->customizer_defaults['headline_font_size_tablet'],
+                    'type'              => 'option',
+                    'transport'         => 'refresh',
                     'sanitize_callback' => 'absint'
                 ),
                 'headline_font_size_desktop' => array(
-                    'default' => $this->customizer_defaults['headline_font_size_desktop'],
-                    'type' => 'option',
-                    'transport' => 'refresh',
+                    'default'           => $this->customizer_defaults['headline_font_size_desktop'],
+                    'type'              => 'option',
+                    'transport'         => 'refresh',
                     'sanitize_callback' => 'absint'
                 )
             ),
@@ -161,42 +161,42 @@ class CustomizerSettings extends AbstractCustomizer
     {
         $description_settings_args = apply_filters("mo_optin_form_customizer_description_settings",
             array(
-                'hide_description' => array(
-                    'default' => $this->customizer_defaults['hide_description'],
-                    'type' => 'option',
+                'hide_description'              => array(
+                    'default'   => $this->customizer_defaults['hide_description'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'description' => array(
-                    'default' => $this->customizer_defaults['description'],
-                    'type' => 'option',
+                'description'                   => array(
+                    'default'   => $this->customizer_defaults['description'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'description_font_color' => array(
-                    'default' => $this->customizer_defaults['description_font_color'],
-                    'type' => 'option',
+                'description_font_color'        => array(
+                    'default'   => $this->customizer_defaults['description_font_color'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'description_font' => array(
-                    'default' => $this->customizer_defaults['description_font'],
-                    'type' => 'option',
+                'description_font'              => array(
+                    'default'   => $this->customizer_defaults['description_font'],
+                    'type'      => 'option',
                     'transport' => 'refresh',
                 ),
-                'description_font_size_mobile' => array(
-                    'default' => $this->customizer_defaults['description_font_size_mobile'],
-                    'type' => 'option',
-                    'transport' => 'refresh',
+                'description_font_size_mobile'  => array(
+                    'default'           => $this->customizer_defaults['description_font_size_mobile'],
+                    'type'              => 'option',
+                    'transport'         => 'refresh',
                     'sanitize_callback' => 'absint'
                 ),
-                'description_font_size_tablet' => array(
-                    'default' => $this->customizer_defaults['description_font_size_tablet'],
-                    'type' => 'option',
-                    'transport' => 'refresh',
+                'description_font_size_tablet'  => array(
+                    'default'           => $this->customizer_defaults['description_font_size_tablet'],
+                    'type'              => 'option',
+                    'transport'         => 'refresh',
                     'sanitize_callback' => 'absint'
                 ),
                 'description_font_size_desktop' => array(
-                    'default' => $this->customizer_defaults['description_font_size_desktop'],
-                    'type' => 'option',
-                    'transport' => 'refresh',
+                    'default'           => $this->customizer_defaults['description_font_size_desktop'],
+                    'type'              => 'option',
+                    'transport'         => 'refresh',
                     'sanitize_callback' => 'absint'
                 )
             ),
@@ -217,57 +217,57 @@ class CustomizerSettings extends AbstractCustomizer
     {
         $note_settings_args = apply_filters("mo_optin_form_customizer_note_settings",
             array(
-                'hide_note' => array(
-                    'default' => $this->customizer_defaults['hide_note'],
-                    'type' => 'option',
+                'hide_note'                => array(
+                    'default'   => $this->customizer_defaults['hide_note'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'note' => array(
-                    'default' => $this->customizer_defaults['note'],
-                    'type' => 'option',
+                'note'                     => array(
+                    'default'   => $this->customizer_defaults['note'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'note_font_color' => array(
-                    'default' => $this->customizer_defaults['note_font_color'],
-                    'type' => 'option',
+                'note_font_color'          => array(
+                    'default'   => $this->customizer_defaults['note_font_color'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'note_font' => array(
-                    'default' => $this->customizer_defaults['note_font'],
-                    'type' => 'option',
+                'note_font'                => array(
+                    'default'   => $this->customizer_defaults['note_font'],
+                    'type'      => 'option',
                     'transport' => 'refresh',
                 ),
-                'note_font_size_mobile' => array(
-                    'default' => $this->customizer_defaults['note_font_size_mobile'],
-                    'type' => 'option',
-                    'transport' => 'refresh',
+                'note_font_size_mobile'    => array(
+                    'default'           => $this->customizer_defaults['note_font_size_mobile'],
+                    'type'              => 'option',
+                    'transport'         => 'refresh',
                     'sanitize_callback' => 'absint'
                 ),
-                'note_font_size_tablet' => array(
-                    'default' => $this->customizer_defaults['note_font_size_tablet'],
-                    'type' => 'option',
-                    'transport' => 'refresh',
+                'note_font_size_tablet'    => array(
+                    'default'           => $this->customizer_defaults['note_font_size_tablet'],
+                    'type'              => 'option',
+                    'transport'         => 'refresh',
                     'sanitize_callback' => 'absint'
                 ),
-                'note_font_size_desktop' => array(
-                    'default' => $this->customizer_defaults['note_font_size_desktop'],
-                    'type' => 'option',
-                    'transport' => 'refresh',
+                'note_font_size_desktop'   => array(
+                    'default'           => $this->customizer_defaults['note_font_size_desktop'],
+                    'type'              => 'option',
+                    'transport'         => 'refresh',
                     'sanitize_callback' => 'absint'
                 ),
                 'note_acceptance_checkbox' => array(
-                    'default' => $this->customizer_defaults['note_acceptance_checkbox'],
-                    'type' => 'option',
+                    'default'   => $this->customizer_defaults['note_acceptance_checkbox'],
+                    'type'      => 'option',
                     'transport' => 'refresh',
                 ),
-                'note_acceptance_error' => array(
-                    'default' => $this->customizer_defaults['note_acceptance_error'],
-                    'type' => 'option',
+                'note_acceptance_error'    => array(
+                    'default'   => $this->customizer_defaults['note_acceptance_error'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
                 'note_close_optin_onclick' => array(
-                    'default' => $this->customizer_defaults['note_close_optin_onclick'],
-                    'type' => 'option',
+                    'default'   => $this->customizer_defaults['note_close_optin_onclick'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 )
             ),
@@ -289,139 +289,139 @@ class CustomizerSettings extends AbstractCustomizer
     {
         $fields_settings_args = apply_filters("mo_optin_form_customizer_fields_settings",
             array(
-                'fields' => array(
-                    'default' => '',
-                    'type' => 'option',
+                'fields'                 => array(
+                    'default'   => '',
+                    'type'      => 'option',
                     'transport' => 'refresh',
                 ),
-                'display_only_button' => array(
-                    'default' => $this->customizer_defaults['display_only_button'],
-                    'type' => 'option',
+                'display_only_button'    => array(
+                    'default'   => $this->customizer_defaults['display_only_button'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'hide_name_field' => array(
-                    'default' => $this->customizer_defaults['hide_name_field'],
-                    'type' => 'option',
+                'hide_name_field'        => array(
+                    'default'   => $this->customizer_defaults['hide_name_field'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'name_field_header' => array(
-                    'type' => 'option',
+                'name_field_header'      => array(
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'email_field_header' => array(
-                    'type' => 'option',
+                'email_field_header'     => array(
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'submit_button_header' => array(
-                    'type' => 'option',
+                'submit_button_header'   => array(
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'cta_button_header' => array(
-                    'type' => 'option',
+                'cta_button_header'      => array(
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
                 'name_field_placeholder' => array(
-                    'default' => $this->customizer_defaults['name_field_placeholder'],
-                    'type' => 'option',
+                    'default'   => $this->customizer_defaults['name_field_placeholder'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'name_field_color' => array(
-                    'default' => $this->customizer_defaults['name_field_color'],
-                    'type' => 'option',
+                'name_field_color'       => array(
+                    'default'   => $this->customizer_defaults['name_field_color'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'name_field_background' => array(
-                    'default' => $this->customizer_defaults['name_field_background'],
-                    'type' => 'option',
+                'name_field_background'  => array(
+                    'default'   => $this->customizer_defaults['name_field_background'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'name_field_font' => array(
-                    'default' => $this->customizer_defaults['name_field_font'],
-                    'type' => 'option',
+                'name_field_font'        => array(
+                    'default'   => $this->customizer_defaults['name_field_font'],
+                    'type'      => 'option',
                     'transport' => 'refresh',
                 ),
-                'name_field_required' => array(
-                    'default' => $this->customizer_defaults['name_field_required'],
-                    'type' => 'option',
+                'name_field_required'    => array(
+                    'default'   => $this->customizer_defaults['name_field_required'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
 
                 // ---- Email fields -------- //
 
                 'email_field_placeholder' => array(
-                    'default' => $this->customizer_defaults['email_field_placeholder'],
-                    'type' => 'option',
+                    'default'   => $this->customizer_defaults['email_field_placeholder'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'email_field_color' => array(
-                    'default' => $this->customizer_defaults['email_field_color'],
-                    'type' => 'option',
+                'email_field_color'       => array(
+                    'default'   => $this->customizer_defaults['email_field_color'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'email_field_background' => array(
-                    'default' => $this->customizer_defaults['email_field_background'],
-                    'type' => 'option',
+                'email_field_background'  => array(
+                    'default'   => $this->customizer_defaults['email_field_background'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'email_field_font' => array(
-                    'default' => $this->customizer_defaults['email_field_font'],
-                    'type' => 'option',
+                'email_field_font'        => array(
+                    'default'   => $this->customizer_defaults['email_field_font'],
+                    'type'      => 'option',
                     'transport' => 'refresh',
                 ),
 
                 // ---- submit button -------- //
 
-                'submit_button' => array(
-                    'default' => $this->customizer_defaults['submit_button'],
-                    'type' => 'option',
+                'submit_button'            => array(
+                    'default'   => $this->customizer_defaults['submit_button'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'submit_button_color' => array(
-                    'default' => $this->customizer_defaults['submit_button_color'],
-                    'type' => 'option',
+                'submit_button_color'      => array(
+                    'default'   => $this->customizer_defaults['submit_button_color'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
                 'submit_button_background' => array(
-                    'default' => $this->customizer_defaults['submit_button_background'],
-                    'type' => 'option',
+                    'default'   => $this->customizer_defaults['submit_button_background'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'submit_button_font' => array(
-                    'default' => $this->customizer_defaults['submit_button_font'],
-                    'type' => 'option',
+                'submit_button_font'       => array(
+                    'default'   => $this->customizer_defaults['submit_button_font'],
+                    'type'      => 'option',
                     'transport' => 'refresh',
                 ),
 
                 // ---- call-to-action button -------- //
 
-                'cta_button_action' => array(
-                    'default' => $this->customizer_defaults['cta_button_action'],
-                    'type' => 'option',
+                'cta_button_action'         => array(
+                    'default'   => $this->customizer_defaults['cta_button_action'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
                 'cta_button_navigation_url' => array(
-                    'default' => $this->customizer_defaults['cta_button_navigation_url'],
-                    'type' => 'option',
+                    'default'   => $this->customizer_defaults['cta_button_navigation_url'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'cta_button' => array(
-                    'default' => $this->customizer_defaults['cta_button'],
-                    'type' => 'option',
+                'cta_button'                => array(
+                    'default'   => $this->customizer_defaults['cta_button'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'cta_button_color' => array(
-                    'default' => $this->customizer_defaults['cta_button_color'],
-                    'type' => 'option',
+                'cta_button_color'          => array(
+                    'default'   => $this->customizer_defaults['cta_button_color'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'cta_button_background' => array(
-                    'default' => $this->customizer_defaults['cta_button_background'],
-                    'type' => 'option',
+                'cta_button_background'     => array(
+                    'default'   => $this->customizer_defaults['cta_button_background'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'cta_button_font' => array(
-                    'default' => $this->customizer_defaults['cta_button_font'],
-                    'type' => 'option',
+                'cta_button_font'           => array(
+                    'default'   => $this->customizer_defaults['cta_button_font'],
+                    'type'      => 'option',
                     'transport' => 'refresh',
                 ),
             ),
@@ -443,60 +443,60 @@ class CustomizerSettings extends AbstractCustomizer
     {
         $configuration_settings_args = apply_filters("mo_optin_form_customizer_configuration_settings",
             array(
-                'campaign_title' => array(
-                    'default' => $this->customizer_defaults['campaign_title'],
-                    'type' => 'option',
+                'campaign_title'             => array(
+                    'default'   => $this->customizer_defaults['campaign_title'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'split_test_note' => array(
-                    'default' => $this->customizer_defaults['split_test_note'],
-                    'type' => 'option',
+                'split_test_note'            => array(
+                    'default'   => $this->customizer_defaults['split_test_note'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
                 'inpost_form_optin_position' => array(
-                    'default' => $this->customizer_defaults['inpost_form_optin_position'],
-                    'type' => 'option',
+                    'default'   => $this->customizer_defaults['inpost_form_optin_position'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'bar_position' => array(
-                    'default' => $this->customizer_defaults['bar_position'],
-                    'type' => 'option',
+                'bar_position'               => array(
+                    'default'   => $this->customizer_defaults['bar_position'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'slidein_position' => array(
-                    'default' => $this->customizer_defaults['slidein_position'],
-                    'type' => 'option',
+                'slidein_position'           => array(
+                    'default'   => $this->customizer_defaults['slidein_position'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'bar_sticky' => array(
-                    'default' => $this->customizer_defaults['bar_sticky'],
-                    'type' => 'option',
+                'bar_sticky'                 => array(
+                    'default'   => $this->customizer_defaults['bar_sticky'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'hide_close_button' => array(
-                    'default' => $this->customizer_defaults['hide_close_button'],
-                    'type' => 'option',
+                'hide_close_button'          => array(
+                    'default'   => $this->customizer_defaults['hide_close_button'],
+                    'type'      => 'option',
                     'transport' => 'refresh',
                 ),
-                'success_message' => array(
-                    'default' => $this->customizer_defaults['success_message'],
-                    'type' => 'option',
+                'success_message'            => array(
+                    'default'   => $this->customizer_defaults['success_message'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'cookie' => array(
-                    'default' => $this->customizer_defaults['cookie'],
-                    'type' => 'option',
+                'cookie'                     => array(
+                    'default'   => $this->customizer_defaults['cookie'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'success_cookie' => array(
+                'success_cookie'             => array(
                     // default to the default value of exit cookie.
-                    'default' => $this->customizer_defaults['cookie'],
-                    'type' => 'option',
+                    'default'   => $this->customizer_defaults['cookie'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'remove_branding' => array(
-                    'default' => $this->customizer_defaults['remove_branding'],
-                    'type' => 'option',
+                'remove_branding'            => array(
+                    'default'   => $this->customizer_defaults['remove_branding'],
+                    'type'      => 'option',
                     'transport' => 'refresh',
                 )
             ),
@@ -517,23 +517,23 @@ class CustomizerSettings extends AbstractCustomizer
     {
         $integration_settings_args = apply_filters("mo_optin_form_customizer_integration_settings",
             array(
-                'lead_bank_only' => array(
-                    'default' => '',
-                    'type' => 'option',
+                'lead_bank_only'        => array(
+                    'default'   => '',
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'integrations' => array(
-                    'default' => '',
-                    'type' => 'option',
+                'integrations'          => array(
+                    'default'   => '',
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
                 'no_integration_notice' => array(
-                    'type' => 'option',
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'ajax_nonce' => array(
-                    'default' => wp_create_nonce('customizer-fetch-email-list'),
-                    'type' => 'option',
+                'ajax_nonce'            => array(
+                    'default'   => wp_create_nonce('customizer-fetch-email-list'),
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
             ),
@@ -556,31 +556,31 @@ class CustomizerSettings extends AbstractCustomizer
     {
         $success_settings_args = apply_filters("mo_optin_form_customizer_success_settings",
             array(
-                'success_action' => array(
-                    'default' => $this->customizer_defaults['success_action'],
-                    'type' => 'option',
+                'success_action'              => array(
+                    'default'           => $this->customizer_defaults['success_action'],
+                    'type'              => 'option',
                     'sanitize_callback' => 'sanitize_text_field',
-                    'transport' => 'postMessage',
+                    'transport'         => 'postMessage',
                 ),
-                'redirect_url_value' => array(
-                    'default' => '',
-                    'type' => 'option',
+                'redirect_url_value'          => array(
+                    'default'           => '',
+                    'type'              => 'option',
                     'sanitize_callback' => 'esc_url',
-                    'transport' => 'postMessage',
+                    'transport'         => 'postMessage',
                 ),
                 'pass_lead_data_redirect_url' => array(
-                    'default' => $this->customizer_defaults['pass_lead_data_redirect_url'],
-                    'type' => 'option',
+                    'default'   => $this->customizer_defaults['pass_lead_data_redirect_url'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
                 'success_message_config_link' => array(
-                    'default' => '',
-                    'type' => 'option',
+                    'default'   => '',
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'success_js_script' => array(
-                    'default' => '',
-                    'type' => 'option',
+                'success_js_script'           => array(
+                    'default'   => '',
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 )
             ),
@@ -601,109 +601,109 @@ class CustomizerSettings extends AbstractCustomizer
     {
         $output_settings_args = apply_filters("mo_optin_form_customizer_output_settings",
             array(
-                'activate_optin' => array(
-                    'default' => apply_filters('mo_optin_form_activate_optin_default', ''),
-                    'type' => 'option',
+                'activate_optin'                  => array(
+                    'default'   => apply_filters('mo_optin_form_activate_optin_default', ''),
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'load_optin_globally' => array(
-                    'default' => $this->customizer_defaults['load_optin_globally'],
-                    'type' => 'option',
+                'load_optin_globally'             => array(
+                    'default'   => $this->customizer_defaults['load_optin_globally'],
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'who_see_optin' => array(
-                    'default' => apply_filters('mo_optin_form_who_see_optin', 'show_all'),
-                    'type' => 'option',
+                'who_see_optin'                   => array(
+                    'default'   => apply_filters('mo_optin_form_who_see_optin', 'show_all'),
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'after_conversion_notice' => array(
-                    'default' => apply_filters('mo_optin_form_after_conversion_notice', false),
-                    'type' => 'option',
+                'after_conversion_notice'         => array(
+                    'default'   => apply_filters('mo_optin_form_after_conversion_notice', false),
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'optin_trigger_notice' => array(
-                    'default' => apply_filters('mo_optin_form_optin_trigger_notice', false),
-                    'type' => 'option',
+                'optin_trigger_notice'            => array(
+                    'default'   => apply_filters('mo_optin_form_optin_trigger_notice', false),
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'exit_intent_status' => array(
-                    'default' => apply_filters('mo_optin_form_exit_intent_status', false),
-                    'type' => 'option',
+                'exit_intent_status'              => array(
+                    'default'   => apply_filters('mo_optin_form_exit_intent_status', false),
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'x_seconds_status' => array(
-                    'default' => apply_filters('mo_optin_form_x_seconds_status', false),
-                    'type' => 'option',
+                'x_seconds_status'                => array(
+                    'default'   => apply_filters('mo_optin_form_x_seconds_status', false),
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'x_seconds_value' => array(
-                    'default' => apply_filters('mo_optin_form_x_seconds_value', 1),
-                    'type' => 'option',
+                'x_seconds_value'                 => array(
+                    'default'   => apply_filters('mo_optin_form_x_seconds_value', 1),
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'x_scroll_status' => array(
-                    'default' => apply_filters('mo_optin_form_x_scroll_status', false),
-                    'type' => 'option',
+                'x_scroll_status'                 => array(
+                    'default'   => apply_filters('mo_optin_form_x_scroll_status', false),
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'x_scroll_value' => array(
-                    'default' => apply_filters('mo_optin_form_x_scroll_value', 1),
-                    'type' => 'option',
+                'x_scroll_value'                  => array(
+                    'default'   => apply_filters('mo_optin_form_x_scroll_value', 1),
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'x_page_views_status' => array(
-                    'default' => apply_filters('mo_optin_form_x_page_views_status', false),
-                    'type' => 'option',
+                'x_page_views_status'             => array(
+                    'default'   => apply_filters('mo_optin_form_x_page_views_status', false),
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'x_page_views_condition' => array(
-                    'default' => apply_filters('mo_optin_form_x_page_views_condition', '...'),
-                    'type' => 'option',
+                'x_page_views_condition'          => array(
+                    'default'   => apply_filters('mo_optin_form_x_page_views_condition', '...'),
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'x_page_views_value' => array(
-                    'default' => apply_filters('mo_optin_form_x_page_views_value', 1),
-                    'type' => 'option',
+                'x_page_views_value'              => array(
+                    'default'   => apply_filters('mo_optin_form_x_page_views_value', 1),
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'load_optin_index' => array(
-                    'default' => apply_filters('mo_optin_form_load_optin_index', ''),
-                    'type' => 'option',
+                'load_optin_index'                => array(
+                    'default'   => apply_filters('mo_optin_form_load_optin_index', ''),
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'posts_never_load' => array(
-                    'default' => apply_filters('mo_optin_form_posts_never_load', ''),
-                    'type' => 'option',
+                'posts_never_load'                => array(
+                    'default'   => apply_filters('mo_optin_form_posts_never_load', ''),
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'pages_never_load' => array(
-                    'default' => apply_filters('mo_optin_form_pages_never_load', ''),
-                    'type' => 'option',
+                'pages_never_load'                => array(
+                    'default'   => apply_filters('mo_optin_form_pages_never_load', ''),
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'cpt_never_load' => array(
-                    'default' => apply_filters('mo_optin_form_cpt_never_load', ''),
-                    'type' => 'option',
+                'cpt_never_load'                  => array(
+                    'default'   => apply_filters('mo_optin_form_cpt_never_load', ''),
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'post_categories_load' => array(
-                    'default' => apply_filters('mo_optin_form_post_categories_load', ''),
-                    'type' => 'option',
+                'post_categories_load'            => array(
+                    'default'   => apply_filters('mo_optin_form_post_categories_load', ''),
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'post_tags_load' => array(
-                    'default' => apply_filters('mo_optin_form_post_tags_load', ''),
-                    'type' => 'option',
+                'post_tags_load'                  => array(
+                    'default'   => apply_filters('mo_optin_form_post_tags_load', ''),
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
                 'exclusive_post_types_posts_load' => array(
-                    'default' => apply_filters('mo_optin_form_exclusive_post_types_posts_load', ''),
-                    'type' => 'option',
+                    'default'   => apply_filters('mo_optin_form_exclusive_post_types_posts_load', ''),
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'exclusive_post_types_load' => array(
-                    'default' => apply_filters('mo_optin_form_exclusive_post_types_load', ''),
-                    'type' => 'option',
+                'exclusive_post_types_load'       => array(
+                    'default'   => apply_filters('mo_optin_form_exclusive_post_types_load', ''),
+                    'type'      => 'option',
                     'transport' => 'postMessage',
                 )
             ),
