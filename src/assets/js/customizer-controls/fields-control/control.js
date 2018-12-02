@@ -12,9 +12,12 @@
                     // re-order index
                     $(this).attr('data-field-index', index);
 
-                    //index start at 0. Increment so it start from 1. Useful only for Field h3/title.
-                    // I didnt do ++index because i dont want the new index copy to index variable.
-                    $(this).find('.mo-fields-widget-title h3').text(mailoptin_globals.custom_field_label.replace('{ID}', index + 1));
+                    var widget_title_obj = $(this).find('.mo-fields-widget-title h3');
+                    if (widget_title_obj.text().indexOf('#') !== -1) {
+                        //index start at 0. Increment so it start from 1. Useful only for Field h3/title.
+                        // I didnt do ++index because i dont want the new index copy to index variable.
+                        widget_title_obj.text(mailoptin_globals.custom_field_label.replace('{ID}', index + 1));
+                    }
                     _this.color_picker_init();
                     _this.chosen_select_init();
                 });
@@ -163,7 +166,6 @@
         remove_field: function (e) {
             e.preventDefault();
             var cache = $('.mo-fields-widget.mo-custom-field');
-            var fields_count = cache.length;
 
             var parent = $(this).parents('.mo-fields-widget.mo-custom-field');
             parent.slideUp(400, function () {
