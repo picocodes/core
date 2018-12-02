@@ -7,7 +7,8 @@
             var _this = this;
 
             var contextual_display_init = function () {
-
+                _this.color_picker_init();
+                _this.chosen_select_init();
                 $('.mo-fields-widget.mo-custom-field').each(function (index) {
                     // re-order index
                     $(this).attr('data-field-index', index);
@@ -18,8 +19,6 @@
                         // I didnt do ++index because i dont want the new index copy to index variable.
                         widget_title_obj.text(mailoptin_globals.custom_field_label.replace('{ID}', index + 1));
                     }
-                    _this.color_picker_init();
-                    _this.chosen_select_init();
                 });
             };
 
@@ -120,6 +119,8 @@
 
             // returning true continue/skip the iteration.
             if (field_name === '') return;
+
+            $('.mo-fields-widget-title h3', parent).text(field_value);
 
             // shim for single checkbox
             if ($(this).attr('type') === 'checkbox' && field_name.indexOf('[]') === -1) {

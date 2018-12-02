@@ -528,8 +528,8 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
             'textarea' => __('Textarea', 'mailoptin')
         ];
 
-        $widget_title = sprintf(__('Field %s', 'mailoptin'), '#'.($index + 1));
-        if ( isset($this->saved_values[$index]['placeholder'])) {
+        $widget_title = sprintf(__('Field %s', 'mailoptin'), '#' . ($index + 1));
+        if (isset($this->saved_values[$index]['placeholder'])) {
             $widget_title = $this->saved_values[$index]['placeholder'];
         }
 
