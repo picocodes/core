@@ -261,6 +261,49 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
     }
 
     /**
+     * Custom field styles.
+     *
+     * @return string
+     */
+    public function custom_field_styles($field_saved_values)
+    {
+        $font_family = ! isset($field_saved_values['font']) || empty($field_saved_values['font']) ? 'inherit' : sanitize_text_field($field_saved_values['font']);
+        $font        = $this->sanitize_font_stack_family($font_family);
+
+        $style_arg = ['height' => 'auto'];
+
+        if ( ! empty($field_saved_values['color'])) {
+            $style_arg['color'] = sanitize_text_field($field_saved_values['color']);
+        }
+
+        if ( ! empty($field_saved_values['background'])) {
+            $style_arg['background-color'] = sanitize_text_field($field_saved_values['background']);
+        }
+
+
+        if ($font != 'inherit') {
+            $style_arg['font-family'] = $font;
+        }
+
+
+        $style = '';
+
+        $style_arg = apply_filters('mo_optin_form_custom_field_styles', $style_arg,
+            $this->optin_campaign_id,
+            $this->optin_campaign_type,
+            $this->optin_campaign_uuid
+        );
+
+        foreach ($style_arg as $key => $value) {
+            if ( ! empty($value)) {
+                $style .= "$key: $value;";
+            }
+        }
+
+        return $style;
+    }
+
+    /**
      * Submit button styles.
      *
      * @return string
@@ -914,25 +957,23 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
                 $saved_values = $result;
 
                 foreach ($saved_values as $index => $field) {
-                    $index++;
-
-                    $field_type = empty($field_type) ? 'text' : sanitize_text_field($field['field_type']);
+                    $optin_css_id = $this->optin_css_id;
+                    $field_type   = empty($field_type) ? 'text' : sanitize_text_field($field['field_type']);
+                    $field_styles = $this->custom_field_styles($field);
 
                     switch ($field_type) {
                         case 'text':
 
-                            $optin_css_id       = $this->optin_css_id;
-                            $email_field_styles = $this->email_field_styles();
-                            $placeholder        = $this->get_customizer_value('email_field_placeholder');
-
+                            $field_id           = sanitize_text_field($field['cid']);
+                            $placeholder        = isset($field['placeholder']) ? sanitize_text_field($field['placeholder']) : '';
 
                             $class = esc_attr($atts['class']);
-                            $class = "mo-optin-field mo-optin-form-email-field $class";
+                            $class = "mo-optin-field mo-optin-form-custom-field field-{$field_id} $class";
 
                             $style = esc_attr($atts['style']);
-                            $style = "$email_field_styles $style";
+                            $style = "$field_styles $style";
 
-                            $html .= "<input id=\"{$optin_css_id}_custom_field_{$index}\" class=\"$class\" style=\"$style\" type=\"text\" placeholder=\"$placeholder\" name=\"custom_field_{$index}\" autocomplete=\"on\">";
+                            $html .= "<input id=\"{$optin_css_id}_field_{$field_id}\" class=\"$class\" style=\"$style\" type=\"text\" placeholder=\"$placeholder\" name=\"$field_id\" autocomplete=\"on\">";
 
                             break;
                     }

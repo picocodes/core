@@ -292,7 +292,7 @@ class CustomizerSettings extends AbstractCustomizer
                 'fields' => array(
                     'default' => '',
                     'type' => 'option',
-                    'transport' => 'postMessage',
+                    'transport' => 'refresh',
                 ),
                 'display_only_button' => array(
                     'default' => $this->customizer_defaults['display_only_button'],
