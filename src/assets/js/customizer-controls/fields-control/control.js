@@ -14,6 +14,7 @@
                     $(this).attr('data-field-index', index);
 
                     var widget_title_obj = $(this).find('.mo-fields-widget-title h3');
+                    // only modify the widget headline if it has #ID
                     if (widget_title_obj.text().indexOf('#') !== -1) {
                         //index start at 0. Increment so it start from 1. Useful only for Field h3/title.
                         // I didnt do ++index because i dont want the new index copy to index variable.
@@ -89,71 +90,93 @@
                 }
             };
 
+
+
+            var sortable_init = function () {
+                $(".mo-fields-widgets.mo-custom-field").sortable({
+                    axis: "y",
+                    containment: ".mo-custom-fields-container",
+                    stop: function (event, ui) {
+
+                    }
+                });
+            };
+
+            var save_change = function (parent) {
+                var index = parent.attr('data-field-index'),
+                    data_store = $('.mo-fields-save-field'),
+                    old_data = data_store.val();
+
+                if (old_data === '' || typeof old_data === 'undefined') {
+                    old_data = [];
+                }
+                else {
+                    old_data = JSON.parse(old_data);
+                }
+
+
+                if (typeof old_data[index] === 'undefined') {
+                    old_data[index] = {};
+                }
+
+                var field_name = this.name;
+                var field_value = this.value;
+
+                // returning true continue/skip the iteration.
+                if (field_name === '') return;
+
+                $('.mo-fields-widget-title h3', parent).text(field_value);
+
+                // shim for single checkbox
+                if ($(this).attr('type') === 'checkbox' && field_name.indexOf('[]') === -1) {
+                    old_data[index][field_name] = this.checked;
+                }
+                else if ($(this).attr('type') === 'checkbox' && field_name.indexOf('[]') !== -1) {
+                    var item_name = field_name.replace('[]', '');
+                    if (this.checked === true) {
+                        old_data = _.without(old_data[index][item_name], field_value);
+                    }
+                    else {
+
+                        if (typeof old_data[index][item_name] === 'undefined') {
+                            old_data[index][item_name] = [];
+                            old_data[index][item_name].push(field_value);
+                        } else {
+                            old_data[index][item_name].push(field_value);
+                        }
+
+                        old_data[index][item_name] = _.uniq(old_data[index][item_name]);
+                    }
+                }
+                else if (this.tagName === 'SELECT' && $(this).hasClass('mailoptin-field-chosen')) {
+                    old_data[index][field_name] = $(this).val();
+                }
+                else {
+                    old_data[index][field_name] = field_value;
+                }
+
+                // remove null and empty from array elements.
+                old_data = _.without(old_data, null, '');
+
+                data_store.val(JSON.stringify(old_data)).trigger('change');
+            };
+
+            var save_all_widget_changes = function () {
+
+            };
+
+            var  save_on_change = function () {
+                var parent = $(this).parents('.mo-fields-widget.mo-custom-field');
+                save_change(parent);
+            };
+
             contextual_display_init();
+            sortable_init();
             $(document).on('click', '.mo-fields-expand-collapse-all', toggleAllWidget);
             $(document).on('click', '.mo-fields-widget-action', this.toggleWidget);
             $(document).on('click', '.mo-add-new-field', add_new_field);
             $(document).on('click', '.mo-fields-delete', this.remove_field);
-            $(document).on('change keyup', '.mo-fields-widget.mo-custom-field select, .mo-fields-widget.mo-custom-field input, .mo-fields-widget.mo-custom-field textarea', this.save_changes);
-        },
-
-        save_changes: function () {
-            var data_store = $('.mo-fields-save-field');
-
-            var old_data = data_store.val();
-            if (old_data === '' || typeof old_data === 'undefined') {
-                old_data = [];
-            }
-            else {
-                old_data = JSON.parse(old_data);
-            }
-
-            var parent = $(this).parents('.mo-fields-widget.mo-custom-field');
-            var index = parent.attr('data-field-index');
-            if (typeof old_data[index] === 'undefined') {
-                old_data[index] = {};
-            }
-
-            var field_name = this.name;
-            var field_value = this.value;
-
-            // returning true continue/skip the iteration.
-            if (field_name === '') return;
-
-            $('.mo-fields-widget-title h3', parent).text(field_value);
-
-            // shim for single checkbox
-            if ($(this).attr('type') === 'checkbox' && field_name.indexOf('[]') === -1) {
-                old_data[index][field_name] = this.checked;
-            }
-            else if ($(this).attr('type') === 'checkbox' && field_name.indexOf('[]') !== -1) {
-                var item_name = field_name.replace('[]', '');
-                if (this.checked === true) {
-                    old_data = _.without(old_data[index][item_name], field_value);
-                }
-                else {
-
-                    if (typeof old_data[index][item_name] === 'undefined') {
-                        old_data[index][item_name] = [];
-                        old_data[index][item_name].push(field_value);
-                    } else {
-                        old_data[index][item_name].push(field_value);
-                    }
-
-                    old_data[index][item_name] = _.uniq(old_data[index][item_name]);
-                }
-            }
-            else if (this.tagName === 'SELECT' && $(this).hasClass('mailoptin-field-chosen')) {
-                old_data[index][field_name] = $(this).val();
-            }
-            else {
-                old_data[index][field_name] = field_value;
-            }
-
-            // remove null and empty from array elements.
-            old_data = _.without(old_data, null, '');
-
-            data_store.val(JSON.stringify(old_data)).trigger('change');
+            $(document).on('change keyup', '.mo-fields-widget.mo-custom-field select, .mo-fields-widget.mo-custom-field input, .mo-fields-widget.mo-custom-field textarea', save_on_change);
         },
 
         toggleWidget: function (e) {
@@ -202,7 +225,7 @@
             $('.mailoptin-field-chosen').chosen({
                 width: "100%"
             });
-        },
+        }
     });
 
 })(wp.customize, jQuery);

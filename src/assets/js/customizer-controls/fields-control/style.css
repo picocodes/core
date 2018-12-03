@@ -21,6 +21,16 @@
     transition: opacity 0.5s;
 }
 
+.mo-fields-part-widget.mo-custom-field {
+    cursor: move;
+}
+
+.mo-fields-part-widget.mo-custom-field:hover {
+    border-color: #999;
+    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
 .mo-fields-widget-action {
     display: inline-block;
     color: rgb(114, 119, 124);

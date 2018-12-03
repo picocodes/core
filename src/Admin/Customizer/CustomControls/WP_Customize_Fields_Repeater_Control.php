@@ -56,6 +56,8 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
         // color field
         wp_enqueue_script('wp-color-picker');
         wp_enqueue_style('wp-color-picker');
+
+        wp_enqueue_script('jquery-ui-sortable');
     }
 
     public function font_select($settings_link, $field_value)
@@ -581,9 +583,11 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
         if ( ! in_array($optin_class_instance::OPTIN_CUSTOM_FIELD_SUPPORT, $optin_class_instance->features_support())) return;
 
         if (is_array($this->saved_values) && count($this->saved_values) > 0) {
+            echo '<div class="mo-custom-fields-container mo-fields-widgets mo-custom-field">';
             foreach ($this->saved_values as $index => $field) {
                 $this->template($index);
             }
+            echo '</div>';
         }
         ?>
         <div class="mo-fields__add_new">
