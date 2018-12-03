@@ -958,7 +958,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
 
                 foreach ($saved_values as $index => $field) {
                     $optin_css_id = $this->optin_css_id;
-                    $field_type   = empty($field_type) ? 'text' : sanitize_text_field($field['field_type']);
+                    $field_type   = empty($field['field_type']) ? 'text' : sanitize_text_field($field['field_type']);
                     $field_styles = $this->custom_field_styles($field);
 
                     switch ($field_type) {

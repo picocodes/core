@@ -90,19 +90,9 @@
                 }
             };
 
+            var save_change = function (_this) {
+                var parent = $(_this).parents('.mo-fields-widget.mo-custom-field');
 
-
-            var sortable_init = function () {
-                $(".mo-fields-widgets.mo-custom-field").sortable({
-                    axis: "y",
-                    containment: ".mo-custom-fields-container",
-                    stop: function (event, ui) {
-
-                    }
-                });
-            };
-
-            var save_change = function (parent) {
                 var index = parent.attr('data-field-index'),
                     data_store = $('.mo-fields-save-field'),
                     old_data = data_store.val();
@@ -114,26 +104,27 @@
                     old_data = JSON.parse(old_data);
                 }
 
-
                 if (typeof old_data[index] === 'undefined') {
                     old_data[index] = {};
                 }
 
-                var field_name = this.name;
-                var field_value = this.value;
+                var field_name = _this.name;
+                var field_value = _this.value;
 
                 // returning true continue/skip the iteration.
                 if (field_name === '') return;
 
-                $('.mo-fields-widget-title h3', parent).text(field_value);
+                if (field_name === 'placeholder') {
+                    $('.mo-fields-widget-title h3', parent).text(field_value);
+                }
 
                 // shim for single checkbox
                 if ($(this).attr('type') === 'checkbox' && field_name.indexOf('[]') === -1) {
-                    old_data[index][field_name] = this.checked;
+                    old_data[index][field_name] = _this.checked;
                 }
-                else if ($(this).attr('type') === 'checkbox' && field_name.indexOf('[]') !== -1) {
+                else if ($(_this).attr('type') === 'checkbox' && field_name.indexOf('[]') !== -1) {
                     var item_name = field_name.replace('[]', '');
-                    if (this.checked === true) {
+                    if (_this.checked === true) {
                         old_data = _.without(old_data[index][item_name], field_value);
                     }
                     else {
@@ -148,8 +139,8 @@
                         old_data[index][item_name] = _.uniq(old_data[index][item_name]);
                     }
                 }
-                else if (this.tagName === 'SELECT' && $(this).hasClass('mailoptin-field-chosen')) {
-                    old_data[index][field_name] = $(this).val();
+                else if (_this.tagName === 'SELECT' && $(_this).hasClass('mailoptin-field-chosen')) {
+                    old_data[index][field_name] = $(_this).val();
                 }
                 else {
                     old_data[index][field_name] = field_value;
@@ -162,12 +153,28 @@
             };
 
             var save_all_widget_changes = function () {
+                // reorder data-field-index attributes
+                $('.mo-fields-widget.mo-custom-field').each(function (index) {
+                    $(this).attr('data-field-index', index);
+                });
 
+                $('.mo-fields-widget.mo-custom-field select, .mo-fields-widget.mo-custom-field input, .mo-fields-widget.mo-custom-field textarea').each(function () {
+                    save_change(this);
+                });
             };
 
-            var  save_on_change = function () {
-                var parent = $(this).parents('.mo-fields-widget.mo-custom-field');
-                save_change(parent);
+            var save_on_change = function () {
+                save_change(this);
+            };
+
+            var sortable_init = function () {
+                $(".mo-fields-widgets.mo-custom-field").sortable({
+                    axis: "y",
+                    containment: ".mo-custom-fields-container",
+                    update: function (event, ui) {
+                        save_all_widget_changes();
+                    }
+                });
             };
 
             contextual_display_init();
@@ -189,8 +196,6 @@
 
         remove_field: function (e) {
             e.preventDefault();
-            var cache = $('.mo-fields-widget.mo-custom-field');
-
             var parent = $(this).parents('.mo-fields-widget.mo-custom-field');
             parent.slideUp(400, function () {
                 $(this).remove();
