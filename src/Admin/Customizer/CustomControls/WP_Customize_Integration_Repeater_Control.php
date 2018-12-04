@@ -2,6 +2,8 @@
 
 namespace MailOptin\Core\Admin\Customizer\CustomControls;
 
+use MailOptin\Core\Connections\AbstractConnect;
+use MailOptin\Core\Connections\ConnectionInterface;
 use MailOptin\Core\Repositories\ConnectionsRepository;
 use WP_Customize_Control;
 
@@ -89,6 +91,16 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
             <?php $this->template(); ?>
         </script>
         <?php
+
+        $email_providers = ConnectionsRepository::get_connections();
+        $connection_with_custom_field_support = [];
+        foreach ($email_providers as $className => $label) {
+            /** @var ConnectionInterface $connection_class */
+            $connection_class = "MailOptin\\$className\\Connect";
+            if(in_array(AbstractConnect::OPTIN_CUSTOM_FIELD_SUPPORT, $connection_class::features_support())) {
+
+            }
+        }
     }
 
     public function text_field($index, $name, $class = '', $label = '', $description = '', $placeholder = '', $type = 'text')

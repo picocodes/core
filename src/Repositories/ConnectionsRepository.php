@@ -7,6 +7,9 @@ use MailOptin\RegisteredUsersConnect\Connect as RegisteredUsersConnect;
 
 class ConnectionsRepository
 {
+    const OPTIN_CAMPAIGN_TYPE = 'optin_campaign';
+    const EMAIL_CAMPAIGN_TYPE = 'email_campaign';
+
     /**
      * List of connections available.
      *
@@ -14,7 +17,7 @@ class ConnectionsRepository
      *
      * @return mixed
      */
-    public static function get_connections($customizer_type = 'optin_campaign')
+    public static function get_connections($customizer_type = self::OPTIN_CAMPAIGN_TYPE)
     {
         // hooked array must be a key/label pair eg $arg['sendy'] = 'Sendy'
         $connections = apply_filters('mailoptin_registered_connections', array('' => __('Select...', 'mailoptin')));
