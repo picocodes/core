@@ -93,14 +93,24 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         <?php
 
         $email_providers = ConnectionsRepository::get_connections();
-        $connection_with_custom_field_support = [];
-        foreach ($email_providers as $className => $label) {
-            /** @var ConnectionInterface $connection_class */
-            $connection_class = "MailOptin\\$className\\Connect";
-            if(in_array(AbstractConnect::OPTIN_CUSTOM_FIELD_SUPPORT, $connection_class::features_support())) {
 
+        $connections_with_custom_field_support = [];
+
+        foreach ($email_providers as $className => $label) {
+            if ( ! empty($className)) {
+                /** @var ConnectionInterface $connection_class */
+                $connection_class = "MailOptin\\$className\\Connect";
+                if (in_array(AbstractConnect::OPTIN_CUSTOM_FIELD_SUPPORT, $connection_class::features_support())) {
+                    $connections_with_custom_field_support[] = $className;
+                }
             }
         }
+
+        ?>
+        <script type="text/javascript">
+            var mo_connections_with_custom_field_support = <?php echo json_encode($connections_with_custom_field_support); ?>;
+        </script>
+        <?php
     }
 
     public function text_field($index, $name, $class = '', $label = '', $description = '', $placeholder = '', $type = 'text')
