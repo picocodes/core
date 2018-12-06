@@ -68,11 +68,29 @@
 
 
             contextual_display_init();
+            this.conditionally_display_map_custom_field_btn();
             $(document).on('click', '.mo-expand-collapse-all', toggleAllWidget);
             $(document).on('click', '.mo-integration-widget-action', this.toggleWidget);
             $(document).on('click', '.mo-add-new-integration', add_new_integration);
             $(document).on('click', '.mo-integration-delete', this.remove_integration);
             $(document).on('change keyup', '.mo-integration-widget select, .mo-integration-widget input, .mo-integration-widget textarea', this.save_changes);
+        },
+
+        conditionally_display_map_custom_field_btn: function () {
+            var callback = function () {
+                $('.mo-integration-widget').each(function () {
+                    var parent = $(this);
+                    var connection_service = $("select[name='connection_service']", parent).val();
+
+                    $('.mo-optin-map-custom-field', parent).toggle(
+                        _.isArray(mo_connections_with_custom_field_support) &&
+                        _.indexOf(mo_connections_with_custom_field_support, connection_service) !== -1
+                    );
+                });
+            };
+
+            callback();
+            $(document).on('change', '.mo-integration-widget select[name="connection_service"]', callback);
         },
 
         save_changes: function () {
