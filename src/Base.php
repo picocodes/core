@@ -21,7 +21,8 @@ define('MAILOPTIN_OAUTH_URL', 'https://auth.mailoptin.io');
 
 define('MAILOPTIN_ROOT', plugin_dir_path(MAILOPTIN_SYSTEM_FILE_PATH));
 define('MAILOPTIN_URL', plugin_dir_url(MAILOPTIN_SYSTEM_FILE_PATH));
-define('MAILOPTIN_ASSETS', MAILOPTIN_ROOT . 'assets/');
+
+define('MAILOPTIN_ASSETS_DIR', dirname(__FILE__) . '/assets/');
 
 if (strpos(__FILE__, 'mailoptin/vendor') !== false) {
     // production url path to assets folder.

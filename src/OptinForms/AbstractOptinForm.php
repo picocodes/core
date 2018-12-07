@@ -392,7 +392,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
                         div#{$optin_campaign_uuid} .mailoptin-video-container iframe, div#{$optin_campaign_uuid} .mailoptin-video-container object, div#{$optin_campaign_uuid} .mailoptin-video-container embed, div#{$optin_campaign_uuid} .mailoptin-video-container video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }";
 
         if ( ! empty($optin_effect) || is_customize_preview()) {
-            $global_css .= file_get_contents(MAILOPTIN_ASSETS_URL . 'css/animate.min.css');
+            $global_css .= file_get_contents(MAILOPTIN_ASSETS_DIR . 'css/animate.min.css');
         }
 
         if ($this->optin_campaign_type == 'bar') {

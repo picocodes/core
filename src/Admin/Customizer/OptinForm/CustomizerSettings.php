@@ -527,6 +527,11 @@ class CustomizerSettings extends AbstractCustomizer
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
+                'custom_field_mappings'          => array(
+                    'default'   => '',
+                    'type'      => 'option',
+                    'transport' => 'postMessage',
+                ),
                 'no_integration_notice' => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',

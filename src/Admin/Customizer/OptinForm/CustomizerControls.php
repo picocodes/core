@@ -586,7 +586,7 @@ class CustomizerControls
                             'default_values'          => (new AbstractCustomizer($this->optin_campaign_id))->customizer_defaults['fields'],
                             'customizerClassInstance' => $this->customizerClassInstance,
                             'optin_campaign_id'       => $this->optin_campaign_id,
-                            'optin_class_instance'       => $optin_class_instance,
+                            'optin_class_instance'    => $optin_class_instance,
                             'priority'                => 20
                         )
                     )
@@ -921,7 +921,7 @@ class CustomizerControls
         $integration_control_args = apply_filters(
             "mo_optin_form_customizer_integration_controls",
             array(
-                'integrations' => new WP_Customize_Integration_Repeater_Control(
+                'integrations'          => new WP_Customize_Integration_Repeater_Control(
                     $this->wp_customize,
                     $this->option_prefix . '[integrations]',
                     apply_filters('mo_optin_form_customizer_integrations_args', array(
@@ -934,7 +934,17 @@ class CustomizerControls
                         )
                     )
                 ),
-                'ajax_nonce'   => apply_filters('mo_optin_form_customizer_ajax_nonce_args', array(
+                'custom_field_mappings' => apply_filters('mo_optin_form_customizer_custom_field_mappings_args', array(
+                        'type'     => 'hidden',
+                        // simple hack because control won't render if label is empty.
+                        'label'    => '&nbsp;',
+                        'section'  => $this->customizerClassInstance->integration_section_id,
+                        'settings' => $this->option_prefix . '[custom_field_mappings]',
+                        // 999 cos we want it to be bottom.
+                        'priority' => 20,
+                    )
+                ),
+                'ajax_nonce'            => apply_filters('mo_optin_form_customizer_ajax_nonce_args', array(
                         'type'     => 'hidden',
                         // simple hack because control won't render if label is empty.
                         'label'    => '&nbsp;',
@@ -952,7 +962,7 @@ class CustomizerControls
 
         do_action('mailoptin_before_integration_controls_addition');
 
-        if (!apply_filters('mailoptin_enable_leadbank', false)) {
+        if ( ! apply_filters('mailoptin_enable_leadbank', false)) {
             $content = sprintf(
                 __('To store leads or subscribers in MailOptin without requiring an email service provider like MailChimp, %sUpgrade to premium%s now.', 'mailoptin'),
                 '<a target="_blank" href="https://mailoptin.io/lead-generation-wordpress/#leadbank">',

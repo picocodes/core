@@ -47,6 +47,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
         // toggle control assets
         wp_enqueue_script('mo-customizer-toggle-control', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/toggle-control/customizer-toggle-control.js', array('jquery'), false, true);
+        wp_enqueue_script('mo-customizer-map-custom-field', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/toggle-control/map-custom-field.js', array('jquery'), false, true);
         wp_enqueue_style('mo-pure-css-toggle-buttons', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/toggle-control/pure-css-togle-buttons.css', array(), false);
 
         $css = '

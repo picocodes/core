@@ -349,6 +349,10 @@
 
         remove_spinner: function (parent) {
             $('.mo-spinner.fetch-email-list', parent).remove();
+        },
+
+        custom_field_mapping: function() {
+
         }
     });
 
