@@ -952,6 +952,26 @@ class CustomizerControls
 
         do_action('mailoptin_before_integration_controls_addition');
 
+        if (!apply_filters('mailoptin_enable_leadbank', false)) {
+            $content = sprintf(
+                __('To store leads or subscribers in MailOptin without requiring an email service provider like MailChimp, %sUpgrade to premium%s now.', 'mailoptin'),
+                '<a target="_blank" href="https://mailoptin.io/lead-generation-wordpress/#leadbank">',
+                '</a>'
+            );
+
+            $integration_control_args['leadbank_notice'] = new WP_Customize_Custom_Content(
+                $this->wp_customize,
+                $this->option_prefix . '[leadbank_notice]',
+                apply_filters('mo_optin_form_customizer_leadbank_notice_args', array(
+                        'content'  => $content,
+                        'section'  => $this->customizerClassInstance->integration_section_id,
+                        'settings' => $this->option_prefix . '[leadbank_notice]',
+                        'priority' => 202,
+                    )
+                )
+            );
+        }
+
         if (count($email_providers) === 1 && key($email_providers) == '') {
             $content = sprintf(
                 __('No integration or email provider has been connected to MailOptin. %sClick here%s to do that now.', 'mailoptin'),
