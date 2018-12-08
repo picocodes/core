@@ -1,9 +1,7 @@
 (function (api, $) {
-    function a() {
 
+    var show_modal = function() {
+        $('.mo-optin-map-custom-field-settings').show();
     }
 
-    $(function() {
-        a()
-    });
 })(wp.customize, jQuery);

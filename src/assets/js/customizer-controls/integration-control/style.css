@@ -6,6 +6,7 @@
     box-sizing: border-box;
     box-shadow: rgba(0, 0, 0, 0.04) 0px 1px 1px;
     margin: 0px auto 10px;
+    position: relative;
 }
 
 .mo-optin-map-custom-field {
@@ -135,6 +136,34 @@
 
 a.mo-integration-form-remove, a.mo-integration-delete {
     color: rgb(170, 0, 0);
+}
+
+.mo-integration-widget .mo-optin-map-custom-field-settings {
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background-color: #fff;
+    opacity: 1;
+    color: #555;
+    z-index: 99;
+}
+
+.mo-optin-map-custom-field-spinner {
+    border-radius: inherit;
+    /* position: absolute; */
+    width: 100%;
+    height: 100%;
+    background: #fff url(../../../images/spinner.gif) 50% 50% no-repeat;
+    left: 0;
+    top: 0;
+    opacity: 0.99;
+    filter: alpha(opacity=80);
+}
+
+.mo-integration-widget .mo-optin-map-custom-field-settings-content {
+
 }
 
 .customize-control textarea {

@@ -375,7 +375,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         $optin_css_id        = $this->optin_css_id;
         $optin_campaign_uuid = $this->optin_campaign_uuid;
 
-        $asset_image_url = MAILOPTIN_ASSETS_URL . 'images/';
+        $asset_image_url = MAILOPTIN_ASSETS_URL . 'images';
 
         $global_css = "div#{$optin_campaign_uuid} *, div#{$optin_campaign_uuid} *:before, div#{$optin_campaign_uuid} *:after {box-sizing: border-box;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;}";
         $global_css .= "div#{$optin_css_id}_container div.mo-optin-powered-by{margin:5px auto 2px;text-align:center;}";

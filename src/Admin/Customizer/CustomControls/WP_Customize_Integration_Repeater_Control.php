@@ -499,6 +499,9 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         <div class="mo-optin-map-custom-field">
             <a href="#" class="page-title-action"><?php _e('Map Custom Field', 'mailoptin') ?></a>
         </div>
+        <div class="mo-optin-map-custom-field-settings" style="display: none">
+            <div class="mo-optin-map-custom-field-settings-content" style="display: none"></div>
+        </div>
         <?php
     }
 
