@@ -44,10 +44,10 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
         wp_enqueue_script('mailoptin-customizer-integrations', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/integration-control/control.js', array('jquery', 'customize-base'), false, true);
         wp_enqueue_style('mailoptin-customizer-integrations', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/integration-control/style.css', null);
+        wp_enqueue_script('mailoptin-customizer-map-custom-field', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/integration-control/map-custom-field.js', array('jquery'), false, true);
 
         // toggle control assets
         wp_enqueue_script('mo-customizer-toggle-control', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/toggle-control/customizer-toggle-control.js', array('jquery'), false, true);
-        wp_enqueue_script('mo-customizer-map-custom-field', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/toggle-control/map-custom-field.js', array('jquery'), false, true);
         wp_enqueue_style('mo-pure-css-toggle-buttons', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/toggle-control/pure-css-togle-buttons.css', array(), false);
 
         $css = '
@@ -497,7 +497,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
     {
         ?>
         <div class="mo-optin-map-custom-field">
-            <a href="#" class="page-title-action"><?php _e('Map Custom Field', 'mailoptin') ?></a>
+            <a href="#" class="page-title-action map-link"><?php _e('Map Custom Field', 'mailoptin') ?></a>
         </div>
         <div class="mo-optin-map-custom-field-settings" style="display: none">
             <div class="mo-optin-map-custom-field-settings-content" style="display: none"></div>
