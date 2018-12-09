@@ -37,24 +37,25 @@ class AjaxHandler
 
         // MailOptin_event => nopriv
         $ajax_events = array(
-            'track_optin_impression'                   => true,
-            'subscribe_to_email_list'                  => true,
-            'send_test_email'                          => false,
-            'create_optin_campaign'                    => false,
-            'create_email_campaign'                    => false,
-            'customizer_fetch_email_list'              => false,
-            'optin_toggle_active'                      => false,
-            'automation_toggle_active'                 => false,
-            'toggle_optin_activated'                   => false,
-            'toggle_automation_activated'              => false,
-            'optin_type_selection'                     => false,
-            'create_optin_split_test'                  => false,
-            'pause_optin_split_test'                   => false,
-            'end_optin_split_modal'                    => false,
-            'split_test_select_winner'                 => false,
-            'page_targeting_search'                    => false,
-            'dismiss_toastr_notifications'             => false,
-            'customizer_email_automation_get_taxonomy' => false,
+            'track_optin_impression'                        => true,
+            'subscribe_to_email_list'                       => true,
+            'send_test_email'                               => false,
+            'create_optin_campaign'                         => false,
+            'create_email_campaign'                         => false,
+            'customizer_fetch_email_list'                   => false,
+            'optin_toggle_active'                           => false,
+            'automation_toggle_active'                      => false,
+            'toggle_optin_activated'                        => false,
+            'toggle_automation_activated'                   => false,
+            'optin_type_selection'                          => false,
+            'create_optin_split_test'                       => false,
+            'pause_optin_split_test'                        => false,
+            'end_optin_split_modal'                         => false,
+            'split_test_select_winner'                      => false,
+            'page_targeting_search'                         => false,
+            'dismiss_toastr_notifications'                  => false,
+            'customizer_email_automation_get_taxonomy'      => false,
+            'customizer_optin_integration_map_custom_field' => false,
         );
 
         foreach ($ajax_events as $ajax_event => $nopriv) {
@@ -849,6 +850,26 @@ class AjaxHandler
             $this->render_fields($custom_post_type);
             wp_send_json_success(ob_get_clean());
         }
+
+        wp_send_json_error();
+    }
+
+    public function customizer_optin_integration_map_custom_field()
+    {
+        check_ajax_referer('customizer-fetch-email-list', 'security');
+
+        $connection = sanitize_text_field($_POST['connection']);
+        $list_id = sanitize_text_field($_POST['list_id']);
+
+        $custom_fields = ConnectionFactory::make($connection)->get_optin_fields($list_id);
+
+        echo '<div style="text-align:center" class="customize-control-title">';
+        _e('Map Integration Fields with Form Custom Fields', 'mailoptin');
+        echo '</div>';
+        echo '<div class="connection_service mo-integration-block">';
+        echo '<label for="" class="customize-control-title">Email Provider</label>';
+
+        echo '</div>';
 
         wp_send_json_error();
     }

@@ -162,7 +162,7 @@ a.mo-integration-form-remove, a.mo-integration-delete {
 }
 
 .mo-integration-widget .mo-optin-map-custom-field-settings-content {
-
+    padding: 10px;
 }
 
 .customize-control textarea {
