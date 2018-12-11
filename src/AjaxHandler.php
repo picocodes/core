@@ -861,15 +861,18 @@ class AjaxHandler
         $connection = sanitize_text_field($_POST['connection']);
         $list_id = sanitize_text_field($_POST['list_id']);
 
-        $custom_fields = ConnectionFactory::make($connection)->get_optin_fields($list_id);
+        $merge_fields = ConnectionFactory::make($connection)->get_optin_fields($list_id);
 
         echo '<div style="text-align:center" class="customize-control-title">';
         _e('Map Integration Fields with Form Custom Fields', 'mailoptin');
         echo '</div>';
-        echo '<div class="connection_service mo-integration-block">';
-        echo '<label for="" class="customize-control-title">Email Provider</label>';
 
-        echo '</div>';
+        foreach ($merge_fields as $key => $label) {
+            echo '<div class="connection_service mo-integration-block">';
+            echo "<label for='' class='customize-control-title'>$label</label>";
+
+            echo '</div>';
+        }
 
         wp_send_json_error();
     }
