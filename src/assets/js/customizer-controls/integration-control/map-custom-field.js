@@ -12,10 +12,12 @@
         $('.mo-optin-map-custom-field-spinner', parent).remove();
     };
 
-    var ajax_get_custom_fields = function() {
+    var ajax_get_custom_fields = function (parent) {
         $.post(ajaxurl, {
                 action: 'mailoptin_customizer_fetch_fields',
-                connect_service: connect_service,
+                connect_service: $("select[name='connection_service']", parent),
+                list_id: $("select[name='connection_email_list']", parent),
+                custom_fields: $('mo-fields-save-field').val(),
                 security: $("input[data-customize-setting-link*='[ajax_nonce]']").val()
             },
             function (response) {
@@ -37,13 +39,13 @@
         );
     };
 
-    $(function() {
-        $(document).on('click', '.mo-optin-map-custom-field .map-link', function(e) {
+    $(function () {
+        $(document).on('click', '.mo-optin-map-custom-field .map-link', function (e) {
             e.preventDefault();
             var parent = $(this).parents('.mo-integration-widget');
             show_modal(parent);
             add_spinner(parent);
-            ajax_get_custom_fields();
+            ajax_get_custom_fields(parent);
         })
     });
 

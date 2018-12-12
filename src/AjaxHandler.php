@@ -858,23 +858,29 @@ class AjaxHandler
     {
         check_ajax_referer('customizer-fetch-email-list', 'security');
 
-        $connection = sanitize_text_field($_POST['connection']);
-        $list_id = sanitize_text_field($_POST['list_id']);
+        $connection = sanitize_text_field($_POST['connect_service']);
+        $list_id    = sanitize_text_field($_POST['list_id']);
+        $custom_fields    = sanitize_text_field($_POST['custom_fields']);
+        if(!empty($custom_fields)) {
+            $custom_fields = json_decode($custom_fields);
+        }
 
         $merge_fields = ConnectionFactory::make($connection)->get_optin_fields($list_id);
 
-        echo '<div style="text-align:center" class="customize-control-title">';
-        _e('Map Integration Fields with Form Custom Fields', 'mailoptin');
-        echo '</div>';
+        if (empty($merge_fields)) wp_send_json_error();
+
+        $response = '<div style="text-align:center" class="customize-control-title">';
+        $response .= __('Map Integration Fields with Form Custom Fields', 'mailoptin');
+        $response .= '</div>';
 
         foreach ($merge_fields as $key => $label) {
-            echo '<div class="connection_service mo-integration-block">';
-            echo "<label for='' class='customize-control-title'>$label</label>";
-
-            echo '</div>';
+            $response .= '<div class="connection_service mo-integration-block">';
+            $response .= "<label for='' class='customize-control-title'>$label</label>";
+            $response .= "<select id=\"$key\" class=\"mo-optin-integration-field\" name=\"connection_service\">";
+            $response .= '</div>';
         }
 
-        wp_send_json_error();
+        wp_send_json_success($response);
     }
 
     /**
