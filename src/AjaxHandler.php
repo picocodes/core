@@ -37,25 +37,25 @@ class AjaxHandler
 
         // MailOptin_event => nopriv
         $ajax_events = array(
-            'track_optin_impression'                        => true,
-            'subscribe_to_email_list'                       => true,
-            'send_test_email'                               => false,
-            'create_optin_campaign'                         => false,
-            'create_email_campaign'                         => false,
-            'customizer_fetch_email_list'                   => false,
-            'optin_toggle_active'                           => false,
-            'automation_toggle_active'                      => false,
-            'toggle_optin_activated'                        => false,
-            'toggle_automation_activated'                   => false,
-            'optin_type_selection'                          => false,
-            'create_optin_split_test'                       => false,
-            'pause_optin_split_test'                        => false,
-            'end_optin_split_modal'                         => false,
-            'split_test_select_winner'                      => false,
-            'page_targeting_search'                         => false,
-            'dismiss_toastr_notifications'                  => false,
-            'customizer_email_automation_get_taxonomy'      => false,
-            'customizer_optin_integration_map_custom_field' => false,
+            'track_optin_impression'                   => true,
+            'subscribe_to_email_list'                  => true,
+            'send_test_email'                          => false,
+            'create_optin_campaign'                    => false,
+            'create_email_campaign'                    => false,
+            'customizer_fetch_email_list'              => false,
+            'optin_toggle_active'                      => false,
+            'automation_toggle_active'                 => false,
+            'toggle_optin_activated'                   => false,
+            'toggle_automation_activated'              => false,
+            'optin_type_selection'                     => false,
+            'create_optin_split_test'                  => false,
+            'pause_optin_split_test'                   => false,
+            'end_optin_split_modal'                    => false,
+            'split_test_select_winner'                 => false,
+            'page_targeting_search'                    => false,
+            'dismiss_toastr_notifications'             => false,
+            'customizer_email_automation_get_taxonomy' => false,
+            'customizer_optin_map_custom_field'        => false,
         );
 
         foreach ($ajax_events as $ajax_event => $nopriv) {
@@ -854,31 +854,43 @@ class AjaxHandler
         wp_send_json_error();
     }
 
-    public function customizer_optin_integration_map_custom_field()
+    public function customizer_optin_map_custom_field()
     {
         check_ajax_referer('customizer-fetch-email-list', 'security');
 
-        $connection = sanitize_text_field($_POST['connect_service']);
-        $list_id    = sanitize_text_field($_POST['list_id']);
-        $custom_fields    = sanitize_text_field($_POST['custom_fields']);
-        if(!empty($custom_fields)) {
-            $custom_fields = json_decode($custom_fields);
-        }
+        $connection    = sanitize_text_field($_POST['connect_service']);
+        $list_id       = sanitize_text_field($_POST['list_id']);
+        $custom_fields = stripslashes(sanitize_text_field($_POST['custom_fields']));
+
+        if (empty($custom_fields)) wp_send_json_error();
+
+        $custom_fields = json_decode($custom_fields, true);
 
         $merge_fields = ConnectionFactory::make($connection)->get_optin_fields($list_id);
 
-        if (empty($merge_fields)) wp_send_json_error();
+        if (empty($merge_fields)) wp_send_json_error(__('Error: No integration field found.', 'mailoptin'));
 
-        $response = '<div style="text-align:center" class="customize-control-title">';
+        if (empty($custom_fields)) wp_send_json_error(__('Error: You have no custom field created.', 'mailoptin'));
+
+        $response = '<div class="mo-optin-map-custom-field-close"></div>';
+        $response .= '<div style="text-align:center" class="customize-control-title">';
         $response .= __('Map Integration Fields with Form Custom Fields', 'mailoptin');
         $response .= '</div>';
 
         foreach ($merge_fields as $key => $label) {
-            $response .= '<div class="connection_service mo-integration-block">';
+            $response .= '<div class="mo-integration-block">';
             $response .= "<label for='' class='customize-control-title'>$label</label>";
-            $response .= "<select id=\"$key\" class=\"mo-optin-integration-field\" name=\"connection_service\">";
+            $response .= "<select id=\"$key\" class=\"mo-optin-integration-field\" name=\"$key\">";
+            foreach ($custom_fields as $custom_field) {
+                $response .= '<option value="' . $custom_field['cid'] . '">' . $custom_field['placeholder'] . '</option>';
+            }
+            $response .= '</select>';
             $response .= '</div>';
         }
+
+        $response .= '<div class="mo-integration-block">';
+        $response .= '<button type="button" class="button button-primary mo-optin-field-map-save">' . __('Save', 'mailoptin') . '</button>';
+        $response .= '</div>';
 
         wp_send_json_success($response);
     }

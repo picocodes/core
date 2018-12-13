@@ -161,8 +161,35 @@ a.mo-integration-form-remove, a.mo-integration-delete {
     filter: alpha(opacity=80);
 }
 
+.mo-optin-map-custom-field-close {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}
+
+.mo-optin-map-custom-field-close:after, .mo-optin-map-custom-field-close:before {
+    background-color: #000000;
+    content: '';
+    position: absolute;
+    left: 14px;
+    height: 14px;
+    top: 8px;
+    width: 2px;
+}
+
+.mo-optin-map-custom-field-close:before {
+    transform: rotate(45deg)
+}
+
+.mo-optin-map-custom-field-close:after {
+    transform: rotate(-45deg)
+}
+
 .mo-integration-widget .mo-optin-map-custom-field-settings-content {
-    padding: 10px;
+    padding: 30px 10px 10px;;
 }
 
 .customize-control textarea {
