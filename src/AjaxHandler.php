@@ -868,11 +868,13 @@ class AjaxHandler
 
         $merge_fields = ConnectionFactory::make($connection)->get_optin_fields($list_id);
 
-        if (empty($merge_fields)) wp_send_json_error(__('Error: No integration field found.', 'mailoptin'));
+        $close_btn = '<div class="mo-optin-map-custom-field-close"></div>';
 
-        if (empty($custom_fields)) wp_send_json_error(__('Error: You have no custom field created.', 'mailoptin'));
+        if (empty($merge_fields)) wp_send_json_error($close_btn . __('Error: No integration field found.', 'mailoptin'));
 
-        $response = '<div class="mo-optin-map-custom-field-close"></div>';
+        if (empty($custom_fields)) wp_send_json_error($close_btn . __('Error: You have no custom field created.', 'mailoptin'));
+
+        $response = $close_btn;
         $response .= '<div style="text-align:center" class="customize-control-title">';
         $response .= __('Map Integration Fields with Form Custom Fields', 'mailoptin');
         $response .= '</div>';
