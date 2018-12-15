@@ -42,6 +42,27 @@ abstract class AbstractConnect
         return $data;
     }
 
+    public function form_custom_fields()
+    {
+        $custom_fields = OptinCampaignsRepository::get_merged_customizer_value($this->extras['optin_campaign_id'], 'fields');
+        if ( ! empty($custom_fields)) {
+            $custom_fields = json_decode($custom_fields, true);
+        }
+
+        return $custom_fields;
+    }
+
+    public function form_custom_field_mappings()
+    {
+        $custom_field_mappings = OptinCampaignsRepository::get_merged_customizer_value($this->extras['optin_campaign_id'], 'custom_field_mappings');
+
+        if ( ! empty($custom_field_mappings)) {
+            $custom_field_mappings = json_decode($custom_field_mappings, true);
+        }
+
+        return $custom_field_mappings;
+    }
+
     public static function is_boolean($maybe_bool)
     {
         if (is_bool($maybe_bool)) {

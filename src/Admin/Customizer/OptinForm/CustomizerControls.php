@@ -7,7 +7,6 @@ use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Custom_Content;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Fields_Repeater_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Font_Size_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Google_Font_Control;
-use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Font_Stack_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Chosen_Select_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Integration_Repeater_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Tinymce_Control;
