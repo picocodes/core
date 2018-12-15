@@ -858,9 +858,11 @@ class AjaxHandler
     {
         check_ajax_referer('customizer-fetch-email-list', 'security');
 
-        $connection    = sanitize_text_field($_POST['connect_service']);
-        $list_id       = sanitize_text_field($_POST['list_id']);
-        $custom_fields = stripslashes(sanitize_text_field($_POST['custom_fields']));
+        $connection        = sanitize_text_field($_POST['connect_service']);
+        $list_id           = sanitize_text_field($_POST['list_id']);
+        $custom_fields     = stripslashes(sanitize_text_field($_POST['custom_fields']));
+        $custom_field_mappings     = stripslashes(sanitize_text_field($_POST['custom_field_mappings']));
+        $integration_index = sanitize_text_field($_POST['integration_index']);
 
         if (empty($custom_fields)) wp_send_json_error();
 
@@ -879,12 +881,21 @@ class AjaxHandler
         $response .= __('Map Integration Fields with Form Custom Fields', 'mailoptin');
         $response .= '</div>';
 
+        if ( ! empty($custom_field_mappings)) {
+            $custom_field_mappings = json_decode($custom_field_mappings, true);
+        }
+
         foreach ($merge_fields as $key => $label) {
             $response .= '<div class="mo-integration-block">';
             $response .= "<label for='' class='customize-control-title'>$label</label>";
-            $response .= "<select id=\"$key\" class=\"mo-optin-integration-field\" name=\"$key\">";
+            $response .= "<select id=\"$key\" class=\"mo-optin-custom-field-select\" name=\"$key\">";
             foreach ($custom_fields as $custom_field) {
-                $response .= '<option value="' . $custom_field['cid'] . '">' . $custom_field['placeholder'] . '</option>';
+                $response .= sprintf(
+                    '<option value="%s" %s>%s</option>',
+                    $custom_field['cid'],
+                    selected($custom_field_mappings[$integration_index][$key], $custom_field['cid'], false),
+                    $custom_field['placeholder']
+                );
             }
             $response .= '</select>';
             $response .= '</div>';

@@ -143,6 +143,7 @@ a.mo-integration-form-remove, a.mo-integration-delete {
     left: 0;
     height: 100%;
     width: 100%;
+    overflow: scroll;
     position: absolute;
     background-color: #fff;
     opacity: 1;
