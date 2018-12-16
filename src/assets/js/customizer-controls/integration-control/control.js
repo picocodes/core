@@ -37,8 +37,9 @@
 
                 // search and replace ID of fields
                 $(this).parents('.mo-integration-block').attr('data-integration-index', index);
-            };
 
+                $(document.body).trigger('mo_optin_add_new_integration');
+            };
 
             var toggleAllWidget = function (e) {
                 e.preventDefault();
@@ -91,6 +92,7 @@
 
             callback();
             $(document).on('change', '.mo-integration-widget select[name="connection_service"]', callback);
+            $(document).on('mo_optin_add_new_integration', callback);
         },
 
         save_changes: function () {
