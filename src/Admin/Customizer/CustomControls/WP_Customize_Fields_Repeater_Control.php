@@ -426,16 +426,18 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
 
         $random_id = wp_generate_password(5, false) . '_' . $index;
         ?>
-    <div class="<?= $name; ?> mo-fields-block<?= $class; ?>">
-        <div class="mo-fields-toggle-field" style="display:flex;flex-direction: row;justify-content: flex-start;">
-            <span class="customize-control-title" style="flex: 2 0 0; vertical-align: middle;"><?php echo $label; ?></span>
-            <input name="<?= $name; ?>" id="<?php echo $random_id ?>" type="checkbox" class="tgl tgl-light" value="<?php echo esc_attr($saved_value); ?>" <?php checked($saved_value); ?> />
-            <label for="<?php echo $random_id ?>" class="tgl-btn"></label>
+        <div class="<?= $name; ?> mo-fields-block<?= $class; ?>">
+            <div class="mo-fields-toggle-field" style="display:flex;flex-direction: row;justify-content: flex-start;">
+                <span class="customize-control-title" style="flex: 2 0 0; vertical-align: middle;"><?php echo $label; ?></span>
+                <input name="<?= $name; ?>" id="<?php echo $random_id ?>" type="checkbox" class="tgl tgl-light" value="<?php echo esc_attr($saved_value); ?>" <?php checked($saved_value); ?> />
+                <label for="<?php echo $random_id ?>" class="tgl-btn"></label>
+            </div>
+            <?php if ( ! empty($description)) : ?>
+                <span class="description customize-control-description"><?php echo $description; ?></span>
+            <?php endif; ?>
+
         </div>
-        <?php if ( ! empty($description)) : ?>
-        <span class="description customize-control-description"><?php echo $description; ?></span>
-        </div>
-    <?php endif;
+        <?php
     }
 
     public function parse_control($index, $control_args)
@@ -556,6 +558,7 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
                     <?php $this->repeater_color_field($index, 'color', '', __('Color', 'mailoptin')); ?>
                     <?php $this->repeater_color_field($index, 'background', '', __('Background', 'mailoptin')); ?>
                     <?php $this->repeater_font_field($index, 'font', '', __('Font', 'mailoptin')); ?>
+                    <?php $this->repeater_toggle_field($index, 'field_required', '', __('Make Field Required', 'mailoptin')); ?>
                     <?php $this->parse_control($index, apply_filters('mo_optin_fields_controls_after', [], $this->optin_campaign_id, $index, $this->saved_values)); ?>
                 </div>
                 <div class="mo-fields-widget-actions">

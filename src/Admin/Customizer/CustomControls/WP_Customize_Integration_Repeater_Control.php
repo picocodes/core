@@ -347,16 +347,17 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
         $random_id = wp_generate_password(5, false) . '_' . $index;
         ?>
-    <div class="<?= $name; ?> mo-integration-block<?= $class; ?>">
-        <div class="mo-integration-toggle-field" style="display:flex;flex-direction: row;justify-content: flex-start;">
-            <span class="customize-control-title" style="flex: 2 0 0; vertical-align: middle;"><?php echo $label; ?></span>
-            <input name="<?= $name; ?>" id="<?php echo $random_id ?>" type="checkbox" class="tgl tgl-light" value="<?php echo esc_attr($saved_value); ?>" <?php checked($saved_value); ?> />
-            <label for="<?php echo $random_id ?>" class="tgl-btn"></label>
+        <div class="<?= $name; ?> mo-integration-block<?= $class; ?>">
+            <div class="mo-integration-toggle-field" style="display:flex;flex-direction: row;justify-content: flex-start;">
+                <span class="customize-control-title" style="flex: 2 0 0; vertical-align: middle;"><?php echo $label; ?></span>
+                <input name="<?= $name; ?>" id="<?php echo $random_id ?>" type="checkbox" class="tgl tgl-light" value="<?php echo esc_attr($saved_value); ?>" <?php checked($saved_value); ?> />
+                <label for="<?php echo $random_id ?>" class="tgl-btn"></label>
+            </div>
+            <?php if ( ! empty($description)) : ?>
+                <span class="description customize-control-description"><?php echo $description; ?></span>
+            <?php endif ?>
         </div>
-        <?php if ( ! empty($description)) : ?>
-        <span class="description customize-control-description"><?php echo $description; ?></span>
-        </div>
-    <?php endif;
+        <?php
     }
 
     public function parse_control($index, $control_args)

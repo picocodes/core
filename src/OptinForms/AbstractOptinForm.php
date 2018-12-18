@@ -1017,7 +1017,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
 
         $data['unexpected_error']      = apply_filters('mo_optin_campaign_unexpected_error', __('Unexpected error. Please try again.', 'mailoptin'));
         $data['email_missing_error']   = apply_filters('mo_optin_campaign_email_missing_error', __('Please enter a valid email.', 'mailoptin'));
-        $data['name_missing_error']    = apply_filters('mo_optin_campaign_name_missing_error', __('Please enter a valid name.', 'mailoptin'));
+        $data['name_missing_error']    = apply_filters('mo_optin_campaign_name_missing_error', __('Please enter a name.', 'mailoptin'));
         $data['note_acceptance_error'] = apply_filters('mo_optin_campaign_note_acceptance_error', $this->get_customizer_value('note_acceptance_error'));
         $data['honeypot_error']        = apply_filters('mo_optin_campaign_honeypot_error', __('Your submission has been flagged as potential spam.', 'mailoptin'));
 

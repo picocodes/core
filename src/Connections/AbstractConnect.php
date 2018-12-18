@@ -60,7 +60,7 @@ abstract class AbstractConnect
             $custom_field_mappings = json_decode($custom_field_mappings, true);
         }
 
-        return $custom_field_mappings;
+        return \MailOptin\Core\array_flatten($custom_field_mappings);
     }
 
     public static function is_boolean($maybe_bool)

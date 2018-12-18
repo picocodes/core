@@ -963,6 +963,15 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                     }
                 }
 
+                $('#' + $optin_css_id + ' .mo-optin-form-custom-field').each(function () {
+                    var cache = $(this);
+
+                    if (cache.val() === "") {
+                        self.display_optin_error.call(cache, $optin_css_id);
+                        response = false;
+                    }
+                });
+
                 // we are doing a return here to ensure core validation has passed before hooked validations.
                 if (response === false) return response;
 
