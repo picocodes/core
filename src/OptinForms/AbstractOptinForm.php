@@ -936,7 +936,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         $data['success_cookie']        = $success_cookie != '' ? absint($success_cookie) : $data['cookie'];
         $data['global_cookie']         = $global_exit_cookie != '' ? absint($global_exit_cookie) : 0;
         $data['global_success_cookie'] = $global_success_cookie != '' ? absint($global_success_cookie) : 0;
-        $data['success_message']       = $this->get_customizer_value('success_message');
+        $data['success_message']       = do_shortcode($this->get_customizer_value('success_message'));
         $data['name_field_required']   = $this->get_customizer_value('name_field_required');
 
         $custom_fields = $this->get_customizer_value('fields');
