@@ -119,7 +119,7 @@
                 }
 
                 // shim for single checkbox
-                if ($(this).attr('type') === 'checkbox' && field_name.indexOf('[]') === -1) {
+                if ($(_this).attr('type') === 'checkbox' && field_name.indexOf('[]') === -1) {
                     old_data[index][field_name] = _this.checked;
                 }
                 else if ($(_this).attr('type') === 'checkbox' && field_name.indexOf('[]') !== -1) {

@@ -965,8 +965,10 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
 
                 $('#' + $optin_css_id + ' .mo-optin-form-custom-field').each(function () {
                     var cache = $(this);
+                    var field_id = $(this).data('field-id');
+                    var required_field_bucket = optin_js_config.required_custom_fields;
 
-                    if (cache.val() === "") {
+                    if ($.inArray(field_id, required_field_bucket) !== -1 && cache.val() === "") {
                         self.display_optin_error.call(cache, $optin_css_id);
                         response = false;
                     }

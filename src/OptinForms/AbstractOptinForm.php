@@ -939,6 +939,23 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         $data['success_message']       = $this->get_customizer_value('success_message');
         $data['name_field_required']   = $this->get_customizer_value('name_field_required');
 
+        $custom_fields = $this->get_customizer_value('fields');
+
+        $required_custom_fields = [];
+
+        if ( ! empty($custom_fields)) {
+            $custom_fields = json_decode($custom_fields, true);
+
+            if(!empty($custom_fields) && is_array($custom_fields)) {
+                foreach ($custom_fields as $custom_field) {
+                    if($custom_field['field_required'] === true) {
+                        $required_custom_fields[] = $custom_field['cid'];
+                    }
+                }
+
+                $data['required_custom_fields']   = $required_custom_fields;
+            }
+        }
 
         /** click launch display rule */
         if ($click_launch_status === true) {

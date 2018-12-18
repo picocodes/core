@@ -939,8 +939,6 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
      */
     public function shortcode_optin_form_custom_fields($atts)
     {
-        $html = '';
-
         $atts = shortcode_atts(
             array(
                 'class' => '',
@@ -956,35 +954,32 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
             if (is_array($result)) {
                 $saved_values = $result;
 
+                $html = '';
+
                 foreach ($saved_values as $index => $field) {
                     $optin_css_id = $this->optin_css_id;
                     $field_type   = empty($field['field_type']) ? 'text' : sanitize_text_field($field['field_type']);
                     $field_styles = $this->custom_field_styles($field);
 
+                    $field_id    = sanitize_text_field($field['cid']);
+                    $placeholder = isset($field['placeholder']) ? sanitize_text_field($field['placeholder']) : '';
+
+                    $style = esc_attr($atts['style']);
+                    $style = "$field_styles $style";
+
+                    $id = "{$optin_css_id}_{$field_type}_{$field_id}";
+
+                    $class = ' ' . esc_attr($atts['class']);
+                    $class = "mo-optin-field mo-optin-form-custom-field {$field_type}-field field-{$field_id}{$class}";
+
+                    $data_attr = sprintf('data-field-id="%s"', $field_id);
+
                     switch ($field_type) {
                         case 'text':
-                            $field_id    = sanitize_text_field($field['cid']);
-                            $placeholder = isset($field['placeholder']) ? sanitize_text_field($field['placeholder']) : '';
-
-                            $class = esc_attr($atts['class']);
-                            $class = "mo-optin-field mo-optin-form-custom-field text-field field-{$field_id} $class";
-
-                            $style = esc_attr($atts['style']);
-                            $style = "$field_styles $style";
-
-                            $html .= "<input id=\"{$optin_css_id}_text_{$field_id}\" class=\"$class\" style=\"$style\" type=\"text\" placeholder=\"$placeholder\" name=\"$field_id\">";
+                            $html .= "<input $data_attr id=\"$id\" class=\"$class\" style=\"$style\" type=\"text\" placeholder=\"$placeholder\" name=\"$field_id\">";
                             break;
                         case 'textarea':
-                            $field_id    = sanitize_text_field($field['cid']);
-                            $placeholder = isset($field['placeholder']) ? sanitize_text_field($field['placeholder']) : '';
-
-                            $class = esc_attr($atts['class']);
-                            $class = "mo-optin-field mo-optin-form-custom-field textarea-field field-{$field_id} $class";
-
-                            $style = esc_attr($atts['style']);
-                            $style = "$field_styles $style";
-
-                            $html .= "<textarea id=\"{$optin_css_id}_textarea_{$field_id}\" class=\"$class\" style=\"$style\" placeholder=\"$placeholder\" name=\"$field_id\"></textarea>";
+                            $html .= "<textarea $data_attr id=\"$id\" class=\"$class\" style=\"$style\" placeholder=\"$placeholder\" name=\"$field_id\"></textarea>";
                             break;
                     }
                 }
