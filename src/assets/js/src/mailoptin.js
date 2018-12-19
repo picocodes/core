@@ -1004,7 +1004,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                     this.css("box-shadow", "inset 0px 0px 0px 2px #f45a4a");
                 }
 
-                var mo_optin_error_text = this.parents('#' + $optin_css_id).find('.mo-optin-error');
+                var mo_optin_error_text = $('div#' + $optin_css_id + ' .mo-optin-error');
                 if (typeof error !== 'undefined' && typeof mo_optin_error_text !== 'undefined' && mo_optin_error_text.length > 0) {
                     mo_optin_error_text.text(error).show();
                 }
