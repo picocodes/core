@@ -948,7 +948,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
 
             if(!empty($custom_fields) && is_array($custom_fields)) {
                 foreach ($custom_fields as $custom_field) {
-                    if($custom_field['field_required'] === true) {
+                    if(isset($custom_field['field_required']) && $custom_field['field_required'] === true) {
                         $required_custom_fields[] = $custom_field['cid'];
                     }
                 }

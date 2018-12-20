@@ -184,7 +184,9 @@ function array_flatten($array)
     $result = array();
     foreach ($array as $key => $value) {
         if (is_array($value)) {
-            $result = array_merge($result, array_flatten($value));
+            // we are not doing array_merge here because we wanna keep array keys.
+            // PS: The + operator is not an addition, it's a union. If the keys don't overlap then all is good.
+            $result = $result + array_flatten($value);
         } else {
             $result[$key] = $value;
         }
