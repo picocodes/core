@@ -2,6 +2,7 @@
 
 namespace MailOptin\Core\Admin\Customizer\CustomControls;
 
+use MailOptin\Core\Admin\Customizer\OptinForm\OptinFormFactory;
 use MailOptin\Core\Connections\AbstractConnect;
 use MailOptin\Core\Connections\ConnectionInterface;
 use MailOptin\Core\Repositories\ConnectionsRepository;
@@ -99,9 +100,13 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
         foreach ($email_providers as $className => $label) {
             if ( ! empty($className)) {
+                $optin_class_instance = OptinFormFactory::make($this->optin_campaign_id);
+
                 /** @var ConnectionInterface $connection_class */
                 $connection_class = "MailOptin\\$className\\Connect";
-                if (in_array(AbstractConnect::OPTIN_CUSTOM_FIELD_SUPPORT, $connection_class::features_support())) {
+                if (in_array(AbstractConnect::OPTIN_CUSTOM_FIELD_SUPPORT, $connection_class::features_support()) &&
+                    in_array($optin_class_instance::OPTIN_CUSTOM_FIELD_SUPPORT, $optin_class_instance->features_support())
+                ) {
                     $connections_with_custom_field_support[] = $className;
                 }
             }
