@@ -140,7 +140,7 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
                         </div>
                     </div>
                     <div class="mo-fields-block">
-                        <label for="<?php echo $placeholder_setting; ?>" class="customize-control-title"><?php _e('Placeholder', 'mailoptin'); ?></label>
+                        <label for="<?php echo $placeholder_setting; ?>" class="customize-control-title"><?php _e('Title', 'mailoptin'); ?></label>
                         <input id="<?php echo $placeholder_setting; ?>" type="text" value="<?php echo $placeholder_field_value; ?>" data-customize-setting-link="<?php echo $placeholder_setting; ?>">
                     </div>
                     <div class="mo-fields-block">
@@ -199,7 +199,7 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
             <div class="mo-fields-widget-content">
                 <div class="mo-fields-widget-form">
                     <div class="mo-fields-block">
-                        <label for="<?php echo $placeholder_setting; ?>" class="customize-control-title"><?php _e('Placeholder', 'mailoptin'); ?></label>
+                        <label for="<?php echo $placeholder_setting; ?>" class="customize-control-title"><?php _e('Title', 'mailoptin'); ?></label>
                         <input id="<?php echo $placeholder_setting; ?>" type="text" value="<?php echo $placeholder_field_value; ?>" data-customize-setting-link="<?php echo $placeholder_setting; ?>">
                     </div>
                     <div class="mo-fields-block">
@@ -553,8 +553,8 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
             <div class="mo-fields-widget-content">
                 <div class="mo-fields-widget-form">
                     <?php $this->parse_control($index, apply_filters('mo_optin_fields_controls_before', [], $this->optin_campaign_id, $index, $this->saved_values)); ?>
+                    <?php $this->repeater_text_field($index, 'placeholder', '', __('Title', 'mailoptin')); ?>
                     <?php $this->repeater_select_field($index, 'field_type', $field_types, '', __('Type', 'mailoptin')); ?>
-                    <?php $this->repeater_text_field($index, 'placeholder', '', __('Placeholder', 'mailoptin')); ?>
                     <?php $this->repeater_color_field($index, 'color', '', __('Color', 'mailoptin')); ?>
                     <?php $this->repeater_color_field($index, 'background', '', __('Background', 'mailoptin')); ?>
                     <?php $this->repeater_font_field($index, 'font', '', __('Font', 'mailoptin')); ?>
