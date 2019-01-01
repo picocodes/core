@@ -19,7 +19,10 @@
                 content_editor = '<div class="mo-tinymce-expanded-editor"><textarea style="height:200px" id="mo-tinymce-expanded-textarea" data-control-id="' + control_id + '">' + api(control_id).get() + '</textarea></div>';
                 $('.wp-full-overlay').prepend(content_editor);
 
-                $('#mo-tinymce-expanded-textarea').mo_wp_editor({mode: 'tmce'});
+                var config = {mode: 'tmce'};
+                config['mceInit'] = {wpautop: false};
+
+                $('#mo-tinymce-expanded-textarea').mo_wp_editor(config);
                 editor = tinymce.get('mo-tinymce-expanded-textarea');
 
                 editor.on('keyup change undo redo SetContent NodeChange', function () {
@@ -28,7 +31,7 @@
                 });
 
                 $(document).on('change', '#mo-tinymce-expanded-textarea', _.debounce(function () {
-                        api($(this).data('control-id')).set(tinymce.get('mo-tinymce-expanded-textarea').getContent());
+                        api($(this).data('control-id')).set($(this).val());
                     }, 300)
                 );
 
