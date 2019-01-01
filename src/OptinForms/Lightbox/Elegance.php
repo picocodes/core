@@ -415,6 +415,7 @@ HTML;
     {
         $optin_css_id    = $this->optin_css_id;
         $optin_uuid    = $this->optin_campaign_uuid;
+
         $image_asset_url = MAILOPTIN_OPTIN_THEMES_ASSETS_URL;
 
         return <<<CSS
