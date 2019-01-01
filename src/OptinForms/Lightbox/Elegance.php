@@ -185,7 +185,10 @@ class Elegance extends AbstractOptinTheme
 
     public function features_support()
     {
-        return [self::CTA_BUTTON_SUPPORT];
+        return [
+            self::CTA_BUTTON_SUPPORT,
+            self::OPTIN_CUSTOM_FIELD_SUPPORT
+        ];
     }
 
     /**
@@ -392,6 +395,7 @@ class Elegance extends AbstractOptinTheme
     [mo-optin-form-fields-wrapper]
         [mo-optin-form-name-field class="moEleganceModal_input_fields"]
         [mo-optin-form-email-field class="moEleganceModal_input_fields"]
+        [mo-optin-form-custom-fields]
         [mo-mailchimp-interests]
         [mo-optin-form-submit-button class="moEleganceModal_button"]
     [/mo-optin-form-fields-wrapper]
@@ -410,6 +414,7 @@ HTML;
     public function optin_form_css()
     {
         $optin_css_id    = $this->optin_css_id;
+        $optin_uuid    = $this->optin_campaign_uuid;
         $image_asset_url = MAILOPTIN_OPTIN_THEMES_ASSETS_URL;
 
         return <<<CSS
@@ -450,12 +455,13 @@ div#$optin_css_id.moEleganceModal .moElegance_note {
   margin-top: 10px
 }
 
-div#$optin_css_id.moEleganceModal input.moEleganceModal_input_fields {
+div#$optin_css_id.moEleganceModal input.moEleganceModal_input_fields,
+ html div#$optin_uuid div#$optin_css_id.moEleganceModal .mo-optin-form-custom-field.text-field,
+html div#$optin_uuid div#$optin_css_id.moEleganceModal .mo-optin-form-custom-field.textarea-field {
   display: block;
   width: 100%;
   max-width: 100%;
   padding: 10px;
-  text-align: center;
   margin: 0.5em auto 0;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -464,6 +470,10 @@ div#$optin_css_id.moEleganceModal input.moEleganceModal_input_fields {
   border: 1px solid #e3e3e3;
   outline: 1px solid #e3e3e3;
   background-color: #ffffff;
+}
+
+html div#$optin_uuid div#$optin_css_id.moEleganceModal .mo-optin-form-custom-field.textarea-field {
+height: 80px !important;
 }
 
 div#$optin_css_id.moEleganceModal input.moEleganceModal_button {
