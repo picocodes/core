@@ -459,6 +459,10 @@ transition: box-shadow 0.45s, border-color 0.45s ease-in-out;
 font-size: 16px;
 }
 
+html div#$optin_uuid div#$optin_css_id.mo-baremetal-container textarea.mo-optin-form-custom-field.textarea-field {
+height: 80px !important;
+}
+
 html div#$optin_uuid div#$optin_css_id.mo-baremetal-container input[type="submit"].mo-optin-form-submit-button,
 html div#$optin_uuid div#$optin_css_id.mo-baremetal-container input[type="submit"].mo-optin-form-cta-button {
 border: none;
