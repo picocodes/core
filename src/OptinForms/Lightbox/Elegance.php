@@ -418,7 +418,7 @@ HTML;
         $image_asset_url = MAILOPTIN_OPTIN_THEMES_ASSETS_URL;
 
         return <<<CSS
-div#$optin_css_id.moEleganceModal {
+html div#$optin_uuid div#$optin_css_id.moEleganceModal {
   border: 3px solid #fff;
   width: 100%;
   max-width: 600px;
@@ -433,7 +433,7 @@ div#$optin_css_id.moEleganceModal {
   box-shadow: 8px 0 20px 14px rgba(0, 0, 0, 0.08)
 }
 
-div#$optin_css_id.moEleganceModal h2.moElegance_header {
+html div#$optin_uuid div#$optin_css_id.moEleganceModal h2.moElegance_header {
   color: #000;
   margin: 0;
   line-height: 1.5;
@@ -441,22 +441,22 @@ div#$optin_css_id.moEleganceModal h2.moElegance_header {
   text-transform: capitalize
 }
 
-div#$optin_css_id.moEleganceModal .moElegance_description {
+html div#$optin_uuid div#$optin_css_id.moEleganceModal .moElegance_description {
   line-height: 1.5;
   text-align: center;
   color: #777;
   margin-bottom: 2em;
 }
 
-div#$optin_css_id.moEleganceModal .moElegance_note {
+html div#$optin_uuid div#$optin_css_id.moEleganceModal .moElegance_note {
   line-height: 1.5;
   text-align: center;
   color: #000;
   margin-top: 10px
 }
 
-div#$optin_css_id.moEleganceModal input.moEleganceModal_input_fields,
- html div#$optin_uuid div#$optin_css_id.moEleganceModal .mo-optin-form-custom-field.text-field,
+html div#$optin_uuid div#$optin_css_id.moEleganceModal input.moEleganceModal_input_fields,
+html div#$optin_uuid div#$optin_css_id.moEleganceModal .mo-optin-form-custom-field.text-field,
 html div#$optin_uuid div#$optin_css_id.moEleganceModal .mo-optin-form-custom-field.textarea-field {
   display: block;
   width: 100%;
@@ -476,7 +476,7 @@ html div#$optin_uuid div#$optin_css_id.moEleganceModal .mo-optin-form-custom-fie
 height: 80px !important;
 }
 
-div#$optin_css_id.moEleganceModal input.moEleganceModal_button {
+html div#$optin_uuid div#$optin_css_id.moEleganceModal input.moEleganceModal_button {
   display: block;
   margin: 10px auto 0;
   text-decoration: none;
@@ -497,15 +497,15 @@ div#$optin_css_id.moEleganceModal input.moEleganceModal_button {
   transition: all 0.5s ease-in-out;
 }
 
-div#$optin_css_id.moEleganceModal .moEleganceModal_button:hover {
+html div#$optin_uuid div#$optin_css_id.moEleganceModal .moEleganceModal_button:hover {
   background: #52A9E7;
 }
 
-div#$optin_css_id.moEleganceModal .moEleganceModal_button:active {
+html div#$optin_uuid div#$optin_css_id.moEleganceModal .moEleganceModal_button:active {
   background: #fff;
 }
 
-div#$optin_css_id.moEleganceModal .moEleganceModalclose {
+html div#$optin_uuid div#$optin_css_id.moEleganceModal .moEleganceModalclose {
   position: absolute;
   right: 12px;
   top: 16px;
@@ -515,7 +515,7 @@ div#$optin_css_id.moEleganceModal .moEleganceModalclose {
   cursor: pointer
 }
 
-div#$optin_css_id.moEleganceModal .mo-optin-error {
+html div#$optin_uuid div#$optin_css_id.moEleganceModal .mo-optin-error {
   display: none;
   background: #FF0000;
   color: #ffffff;
@@ -531,7 +531,7 @@ div#$optin_css_id.moEleganceModal .mo-optin-error {
   outline: 1px solid #FF0000;
 }
 
-div#$optin_css_id.moEleganceModal a.moEleganceModalclose {
+html div#$optin_uuid div#$optin_css_id.moEleganceModal a.moEleganceModalclose {
   background-image: url({$image_asset_url}/elegance-close.png);
   font-size: 9px;
   margin: auto;

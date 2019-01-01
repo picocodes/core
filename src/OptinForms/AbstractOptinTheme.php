@@ -949,12 +949,12 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
 
         $saved_values = $this->get_customizer_value('fields');
 
+        $html = '';
+
         if ( ! empty($saved_values) && is_string($saved_values)) {
             $result = json_decode($saved_values, true);
             if (is_array($result)) {
                 $saved_values = $result;
-
-                $html = '';
 
                 foreach ($saved_values as $index => $field) {
                     $optin_css_id = $this->optin_css_id;
