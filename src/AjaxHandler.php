@@ -872,7 +872,7 @@ class AjaxHandler
 
         $close_btn = '<div class="mo-optin-map-custom-field-close"></div>';
 
-        if (empty($merge_fields)) wp_send_json_error($close_btn . __('Error: No integration field found.', 'mailoptin'));
+        if (empty($merge_fields)) wp_send_json_error($close_btn . __('Error: No integration field found. Select a list first if you haven\'t and try again.', 'mailoptin'));
 
         if (empty($custom_fields)) wp_send_json_error($close_btn . __('Error: You have no custom field created.', 'mailoptin'));
 

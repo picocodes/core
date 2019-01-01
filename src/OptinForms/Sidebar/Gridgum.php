@@ -522,7 +522,7 @@ class Gridgum extends AbstractOptinTheme
                             [mo-optin-form-fields-wrapper]
                             [mo-optin-form-name-field class="gridgum_input_field"]
                             [mo-optin-form-email-field class="gridgum_input_field"]
-                            [mo-optin-form-custom-fields class="gridgum_input_field"]
+                            [mo-optin-form-custom-fields]
                             [mo-mailchimp-interests]
                             [mo-optin-form-submit-button class="gridgum_submit_button"]
                             [/mo-optin-form-fields-wrapper]
@@ -613,8 +613,8 @@ html div#$optin_uuid div#$optin_css_id.gridgum_container .gridgum_body-inner .gr
      }
 
 html div#$optin_uuid div#$optin_css_id.gridgum_container .gridgum_body-form input.gridgum_input_field, 
-html div#$optin_uuid div#$optin_css_id.gridgum_container .mo-optin-form-custom-field.text-field,
-html div#$optin_uuid div#$optin_css_id.gridgum_container .mo-optin-form-custom-field.textarea-field {
+html div#$optin_uuid div#$optin_css_id.gridgum_container input.mo-optin-form-custom-field.text-field,
+html div#$optin_uuid div#$optin_css_id.gridgum_container textarea.mo-optin-form-custom-field.textarea-field {
          width: 100%;
          max-width: 100%;
          padding: 10px 0px;
@@ -628,7 +628,7 @@ html div#$optin_uuid div#$optin_css_id.gridgum_container .mo-optin-form-custom-f
          background-color: #ffffff;
      }
      
-html div#$optin_uuid div#$optin_css_id.gridgum_container .mo-optin-form-custom-field.textarea-field {
+html div#$optin_uuid div#$optin_css_id.gridgum_container textarea.mo-optin-form-custom-field.textarea-field {
     height: 80px !important;
 }
 

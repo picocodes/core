@@ -217,7 +217,10 @@ class Lupin extends AbstractOptinTheme
 
     public function features_support()
     {
-        return [self::CTA_BUTTON_SUPPORT];
+        return [
+            self::CTA_BUTTON_SUPPORT,
+            self::OPTIN_CUSTOM_FIELD_SUPPORT
+        ];
     }
 
     /**
@@ -424,6 +427,7 @@ class Lupin extends AbstractOptinTheme
     [mo-optin-form-fields-wrapper]
     [mo-optin-form-name-field class="lupinSidebar-input"]
     [mo-optin-form-email-field class="lupinSidebar-input"]
+    [mo-optin-form-custom-fields]
     [mo-mailchimp-interests]
     [mo-optin-form-submit-button class="lupinSidebar-submit"]
     [/mo-optin-form-fields-wrapper]
@@ -443,9 +447,10 @@ HTML;
     public function optin_form_css()
     {
         $optin_css_id = $this->optin_css_id;
+        $optin_uuid   = $this->optin_campaign_uuid;
 
         return <<<CSS
-div#$optin_css_id.lupinSidebar-container {
+html div#$optin_uuid div#$optin_css_id.lupinSidebar-container {
          background: #1998D6;
          -webkit-border-radius: 5px;
          -moz-border-radius: 5px;
@@ -461,23 +466,25 @@ div#$optin_css_id.lupinSidebar-container {
          box-sizing: border-box;
      }
 
-div#$optin_css_id.lupinSidebar-container h2.lupinSidebar-heading {
+html div#$optin_uuid div#$optin_css_id.lupinSidebar-container h2.lupinSidebar-heading {
          color: #fff;
          line-height: 50px;
          margin: 0;
      }
 
-div#$optin_css_id.lupinSidebar-container .lupinSidebar-description {
+html div#$optin_uuid div#$optin_css_id.lupinSidebar-container .lupinSidebar-description {
          margin-top: 12px;
          color: #fff;
      }
 
-div#$optin_css_id.lupinSidebar-container .lupinSidebar-form {
+html div#$optin_uuid div#$optin_css_id.lupinSidebar-container .lupinSidebar-form {
          max-width: 280px;
          margin: 30px auto 0;
      }
 
-div#$optin_css_id.lupinSidebar-container input.lupinSidebar-input {
+html div#$optin_uuid div#$optin_css_id.lupinSidebar-container input.lupinSidebar-input,
+html div#$optin_uuid div#$optin_css_id.lupinSidebar-container input.mo-optin-form-custom-field.text-field,
+html div#$optin_uuid div#$optin_css_id.lupinSidebar-container textarea.mo-optin-form-custom-field.textarea-field {
          display: block;
          width: 100%;
          margin-top: 5px;
@@ -486,19 +493,23 @@ div#$optin_css_id.lupinSidebar-container input.lupinSidebar-input {
          -webkit-border-radius: 3px;
          -moz-border-radius: 3px;
          border-radius: 3px;
-         padding: 12px 0;
+         padding: 12px 10px;
          -webkit-box-sizing: border-box;
          -moz-box-sizing: border-box;
          box-sizing: border-box;
          font-size: 16px;
          line-height: 16px;
-         text-align: center;
          color: #555;
          background: #ffffff;
          outline: none;
      }
+     
+html div#$optin_uuid div#$optin_css_id.lupinSidebar-container textarea.mo-optin-form-custom-field.textarea-field {
+    height: 80px !important;
+}
 
-div#$optin_css_id.lupinSidebar-container input.lupinSidebar-submit, div#$optin_css_id.lupinSidebar-container input[type="submit"].mo-optin-form-cta-button {
+html div#$optin_uuid div#$optin_css_id.lupinSidebar-container input.lupinSidebar-submit,
+html div#$optin_uuid div#$optin_css_id.lupinSidebar-container input[type="submit"].mo-optin-form-cta-button {
          display: block;
          width: 100%;
          -webkit-box-sizing: border-box;
@@ -522,14 +533,14 @@ div#$optin_css_id.lupinSidebar-container input.lupinSidebar-submit, div#$optin_c
          font-weight: 600;
      }
 
-div#$optin_css_id.lupinSidebar-container .lupinSidebar-note {
+html div#$optin_uuid div#$optin_css_id.lupinSidebar-container .lupinSidebar-note {
          line-height: 1.5;
          text-align: center;
          color: #fff;
          margin-top: 10px
 }
 
-div#$optin_css_id.lupinSidebar-container .mo-optin-error {
+html div#$optin_uuid div#$optin_css_id.lupinSidebar-container .mo-optin-error {
          display: none;
          background: #FF0000;
          color: #ffffff;

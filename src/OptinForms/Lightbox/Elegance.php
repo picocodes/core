@@ -456,8 +456,8 @@ html div#$optin_uuid div#$optin_css_id.moEleganceModal .moElegance_note {
 }
 
 html div#$optin_uuid div#$optin_css_id.moEleganceModal input.moEleganceModal_input_fields,
-html div#$optin_uuid div#$optin_css_id.moEleganceModal .mo-optin-form-custom-field.text-field,
-html div#$optin_uuid div#$optin_css_id.moEleganceModal .mo-optin-form-custom-field.textarea-field {
+html div#$optin_uuid div#$optin_css_id.moEleganceModal input.mo-optin-form-custom-field.text-field,
+html div#$optin_uuid div#$optin_css_id.moEleganceModal textarea.mo-optin-form-custom-field.textarea-field {
   display: block;
   width: 100%;
   max-width: 100%;
@@ -472,7 +472,7 @@ html div#$optin_uuid div#$optin_css_id.moEleganceModal .mo-optin-form-custom-fie
   background-color: #ffffff;
 }
 
-html div#$optin_uuid div#$optin_css_id.moEleganceModal .mo-optin-form-custom-field.textarea-field {
+html div#$optin_uuid div#$optin_css_id.moEleganceModal textarea.mo-optin-form-custom-field.textarea-field {
 height: 80px !important;
 }
 
