@@ -466,7 +466,9 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         $connection_email_list = ['' => __('Select...', 'mailoptin')];
         if (isset($this->saved_values[$index]['connection_service'])) {
             $saved_email_provider = $this->saved_values[$index]['connection_service'];
-            $widget_title         = $email_providers[$saved_email_provider];
+            if(!empty($email_providers[$saved_email_provider])) {
+                $widget_title = $email_providers[$saved_email_provider];
+            }
             // prepend 'Select...' to the array of email list.
             // because select control will be hidden if no choice is found.
             $connection_email_list = $connection_email_list + ConnectionsRepository::connection_email_list($saved_email_provider);
