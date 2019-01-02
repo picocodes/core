@@ -605,6 +605,18 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         $optin_form                          = '';
         $name_email_class_indicator          = $this->get_customizer_value('hide_name_field') === true ? 'mo-has-email' : 'mo-has-name-email';
         $display_only_button_class_indicator = $this->get_customizer_value('display_only_button') === true ? ' mo-cta-button-display mo-cta-button-flag' : '';
+
+        $has_custom_field_flag = false;
+        $custom_field_data     = $this->get_customizer_value('fields');
+        if ( ! empty($custom_field_data)) {
+            $custom_field_data = json_decode($custom_field_data);
+            if ( ! empty($custom_field_data)) {
+                $has_custom_field_flag = true;
+            }
+        }
+
+        $has_custom_field_class_indicator = $has_custom_field_flag === true ? ' mo-optin-has-custom-field' : '';
+
         // set optin to display:none when schedule is active then allow mailoptinjs to decide whether to show it or not.
         $is_hidden_style = $this->is_schedule_display_rule_active() || $this->is_adblock_rule_active() || $this->is_referral_detection_rule_active() || $this->is_newvsreturn_rule_active() || $this->is_x_page_views_rule_active() ? 'display: none' : '';
 
@@ -623,7 +635,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
                 'background: rgba(0,0,0,0.7)'
             ]);
 
-            $optin_form .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type} {$name_email_class_indicator}{$display_only_button_class_indicator}\" data-optin-type='{$this->optin_campaign_type}' style='$modalWrapperStyle'>";
+            $optin_form .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type} {$name_email_class_indicator}{$display_only_button_class_indicator}{$has_custom_field_class_indicator}\" data-optin-type='{$this->optin_campaign_type}' style='$modalWrapperStyle'>";
         }
 
         if ($this->optin_campaign_type == 'bar') {
@@ -642,7 +654,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
             ];
 
             $barWrapperStyle = implode(';', $bar_wrapper_style_properties);
-            $optin_form      .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type} {$name_email_class_indicator}{$display_only_button_class_indicator}{$position_class}{$is_sticky}\" data-optin-type='{$this->optin_campaign_type}' style='$barWrapperStyle'>";
+            $optin_form      .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type} {$name_email_class_indicator}{$display_only_button_class_indicator}{$position_class}{$is_sticky}{$has_custom_field_class_indicator}\" data-optin-type='{$this->optin_campaign_type}' style='$barWrapperStyle'>";
         }
 
         if ($this->optin_campaign_type == 'slidein') {
@@ -659,19 +671,19 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
                 'z-index: 999999999'
             ];
             $slideinWrapperStyle              = implode(';', $slidein_wrapper_style_properties);
-            $optin_form                       .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type}{$display_only_button_class_indicator}{$position_class}\" data-optin-type='{$this->optin_campaign_type}' style='$slideinWrapperStyle'>";
+            $optin_form                       .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type}{$display_only_button_class_indicator}{$position_class}{$has_custom_field_class_indicator}\" data-optin-type='{$this->optin_campaign_type}' style='$slideinWrapperStyle'>";
         }
 
         if ($this->optin_campaign_type == 'sidebar') {
             $sidebar_wrapper_style_properties = [$is_hidden_style];
             $sidebarWrapperStyle              = implode(';', $sidebar_wrapper_style_properties);
-            $optin_form                       .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type} {$name_email_class_indicator}{$display_only_button_class_indicator}\" data-optin-type='{$this->optin_campaign_type}' style='$sidebarWrapperStyle'>";
+            $optin_form                       .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type} {$name_email_class_indicator}{$display_only_button_class_indicator}{$has_custom_field_class_indicator}\" data-optin-type='{$this->optin_campaign_type}' style='$sidebarWrapperStyle'>";
         }
 
         if ($this->optin_campaign_type == 'inpost') {
             $inpost_wrapper_style_properties = [$is_hidden_style];
             $inpostWrapperStyle              = implode(';', $inpost_wrapper_style_properties);
-            $optin_form                      .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type} {$name_email_class_indicator}{$display_only_button_class_indicator}\" data-optin-type='{$this->optin_campaign_type}' style='$inpostWrapperStyle'>";
+            $optin_form                      .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type} {$name_email_class_indicator}{$display_only_button_class_indicator}{$has_custom_field_class_indicator}\" data-optin-type='{$this->optin_campaign_type}' style='$inpostWrapperStyle'>";
         }
 
         $optin_form .= "<div class='mo-optin-form-container' id='{$optin_css_id}_container' style='position:relative;margin: 0 auto;'>";
@@ -946,14 +958,14 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         if ( ! empty($custom_fields)) {
             $custom_fields = json_decode($custom_fields, true);
 
-            if(!empty($custom_fields) && is_array($custom_fields)) {
+            if ( ! empty($custom_fields) && is_array($custom_fields)) {
                 foreach ($custom_fields as $custom_field) {
-                    if(isset($custom_field['field_required']) && $custom_field['field_required'] === true) {
+                    if (isset($custom_field['field_required']) && $custom_field['field_required'] === true) {
                         $required_custom_fields[] = $custom_field['cid'];
                     }
                 }
 
-                $data['required_custom_fields']   = $required_custom_fields;
+                $data['required_custom_fields'] = $required_custom_fields;
             }
         }
 
