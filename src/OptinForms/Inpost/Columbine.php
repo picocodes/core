@@ -195,7 +195,10 @@ class Columbine extends AbstractOptinTheme
 
     public function features_support()
     {
-        return [self::CTA_BUTTON_SUPPORT];
+        return [
+            self::CTA_BUTTON_SUPPORT,
+            self::OPTIN_CUSTOM_FIELD_SUPPORT
+        ];
     }
 
     /**
@@ -524,6 +527,7 @@ class Columbine extends AbstractOptinTheme
     [mo-optin-form-fields-wrapper]
     <div id="columbine-name-field" class="columbine-three-col1">[mo-optin-form-name-field class="columbine-input"]</div>
     <div id="columbine-email-field" class="columbine-three-col2">[mo-optin-form-email-field class="columbine-input"]</div>
+    [mo-optin-form-custom-fields tag_start='<div class="columbine-column">' tag_end='</div>']
     <div id="columbine-submit-button" class="columbine-three-col3">[mo-optin-form-submit-button class="columbine-submit"]</div>
     [/mo-optin-form-fields-wrapper]
     [mo-optin-form-cta-button]
@@ -547,9 +551,9 @@ HTML;
 
         $mini_headline_font_color = $this->get_customizer_value('mini_headline_font_color', '#54C3A5');
 
-        $is_mini_hadline_display = '';
+        $is_mini_headline_display = '';
         if ($this->get_customizer_value('hide_mini_headline', false)) {
-            $is_mini_hadline_display = 'display:none;';
+            $is_mini_headline_display = 'display:none;';
         }
 
         return <<<CSS
@@ -576,7 +580,7 @@ html div#$optin_uuid div#$optin_css_id.columbine-container div.columbine-miniTex
          text-transform: uppercase;
          color: $mini_headline_font_color;
          font-weight: bold;
-         $is_mini_hadline_display
+         $is_mini_headline_display
      }
 
 html div#$optin_uuid div#$optin_css_id.columbine-container div.columbine-heading {
@@ -619,7 +623,9 @@ html div#$optin_uuid div#$optin_css_id.columbine-container div.columbine-two-col
          width: 33.333%;
      }
 
-html div#$optin_uuid div#$optin_css_id.columbine-container input.columbine-input {
+html div#$optin_uuid div#$optin_css_id.columbine-container input.columbine-input,
+html div#$optin_uuid div#$optin_css_id.columbine-container input.mo-optin-form-custom-field.text-field,
+html div#$optin_uuid div#$optin_css_id.columbine-container textarea.mo-optin-form-custom-field.textarea-field {
          background-color: #ffffff;
          width: 100%;
          display: block;
@@ -698,6 +704,23 @@ html div#$optin_uuid div#$optin_css_id.columbine-container div.mo-optin-error {
                                  margin-top: 10px;
                              }
 
+}
+
+html div#$optin_uuid.mo-optin-has-custom-field div#$optin_css_id.columbine-container div.columbine-column,
+html div#$optin_uuid.mo-optin-has-custom-field div#$optin_css_id.columbine-container div.columbine-two-col1,
+html div#$optin_uuid.mo-optin-has-custom-field div#$optin_css_id.columbine-container div.columbine-two-col2,
+html div#$optin_uuid.mo-optin-has-custom-field div#$optin_css_id.columbine-container div.columbine-three-col1,
+html div#$optin_uuid.mo-optin-has-custom-field div#$optin_css_id.columbine-container div.columbine-three-col2,
+html div#$optin_uuid.mo-optin-has-custom-field div#$optin_css_id.columbine-container div.columbine-three-col3 {
+   float: none;
+   width: 100%;
+   margin-right: 0;
+   margin-top: 10px;
+}
+
+
+html div#$optin_uuid.mo-optin-has-custom-field div#$optin_css_id.columbine-container div.columbine-column textarea.mo-optin-form-custom-field.textarea-field {
+min-height: 80px;
 }
 CSS;
 

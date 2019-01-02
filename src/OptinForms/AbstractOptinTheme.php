@@ -62,7 +62,7 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
         $content = $wp_embed->run_shortcode($body);
         $content = do_shortcode($content);
 
-        remove_filter('embed_oembed_html', [$this, 'video_embed_html'], 10, 3);
+        remove_filter('embed_oembed_html', [$this, 'video_embed_html'], 10);
         remove_filter('video_embed_html', [$this, 'video_embed_html']);
         remove_filter('wp_video_shortcode', [$this, 'video_embed_html']);
 
@@ -941,8 +941,10 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
     {
         $atts = shortcode_atts(
             array(
-                'class' => '',
-                'style' => '',
+                'class'     => '',
+                'style'     => '',
+                'tag_start' => '',
+                'tag_end'   => ''
             ),
             $atts
         );
@@ -976,10 +978,14 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
 
                     switch ($field_type) {
                         case 'text':
+                            $html .= $atts['tag_start'];
                             $html .= "<input $data_attr id=\"$id\" class=\"$class\" style=\"$style\" type=\"text\" placeholder=\"$placeholder\" name=\"$field_id\">";
+                            $html .= $atts['tag_end'];
                             break;
                         case 'textarea':
+                            $html .= $atts['tag_start'];
                             $html .= "<textarea $data_attr id=\"$id\" class=\"$class\" style=\"$style\" placeholder=\"$placeholder\" name=\"$field_id\"></textarea>";
+                            $html .= $atts['tag_end'];
                             break;
                     }
                 }

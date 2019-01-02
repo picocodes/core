@@ -505,7 +505,7 @@ html div#$optin_uuid div#$optin_css_id.lupinSidebar-container textarea.mo-optin-
      }
      
 html div#$optin_uuid div#$optin_css_id.lupinSidebar-container textarea.mo-optin-form-custom-field.textarea-field {
-    height: 80px !important;
+    min-height: 80px;
 }
 
 html div#$optin_uuid div#$optin_css_id.lupinSidebar-container input.lupinSidebar-submit,

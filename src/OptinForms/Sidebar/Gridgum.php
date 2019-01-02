@@ -629,7 +629,7 @@ html div#$optin_uuid div#$optin_css_id.gridgum_container textarea.mo-optin-form-
      }
      
 html div#$optin_uuid div#$optin_css_id.gridgum_container textarea.mo-optin-form-custom-field.textarea-field {
-    height: 80px !important;
+    min-height: 80px;
 }
 
 html div#$optin_uuid div#$optin_css_id.gridgum_container .gridgum_body-form input.gridgum_input_field:focus,

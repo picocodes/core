@@ -466,7 +466,7 @@ font-size: 16px;
 }
 
 html div#$optin_uuid div#$optin_css_id.mo-baremetal-container textarea.mo-optin-form-custom-field.textarea-field {
-height: 80px !important;
+min-height: 80px;
 }
 
 html div#$optin_uuid div#$optin_css_id.mo-baremetal-container input[type="submit"].mo-optin-form-submit-button, div#$optin_css_id.mo-baremetal-container input[type="submit"].mo-optin-form-cta-button {

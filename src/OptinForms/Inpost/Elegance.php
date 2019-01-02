@@ -449,7 +449,7 @@ html div#$optin_uuid div#$optin_css_id.moEleganceModal textarea.mo-optin-form-cu
 }
 
 html div#$optin_uuid div#$optin_css_id.moEleganceModal textarea.mo-optin-form-custom-field.textarea-field {
-    height: 80px !important;
+    min-height: 80px;
 }
 
 html div#$optin_uuid div#$optin_css_id.moEleganceModal .moEleganceModal_button {
