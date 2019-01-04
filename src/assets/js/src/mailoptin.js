@@ -554,16 +554,25 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 self.flag_optin_type_displayed(optin_config, optin_type);
 
                 if (optin_type === 'bar' && optin_config.bar_position === 'top') {
+
                     var originalMargin = parseFloat($(document.body).css('margin-top')),
-                        mHeight = this.outerHeight();
+                        optin_uuid = optin_config.optin_uuid;
 
-                    if ($(window).width() <= 600) {
-                        mHeight -= $("#wpadminbar").outerHeight();
-                    }
+                    $(window).on('resize.MoBarTop', function () {
+                        var cache = $('#' + optin_uuid);
+                        var mHeight = cache.outerHeight();
 
-                    mHeight = $.MailOptin.activeBarHeight = originalMargin + mHeight;
+                        if ($(window).width() <= 600) {
+                            mHeight -= $("#wpadminbar").outerHeight();
+                        }
 
-                    $(document.body).css('margin-top', originalMargin + mHeight + 'px');
+                        mHeight = $.MailOptin.activeBarHeight = originalMargin + mHeight;
+
+                        $(document.body).css('margin-top', originalMargin + mHeight + 'px');
+                    });
+
+                    // init
+                    $(window).resize();
                 }
 
                 this.show();
@@ -654,6 +663,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                         var mt = parseFloat($(document.body).css('margin-top'));
                         $(document.body).css('margin-top', mt - $.MailOptin.activeBarHeight + 'px');
                         delete $.MailOptin.activeBarHeight;
+                        $(window).off('resize.MoBarTop');
                     }
                 });
             },
