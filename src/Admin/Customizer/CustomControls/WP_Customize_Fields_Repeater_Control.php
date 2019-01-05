@@ -99,6 +99,8 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
 
     public function name_field()
     {
+        if (apply_filters('mo_optin_form_disable_name_field', false)) return;
+
         $placeholder_setting     = sprintf('mo_optin_campaign[%s][name_field_placeholder]', $this->optin_campaign_id);
         $placeholder_field_value = OptinCampaignsRepository::get_merged_customizer_value($this->optin_campaign_id, 'name_field_placeholder');
 
