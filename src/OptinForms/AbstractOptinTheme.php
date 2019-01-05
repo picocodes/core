@@ -939,6 +939,8 @@ abstract class AbstractOptinTheme extends AbstractOptinForm
      */
     public function shortcode_optin_form_custom_fields($atts)
     {
+        if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM')) return;
+
         $atts = shortcode_atts(
             array(
                 'class'     => '',

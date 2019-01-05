@@ -45,7 +45,10 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
         wp_enqueue_script('mailoptin-customizer-integrations', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/integration-control/control.js', array('jquery', 'customize-base'), false, true);
         wp_enqueue_style('mailoptin-customizer-integrations', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/integration-control/style.css', null);
-        wp_enqueue_script('mailoptin-customizer-map-custom-field', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/integration-control/map-custom-field.js', array('jquery'), false, true);
+
+        if (defined('MAILOPTIN_DETACH_LIBSODIUM')) {
+            wp_enqueue_script('mailoptin-customizer-map-custom-field', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/integration-control/map-custom-field.js', array('jquery'), false, true);
+        }
 
         // toggle control assets
         wp_enqueue_script('mo-customizer-toggle-control', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/toggle-control/customizer-toggle-control.js', array('jquery'), false, true);
@@ -466,7 +469,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         $connection_email_list = ['' => __('Select...', 'mailoptin')];
         if (isset($this->saved_values[$index]['connection_service'])) {
             $saved_email_provider = $this->saved_values[$index]['connection_service'];
-            if(!empty($email_providers[$saved_email_provider])) {
+            if ( ! empty($email_providers[$saved_email_provider])) {
                 $widget_title = $email_providers[$saved_email_provider];
             }
             // prepend 'Select...' to the array of email list.
@@ -503,6 +506,8 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
     public function map_custom_field_btn()
     {
+        if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM')) return;
+
         ?>
         <div class="mo-optin-map-custom-field">
             <a href="#" class="page-title-action map-link"><?php _e('Map Custom Field', 'mailoptin') ?></a>

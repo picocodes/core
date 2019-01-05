@@ -583,6 +583,23 @@ class WP_Customize_Fields_Repeater_Control extends WP_Customize_Control
         $this->name_field();
         $this->email_field();
 
+        if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM')) {
+            $content = sprintf(
+                '<div class="mo-pro"><a href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=custom_fields" target="_blank">%s</a></div>',
+                __('Premium Version Available', 'mailoptin')
+            );
+
+            $content .= sprintf(
+                __('Upgrade to %sMailOptin Premium%s to add custom fields to capture additional information from subscribers.', 'mailoptin'),
+                '<a target="_blank" href="https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=custom_fields">',
+                '</a>'
+            );
+
+            echo '<div style="background: #fff;padding:5px">' . $content . '</div>';
+
+            return;
+        }
+
         $optin_class_instance = $this->optin_class_instance;
 
         if ( ! in_array($optin_class_instance::OPTIN_CUSTOM_FIELD_SUPPORT, $optin_class_instance->features_support())) return;
