@@ -469,7 +469,8 @@ html div#$optin_uuid div#$optin_css_id.mo-baremetal-container textarea.mo-optin-
 min-height: 80px;
 }
 
-html div#$optin_uuid div#$optin_css_id.mo-baremetal-container input[type="submit"].mo-optin-form-submit-button, div#$optin_css_id.mo-baremetal-container input[type="submit"].mo-optin-form-cta-button {
+html div#$optin_uuid div#$optin_css_id.mo-baremetal-container input[type="submit"].mo-optin-form-submit-button, 
+html div#$optin_uuid div#$optin_css_id.mo-baremetal-container input[type="submit"].mo-optin-form-cta-button {
 border: none;
 line-height: normal;
 letter-spacing: normal;
