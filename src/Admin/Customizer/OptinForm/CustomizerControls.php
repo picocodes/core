@@ -220,6 +220,7 @@ class CustomizerControls
                             'settings'      => $this->option_prefix . '[headline]',
                             'editor_id'     => 'headline',
                             'editor_height' => 50,
+                            'quicktags' => true,
                             'priority'      => 10
                         )
                     )
