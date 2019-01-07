@@ -715,9 +715,9 @@ class OptinCampaign_List extends \WP_List_Table
         $this->_column_headers = $this->get_column_info();
         /** Process bulk action */
         $this->process_actions();
-        $per_page     = defined('MAILOPTIN_DETACH_LIBSODIUM') ? $this->get_items_per_page('optin_forms_per_page', 15) : 3;
+        $per_page     = $this->get_items_per_page('optin_forms_per_page', 15);
         $current_page = $this->get_pagenum();
-        $total_items  = defined('MAILOPTIN_DETACH_LIBSODIUM') ? self::record_count($optin_type) : 3;
+        $total_items  = self::record_count($optin_type);
         $this->set_pagination_args(array(
                 'total_items' => $total_items, //WE have to calculate the total number of items
                 'per_page'    => $per_page //WE have to determine how many items to show on a page
@@ -761,9 +761,6 @@ class OptinCampaign_List extends \WP_List_Table
 
         // Clone when the current action is clone.
         if ('clone' === $this->current_action()) {
-
-            if (apply_filters('mailoptin_add_optin_email_campaign_limit', true) && OptinCampaignsRepository::campaign_count() >= MO_LITE_OPTIN_CAMPAIGN_LIMIT)
-                return;
 
             // In our file that handles the request, verify the nonce.
             $nonce = sanitize_text_field($_REQUEST['_wpnonce']);

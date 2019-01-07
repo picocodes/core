@@ -22,7 +22,6 @@ class AdminNotices
             add_action('admin_notices', array($this, 'template_class_not_found'));
             add_action('admin_notices', array($this, 'optin_class_not_found'));
             add_action('admin_notices', array($this, 'failed_campaign_retried'));
-            add_action('admin_notices', array($this, 'optin_campaign_count_limit_exceeded'));
             add_action('admin_notices', array($this, 'email_campaign_count_limit_exceeded'));
             add_action('admin_notices', array($this, 'optin_branding_added_by_default'));
             add_action('admin_notices', array($this, 'review_plugin_notice'));
@@ -181,32 +180,6 @@ class AdminNotices
         $notice .= "<div style=\"margin:10px 0 0;\"><a href=\"$dismiss_url\">$dismiss_label</a></div>";
 
         echo '<div data-dismissible="review-plugin-notice-forever" class="update-nag notice notice-warning is-dismissible">';
-        echo "<p>$notice</p>";
-        echo '</div>';
-    }
-
-    /**
-     * Display notice when limit of created optin campaign is exceeded
-     */
-    public function optin_campaign_count_limit_exceeded()
-    {
-        if (defined('MAILOPTIN_DETACH_LIBSODIUM')) return;
-
-        if ( ! PAnD::is_admin_notice_active('optin-campaign-count-limit-exceeded-7')) {
-            return;
-        }
-
-        if (OptinCampaignsRepository::campaign_count() < MO_LITE_OPTIN_CAMPAIGN_LIMIT) return;
-
-        if (strpos(\MailOptin\Core\current_url_with_query_string(), MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE) === false) return;
-
-        $upgrade_url = 'https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=optin_campaign_limit';
-        $notice      = sprintf(
-            __('%sYou have exceeded the maximum of %d optin campaign that you can create%s. Upgrade now to %s to remove this limit with ton of conversion boosting features.', 'mailoptin'),
-            '<strong>', MO_LITE_OPTIN_CAMPAIGN_LIMIT, '</strong>', '<a href="' . $upgrade_url . '" target="_blank"><strong>' . __('MailOptin premium', 'mailoptin') . '</strong></a>'
-        );
-
-        echo '<div data-dismissible="optin-campaign-count-limit-exceeded-7" class="updated notice notice-success is-dismissible">';
         echo "<p>$notice</p>";
         echo '</div>';
     }
