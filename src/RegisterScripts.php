@@ -98,23 +98,32 @@ class RegisterScripts
      */
     public function global_js_variables($handle)
     {
+        $localize_strings = array(
+            'admin_url'                   => admin_url(),
+            'public_js'                   => MAILOPTIN_ASSETS_URL . 'js/src',
+            'nonce'                       => wp_create_nonce('mailoptin-admin-nonce'),
+            'mailoptin_ajaxurl'           => AjaxHandler::get_endpoint(),
+            'is_customize_preview'        => is_customize_preview() ? 'true' : 'false',
+            // for some weird reason, boolean false is converted to empty and true to "1" hence the use of 'false' in string form.
+            'disable_impression_tracking' => apply_filters('mo_disable_impression_tracking', 'false'),
+            'chosen_search_placeholder'   => __('Type to search', 'mailoptin'),
+            'js_confirm_text'             => __('Are you sure you want to do this?', 'mailoptin'),
+            'js_clear_stat_text'          => __('Are you sure you want to do this? Clicking OK will delete all your optin analytics records.', 'mailoptin'),
+            'custom_field_label'          => sprintf(__('Field %s', 'mailoptin'), '#{ID}')
+        );
+
+        if ( ! is_admin()) {
+            unset($localize_strings['admin_url']);
+            unset($localize_strings['nonce']);
+            unset($localize_strings['chosen_search_placeholder']);
+            unset($localize_strings['js_confirm_text']);
+            unset($localize_strings['js_clear_stat_text']);
+            unset($localize_strings['custom_field_label']);
+        }
+
         wp_localize_script(
             $handle, 'mailoptin_globals',
-            apply_filters('mo_mailoptin_js_globals', array(
-                'admin_url'                   => admin_url(),
-                'public_js'                   => MAILOPTIN_ASSETS_URL . 'js/src',
-                'nonce'                       => wp_create_nonce('mailoptin-admin-nonce'),
-                'mailoptin_ajaxurl'           => AjaxHandler::get_endpoint(),
-                'ajaxurl'                     => admin_url('admin-ajax.php'),
-                'split_test_start_label'      => __('Start Test', 'mailoptin'),
-                'split_test_pause_label'      => __('Pause Test', 'mailoptin'),
-                'is_customize_preview'        => is_customize_preview() ? 'true' : 'false',
-                // for some weird reason, boolen false is converted to empty and true to "1" hence the use of 'false' in string form.
-                'disable_impression_tracking' => apply_filters('mo_disable_impression_tracking', 'false'),
-                'chosen_search_placeholder'   => __('Type to search', 'mailoptin'),
-                'js_confirm_text'             => __('Are you sure you want to do this?', 'mailoptin'),
-                'js_clear_stat_text'          => __('Are you sure you want to do this? Clicking OK will delete all your optin analytics records.', 'mailoptin')
-            ))
+            apply_filters('mo_mailoptin_js_globals', $localize_strings)
         );
     }
 

@@ -55,6 +55,7 @@ class AjaxHandler
             'page_targeting_search'                    => false,
             'dismiss_toastr_notifications'             => false,
             'customizer_email_automation_get_taxonomy' => false,
+            'customizer_optin_map_custom_field'        => false,
         );
 
         foreach ($ajax_events as $ajax_event => $nopriv) {
@@ -851,6 +852,62 @@ class AjaxHandler
         }
 
         wp_send_json_error();
+    }
+
+    public function customizer_optin_map_custom_field()
+    {
+        check_ajax_referer('customizer-fetch-email-list', 'security');
+
+        $connection            = sanitize_text_field($_POST['connect_service']);
+        $list_id               = sanitize_text_field($_POST['list_id']);
+        $custom_fields         = stripslashes(sanitize_text_field($_POST['custom_fields']));
+        $custom_field_mappings = stripslashes(sanitize_text_field($_POST['custom_field_mappings']));
+        $integration_index     = sanitize_text_field($_POST['integration_index']);
+
+        if (empty($custom_fields)) wp_send_json_error();
+
+        $custom_fields = json_decode($custom_fields, true);
+
+        $merge_fields = ConnectionFactory::make($connection)->get_optin_fields($list_id);
+
+        $close_btn = '<div class="mo-optin-map-custom-field-close"></div>';
+
+        if (empty($merge_fields)) wp_send_json_error($close_btn . __('Error: No integration field found. Select a list first if you haven\'t and try again.', 'mailoptin'));
+
+        if (empty($custom_fields)) wp_send_json_error($close_btn . __('Error: You have no custom field created.', 'mailoptin'));
+
+        $response = $close_btn;
+        $response .= '<div style="text-align:center" class="customize-control-title">';
+        $response .= __('Map Integration Fields with Form Custom Fields', 'mailoptin');
+        $response .= '</div>';
+        $response .= apply_filters('mo_optin_customizer_field_map_description', '', $connection, $list_id);
+
+        if ( ! empty($custom_field_mappings)) {
+            $custom_field_mappings = json_decode($custom_field_mappings, true);
+        }
+
+        foreach ($merge_fields as $key => $label) {
+            $response .= '<div class="mo-integration-block">';
+            $response .= "<label for='' class='customize-control-title'>$label</label>";
+            $response .= "<select id=\"$key\" class=\"mo-optin-custom-field-select\" name=\"$key\">";
+            $response .= '<option value="">' . __('Select', 'mailoptin') . '</option>';
+            foreach ($custom_fields as $custom_field) {
+                $response .= sprintf(
+                    '<option value="%s" %s>%s</option>',
+                    $custom_field['cid'],
+                    selected($custom_field_mappings[$integration_index][$key], $custom_field['cid'], false),
+                    $custom_field['placeholder']
+                );
+            }
+            $response .= '</select>';
+            $response .= '</div>';
+        }
+
+        $response .= '<div class="mo-integration-block">';
+        $response .= '<button type="button" class="button button-primary mo-optin-field-map-save">' . __('Save', 'mailoptin') . '</button>';
+        $response .= '</div>';
+
+        wp_send_json_success($response);
     }
 
     /**

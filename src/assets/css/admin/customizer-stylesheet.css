@@ -58,7 +58,7 @@ span.description {
     font-style: normal;
 }
 
-li[id*="ajax_nonce"] {
+li[id*="ajax_nonce"], li[id*="custom_field_mappings"] {
     display: none !important;
 }
 

@@ -214,13 +214,18 @@ class Customizer
             ],
             [
                 'selector' => '.mo-optin-form-name-field',
-                'type'     => 'control',
-                'value'    => 'name_field_placeholder'
+                'type'     => 'section',
+                'value'    => $this->fields_section_id
             ],
             [
                 'selector' => '.mo-optin-form-email-field',
-                'type'     => 'control',
-                'value'    => 'email_field_placeholder'
+                'type'     => 'section',
+                'value'    => $this->fields_section_id
+            ],
+            [
+                'selector' => '.mo-optin-form-custom-field',
+                'type'     => 'section',
+                'value'    => $this->fields_section_id
             ],
             [
                 'selector' => '.mo-optin-form-submit-button',

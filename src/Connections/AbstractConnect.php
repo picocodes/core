@@ -17,6 +17,10 @@ abstract class AbstractConnect
     const OTHER_TYPE = 'other';
     const ANALYTICS_TYPE = 'analytics';
 
+    const OPTIN_CAMPAIGN_SUPPORT = 'optin_campaign';
+    const OPTIN_CUSTOM_FIELD_SUPPORT = 'optin_custom_field';
+    const EMAIL_CAMPAIGN_SUPPORT = 'email_campaign';
+
     public $extras = [];
 
     public function __construct()
@@ -36,6 +40,27 @@ abstract class AbstractConnect
         }
 
         return $data;
+    }
+
+    public function form_custom_fields()
+    {
+        $custom_fields = OptinCampaignsRepository::get_merged_customizer_value($this->extras['optin_campaign_id'], 'fields');
+        if ( ! empty($custom_fields)) {
+            $custom_fields = json_decode($custom_fields, true);
+        }
+
+        return $custom_fields;
+    }
+
+    public function form_custom_field_mappings()
+    {
+        $custom_field_mappings = OptinCampaignsRepository::get_merged_customizer_value($this->extras['optin_campaign_id'], 'custom_field_mappings');
+
+        if ( ! empty($custom_field_mappings)) {
+            $custom_field_mappings = json_decode($custom_field_mappings, true);
+        }
+
+        return \MailOptin\Core\array_flatten($custom_field_mappings);
     }
 
     public static function is_boolean($maybe_bool)

@@ -41,6 +41,8 @@ class WP_Customize_Font_Stack_Control extends \WP_Customize_Control
                                 }
                                 printf('<option value="%s" %s>%s</option>', $option_value, selected($this->value(), $option_value, false), $font2);
                             }
+
+                            echo '</optgroup>';
                         } else {
                             printf('<option value="%s" %s>%s</option>', $font, selected($this->value(), $font, false), $font);
                         }

@@ -37,12 +37,14 @@
 
                 // search and replace ID of fields
                 $(this).parents('.mo-integration-block').attr('data-integration-index', index);
-            };
 
+                $(document.body).trigger('mo_optin_add_new_integration');
+            };
 
             var toggleAllWidget = function (e) {
                 e.preventDefault();
                 var $button = $(this);
+                $button.blur();
 
                 $('.mo-integration-widget').each(function () {
                     var parent = $(this);
@@ -67,11 +69,30 @@
 
 
             contextual_display_init();
+            this.conditionally_display_map_custom_field_btn();
             $(document).on('click', '.mo-expand-collapse-all', toggleAllWidget);
             $(document).on('click', '.mo-integration-widget-action', this.toggleWidget);
             $(document).on('click', '.mo-add-new-integration', add_new_integration);
             $(document).on('click', '.mo-integration-delete', this.remove_integration);
-            $(document).on('change', '.mo-integration-widget select, .mo-integration-widget input, .mo-integration-widget textarea', this.save_changes);
+            $(document).on('change keyup', '.mo-integration-widget select, .mo-integration-widget input, .mo-integration-widget textarea', this.save_changes);
+        },
+
+        conditionally_display_map_custom_field_btn: function () {
+            var callback = function () {
+                $('.mo-integration-widget').each(function () {
+                    var parent = $(this);
+                    var connection_service = $("select[name='connection_service']", parent).val();
+
+                    $('.mo-optin-map-custom-field', parent).toggle(
+                        _.isArray(mo_connections_with_custom_field_support) &&
+                        _.indexOf(mo_connections_with_custom_field_support, connection_service) !== -1
+                    );
+                });
+            };
+
+            callback();
+            $(document).on('change', '.mo-integration-widget select[name="connection_service"]', callback);
+            $(document).on('mo_optin_add_new_integration', callback);
         },
 
         save_changes: function () {
@@ -111,6 +132,12 @@
                         old_data[index][item_name] = {};
                         old_data[index][item_name][field_value] = $(this).next('.mo_mc_interest_label').text();
                     } else {
+                        // ideally, we should check if it's === 0 but because checked event ha fired before
+                        // we get to this point, so we check if this is the first check.
+                        // all this is so we are sure we are not adding new checked interests to previous obsolete checked ones
+                        if ($('.mo_mc_interest:checked', parent).length === 1) {
+                            old_data[index][item_name] = {}
+                        }
                         old_data[index][item_name][field_value] = $(this).next('.mo_mc_interest_label').text();
                     }
                 }

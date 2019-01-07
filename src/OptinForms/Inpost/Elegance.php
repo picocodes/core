@@ -167,7 +167,10 @@ class Elegance extends AbstractOptinTheme
 
     public function features_support()
     {
-        return [$this->cta_button];
+        return [
+            self::CTA_BUTTON_SUPPORT,
+            self::OPTIN_CUSTOM_FIELD_SUPPORT
+        ];
     }
 
     /**
@@ -373,6 +376,7 @@ class Elegance extends AbstractOptinTheme
     [mo-optin-form-fields-wrapper]
         [mo-optin-form-name-field class="moEleganceModal_input_fields"]
         [mo-optin-form-email-field class="moEleganceModal_input_fields"]
+        [mo-optin-form-custom-fields]
         [mo-mailchimp-interests]
         [mo-optin-form-submit-button class="moEleganceModal_button"]
     [/mo-optin-form-fields-wrapper]
@@ -390,8 +394,9 @@ HTML;
     public function optin_form_css()
     {
         $optin_css_id = $this->optin_css_id;
+        $optin_uuid    = $this->optin_campaign_uuid;
         return <<<CSS
-div#$optin_css_id.moEleganceModal {
+html div#$optin_uuid div#$optin_css_id.moEleganceModal {
   border: 3px solid #fff;
   width: 100%;
   position: relative;
@@ -404,7 +409,7 @@ div#$optin_css_id.moEleganceModal {
   padding: 1.5em 2.5em;
 }
 
-div#$optin_css_id.moEleganceModal h2.moElegance_header {
+html div#$optin_uuid div#$optin_css_id.moEleganceModal h2.moElegance_header {
   color: #000;
   margin: 0;
   line-height: 1.5;
@@ -412,26 +417,27 @@ div#$optin_css_id.moEleganceModal h2.moElegance_header {
   text-transform: capitalize
 }
 
-div#$optin_css_id.moEleganceModal .moElegance_description {
+html div#$optin_uuid div#$optin_css_id.moEleganceModal .moElegance_description {
   line-height: 1.5;
   text-align: center;
   color: #777;
   margin-bottom: 2em;
 }
 
-div#$optin_css_id.moEleganceModal .moElegance_note {
+html div#$optin_uuid div#$optin_css_id.moEleganceModal .moElegance_note {
   line-height: 1.5;
   text-align: center;
   color: #000;
   margin-top: 10px
 }
 
-div#$optin_css_id.moEleganceModal input.moEleganceModal_input_fields {
+html div#$optin_uuid div#$optin_css_id.moEleganceModal input.moEleganceModal_input_fields,
+html div#$optin_uuid div#$optin_css_id.moEleganceModal input.mo-optin-form-custom-field.text-field,
+html div#$optin_uuid div#$optin_css_id.moEleganceModal textarea.mo-optin-form-custom-field.textarea-field {
   display: block;
   width: 100%;
   max-width: 100%;
   padding: 10px;
-  text-align: center;
   margin: 0.5em auto 0;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -442,7 +448,11 @@ div#$optin_css_id.moEleganceModal input.moEleganceModal_input_fields {
   background-color: #ffffff;
 }
 
-div#$optin_css_id.moEleganceModal .moEleganceModal_button {
+html div#$optin_uuid div#$optin_css_id.moEleganceModal textarea.mo-optin-form-custom-field.textarea-field {
+    min-height: 80px;
+}
+
+html div#$optin_uuid div#$optin_css_id.moEleganceModal .moEleganceModal_button {
   display: block;
   margin: 10px auto 0;
   text-decoration: none;
@@ -463,15 +473,15 @@ div#$optin_css_id.moEleganceModal .moEleganceModal_button {
   transition: all 0.5s ease-in-out;
 }
 
-div#$optin_css_id.moEleganceModal .moEleganceModal_button:hover {
+html div#$optin_uuid div#$optin_css_id.moEleganceModal .moEleganceModal_button:hover {
   background: #52A9E7;
 }
 
-div#$optin_css_id.moEleganceModal .moEleganceModal_button:active {
+html div#$optin_uuid div#$optin_css_id.moEleganceModal .moEleganceModal_button:active {
   background: #fff;
 }
 
-div#$optin_css_id.moEleganceModal .mo-optin-error {
+html div#$optin_uuid div#$optin_css_id.moEleganceModal .mo-optin-error {
   display: none;
   background: #FF0000;
   color: #ffffff;

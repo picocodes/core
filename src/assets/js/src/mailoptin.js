@@ -554,16 +554,25 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                 self.flag_optin_type_displayed(optin_config, optin_type);
 
                 if (optin_type === 'bar' && optin_config.bar_position === 'top') {
+
                     var originalMargin = parseFloat($(document.body).css('margin-top')),
-                        mHeight = this.outerHeight();
+                        optin_uuid = optin_config.optin_uuid;
 
-                    if ($(window).width() <= 600) {
-                        mHeight -= $("#wpadminbar").outerHeight();
-                    }
+                    $(window).on('resize.MoBarTop', function () {
+                        var cache = $('#' + optin_uuid);
+                        var mHeight = cache.outerHeight();
 
-                    mHeight = $.MailOptin.activeBarHeight = originalMargin + mHeight;
+                        if ($(window).width() <= 600) {
+                            mHeight -= $("#wpadminbar").outerHeight();
+                        }
 
-                    $(document.body).css('margin-top', originalMargin + mHeight + 'px');
+                        mHeight = $.MailOptin.activeBarHeight = originalMargin + mHeight;
+
+                        $(document.body).css('margin-top', originalMargin + mHeight + 'px');
+                    });
+
+                    // init
+                    $(window).resize();
                 }
 
                 this.show();
@@ -654,6 +663,7 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                         var mt = parseFloat($(document.body).css('margin-top'));
                         $(document.body).css('margin-top', mt - $.MailOptin.activeBarHeight + 'px');
                         delete $.MailOptin.activeBarHeight;
+                        $(window).off('resize.MoBarTop');
                     }
                 });
             },
@@ -962,6 +972,17 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                         response = false;
                     }
                 }
+
+                $('#' + $optin_css_id + ' .mo-optin-form-custom-field').each(function () {
+                    var cache = $(this);
+                    var field_id = $(this).data('field-id');
+                    var required_field_bucket = optin_js_config.required_custom_fields;
+
+                    if ($.inArray(field_id, required_field_bucket) !== -1 && cache.val() === "") {
+                        self.display_optin_error.call(cache, $optin_css_id);
+                        response = false;
+                    }
+                });
 
                 // we are doing a return here to ensure core validation has passed before hooked validations.
                 if (response === false) return response;

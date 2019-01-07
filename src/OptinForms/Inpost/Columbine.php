@@ -159,17 +159,17 @@ class Columbine extends AbstractOptinTheme
                 ],
 
                 [
-                    'name' => 'mo_optin_form_note_font_size_desktop_default',
-                    'value' => 14,
+                    'name'        => 'mo_optin_form_note_font_size_desktop_default',
+                    'value'       => 14,
                     'optin_class' => 'Columbine',
-                    'optin_type' => 'inpost'
+                    'optin_type'  => 'inpost'
                 ],
 
                 [
-                    'name' => 'mo_optin_form_note_font_size_tablet_default',
-                    'value' => 14,
+                    'name'        => 'mo_optin_form_note_font_size_tablet_default',
+                    'value'       => 14,
                     'optin_class' => 'Columbine',
-                    'optin_type' => 'inpost'
+                    'optin_type'  => 'inpost'
                 ]
             ]
         );
@@ -195,7 +195,10 @@ class Columbine extends AbstractOptinTheme
 
     public function features_support()
     {
-        return [$this->cta_button];
+        return [
+            self::CTA_BUTTON_SUPPORT,
+            self::OPTIN_CUSTOM_FIELD_SUPPORT
+        ];
     }
 
     /**
@@ -524,6 +527,7 @@ class Columbine extends AbstractOptinTheme
     [mo-optin-form-fields-wrapper]
     <div id="columbine-name-field" class="columbine-three-col1">[mo-optin-form-name-field class="columbine-input"]</div>
     <div id="columbine-email-field" class="columbine-three-col2">[mo-optin-form-email-field class="columbine-input"]</div>
+    [mo-optin-form-custom-fields tag_start='<div class="columbine-column">' tag_end='</div>']
     <div id="columbine-submit-button" class="columbine-three-col3">[mo-optin-form-submit-button class="columbine-submit"]</div>
     [/mo-optin-form-fields-wrapper]
     [mo-optin-form-cta-button]
@@ -543,16 +547,17 @@ HTML;
     public function optin_form_css()
     {
         $optin_css_id = $this->optin_css_id;
+        $optin_uuid   = $this->optin_campaign_uuid;
 
         $mini_headline_font_color = $this->get_customizer_value('mini_headline_font_color', '#54C3A5');
 
-        $is_mini_hadline_display = '';
-        if ( $this->get_customizer_value('hide_mini_headline', false)) {
-            $is_mini_hadline_display = 'display:none;';
+        $is_mini_headline_display = '';
+        if ($this->get_customizer_value('hide_mini_headline', false)) {
+            $is_mini_headline_display = 'display:none;';
         }
 
         return <<<CSS
-div#$optin_css_id.columbine-container {
+html div#$optin_uuid div#$optin_css_id.columbine-container {
          background: #fff;
          border: 3px solid #91a6bf;
          -webkit-border-radius: 5px;
@@ -569,56 +574,58 @@ div#$optin_css_id.columbine-container {
          box-sizing: border-box;
      }
 
-div#$optin_css_id.columbine-container div.columbine-miniText {
+html div#$optin_uuid div#$optin_css_id.columbine-container div.columbine-miniText {
          font-size: 1em;
          line-height: 28px;
          text-transform: uppercase;
          color: $mini_headline_font_color;
          font-weight: bold;
-         $is_mini_hadline_display
+         $is_mini_headline_display
      }
 
-div#$optin_css_id.columbine-container div.columbine-heading {
+html div#$optin_uuid div#$optin_css_id.columbine-container div.columbine-heading {
          font-weight: bold;
          line-height: 1.5;
      }
 
-div#$optin_css_id.columbine-container div.columbine-caption {
+html div#$optin_uuid div#$optin_css_id.columbine-container div.columbine-caption {
          margin-top: 12px;
          font-style: italic;
          font-size: 18px;
          line-height: 28px;
      }
 
-div#$optin_css_id.columbine-container .columbine-form {
+html div#$optin_uuid div#$optin_css_id.columbine-container .columbine-form {
          overflow: hidden;
          margin-top: 20px;
      }
-div#$optin_css_id.columbine-container div.columbine-three-col1 {
+html div#$optin_uuid div#$optin_css_id.columbine-container div.columbine-three-col1 {
          float: left;
          width: 33.333%;
      }
 
-div#$optin_css_id.columbine-container div.columbine-three-col2 {
+html div#$optin_uuid div#$optin_css_id.columbine-container div.columbine-three-col2 {
          float: left;
          width: 33.333%;
      }
 
-div#$optin_css_id.columbine-container div.columbine-three-col3 {
+html div#$optin_uuid div#$optin_css_id.columbine-container div.columbine-three-col3 {
          float: left;
          width: 33.333%;
      }
-div#$optin_css_id.columbine-container div.columbine-two-col1 {
+html div#$optin_uuid div#$optin_css_id.columbine-container div.columbine-two-col1 {
          float: left;
          width: 66.333%;
      }
 
-div#$optin_css_id.columbine-container div.columbine-two-col2 {
+html div#$optin_uuid div#$optin_css_id.columbine-container div.columbine-two-col2 {
          float: right;
          width: 33.333%;
      }
 
-div#$optin_css_id.columbine-container input.columbine-input {
+html div#$optin_uuid div#$optin_css_id.columbine-container input.columbine-input,
+html div#$optin_uuid div#$optin_css_id.columbine-container input.mo-optin-form-custom-field.text-field,
+html div#$optin_uuid div#$optin_css_id.columbine-container textarea.mo-optin-form-custom-field.textarea-field {
          background-color: #ffffff;
          width: 100%;
          display: block;
@@ -639,7 +646,8 @@ div#$optin_css_id.columbine-container input.columbine-input {
          margin: 0;
      }
 
-div#$optin_css_id.columbine-container input.columbine-submit, div#$optin_css_id.columbine-container input[type="submit"].mo-optin-form-cta-button {
+html div#$optin_uuid div#$optin_css_id.columbine-container input.columbine-submit,
+html div#$optin_uuid div#$optin_css_id.columbine-container input[type="submit"].mo-optin-form-cta-button {
          display: block;
          -webkit-box-sizing: border-box;
          -moz-box-sizing: border-box;
@@ -660,12 +668,12 @@ div#$optin_css_id.columbine-container input.columbine-submit, div#$optin_css_id.
          border-radius: 0;
      }
 
-div#$optin_css_id.columbine-container div.columbine-note {
+html div#$optin_uuid div#$optin_css_id.columbine-container div.columbine-note {
          margin-top: 10px;
          line-height: normal;
      }
 
-div#$optin_css_id.columbine-container div.mo-optin-error {
+html div#$optin_uuid div#$optin_css_id.columbine-container div.mo-optin-error {
          display: none;
          background: #FF0000;
          color: white;
@@ -682,20 +690,37 @@ div#$optin_css_id.columbine-container div.mo-optin-error {
 
 @media only screen and (max-width: 650px) {
 
-    div#$optin_css_id.columbine-container div.mo-optin-error {
+    html div#$optin_uuid div#$optin_css_id.columbine-container div.mo-optin-error {
              margin-bottom: -10px;
      }
-    div#$optin_css_id.columbine-container div.columbine-two-col1,
-         div#$optin_css_id.columbine-container div.columbine-two-col2,
-              div#$optin_css_id.columbine-container div.columbine-three-col1,
-                   div#$optin_css_id.columbine-container div.columbine-three-col2,
-                        div#$optin_css_id.columbine-container div.columbine-three-col3 {
+    html div#$optin_uuid div#$optin_css_id.columbine-container div.columbine-two-col1,
+         html div#$optin_uuid div#$optin_css_id.columbine-container div.columbine-two-col2,
+              html div#$optin_uuid div#$optin_css_id.columbine-container div.columbine-three-col1,
+                   html div#$optin_uuid div#$optin_css_id.columbine-container div.columbine-three-col2,
+                        html div#$optin_uuid div#$optin_css_id.columbine-container div.columbine-three-col3 {
                                  float: none;
                                  width: 100%;
                                  margin-right: 0;
                                  margin-top: 10px;
                              }
 
+}
+
+html div#$optin_uuid.mo-optin-has-custom-field div#$optin_css_id.columbine-container div.columbine-column,
+html div#$optin_uuid.mo-optin-has-custom-field div#$optin_css_id.columbine-container div.columbine-two-col1,
+html div#$optin_uuid.mo-optin-has-custom-field div#$optin_css_id.columbine-container div.columbine-two-col2,
+html div#$optin_uuid.mo-optin-has-custom-field div#$optin_css_id.columbine-container div.columbine-three-col1,
+html div#$optin_uuid.mo-optin-has-custom-field div#$optin_css_id.columbine-container div.columbine-three-col2,
+html div#$optin_uuid.mo-optin-has-custom-field div#$optin_css_id.columbine-container div.columbine-three-col3 {
+   float: none;
+   width: 100%;
+   margin-right: 0;
+   margin-top: 10px;
+}
+
+
+html div#$optin_uuid.mo-optin-has-custom-field div#$optin_css_id.columbine-container div.columbine-column textarea.mo-optin-form-custom-field.textarea-field {
+min-height: 80px;
 }
 CSS;
 

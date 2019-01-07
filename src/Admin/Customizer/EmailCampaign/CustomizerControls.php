@@ -248,7 +248,7 @@ class CustomizerControls
                     'label'       => __('Select Connection', 'mailoptin'),
                     'section'     => $this->customizerClassInstance->campaign_settings_section_id,
                     'settings'    => $this->option_prefix . '[connection_service]',
-                    'choices'     => ConnectionsRepository::get_connections('email_campaign'),
+                    'choices'     => ConnectionsRepository::get_connections(ConnectionsRepository::EMAIL_CAMPAIGN_TYPE),
                     'description' => __('Choose the email service or connection that newsletter will be sent to.', 'mailoptin'),
                     'priority'    => 50
                 )

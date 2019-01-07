@@ -26,13 +26,22 @@ interface ConnectionInterface
      * @return string
      */
     public function replace_placeholder_tags($content, $type = 'html');
-    
+
     /**
      * Return array of a connection email list for use by optin and email newsletter services.
      *
      * @return array
      */
     public function get_email_list();
+
+    /**
+     * Return a list of merge or custom fields for mapping.
+     *
+     * @param mixed $list_id
+     *
+     * @return mixed
+     */
+    public function get_optin_fields($list_id = '');
 
     /**
      * Does the actual sending of newsletter

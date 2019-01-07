@@ -2,6 +2,9 @@
 
 namespace MailOptin\Core\Admin\Customizer\CustomControls;
 
+use MailOptin\Core\Admin\Customizer\OptinForm\OptinFormFactory;
+use MailOptin\Core\Connections\AbstractConnect;
+use MailOptin\Core\Connections\ConnectionInterface;
 use MailOptin\Core\Repositories\ConnectionsRepository;
 use WP_Customize_Control;
 
@@ -23,7 +26,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
         $saved_values = $this->value();
 
-        if (!empty($saved_values) && is_string($saved_values)) {
+        if ( ! empty($saved_values) && is_string($saved_values)) {
             $result = json_decode($saved_values, true);
             if (is_array($result)) {
                 $this->saved_values = $result;
@@ -42,6 +45,10 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
         wp_enqueue_script('mailoptin-customizer-integrations', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/integration-control/control.js', array('jquery', 'customize-base'), false, true);
         wp_enqueue_style('mailoptin-customizer-integrations', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/integration-control/style.css', null);
+
+        if (defined('MAILOPTIN_DETACH_LIBSODIUM')) {
+            wp_enqueue_script('mailoptin-customizer-map-custom-field', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/integration-control/map-custom-field.js', array('jquery'), false, true);
+        }
 
         // toggle control assets
         wp_enqueue_script('mo-customizer-toggle-control', MAILOPTIN_ASSETS_URL . 'js/customizer-controls/toggle-control/customizer-toggle-control.js', array('jquery'), false, true);
@@ -89,29 +96,53 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
             <?php $this->template(); ?>
         </script>
         <?php
+
+        $email_providers = ConnectionsRepository::get_connections();
+
+        $connections_with_custom_field_support = [];
+
+        foreach ($email_providers as $className => $label) {
+            if ( ! empty($className)) {
+                $optin_class_instance = OptinFormFactory::make($this->optin_campaign_id);
+
+                /** @var ConnectionInterface $connection_class */
+                $connection_class = "MailOptin\\$className\\Connect";
+                if (in_array(AbstractConnect::OPTIN_CUSTOM_FIELD_SUPPORT, $connection_class::features_support()) &&
+                    in_array($optin_class_instance::OPTIN_CUSTOM_FIELD_SUPPORT, $optin_class_instance->features_support())
+                ) {
+                    $connections_with_custom_field_support[] = $className;
+                }
+            }
+        }
+
+        ?>
+        <script type="text/javascript">
+            var mo_connections_with_custom_field_support = <?php echo json_encode($connections_with_custom_field_support); ?>;
+        </script>
+        <?php
     }
 
     public function text_field($index, $name, $class = '', $label = '', $description = '', $placeholder = '', $type = 'text')
     {
         $type = empty($type) ? 'text' : $type;
 
-        if (!isset($index) || !array_key_exists($index, $this->saved_values)) {
+        if ( ! isset($index) || ! array_key_exists($index, $this->saved_values)) {
             $index = '{mo-integration-index}';
         }
 
-        $default = isset($this->default_values[$name]) ? $this->default_values[$name] : '';
+        $default     = isset($this->default_values[$name]) ? $this->default_values[$name] : '';
         $saved_value = isset($this->saved_values[$index][$name]) ? $this->saved_values[$index][$name] : $default;
 
-        if (!empty($class)) {
+        if ( ! empty($class)) {
             $class = " $class";
         }
 
         $random_id = wp_generate_password(5, false) . '_' . $index;
         echo "<div class=\"$name mo-integration-block{$class}\">";
-        if (!empty($label)) : ?>
+        if ( ! empty($label)) : ?>
             <label for="<?php echo $random_id; ?>" class="customize-control-title"><?php echo esc_html($label); ?></label>
         <?php endif; ?>
-        <?php if (!empty($description)) : ?>
+        <?php if ( ! empty($description)) : ?>
         <span class="description customize-control-description"><?php echo $description; ?></span>
     <?php endif; ?>
         <input
@@ -127,23 +158,23 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
     public function select_field($index, $name, $choices, $class = '', $label = '', $description = '')
     {
-        if (!isset($index) || !array_key_exists($index, $this->saved_values)) {
+        if ( ! isset($index) || ! array_key_exists($index, $this->saved_values)) {
             $index = '{mo-integration-index}';
         }
 
-        $default = isset($this->default_values[$name]) ? $this->default_values[$name] : '';
+        $default     = isset($this->default_values[$name]) ? $this->default_values[$name] : '';
         $saved_value = isset($this->saved_values[$index][$name]) ? $this->saved_values[$index][$name] : $default;
 
         if (empty($choices)) return;
 
         $random_id = wp_generate_password(5, false) . '_' . $index;
 
-        if (!empty($class)) {
+        if ( ! empty($class)) {
             $class = " $class";
         }
 
         echo "<div class=\"$name mo-integration-block{$class}\">";
-        if (!empty($label)) : ?>
+        if ( ! empty($label)) : ?>
             <label for="<?php echo $random_id ?>" class="customize-control-title"><?php echo esc_html($label); ?></label>
         <?php endif; ?>
         <select id="<?php echo $random_id ?>" class="mo-optin-integration-field" name="<?php echo $name ?>">
@@ -153,7 +184,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
             }
             ?>
         </select>
-        <?php if (!empty($description)) : ?>
+        <?php if ( ! empty($description)) : ?>
         <span class="description customize-control-description"><?php echo $description; ?></span>
     <?php endif;
         echo '</div>';
@@ -161,18 +192,18 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
     public function chosen_select_field($index, $name, $choices, $class = '', $label = '', $description = '')
     {
-        $default = isset($this->default_values[$name]) ? $this->default_values[$name] : '';
+        $default     = isset($this->default_values[$name]) ? $this->default_values[$name] : '';
         $saved_value = isset($this->saved_values[$index][$name]) ? $this->saved_values[$index][$name] : $default;
 
         echo "<div class=\"$name mo-integration-block{$class}\">";
         ?>
         <label>
-            <?php if (!empty($label)) : ?>
+            <?php if ( ! empty($label)) : ?>
                 <span class="customize-control-title"><?php echo esc_html($label); ?></span>
             <?php endif; ?>
             <select class="mo-optin-integration-field mailoptin-integration-chosen" name="<?php echo $name ?>" multiple>
                 <?php
-                if(is_array($choices)) {
+                if (is_array($choices)) {
                     foreach ($choices as $key => $value) {
                         if (is_array($value)) {
                             echo "<optgroup label='$key'>";
@@ -189,7 +220,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
             </select>
         </label>
 
-        <?php if (!empty($description)) : ?>
+        <?php if ( ! empty($description)) : ?>
         <span class="description customize-control-description"><?php echo $description; ?></span>
     <?php endif;
         echo '</div>';
@@ -202,10 +233,10 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
     public function mc_group_select($index, $name, $choices, $class = '')
     {
-        $default = isset($this->default_values[$name]) ? $this->default_values[$name] : '';
+        $default     = isset($this->default_values[$name]) ? $this->default_values[$name] : '';
         $saved_value = isset($this->saved_values[$index][$name]) ? $this->saved_values[$index][$name] : $default;
 
-        if (!empty($class)) {
+        if ( ! empty($class)) {
             $class = " $class";
         }
 
@@ -213,6 +244,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
         if (empty($choices)) {
             echo '<div style="background:#000000;color:#fff;padding:10px;font-size:14px;">' . __('No MailChimp group found. Try selecting another email list.', 'mailoptin') . '</div>';
+
             return;
         }
 
@@ -237,13 +269,13 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
     public function color_field($index, $name, $class = '', $label = '', $description = '')
     {
-        $default = isset($this->default_values[$name]) ? $this->default_values[$name] : '';
+        $default     = isset($this->default_values[$name]) ? $this->default_values[$name] : '';
         $saved_value = isset($this->saved_values[$index][$name]) ? $this->saved_values[$index][$name] : $default;
 
-        $defaultValue = '#RRGGBB';
+        $defaultValue     = '#RRGGBB';
         $defaultValueAttr = '';
 
-        if (!empty($class)) {
+        if ( ! empty($class)) {
             $class = " $class";
         }
 
@@ -277,16 +309,16 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
     {
         $count = empty($count) ? 200 : $count;
 
-        $default = isset($this->default_values[$name]) ? $this->default_values[$name] : '';
+        $default     = isset($this->default_values[$name]) ? $this->default_values[$name] : '';
         $saved_value = isset($this->saved_values[$index][$name]) ? $this->saved_values[$index][$name] : $default;
 
-        if (!empty($class)) {
+        if ( ! empty($class)) {
             $class = " $class";
         }
 
         $fonts = WP_Customize_Google_Font_Control::get_fonts($count);
         echo "<div class=\"$name mo-integration-block{$class}\">";
-        if (!empty($fonts)) {
+        if ( ! empty($fonts)) {
             ?>
             <label>
                 <span class="customize-control-title"><?php echo esc_html($label); ?></span>
@@ -299,7 +331,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
                     }
                     ?>
                 </select>
-                <?php if (!empty($description)) : ?>
+                <?php if ( ! empty($description)) : ?>
                     <span class="description customize-control-description"><?php echo $description; ?></span>
                 <?php endif; ?>
             </label>
@@ -310,34 +342,35 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
     public function toggle_field($index, $name, $class = '', $label = '', $description = '')
     {
-        if (!isset($index) || !array_key_exists($index, $this->saved_values)) {
+        if ( ! isset($index) || ! array_key_exists($index, $this->saved_values)) {
             $index = '{mo-integration-index}';
         }
 
-        $default = isset($this->default_values[$name]) ? $this->default_values[$name] : '';
+        $default     = isset($this->default_values[$name]) ? $this->default_values[$name] : '';
         $saved_value = isset($this->saved_values[$index][$name]) ? $this->saved_values[$index][$name] : $default;
 
-        if (!empty($class)) {
+        if ( ! empty($class)) {
             $class = " $class";
         }
 
         $random_id = wp_generate_password(5, false) . '_' . $index;
         ?>
-    <div class="<?= $name; ?> mo-integration-block<?= $class; ?>">
-        <div class="mo-integration-toggle-field" style="display:flex;flex-direction: row;justify-content: flex-start;">
-            <span class="customize-control-title" style="flex: 2 0 0; vertical-align: middle;"><?php echo $label; ?></span>
-            <input name="<?= $name; ?>" id="<?php echo $random_id ?>" type="checkbox" class="tgl tgl-light" value="<?php echo esc_attr($saved_value); ?>" <?php checked($saved_value); ?> />
-            <label for="<?php echo $random_id ?>" class="tgl-btn"></label>
+        <div class="<?= $name; ?> mo-integration-block<?= $class; ?>">
+            <div class="mo-integration-toggle-field" style="display:flex;flex-direction: row;justify-content: flex-start;">
+                <span class="customize-control-title" style="flex: 2 0 0; vertical-align: middle;"><?php echo $label; ?></span>
+                <input name="<?= $name; ?>" id="<?php echo $random_id ?>" type="checkbox" class="tgl tgl-light" value="<?php echo esc_attr($saved_value); ?>" <?php checked($saved_value); ?> />
+                <label for="<?php echo $random_id ?>" class="tgl-btn"></label>
+            </div>
+            <?php if ( ! empty($description)) : ?>
+                <span class="description customize-control-description"><?php echo $description; ?></span>
+            <?php endif ?>
         </div>
-        <?php if (!empty($description)) : ?>
-        <span class="description customize-control-description"><?php echo $description; ?></span>
-        </div>
-    <?php endif;
+        <?php
     }
 
     public function parse_control($index, $control_args)
     {
-        if (!is_array($control_args) || empty($control_args)) return;
+        if ( ! is_array($control_args) || empty($control_args)) return;
 
         foreach ($control_args as $key => $control_arg) {
             switch ($control_arg['field']) {
@@ -410,7 +443,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
                     break;
                 case 'custom_content':
                     $content = $control_arg['content'];
-                    if (!empty($control_arg['name'])) {
+                    if ( ! empty($control_arg['name'])) {
                         $name = esc_attr($control_arg['name']);
                         echo "<div class=\"$name mo-integration-block\">";
                         echo $content;
@@ -425,17 +458,20 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
     /**
      * $index is high numeric value by default so new integration added wont have populated data from saved data.
+     *
      * @param string $index
      */
     public function template($index = 9999999999999)
     {
         $email_providers = ConnectionsRepository::get_connections();
 
-        $widget_title = __('New Integration', 'mailoptin');
+        $widget_title          = __('New Integration', 'mailoptin');
         $connection_email_list = ['' => __('Select...', 'mailoptin')];
         if (isset($this->saved_values[$index]['connection_service'])) {
             $saved_email_provider = $this->saved_values[$index]['connection_service'];
-            $widget_title = $email_providers[$saved_email_provider];
+            if ( ! empty($email_providers[$saved_email_provider])) {
+                $widget_title = $email_providers[$saved_email_provider];
+            }
             // prepend 'Select...' to the array of email list.
             // because select control will be hidden if no choice is found.
             $connection_email_list = $connection_email_list + ConnectionsRepository::connection_email_list($saved_email_provider);
@@ -458,6 +494,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
                     <?php $this->select_field($index, 'connection_service', $email_providers, '', __('Email Provider', 'mailoptin')); ?>
                     <?php $this->select_field($index, 'connection_email_list', $connection_email_list, '', __('Email Provider List', 'mailoptin')); ?>
                     <?php $this->parse_control($index, apply_filters('mo_optin_integrations_controls_after', [], $this->optin_campaign_id, $index, $this->saved_values)); ?>
+                    <?php $this->map_custom_field_btn(); ?>
                 </div>
                 <div class="mo-integration-widget-actions">
                     <a href="#" class="mo-integration-delete"><?php _e('Delete', 'mailoptin'); ?></a>
@@ -467,10 +504,24 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         <?php
     }
 
+    public function map_custom_field_btn()
+    {
+        if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM')) return;
+
+        ?>
+        <div class="mo-optin-map-custom-field">
+            <a href="#" class="page-title-action map-link"><?php _e('Map Custom Field', 'mailoptin') ?></a>
+        </div>
+        <div class="mo-optin-map-custom-field-settings" style="display: none">
+            <div class="mo-optin-map-custom-field-settings-content" style="display: none"></div>
+        </div>
+        <?php
+    }
+
     public function render_content()
     {
         $collapse_text = __('Collapse all', 'mailoptin');
-        $expand_text = __('Expand all', 'mailoptin');
+        $expand_text   = __('Expand all', 'mailoptin');
         printf(
             '<div class="mo-integration-expand-collapse-wrap"><a href="#" class="mo-expand-collapse-all mo-expand" data-collapse-text="%1$s" data-expand-text="%2$s">%2$s</a></div>',
             $collapse_text, $expand_text
@@ -479,7 +530,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
         if (is_array($this->saved_values) && count($this->saved_values) > 0) {
             foreach ($this->saved_values as $index => $integration) {
                 // in place to ensure empty integration isn't displayed.
-                if (!empty($integration['connection_service'])) {
+                if ( ! empty($integration['connection_service'])) {
                     $this->template($index);
                 }
             }
