@@ -26,8 +26,6 @@ class AdminNotices
             add_action('admin_notices', array($this, 'optin_branding_added_by_default'));
             add_action('admin_notices', array($this, 'review_plugin_notice'));
 
-            add_action('admin_notices', array($this, 'optin_conversion_limit_exceeded'));
-
             add_filter('removable_query_args', array($this, 'removable_query_args'));
         });
 
@@ -204,30 +202,6 @@ class AdminNotices
             '<a href="' . $upgrade_url . '" target="_blank">' . __('MailOptin premium', 'mailoptin') . '</a>'
         );
         echo '<div data-dismissible="email-campaign-count-limit-exceeded-3" class="updated notice notice-success is-dismissible">';
-        echo "<p>$notice</p>";
-        echo '</div>';
-    }
-
-    public function optin_conversion_limit_exceeded()
-    {
-        if (defined('MAILOPTIN_DETACH_LIBSODIUM')) return;
-
-        if ( ! PAnD::is_admin_notice_active('optin-conversion-limit-exceeded-1')) {
-            return;
-        }
-
-        if (OptinConversionsRepository::month_conversion_count() < MO_LITE_OPTIN_CONVERSION_LIMIT) return;
-
-        $upgrade_url = 'https://mailoptin.io/pricing/?utm_source=wp_dashboard&utm_medium=upgrade&utm_campaign=optin_conversion_limit';
-        $notice      = sprintf(
-            __('The monthly limit of %2$d optin subscribers has been exceeded. %3$sUpgrade to %1$s to capture unlimited subscribers and stop losing subscribers and customers.%4$s ', 'mailoptin'),
-            '<a href="' . $upgrade_url . '" target="_blank">' . __('MailOptin premium', 'mailoptin') . '</a>',
-            MO_LITE_OPTIN_CONVERSION_LIMIT,
-            '<strong>',
-            '</strong>'
-        );
-
-        echo '<div data-dismissible="optin-conversion-limit-exceeded-1" class="updated notice notice-success">';
         echo "<p>$notice</p>";
         echo '</div>';
     }

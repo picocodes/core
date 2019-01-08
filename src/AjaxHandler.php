@@ -673,15 +673,6 @@ class AjaxHandler
             }
         }
 
-        // flag to stop subscription if number of optin subscriber limit is exceeded or reached.
-        if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM') && OptinConversionsRepository::month_conversion_count() >= MO_LITE_OPTIN_CONVERSION_LIMIT) {
-            AbstractConnect::send_optin_error_email($optin_campaign_id, 'mo_subscription_limit_exceeded_error');
-
-            return AbstractConnect::ajax_failure(
-                apply_filters('mo_subscription_limit_exceeded_error', __('You cannot be added to our email list at this time. Please try again later.', 'mailoptin'))
-            );
-        }
-
         $optin_campaign_type = isset($conversion_data->optin_campaign_type) ? $conversion_data->optin_campaign_type : OptinCampaignsRepository::get_optin_campaign_type($optin_campaign_id);
 
         $lead_bank_only = OptinCampaignsRepository::get_customizer_value($optin_campaign_id, 'lead_bank_only', false);
