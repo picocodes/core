@@ -143,7 +143,7 @@ class Customizer
                   var _query = api.previewer.query;
                       api.previewer.query = function () {
                           var query = _query.call( this );
-                          query.mailoptin_optin_campaign_id = "' . $this->email_campaign_id . '";
+                          query.mailoptin_email_campaign_id = "' . $this->email_campaign_id . '";
                           return query;
                       };
                   // needed to ensure save button is publising changes and not saving draft.
