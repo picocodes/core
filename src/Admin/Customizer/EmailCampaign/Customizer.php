@@ -139,15 +139,18 @@ class Customizer
     public function monkey_patch_customizer_payload()
     {
         wp_add_inline_script('customize-controls', '(function ( api ) {
-                    api.bind( "ready", function () {
-                        var _query = api.previewer.query;
-                            api.previewer.query = function () {
-                                var query = _query.call( this );
-                                query.mailoptin_email_campaign_id = "' . $this->email_campaign_id . '";
-                                return query;
-                            };
-                        });
-                    })( wp.customize );'
+              api.bind( "ready", function () {
+                  var _query = api.previewer.query;
+                      api.previewer.query = function () {
+                          var query = _query.call( this );
+                          query.mailoptin_optin_campaign_id = "' . $this->email_campaign_id . '";
+                          return query;
+                      };
+                  // needed to ensure save button is publising changes and not saving draft.
+                  // esp for wp.com business hosting with save button set to draft by default.
+                  api.state("selectedChangesetStatus").set("publish");
+                  });
+              })( wp.customize );'
         );
     }
 
