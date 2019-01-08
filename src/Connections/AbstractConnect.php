@@ -44,12 +44,7 @@ abstract class AbstractConnect
 
     public function form_custom_fields()
     {
-        $custom_fields = OptinCampaignsRepository::get_merged_customizer_value($this->extras['optin_campaign_id'], 'fields');
-        if ( ! empty($custom_fields)) {
-            $custom_fields = json_decode($custom_fields, true);
-        }
-
-        return $custom_fields;
+        return OptinCampaignsRepository::form_custom_fields($this->extras['optin_campaign_id']);
     }
 
     public function form_custom_field_mappings()

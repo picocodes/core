@@ -686,11 +686,26 @@ class AjaxHandler
 
         $lead_bank_only = OptinCampaignsRepository::get_customizer_value($optin_campaign_id, 'lead_bank_only', false);
 
+        $form_custom_fields = OptinCampaignsRepository::form_custom_fields($optin_campaign_id);
+
+        $lead_custom_fields_data = [];
+
+        if (is_array($form_custom_fields) && ! empty($form_custom_fields)) {
+            foreach ($form_custom_fields as $custom_field) {
+                $field_key = $custom_field['cid'];
+                $title     = $custom_field['placeholder'];
+                if ( ! empty($conversion_data->payload[$field_key])) {
+                    $lead_custom_fields_data[$title] = $conversion_data->payload[$field_key];
+                }
+            }
+        }
+
         $lead_data = [
             'optin_campaign_id'   => $optin_campaign_id,
             'optin_campaign_type' => $optin_campaign_type,
             'name'                => $conversion_data->name,
             'email'               => $conversion_data->email,
+            'custom_fields'       => json_encode($lead_custom_fields_data),
             'user_agent'          => $conversion_data->user_agent,
             'conversion_page'     => $conversion_data->conversion_page,
             'referrer'            => $conversion_data->referrer,

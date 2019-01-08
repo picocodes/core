@@ -469,6 +469,23 @@ class OptinCampaignsRepository extends AbstractRepository
     }
 
     /**
+     * Get custom fields belonging to an optin form.
+     *
+     * @param int $optin_campaign_id
+     *
+     * @return array|mixed|object|string
+     */
+    public static function form_custom_fields($optin_campaign_id)
+    {
+        $custom_fields = self::get_merged_customizer_value($optin_campaign_id, 'fields');
+        if ( ! empty($custom_fields)) {
+            $custom_fields = json_decode($custom_fields, true);
+        }
+
+        return $custom_fields;
+    }
+
+    /**
      * Retrieve all optin campaign settings.
      *
      * @return array

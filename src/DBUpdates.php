@@ -8,7 +8,7 @@ class DBUpdates
 {
     public static $instance;
 
-    const DB_VER = 8;
+    const DB_VER = 9;
 
     public function init_options()
     {
@@ -189,6 +189,17 @@ class DBUpdates
     public function update_routine_8()
     {
         OptinCampaignsRepository::burst_all_cache();
+    }
+
+    public function update_routine_9()
+    {
+        global $wpdb;
+
+        $table = $wpdb->prefix . Core::conversions_table_name;
+
+        $sql = "ALTER TABLE $table ADD custom_fields LONGTEXT NULL AFTER email;";
+
+        $wpdb->query($sql);
     }
 
     /** Singleton poop */

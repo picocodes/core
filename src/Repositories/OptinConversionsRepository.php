@@ -36,6 +36,7 @@ class OptinConversionsRepository extends AbstractRepository
                 'optin_type' => $data['optin_campaign_type'],
                 'name' => $data['name'],
                 'email' => $data['email'],
+                'custom_fields' => $data['custom_fields'],
                 'user_agent' => $data['user_agent'],
                 'conversion_page' => $data['conversion_page'],
                 'referrer' => $data['referrer'],
@@ -43,6 +44,7 @@ class OptinConversionsRepository extends AbstractRepository
             ),
             array(
                 '%d',
+                '%s',
                 '%s',
                 '%s',
                 '%s',

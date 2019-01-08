@@ -1,6 +1,6 @@
 (function ($) {
     $(document).ready(function () {
-        $(".campaign-preview").click(function (e) {
+        $(".mo-open-link-fancybox").click(function (e) {
             e.preventDefault();
             $.fancybox.open({
                 href: $(this).attr("href"),

@@ -232,7 +232,7 @@ class Campaign_Log_List extends \WP_List_Table
             home_url()
         );
 
-        return "<a class=\"campaign-preview\" target='_blank' href=\"$preview_url\"><span class=\"dashicons dashicons-visibility\"></span></a>";
+        return "<a class=\"mo-open-link-fancybox\" target='_blank' href=\"$preview_url\"><span class=\"dashicons dashicons-visibility\"></span></a>";
     }
 
     /**
@@ -250,7 +250,7 @@ class Campaign_Log_List extends \WP_List_Table
             home_url()
         );
 
-        return "<a target='_blank' class=\"campaign-preview\" href=\"$preview_url\"><span class=\"dashicons dashicons-visibility\"></span></a>";
+        return "<a target='_blank' class=\"mo-open-link-fancybox\" href=\"$preview_url\"><span class=\"dashicons dashicons-visibility\"></span></a>";
     }
 
     /**
@@ -294,7 +294,7 @@ class Campaign_Log_List extends \WP_List_Table
         $err_log = '';
         // only display the link to error log if error content isn't empty.
         if (file_exists($log_file) && file_get_contents($log_file) != '') {
-            $err_log .= "<div><a target='_blank' class=\"campaign-preview\" href=\"$preview_url\">" . __('Error logs', 'mailoptin') . "</span></a></div>";
+            $err_log .= "<div><a target='_blank' class=\"mo-open-link-fancybox\" href=\"$preview_url\">" . __('Error logs', 'mailoptin') . "</span></a></div>";
         }
 
         return $item['status'] . $err_log;
