@@ -55,14 +55,10 @@ class NewPublishPost extends AbstractTriggers
     {
         if (defined('DOING_AJAX')) return;
 
-        if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM')) return;
-
         // hopefully this will cause all custom field to be updated before new post is triggered.
         do_action('save_post', $post->ID, $post, true);
 
         if (get_post_meta($post->ID, '_mo_disable_npp', true) == 'yes') return;
-
-        $post_type_support = apply_filters('mo_new_publish_post_post_types_support', ['post']);
 
         if ($new_status == 'publish' && $old_status != 'publish') {
 
