@@ -134,6 +134,22 @@
     padding-bottom: 5px;
 }
 
+a.mo-integration-advanced-settings {
+    float: right;
+}
+
+a.mo-integration-advanced-settings:before {
+    position: relative;
+    top: 2px;
+    display: inline-block;
+    content: "\f346";
+    font-family: dashicons;
+}
+
+a.mo-integration-advanced-settings.opened:before {
+    content: "\f342";
+}
+
 a.mo-integration-form-remove, a.mo-integration-delete {
     color: rgb(170, 0, 0);
 }

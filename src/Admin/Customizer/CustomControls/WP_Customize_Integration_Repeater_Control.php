@@ -495,13 +495,22 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
                     <?php $this->select_field($index, 'connection_email_list', $connection_email_list, '', __('Email Provider List', 'mailoptin')); ?>
                     <?php $this->parse_control($index, apply_filters('mo_optin_integrations_controls_after', [], $this->optin_campaign_id, $index, $this->saved_values)); ?>
                     <?php $this->map_custom_field_btn(); ?>
+                    <?php $this->advance_settings($index); ?>
                 </div>
                 <div class="mo-integration-widget-actions">
                     <a href="#" class="mo-integration-delete"><?php _e('Delete', 'mailoptin'); ?></a>
+                    <a href="#" class="mo-integration-advanced-settings"><?php _e('Advanced', 'mailoptin'); ?></a>
                 </div>
             </div>
         </div>
         <?php
+    }
+
+    public function advance_settings($index)
+    {
+        echo '<div class="mo-integration-widget-advanced-settings-wrap">';
+        $this->parse_control($index, apply_filters('mo_optin_integrations_advance_controls', [], $this->optin_campaign_id, $index, $this->saved_values));
+        echo '</div>';
     }
 
     public function map_custom_field_btn()
