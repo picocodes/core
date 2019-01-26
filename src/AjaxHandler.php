@@ -860,13 +860,13 @@ class AjaxHandler
         $custom_field_mappings = stripslashes(sanitize_text_field($_POST['custom_field_mappings']));
         $integration_index     = sanitize_text_field($_POST['integration_index']);
 
-        if (empty($custom_fields)) wp_send_json_error();
+        $close_btn = '<div class="mo-optin-map-custom-field-close"></div>';
+
+        if (empty($custom_fields)) wp_send_json_error($close_btn . __('Error: You have no custom field created.', 'mailoptin'));
 
         $custom_fields = json_decode($custom_fields, true);
 
         $merge_fields = ConnectionFactory::make($connection)->get_optin_fields($list_id);
-
-        $close_btn = '<div class="mo-optin-map-custom-field-close"></div>';
 
         if (empty($merge_fields)) wp_send_json_error($close_btn . __('Error: No integration field found. Select a list first if you haven\'t and try again.', 'mailoptin'));
 
