@@ -20,6 +20,7 @@
     var ajax_get_custom_fields = function (parent) {
         $.post(ajaxurl, {
                 action: 'mailoptin_customizer_optin_map_custom_field',
+                optin_campaign_id: mailoptin_optin_campaign_id,
                 custom_field_mappings: $("input[data-customize-setting-link*='[custom_field_mappings]']").val(),
                 integration_index: parent.data('integration-index'),
                 connect_service: $("select[name='connection_service']", parent).val(),
