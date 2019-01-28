@@ -69,15 +69,16 @@
 
 
             contextual_display_init();
-            this.conditionally_display_map_custom_field_btn();
+            this.conditionally_display();
             $(document).on('click', '.mo-expand-collapse-all', toggleAllWidget);
             $(document).on('click', '.mo-integration-widget-action', this.toggleWidget);
             $(document).on('click', '.mo-add-new-integration', add_new_integration);
             $(document).on('click', '.mo-integration-delete', this.remove_integration);
+            $(document).on('click', '.mo-integration-advanced-settings', this.toggle_advance_settings);
             $(document).on('change keyup', '.mo-integration-widget select, .mo-integration-widget input, .mo-integration-widget textarea', this.save_changes);
         },
 
-        conditionally_display_map_custom_field_btn: function () {
+        conditionally_display: function () {
             var callback = function () {
                 $('.mo-integration-widget').each(function () {
                     var parent = $(this);
@@ -86,6 +87,11 @@
                     $('.mo-optin-map-custom-field', parent).toggle(
                         _.isArray(mo_connections_with_custom_field_support) &&
                         _.indexOf(mo_connections_with_custom_field_support, connection_service) !== -1
+                    );
+
+                    $('.mo-integration-advanced-settings', parent).toggle(
+                        _.isArray(mo_connections_with_advance_settings_support) &&
+                        _.indexOf(mo_connections_with_advance_settings_support, connection_service) !== -1
                     );
                 });
             };
@@ -202,6 +208,16 @@
                 $('.mo-integration-widget').each(function (index) {
                     $(this).attr('data-integration-index', index);
                 });
+            });
+        },
+
+        toggle_advance_settings: function (e) {
+            e.preventDefault();
+
+            var parent = $(this).parents('.mo-integration-widget');
+
+            $('.mo-integration-widget-advanced-settings-wrap', parent).slideToggle(300, function () {
+                $(e.target).toggleClass('opened').blur();
             });
         },
 

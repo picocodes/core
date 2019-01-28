@@ -115,9 +115,12 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
             }
         }
 
+        $connections_with_advance_settings_support = apply_filters('mo_connections_with_advance_settings_support', []);
+
         ?>
         <script type="text/javascript">
             var mo_connections_with_custom_field_support = <?php echo json_encode($connections_with_custom_field_support); ?>;
+            var mo_connections_with_advance_settings_support = <?php echo json_encode($connections_with_advance_settings_support); ?>;
         </script>
         <?php
     }
@@ -508,7 +511,7 @@ class WP_Customize_Integration_Repeater_Control extends WP_Customize_Control
 
     public function advance_settings($index)
     {
-        echo '<div class="mo-integration-widget-advanced-settings-wrap">';
+        echo '<div class="mo-integration-widget-advanced-settings-wrap" style="display: none">';
         $this->parse_control($index, apply_filters('mo_optin_integrations_advance_controls', [], $this->optin_campaign_id, $index, $this->saved_values));
         echo '</div>';
     }
