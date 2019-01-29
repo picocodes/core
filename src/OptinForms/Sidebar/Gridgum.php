@@ -206,8 +206,8 @@ class Gridgum extends AbstractOptinTheme
 
         add_filter('mo_optin_customizer_disable_description_section', '__return_true');
         add_filter('mailoptin_tinymce_customizer_control_count', function ($count) {
-            return $count - 1;
-        });
+            return 3;
+        }, 99);
 
         add_filter('mailoptin_customizer_optin_campaign_MailChimpConnect_user_input_field_color', function () {
             return '#000000';
@@ -292,10 +292,6 @@ class Gridgum extends AbstractOptinTheme
      */
     public function customizer_headline_controls($controls, $wp_customize, $option_prefix, $customizerClassInstance)
     {
-        add_filter('mailoptin_tinymce_customizer_control_count', function ($count) {
-            return ++$count;
-        });
-
         $controls['mini_headline'] = new WP_Customize_Tinymce_Control(
             $wp_customize,
             $option_prefix . '[mini_headline]',
@@ -305,6 +301,7 @@ class Gridgum extends AbstractOptinTheme
                     'settings'      => $option_prefix . '[mini_headline]',
                     'editor_id'     => 'mini_headline',
                     'editor_height' => 50,
+                    'quicktags' => true,
                     'priority'      => 4
                 )
             )
