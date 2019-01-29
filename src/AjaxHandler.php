@@ -628,6 +628,8 @@ class AjaxHandler
      */
     public function subscribe_to_email_list()
     {
+        if ( ! isset($_REQUEST['optin_data'])) wp_send_json_error();
+
         $builder                    = new ConversionDataBuilder();
         $builder->payload           = $payload = apply_filters('mailoptin_optin_subscription_request_body', sanitize_data($_REQUEST['optin_data']));
         $builder->optin_uuid        = $optin_uuid = $payload['optin_uuid'];
