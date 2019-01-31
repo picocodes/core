@@ -1,7 +1,4 @@
 <?php
-/**
- * Copyright (C) 2016  Agbonghama Collins <me@w3guy.com>
- */
 
 namespace MailOptin\Core\Admin\SettingsPage;
 
@@ -46,6 +43,7 @@ class ConversionExport
             __('Campaign', 'mailoptin'),
             __('Subscriber Name', 'mailoptin'),
             __('Subscriber Email', 'mailoptin'),
+            __('Custom Fields', 'mailoptin'),
             __('User Agent', 'mailoptin'),
             __('Conversion Page', 'mailoptin'),
             __('Referrer', 'mailoptin'),
