@@ -617,9 +617,6 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
 
         $has_custom_field_class_indicator = $has_custom_field_flag === true ? ' mo-optin-has-custom-field' : '';
 
-        // set optin to display:none when schedule is active then allow mailoptinjs to decide whether to show it or not.
-        $is_hidden_style = $this->is_schedule_display_rule_active() || $this->is_adblock_rule_active() || $this->is_referral_detection_rule_active() || $this->is_newvsreturn_rule_active() || $this->is_x_page_views_rule_active() ? 'display: none' : '';
-
         if ($this->optin_campaign_type == 'lightbox') {
             $modalWrapperStyle = implode(';', [
                 'display: none',
@@ -672,6 +669,21 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
             ];
             $slideinWrapperStyle              = implode(';', $slidein_wrapper_style_properties);
             $optin_form                       .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type}{$display_only_button_class_indicator}{$position_class}{$has_custom_field_class_indicator}\" data-optin-type='{$this->optin_campaign_type}' style='$slideinWrapperStyle'>";
+        }
+
+        // set optin to display:none when schedule is active then allow mailoptinjs to decide whether to show it or not.
+
+        $is_hidden_style = '';
+        if ( ! OptinCampaignsRepository::user_has_successful_optin($optin_campaign_uuid) &&
+             (
+                 $this->is_schedule_display_rule_active() ||
+                 $this->is_adblock_rule_active() ||
+                 $this->is_referral_detection_rule_active() ||
+                 $this->is_newvsreturn_rule_active() ||
+                 $this->is_x_page_views_rule_active()
+             )
+        ) {
+            $is_hidden_style = 'display: none';
         }
 
         if ($this->optin_campaign_type == 'sidebar') {
