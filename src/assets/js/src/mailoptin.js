@@ -409,6 +409,23 @@ define(['jquery', 'js.cookie', 'mailoptin_globals', 'moModal', 'moExitIntent', '
                     if (optin_config.adblock_settings === "adblock_disabled" && self.isAdblockEnabled()) return;
                 }
 
+                // device detection rule
+                if(typeof window.MobileDetect !== "undefined") {
+                    var mdInstance = new MobileDetect(window.navigator.userAgent);
+
+                    if (optin_config.device_targeting_hide_mobile === true) {
+                        if(mdInstance.phone()) return;
+                    }
+
+                    if (optin_config.device_targeting_hide_tablet === true) {
+                        if(mdInstance.tablet()) return;
+                    }
+
+                    if (optin_config.device_targeting_hide_desktop === true) {
+                        if(!mdInstance.mobile()) return;
+                    }
+                }
+
                 var wait_seconds = optin_config.x_seconds_value * 1000;
                 var optin_scroll_percent = optin_config.x_scroll_value;
 

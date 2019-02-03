@@ -3,6 +3,8 @@
 namespace MailOptin\Core;
 
 
+use MailOptin\Core\Repositories\OptinCampaignsRepository;
+
 class RegisterScripts
 {
     public function __construct()
@@ -27,8 +29,7 @@ class RegisterScripts
 
     public static function fancybox_scripts()
     {
-        if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM'))
-            return;
+        if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM')) return;
 
         wp_enqueue_script('mailoptin-fancybox');
         wp_enqueue_script('mailoptin-init-fancybox');
@@ -63,6 +64,41 @@ class RegisterScripts
     public function public_js()
     {
         $this->modal_scripts();
+
+        $this->mobile_detect_js();
+    }
+
+    public function mobile_detect_js()
+    {
+        wp_register_script('mo-mobile-detect', MAILOPTIN_ASSETS_URL . 'js/mobile-detect.min.js', ['jquery'], MAILOPTIN_VERSION_NUMBER);
+
+        $ids = OptinCampaignsRepository::get_optin_campaign_ids();
+
+        if ( ! is_array($ids) || empty($ids)) return;
+
+        $status = false;
+
+        foreach ($ids as $id) {
+
+            if (OptinCampaignsRepository::get_customizer_value($id, 'device_targeting_hide_desktop', false)) {
+                $status = true;
+                break;
+            }
+
+            if (OptinCampaignsRepository::get_customizer_value($id, 'device_targeting_hide_tablet', false)) {
+                $status = true;
+                break;
+            }
+
+            if (OptinCampaignsRepository::get_customizer_value($id, 'device_targeting_hide_mobile', false)) {
+                $status = true;
+                break;
+            }
+        }
+
+        if ($status === true) {
+            wp_enqueue_script('mo-mobile-detect');
+        }
     }
 
     /**
