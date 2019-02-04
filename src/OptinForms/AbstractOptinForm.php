@@ -595,6 +595,11 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         return ( ! is_customize_preview() && ! empty($newvsreturn_status) && ! empty($newvsreturn_settings));
     }
 
+    public function is_device_targeting_active()
+    {
+        return ( ! is_customize_preview() && OptinCampaignsRepository::has_device_targeting_active($this->optin_campaign_id));
+    }
+
     /**
      * HTML and CSS structure of an optin form.
      */
@@ -672,7 +677,6 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         }
 
         // set optin to display:none when schedule is active then allow mailoptinjs to decide whether to show it or not.
-
         $is_hidden_style = '';
         if ( ! OptinCampaignsRepository::user_has_successful_optin($optin_campaign_uuid) &&
              (
@@ -680,6 +684,8 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
                  $this->is_adblock_rule_active() ||
                  $this->is_referral_detection_rule_active() ||
                  $this->is_newvsreturn_rule_active() ||
+                 $this->is_referral_detection_rule_active() ||
+                 $this->is_device_targeting_active() ||
                  $this->is_x_page_views_rule_active()
              )
         ) {

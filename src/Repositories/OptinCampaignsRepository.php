@@ -39,7 +39,26 @@ class OptinCampaignsRepository extends AbstractRepository
      */
     public static function is_cta_button_active($optin_campaign_id)
     {
-        return self::get_merged_customizer_value($optin_campaign_id,'display_only_button') === true;
+        return self::get_merged_customizer_value($optin_campaign_id, 'display_only_button') === true;
+    }
+
+    public static function has_device_targeting_active($optin_campaign_id)
+    {
+        if (self::is_activated($optin_campaign_id)) {
+            if (self::get_customizer_value($optin_campaign_id, 'device_targeting_hide_desktop', false)) {
+                return true;
+            }
+
+            if (self::get_customizer_value($optin_campaign_id, 'device_targeting_hide_tablet', false)) {
+                return true;
+            }
+
+            if (self::get_customizer_value($optin_campaign_id, 'device_targeting_hide_mobile', false)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

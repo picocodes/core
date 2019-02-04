@@ -79,18 +79,7 @@ class RegisterScripts
         $status = false;
 
         foreach ($ids as $id) {
-
-            if (OptinCampaignsRepository::get_customizer_value($id, 'device_targeting_hide_desktop', false)) {
-                $status = true;
-                break;
-            }
-
-            if (OptinCampaignsRepository::get_customizer_value($id, 'device_targeting_hide_tablet', false)) {
-                $status = true;
-                break;
-            }
-
-            if (OptinCampaignsRepository::get_customizer_value($id, 'device_targeting_hide_mobile', false)) {
+            if (OptinCampaignsRepository::has_device_targeting_active($id)) {
                 $status = true;
                 break;
             }
