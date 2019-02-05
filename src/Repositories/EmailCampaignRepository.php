@@ -9,6 +9,8 @@ class EmailCampaignRepository extends AbstractRepository
     const NEW_PUBLISH_POST = 'new_publish_post';
     const POSTS_EMAIL_DIGEST = 'posts_email_digest';
 
+    const CODE_YOUR_OWN_TEMPLATE = 'HTML';
+
     /**
      * Return a human readable name for campaign identifier/key/type.
      *

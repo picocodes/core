@@ -165,6 +165,12 @@ class Customizer
             array('customize-controls'),
             MAILOPTIN_VERSION_NUMBER
         );
+        wp_enqueue_script(
+            'mailoptin-email-automation-code-editor-controls',
+            MAILOPTIN_ASSETS_URL . 'js/customizer-controls/email-automation-code-editor.js',
+            array('customize-controls'),
+            MAILOPTIN_VERSION_NUMBER
+        );
 
         wp_enqueue_script(
             'mailoptin-email-customizer-contextual-controls',
@@ -284,12 +290,18 @@ class Customizer
 
         do_action('mailoptin_register_campaign_customizer', $email_campaign_id);
 
-        $result = EmailCampaignFactory::make($email_campaign_id);
 
-        // $result is false of optin form class do not exist.
-        if ( ! $result) {
-            wp_redirect(add_query_arg('email-campaign-error', 'class-not-found', MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE));
-            exit;
+        $template_class = EmailCampaignRepository::get_template_class($email_campaign_id);
+
+        if($template_class !== EmailCampaignRepository::CODE_YOUR_OWN_TEMPLATE) {
+
+            $result = EmailCampaignFactory::make($email_campaign_id);
+
+            // $result is false of optin form class do not exist.
+            if ( ! $result) {
+                wp_redirect(add_query_arg('email-campaign-error', 'class-not-found', MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE));
+                exit;
+            }
         }
 
         $this->register_custom_section($wp_customize);
