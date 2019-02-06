@@ -24,7 +24,7 @@
     var add_ace_editor = function () {
         var markup = [
             '<div class="mo-email-automation-editor-wrap">',
-            '<textarea id="mo-email-automation-editor" style="display: none"></textarea>',
+            '<div id="mo-email-automation-editor"></div>',
             '</div>'
         ].join('');
 
@@ -37,14 +37,17 @@
         editor.setTheme("ace/theme/monokai");
         session.setMode("ace/mode/html");
         editor.$blockScrolling = Infinity;
-        var textarea_val = $('#mo-email-automation-editor').val();
+        var textarea_val = $("input[data-customize-setting-link*='[code_your_own]']").val();
         if (textarea_val) {
             session.setValue(textarea_val);
         }
         editor.on('change', function () {
-            console.log($("input[data-customize-setting-link*='[code_your_own]']"));
             $("input[data-customize-setting-link*='[code_your_own]']").val(session.getValue()).change();
         });
+    };
+
+    var switch_view = function() {
+        $(document).on('click', '')
     };
 
     $(window).on('load', function () {
