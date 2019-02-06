@@ -16,22 +16,24 @@ $db_template_class = EmailCampaignRepository::get_template_class($email_campaign
 
 $template_preview_class = "MailOptin\\Core\\Admin\\Customizer\\EmailCampaign\\{$email_campaign_type_namespace}TemplatePreview";
 
-if($db_template_class == EmailCampaignRepository::CODE_YOUR_OWN_TEMPLATE) {
-    
-}
+if ($db_template_class == EmailCampaignRepository::CODE_YOUR_OWN_TEMPLATE) {
 
-switch ($email_campaign_type) {
-    case EmailCampaignRepository::NEW_PUBLISH_POST:
-        /** @var NewPublishPostTemplatify $template_preview_instance */
-        $template_preview_instance = new $template_preview_class($email_campaign_id, null, $db_template_class);
-        break;
-    case EmailCampaignRepository::POSTS_EMAIL_DIGEST:
-        /** @var PostsEmailDigestTemplatify $template_preview_instance */
-        $template_preview_instance = new $template_preview_class($email_campaign_id);
-        break;
-}
 
-echo $template_preview_instance->forge();
+} else {
+
+    switch ($email_campaign_type) {
+        case EmailCampaignRepository::NEW_PUBLISH_POST:
+            /** @var NewPublishPostTemplatify $template_preview_instance */
+            $template_preview_instance = new $template_preview_class($email_campaign_id, null, $db_template_class);
+            break;
+        case EmailCampaignRepository::POSTS_EMAIL_DIGEST:
+            /** @var PostsEmailDigestTemplatify $template_preview_instance */
+            $template_preview_instance = new $template_preview_class($email_campaign_id);
+            break;
+    }
+
+    echo $template_preview_instance->forge();
+}
 
 // this is not in AbstractTemplate as in AbstractOptinForm so it doesn't get templatified/emogrified along with the email template
 // on customizer preview.

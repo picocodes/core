@@ -149,6 +149,11 @@ class CustomizerSettings extends AbstractCustomizer
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
+                'code_your_own'            => array(
+                    'default'   => $this->customizer_defaults['code_your_own'],
+                    'type'      => 'option',
+                    'transport' => 'postMessage',
+                ),
             )
         );
 
@@ -321,7 +326,7 @@ class CustomizerSettings extends AbstractCustomizer
                     'default'   => $this->customizer_defaults['content_ellipsis_button_label'],
                     'type'      => 'option',
                     'transport' => 'postMessage',
-                ),
+                )
             )
         );
 

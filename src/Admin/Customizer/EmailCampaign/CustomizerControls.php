@@ -319,6 +319,16 @@ class CustomizerControls
                     )
                 )
             ),
+            'code_your_own'             => apply_filters('mailoptin_customizer_settings_campaign_code_your_own_args', array(
+                    'type'     => 'hidden',
+                    // simple hack because control won't render if label is empty.
+                    'label'    => '&nbsp;',
+                    'section'  => $this->customizerClassInstance->campaign_settings_section_id,
+                    'settings' => $this->option_prefix . '[code_your_own]',
+                    // 999 cos we want it to be bottom.
+                    'priority' => 899,
+                )
+            ),
             'ajax_nonce'                => apply_filters('mailoptin_customizer_settings_campaign_ajax_nonce_args', array(
                     'type'     => 'hidden',
                     // simple hack because control won't render if label is empty.
