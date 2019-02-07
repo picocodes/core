@@ -168,12 +168,6 @@ class Customizer
             array('customize-controls'),
             MAILOPTIN_VERSION_NUMBER
         );
-        wp_enqueue_script(
-            'mailoptin-email-automation-code-editor-controls',
-            MAILOPTIN_ASSETS_URL . 'js/customizer-controls/email-automation-code-editor.js',
-            array('customize-controls'),
-            MAILOPTIN_VERSION_NUMBER
-        );
 
         wp_enqueue_script(
             'mailoptin-email-customizer-contextual-controls',
@@ -181,6 +175,19 @@ class Customizer
             array('customize-controls'),
             MAILOPTIN_VERSION_NUMBER
         );
+
+        wp_enqueue_script(
+            'mailoptin-email-automation-code-editor-controls',
+            MAILOPTIN_ASSETS_URL . 'js/customizer-controls/email-automation-code-editor.js',
+            array('customize-controls'),
+            MAILOPTIN_VERSION_NUMBER
+        );
+
+        wp_localize_script('mailoptin-email-automation-code-editor-controls', 'moEmailCodeEditor_strings', array(
+            'viewTags'      => __('View available tags', 'mailoptin'),
+            'previewBtn'    => __('Preview', 'mailoptin'),
+            'codeEditorBtn' => __('Code Editor', 'mailoptin')
+        ));
 
         do_action('mailoptin_email_campaign_enqueue_customizer_js');
     }
@@ -296,7 +303,7 @@ class Customizer
 
         $template_class = EmailCampaignRepository::get_template_class($email_campaign_id);
 
-        if($template_class !== EmailCampaignRepository::CODE_YOUR_OWN_TEMPLATE) {
+        if ($template_class !== EmailCampaignRepository::CODE_YOUR_OWN_TEMPLATE) {
 
             $result = EmailCampaignFactory::make($email_campaign_id);
 

@@ -1,18 +1,25 @@
-(function ($) {
+(function ($, api) {
+
+    /**
+     * @var {object} moEmailCodeEditor_strings
+     */
 
     var add_toolbar = function () {
         var title = $('.panel-title.site-title').text();
         var markup = [
             '<div class="mo-automation-code-toolbar">',
+            '<div class="mo-automation-code-toolbar-left">',
+            '<a href="#" class="mo-automation-code-view-tags">' + moEmailCodeEditor_strings.viewTags + ' <span class="dashicons dashicons-editor-info"></span></a>',
+            '</div>',
             '<div class="mo-automation-code-toolbar-center"><span class="mo-automation-code-title">' + title + '</span></div>',
             '<div class="mo-automation-code-toolbar-right">',
-            '<a href="#" title="Preview" class="mo-automation-code-toolbar-btn preview">',
+            '<a href="#" class="mo-automation-code-toolbar-btn mo-preview">',
             '<i class="fa fa-eye"></i>',
-            '<span class="text">Preview</span>',
+            '<span class="text">' + moEmailCodeEditor_strings.previewBtn + '</span>',
             '</a>',
-            '<a href="#" title="Code Editor" class="mo-automation-code-toolbar-btn code-editor btn-active">',
+            '<a href="#" class="mo-automation-code-toolbar-btn mo-code-editor btn-active">',
             '<i class="fa fa-code"></i>',
-            'Code Editor',
+            moEmailCodeEditor_strings.codeEditorBtn,
             '</a>',
             '</div>',
             '</div>'
@@ -52,7 +59,7 @@
             $('.mo-automation-code-toolbar-btn').removeClass('btn-active');
             $(this).addClass('btn-active');
             var cache = $('#customize-preview iframe');
-            if ($(this).hasClass('preview')) {
+            if ($(this).hasClass('mo-preview')) {
                 wp.customize.previewer.refresh();
                 var iframe = cache[0];
                 iframe.contentWindow.document.open();
@@ -74,4 +81,4 @@
         add_ace_editor();
         switch_view();
     });
-})(jQuery);
+})(jQuery, wp.customize);
