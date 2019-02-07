@@ -17,6 +17,7 @@ $db_template_class = EmailCampaignRepository::get_template_class($email_campaign
 $template_preview_class = "MailOptin\\Core\\Admin\\Customizer\\EmailCampaign\\{$email_campaign_type_namespace}TemplatePreview";
 
 if ($db_template_class == EmailCampaignRepository::CODE_YOUR_OWN_TEMPLATE) {
+
     echo EmailCampaignRepository::get_merged_customizer_value($email_campaign_id, 'code_your_own');
 
 } else {

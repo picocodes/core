@@ -571,20 +571,25 @@ label.mo-single-toggle-tab {
     width: 100%;
     height: 100%;
     position: relative;
-    border-top: 5px solid #000;
+    /*border-top: 5px solid #000;*/
 }
 
-.mo-email-automation-editor-wrap .ace_editor {
-    position: static;
+#mo-email-automation-editor {
     width: 100%;
-    height: 100%;
-    margin: 0;
+    height: calc(100% - 75px);
 }
+
+#customize-preview iframe {
+    height: calc(100% - 75px);
+}
+
+/*.mo-email-automation-editor-wrap .ace_editor {*/
+    /*position: static;*/
+    /*width: 100%;*/
+    /*height: 100%;*/
+    /*margin: 0;*/
+/*}*/
 
 .mo-email-automation-editor-wrap .ace_print-margin {
-    display: none;
-}
-
-.mo-email-automation-editor-wrap ~ iframe {
     display: none;
 }

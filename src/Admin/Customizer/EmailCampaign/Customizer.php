@@ -64,9 +64,12 @@ class Customizer
             );
 
             add_action('customize_controls_print_scripts', function () {
+                $is_code_your_own = EmailCampaignRepository::get_template_class($this->email_campaign_id) == EmailCampaignRepository::CODE_YOUR_OWN_TEMPLATE ? 'true' : 'false';
+
                 echo '<script type="text/javascript">';
                 echo "var mailoptin_email_campaign_option_prefix = '{$this->campaign_settings}';";
                 echo "var mailoptin_email_campaign_id = $this->email_campaign_id;";
+                echo "var mailoptin_email_campaign_is_code_your_own = $is_code_your_own;";
                 echo '</script>';
             });
 
