@@ -51,13 +51,18 @@
             e.preventDefault();
             $('.mo-automation-code-toolbar-btn').removeClass('btn-active');
             $(this).addClass('btn-active');
+            var cache = $('#customize-preview iframe');
             if ($(this).hasClass('preview')) {
                 wp.customize.previewer.refresh();
+                var iframe = cache[0];
+                iframe.contentWindow.document.open();
+                iframe.contentWindow.document.write($("input[data-customize-setting-link*='[code_your_own]']").val());
+                iframe.contentWindow.document.close();
                 $('.mo-email-automation-editor-wrap').hide();
-                $('#customize-preview iframe').show();
+                cache.show();
             }
             else {
-                $('#customize-preview iframe').hide();
+                cache.hide();
                 $('.mo-email-automation-editor-wrap').show();
             }
         });
