@@ -109,8 +109,6 @@ class Customizer
         );
 
         $wp_customize->set_return_url(MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE);
-
-
     }
 
     /**
