@@ -439,6 +439,37 @@ class CustomizerControls
         );
     }
 
+    public function available_tags_control()
+    {
+        $control_args = apply_filters(
+            "mailoptin_template_customizer_available_tags_control",
+            array(
+                'post_title_shortcode' => new WP_Customize_Custom_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_title_shortcode]',
+                    apply_filters('mailoptin_template_customizer_post_title_shortcode_args', array(
+                            'label'    => __('Post Title', 'mailoptin'),
+                            'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
+                            'settings' => $this->option_prefix . '[post_title_shortcode]',
+                            'priority' => 10
+                        )
+                    )
+                ),
+            ),
+            $this->wp_customize,
+            $this->option_prefix,
+            $this->customizerClassInstance
+        );
+
+        foreach ($control_args as $id => $args) {
+            if (is_object($args)) {
+                $this->wp_customize->add_control($args);
+            } else {
+                $this->wp_customize->add_control($this->option_prefix . '[' . $id . ']', $args);
+            }
+        }
+    }
+
     public function page_controls()
     {
         $page_control_args = apply_filters(

@@ -285,6 +285,11 @@ class EmailCampaignRepository extends AbstractRepository
         return 1 === $val ? true : (is_bool($val) ? $val : false);
     }
 
+    public static function is_code_your_own_template($email_campaign_id)
+    {
+        return self::get_template_class($email_campaign_id) == self::CODE_YOUR_OWN_TEMPLATE;
+    }
+
     /**
      * Update campaign title / name.
      *

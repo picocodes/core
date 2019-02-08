@@ -5,7 +5,7 @@ namespace MailOptin\Core\Admin\Customizer\EmailCampaign;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Submit_Button_Control;
 use MailOptin\Core\Admin\Customizer\CustomizerTrait;
 use MailOptin\Core\Admin\Customizer\UpsellCustomizerSection;
-use MailOptin\Core\Repositories\EmailCampaignRepository;
+use MailOptin\Core\Repositories\EmailCampaignRepository as ER;
 
 class Customizer
 {
@@ -39,6 +39,9 @@ class Customizer
     public $campaign_footer_section_id = 'mailoptin_campaign_footer';
 
     /** @var string ID of template footer customizer section. */
+    public $campaign_view_tags_section_id = 'mailoptin_campaign_view_tags';
+
+    /** @var string ID of template footer customizer section. */
     public $campaign_send_email_section_id = 'mailoptin_campaign_send_email';
 
     /**
@@ -59,12 +62,12 @@ class Customizer
 
             $this->email_campaign_id = absint($_REQUEST['mailoptin_email_campaign_id']);
 
-            $this->email_campaign_type = EmailCampaignRepository::get_email_campaign_type(
+            $this->email_campaign_type = ER::get_email_campaign_type(
                 $this->email_campaign_id
             );
 
             add_action('customize_controls_print_scripts', function () {
-                $is_code_your_own = EmailCampaignRepository::get_template_class($this->email_campaign_id) == EmailCampaignRepository::CODE_YOUR_OWN_TEMPLATE ? 'true' : 'false';
+                $is_code_your_own = ER::is_code_your_own_template($this->email_campaign_id) ? 'true' : 'false';
 
                 echo '<script type="text/javascript">';
                 echo "var mailoptin_email_campaign_option_prefix = '{$this->campaign_settings}';";
@@ -116,7 +119,7 @@ class Customizer
      */
     public function add_activate_switch()
     {
-        $input_value = EmailCampaignRepository::is_campaign_active($this->email_campaign_id) ? 'yes' : 'no';
+        $input_value = ER::is_campaign_active($this->email_campaign_id) ? 'yes' : 'no';
         $checked     = ($input_value == 'yes') ? 'checked="checked"' : null;
         $tooltip     = __('Toggle to activate and deactivate email automation.', 'mailoptin');
 
@@ -174,18 +177,29 @@ class Customizer
             MAILOPTIN_VERSION_NUMBER
         );
 
-        wp_enqueue_script(
-            'mailoptin-email-automation-code-editor-controls',
-            MAILOPTIN_ASSETS_URL . 'js/customizer-controls/email-automation-code-editor.js',
-            array('customize-controls'),
-            MAILOPTIN_VERSION_NUMBER
-        );
+        if (ER::is_code_your_own_template($this->email_campaign_id)) {
 
-        wp_localize_script('mailoptin-email-automation-code-editor-controls', 'moEmailCodeEditor_strings', array(
-            'viewTags'      => __('View available tags', 'mailoptin'),
-            'previewBtn'    => __('Preview', 'mailoptin'),
-            'codeEditorBtn' => __('Code Editor', 'mailoptin')
-        ));
+            wp_enqueue_script(
+                'mailoptin-ace-js',
+                MAILOPTIN_ASSETS_URL . 'js/customizer-controls/ace-editor/ace.js',
+                array('jquery'),
+                false,
+                true
+            );
+
+            wp_enqueue_script(
+                'mailoptin-email-automation-code-editor-controls',
+                MAILOPTIN_ASSETS_URL . 'js/customizer-controls/email-automation-code-editor.js',
+                array('customize-controls'),
+                MAILOPTIN_VERSION_NUMBER
+            );
+
+            wp_localize_script('mailoptin-email-automation-code-editor-controls', 'moEmailCodeEditor_strings', array(
+                'viewTags'      => __('View available tags', 'mailoptin'),
+                'previewBtn'    => __('Preview', 'mailoptin'),
+                'codeEditorBtn' => __('Code Editor', 'mailoptin')
+            ));
+        }
 
         do_action('mailoptin_email_campaign_enqueue_customizer_js');
     }
@@ -210,7 +224,7 @@ class Customizer
      */
     public function rewrite_customizer_panel_title($blogname)
     {
-        $campaign_name = EmailCampaignRepository::get_email_campaign_name($this->email_campaign_id);
+        $campaign_name = ER::get_email_campaign_name($this->email_campaign_id);
 
         return $campaign_name ?: __('Email Automation', 'mailoptin');
     }
@@ -299,9 +313,9 @@ class Customizer
         do_action('mailoptin_register_campaign_customizer', $email_campaign_id);
 
 
-        $template_class = EmailCampaignRepository::get_template_class($email_campaign_id);
+        $template_class = ER::get_template_class($email_campaign_id);
 
-        if ($template_class !== EmailCampaignRepository::CODE_YOUR_OWN_TEMPLATE) {
+        if ($template_class !== ER::CODE_YOUR_OWN_TEMPLATE) {
 
             $result = EmailCampaignFactory::make($email_campaign_id);
 
@@ -333,7 +347,7 @@ class Customizer
         $posted_values     = $wp_customize_manager->unsanitized_post_values();
 
         if (array_key_exists($option_name, $posted_values)) {
-            EmailCampaignRepository::update_campaign_name(
+            ER::update_campaign_name(
                 sanitize_text_field($posted_values[$option_name]),
                 $email_campaign_id
             );
@@ -367,29 +381,39 @@ class Customizer
             )
         );
 
-        $wp_customize->add_section($this->campaign_page_section_id, array(
-                'title'    => __('Body', 'mailoptin'),
-                'priority' => 20,
-            )
-        );
+        if ( ! ER::is_code_your_own_template($this->email_campaign_id)) {
+            $wp_customize->add_section($this->campaign_page_section_id, array(
+                    'title'    => __('Body', 'mailoptin'),
+                    'priority' => 20,
+                )
+            );
 
-        $wp_customize->add_section($this->campaign_header_section_id, array(
-                'title'    => __('Header', 'mailoptin'),
-                'priority' => 30,
-            )
-        );
+            $wp_customize->add_section($this->campaign_header_section_id, array(
+                    'title'    => __('Header', 'mailoptin'),
+                    'priority' => 30,
+                )
+            );
 
-        $wp_customize->add_section($this->campaign_content_section_id, array(
-                'title'    => __('Content', 'mailoptin'),
-                'priority' => 40,
-            )
-        );
+            $wp_customize->add_section($this->campaign_content_section_id, array(
+                    'title'    => __('Content', 'mailoptin'),
+                    'priority' => 40,
+                )
+            );
 
-        $wp_customize->add_section($this->campaign_footer_section_id, array(
-                'title'    => __('Footer', 'mailoptin'),
-                'priority' => 50,
-            )
-        );
+            $wp_customize->add_section($this->campaign_footer_section_id, array(
+                    'title'    => __('Footer', 'mailoptin'),
+                    'priority' => 50,
+                )
+            );
+        }
+        else {
+
+            $wp_customize->add_section($this->campaign_view_tags_section_id, array(
+                    'title'    => __('View Available Tags', 'mailoptin'),
+                    'priority' => 20,
+                )
+            );
+        }
 
         $wp_customize->add_section($this->campaign_send_email_section_id, array(
                 'title'    => __('Send Test Email', 'mailoptin'),
@@ -407,6 +431,7 @@ class Customizer
     public function add_settings($wp_customize, $option_prefix)
     {
         $instance = new CustomizerSettings($wp_customize, $option_prefix, $this);
+        $instance->available_tags_settings();
         $instance->campaign_settings();
         $instance->page_settings();
         $instance->header_settings();
@@ -430,6 +455,7 @@ class Customizer
     {
         $instance = new CustomizerControls($wp_customize, $option_prefix, $this);
         $instance->campaign_settings_controls();
+        $instance->available_tags_control();
         $instance->page_controls();
         $instance->header_controls();
         $instance->content_controls();

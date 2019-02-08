@@ -1,9 +1,8 @@
-(function ($, api) {
+(function ($) {
 
     /**
      * @var {object} moEmailCodeEditor_strings
      */
-
     var add_toolbar = function () {
         var title = $('.panel-title.site-title').text();
         var markup = [
@@ -75,10 +74,18 @@
         });
     };
 
+    var reveal_tag_help = function () {
+        $(document).on('click', '.mo-automation-code-view-tags', function (e) {
+            e.preventDefault();
+            $.fancybox.open($('#mo-email-automation-tags-wrap').html());
+        });
+    };
+
     $(window).on('load', function () {
         if (mailoptin_email_campaign_is_code_your_own === false) return;
         add_toolbar();
         add_ace_editor();
         switch_view();
+        reveal_tag_help();
     });
-})(jQuery, wp.customize);
+})(jQuery);
