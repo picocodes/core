@@ -448,10 +448,12 @@ class CustomizerControls
                     $this->wp_customize,
                     $this->option_prefix . '[post_title_shortcode]',
                     apply_filters('mailoptin_template_customizer_post_title_shortcode_args', array(
-                            'label'    => __('Post Title', 'mailoptin'),
-                            'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
-                            'settings' => $this->option_prefix . '[post_title_shortcode]',
-                            'priority' => 10
+                            'label'          => __('Post Title', 'mailoptin'),
+                            'section'        => $this->customizerClassInstance->campaign_view_tags_section_id,
+                            'content'        => '<input type="text" value="[post-title]">',
+                            'settings'       => $this->option_prefix . '[post_title_shortcode]',
+                            'no_wrapper_div' => true,
+                            'priority'       => 10
                         )
                     )
                 ),

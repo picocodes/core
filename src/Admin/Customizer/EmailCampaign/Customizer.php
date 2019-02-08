@@ -274,6 +274,7 @@ class Customizer
                 $this->campaign_content_section_id,
                 $this->campaign_footer_section_id,
                 $this->campaign_send_email_section_id,
+                $this->campaign_view_tags_section_id
             )
         );
 
@@ -381,7 +382,14 @@ class Customizer
             )
         );
 
-        if ( ! ER::is_code_your_own_template($this->email_campaign_id)) {
+        if (ER::is_code_your_own_template($this->email_campaign_id)) {
+
+            $wp_customize->add_section($this->campaign_view_tags_section_id, array(
+                    'title'    => __('View Available Tags', 'mailoptin'),
+                    'priority' => 20,
+                )
+            );
+        } else {
             $wp_customize->add_section($this->campaign_page_section_id, array(
                     'title'    => __('Body', 'mailoptin'),
                     'priority' => 20,
@@ -403,14 +411,6 @@ class Customizer
             $wp_customize->add_section($this->campaign_footer_section_id, array(
                     'title'    => __('Footer', 'mailoptin'),
                     'priority' => 50,
-                )
-            );
-        }
-        else {
-
-            $wp_customize->add_section($this->campaign_view_tags_section_id, array(
-                    'title'    => __('View Available Tags', 'mailoptin'),
-                    'priority' => 20,
                 )
             );
         }
@@ -454,8 +454,8 @@ class Customizer
     public function add_controls($wp_customize, $option_prefix)
     {
         $instance = new CustomizerControls($wp_customize, $option_prefix, $this);
-        $instance->campaign_settings_controls();
         $instance->available_tags_control();
+        $instance->campaign_settings_controls();
         $instance->page_controls();
         $instance->header_controls();
         $instance->content_controls();

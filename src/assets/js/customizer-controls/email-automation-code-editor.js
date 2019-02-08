@@ -8,7 +8,7 @@
         var markup = [
             '<div class="mo-automation-code-toolbar">',
             '<div class="mo-automation-code-toolbar-left">',
-            '<a href="#" class="mo-automation-code-view-tags">' + moEmailCodeEditor_strings.viewTags + ' <span class="dashicons dashicons-editor-help"></span></a>',
+            '<a href="#" onclick="parent.wp.customize.section(\'mailoptin_campaign_view_tags\').focus()" class="mo-automation-code-view-tags">' + moEmailCodeEditor_strings.viewTags + ' <span class="dashicons dashicons-editor-help"></span></a>',
             '</div>',
             '<div class="mo-automation-code-toolbar-center"><span class="mo-automation-code-title">' + title + '</span></div>',
             '<div class="mo-automation-code-toolbar-right">',
