@@ -19,17 +19,17 @@ use MailOptin\Core\OptinForms\Shortcodes;
 
 define('MAILOPTIN_OAUTH_URL', 'https://auth.mailoptin.io');
 
-define('MAILOPTIN_ROOT', plugin_dir_path(MAILOPTIN_SYSTEM_FILE_PATH));
+define('MAILOPTIN_ROOT', wp_normalize_path(plugin_dir_path(MAILOPTIN_SYSTEM_FILE_PATH)));
+/** internally uses wp_normalize_path */
 define('MAILOPTIN_URL', plugin_dir_url(MAILOPTIN_SYSTEM_FILE_PATH));
-
-define('MAILOPTIN_ASSETS_DIR', dirname(__FILE__) . '/assets/');
+define('MAILOPTIN_ASSETS_DIR', wp_normalize_path(dirname(__FILE__) . '/assets/'));
 
 if (strpos(__FILE__, 'mailoptin/vendor') !== false) {
     // production url path to assets folder.
-    define('MAILOPTIN_ASSETS_URL', MAILOPTIN_URL . '../' . dirname(substr(__FILE__, strpos(__FILE__, 'mailoptin/vendor'))) . '/assets/');
+    define('MAILOPTIN_ASSETS_URL', MAILOPTIN_URL . wp_normalize_path('../' . dirname(substr(__FILE__, strpos(__FILE__, 'mailoptin/vendor'))) . '/assets/'));
 } else {
     // dev url path to assets folder.
-    define('MAILOPTIN_ASSETS_URL', MAILOPTIN_URL . '../' . dirname(substr(__FILE__, strpos(__FILE__, 'mailoptin'))) . '/assets/');
+    define('MAILOPTIN_ASSETS_URL', MAILOPTIN_URL . wp_normalize_path('../' . dirname(substr(__FILE__, strpos(__FILE__, 'mailoptin'))) . '/assets/'));
 }
 
 if ( ! defined('EDD_MO_ITEM_ID')) {
@@ -45,9 +45,8 @@ define('MO_OPTIN_CAMPAIGN_WP_OPTION_NAME', 'mo_optin_campaign');
 define('MO_OPTIN_TEMPLATE_WP_OPTION_NAME', 'mailoptin_email_templates');
 define('MO_EMAIL_CAMPAIGNS_WP_OPTION_NAME', 'mo_email_campaigns');
 
-define('MAILOPTIN_SRC', dirname(__FILE__) . '/');
-define('MAILOPTIN_SETTINGS_PAGE_FOLDER', dirname(__FILE__) . '/Admin/SettingsPage/');
-
+define('MAILOPTIN_SRC', trailingslashit(__FILE__));
+define('MAILOPTIN_SETTINGS_PAGE_FOLDER', wp_normalize_path(dirname(__FILE__) . '/Admin/SettingsPage/'));
 
 define('MAILOPTIN_CAMPAIGN_ERROR_LOG', WP_CONTENT_DIR . "/uploads/mailoptin-campaign-log/");
 define('MAILOPTIN_OPTIN_ERROR_LOG', WP_CONTENT_DIR . "/uploads/mailoptin-optin-log/");
