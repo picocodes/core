@@ -12,6 +12,7 @@ use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Email_Schedule_T
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Range_Value_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Tinymce_Expanded_Editor;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Toggle_Control;
+use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_View_Tags_Shortcode_Content;
 use MailOptin\Core\Repositories\ConnectionsRepository;
 use MailOptin\Core\Repositories\EmailCampaignRepository;
 
@@ -444,19 +445,70 @@ class CustomizerControls
         $control_args = apply_filters(
             "mailoptin_template_customizer_available_tags_control",
             array(
-                'post_title_shortcode' => new WP_Customize_Custom_Content(
+                'post_id_shortcode'    => new WP_Customize_View_Tags_Shortcode_Content(
                     $this->wp_customize,
-                    $this->option_prefix . '[post_title_shortcode]',
-                    apply_filters('mailoptin_template_customizer_post_title_shortcode_args', array(
-                            'label'          => __('Post Title', 'mailoptin'),
-                            'section'        => $this->customizerClassInstance->campaign_view_tags_section_id,
-                            'content'        => '<input type="text" value="[post-title]">',
-                            'settings'       => $this->option_prefix . '[post_title_shortcode]',
-                            'no_wrapper_div' => true,
-                            'priority'       => 10
-                        )
+                    $this->option_prefix . '[post_id_shortcode]',
+                    array(
+                        'label'    => __('Post ID', 'mailoptin'),
+                        'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'  => '<input type="text" value="[post-id]">',
+                        'settings' => $this->option_prefix . '[post_id_shortcode]',
+                        'priority' => 10
                     )
                 ),
+                'post_title_shortcode' => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_title_shortcode]',
+                    array(
+                        'label'    => __('Post Title', 'mailoptin'),
+                        'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'  => '<input type="text" value="[post-title]">',
+                        'settings' => $this->option_prefix . '[post_title_shortcode]',
+                        'priority' => 20
+                    )
+                ),
+            ),
+            $this->wp_customize,
+            $this->option_prefix,
+            $this->customizerClassInstance
+        );
+
+        foreach ($control_args as $id => $args) {
+            if (is_object($args)) {
+                $this->wp_customize->add_control($args);
+            } else {
+                $this->wp_customize->add_control($this->option_prefix . '[' . $id . ']', $args);
+            }
+        }
+    }
+
+    public function preview_control()
+    {
+        $choices     = ControlsHelpers::get_post_type_posts('post');
+        $search_type = 'posts_never_load';
+        if (defined('MAILOPTIN_DETACH_LIBSODIUM')) {
+            $choices     = ControlsHelpers::get_all_post_types_posts();
+            $search_type = 'exclusive_post_types_posts_load';
+        }
+
+        $control_args = apply_filters(
+            "mailoptin_template_customizer_preview_control",
+            array(
+                'post_as_preview' => new WP_Customize_Chosen_Select_Control(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_as_preview]',
+                    apply_filters('mo_optin_form_customizer_post_as_preview_args', array(
+                            'label'       => __('Preview Post', 'mailoptin'),
+                            'section'     => $this->customizerClassInstance->campaign_preview_section_id,
+                            'settings'    => $this->option_prefix . '[post_as_preview]',
+                            'description' => __('Select a post to use as preview', 'mailoptin'),
+                            'search_type' => $search_type,
+                            'choices'     => $choices,
+                            'is_multiple' => false,
+                            'priority'    => 10
+                        )
+                    )
+                )
             ),
             $this->wp_customize,
             $this->option_prefix,

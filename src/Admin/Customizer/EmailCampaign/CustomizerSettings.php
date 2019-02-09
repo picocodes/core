@@ -30,9 +30,28 @@ class CustomizerSettings extends AbstractCustomizer
     public function available_tags_settings()
     {
         $settings_args = apply_filters("mailoptin_email_campaign_customizer_available_tags_settings", array(
+                'post_id_shortcode' => array(
+                    'type'      => 'option',
+                    'transport' => 'postMessage',
+                ),
                 'post_title_shortcode' => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
+                ),
+            )
+        );
+
+        foreach ($settings_args as $id => $args) {
+            $this->wp_customize->add_setting($this->option_prefix . '[' . $id . ']', $args);
+        }
+    }
+
+    public function preview_settings()
+    {
+        $settings_args = apply_filters("mailoptin_email_campaign_customizer_preview_settings", array(
+                'post_as_preview' => array(
+                    'type'      => 'option',
+                    'transport' => 'refresh',
                 )
             )
         );

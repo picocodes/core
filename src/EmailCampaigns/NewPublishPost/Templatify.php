@@ -67,6 +67,11 @@ class Templatify implements TemplatifyInterface
         return get_permalink($this->post->ID);
     }
 
+    public function tags_replacement()
+    {
+
+    }
+
     /**
      * Turn {@see WP_Post} object to email campaign template.
      *

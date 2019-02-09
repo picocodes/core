@@ -38,8 +38,9 @@ class Customizer
     /** @var string ID of template footer customizer section. */
     public $campaign_footer_section_id = 'mailoptin_campaign_footer';
 
-    /** @var string ID of template footer customizer section. */
     public $campaign_view_tags_section_id = 'mailoptin_campaign_view_tags';
+
+    public $campaign_preview_section_id = 'mailoptin_campaign_preview';
 
     /** @var string ID of template footer customizer section. */
     public $campaign_send_email_section_id = 'mailoptin_campaign_send_email';
@@ -274,7 +275,8 @@ class Customizer
                 $this->campaign_content_section_id,
                 $this->campaign_footer_section_id,
                 $this->campaign_send_email_section_id,
-                $this->campaign_view_tags_section_id
+                $this->campaign_view_tags_section_id,
+                $this->campaign_preview_section_id
             )
         );
 
@@ -389,6 +391,12 @@ class Customizer
                     'priority' => 20,
                 )
             );
+
+            $wp_customize->add_section($this->campaign_preview_section_id, array(
+                    'title'    => __('Preview', 'mailoptin'),
+                    'priority' => 30,
+                )
+            );
         } else {
             $wp_customize->add_section($this->campaign_page_section_id, array(
                     'title'    => __('Body', 'mailoptin'),
@@ -432,6 +440,7 @@ class Customizer
     {
         $instance = new CustomizerSettings($wp_customize, $option_prefix, $this);
         $instance->available_tags_settings();
+        $instance->preview_settings();
         $instance->campaign_settings();
         $instance->page_settings();
         $instance->header_settings();
@@ -455,6 +464,7 @@ class Customizer
     {
         $instance = new CustomizerControls($wp_customize, $option_prefix, $this);
         $instance->available_tags_control();
+        $instance->preview_control();
         $instance->campaign_settings_controls();
         $instance->page_controls();
         $instance->header_controls();
