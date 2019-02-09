@@ -38,6 +38,42 @@ class CustomizerSettings extends AbstractCustomizer
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
+                'post_excerpt_shortcode' => array(
+                    'type'      => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'post_content_shortcode' => array(
+                    'type'      => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'post_category_shortcode' => array(
+                    'type'      => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'post_date_shortcode' => array(
+                    'type'      => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'post_date_gmt_shortcode' => array(
+                    'type'      => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'post_url_shortcode' => array(
+                    'type'      => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'post_author_name_shortcode' => array(
+                    'type'      => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'post_author_website_shortcode' => array(
+                    'type'      => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'post_author_email_shortcode' => array(
+                    'type'      => 'option',
+                    'transport' => 'postMessage',
+                ),
             )
         );
 

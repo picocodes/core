@@ -467,6 +467,17 @@ class CustomizerControls
                         'priority' => 20
                     )
                 ),
+                'post_url_shortcode' => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_url_shortcode]',
+                    array(
+                        'label'    => __('Post URL', 'mailoptin'),
+                        'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'  => '<input type="text" value="[post-url]">',
+                        'settings' => $this->option_prefix . '[post_url_shortcode]',
+                        'priority' => 30
+                    )
+                ),
             ),
             $this->wp_customize,
             $this->option_prefix,
