@@ -37,10 +37,10 @@
         $('#customize-preview iframe').before(markup).hide();
 
         var editor = ace.edit('mo-email-automation-editor');
+        editor.setTheme("ace/theme/monokai");
         var session = editor.getSession();
         // disable syntax checker https://stackoverflow.com/a/13016089/2648410
         session.setUseWorker(false);
-        editor.setTheme("ace/theme/monokai");
         session.setMode("ace/mode/html");
         editor.$blockScrolling = Infinity;
         var textarea_val = $("input[data-customize-setting-link*='[code_your_own]']").val();
@@ -50,6 +50,9 @@
         editor.on('change', function () {
             $("input[data-customize-setting-link*='[code_your_own]']").val(session.getValue()).change();
         });
+
+        // remove the temporary iframe hide css.
+        $('#customize-preview-iframe-hide').remove();
     };
 
     var switch_view = function () {
@@ -80,6 +83,12 @@
             $.fancybox.open($('#mo-email-automation-tags-wrap').html());
         });
     };
+
+    $(document).on('ready', function () {
+        // hide on load
+        var css = '<style id="customize-preview-iframe-hide" type="text/css">#customize-preview iframe {display:none;}</style>';
+        $(document.head).append(css);
+    });
 
     $(window).on('load', function () {
         if (mailoptin_email_campaign_is_code_your_own === false) return;
