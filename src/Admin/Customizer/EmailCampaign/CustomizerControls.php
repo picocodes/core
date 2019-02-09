@@ -445,18 +445,7 @@ class CustomizerControls
         $control_args = apply_filters(
             "mailoptin_template_customizer_available_tags_control",
             array(
-                'post_id_shortcode'    => new WP_Customize_View_Tags_Shortcode_Content(
-                    $this->wp_customize,
-                    $this->option_prefix . '[post_id_shortcode]',
-                    array(
-                        'label'    => __('Post ID', 'mailoptin'),
-                        'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
-                        'content'  => '<input type="text" value="[post-id]">',
-                        'settings' => $this->option_prefix . '[post_id_shortcode]',
-                        'priority' => 10
-                    )
-                ),
-                'post_title_shortcode' => new WP_Customize_View_Tags_Shortcode_Content(
+                'post_title_shortcode'         => new WP_Customize_View_Tags_Shortcode_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[post_title_shortcode]',
                     array(
@@ -467,7 +456,40 @@ class CustomizerControls
                         'priority' => 20
                     )
                 ),
-                'post_url_shortcode' => new WP_Customize_View_Tags_Shortcode_Content(
+                'post_content_shortcode'       => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_content_shortcode]',
+                    array(
+                        'label'    => __('Post Content', 'mailoptin'),
+                        'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'  => '<input type="text" value="[post-content]">',
+                        'settings' => $this->option_prefix . '[post_content_shortcode]',
+                        'priority' => 30
+                    )
+                ),
+                'post_excerpt_shortcode'       => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_excerpt_shortcode]',
+                    array(
+                        'label'    => __('Post Excerpt', 'mailoptin'),
+                        'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'  => '<input type="text" value="[post-excerpt]">',
+                        'settings' => $this->option_prefix . '[post_excerpt_shortcode]',
+                        'priority' => 40
+                    )
+                ),
+                'post_feature_image_shortcode' => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_feature_image_shortcode]',
+                    array(
+                        'label'    => __('Post Feature Image', 'mailoptin'),
+                        'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'  => '<input type="text" value="[post-feature-image]">',
+                        'settings' => $this->option_prefix . '[post_feature_image_shortcode]',
+                        'priority' => 50
+                    )
+                ),
+                'post_url_shortcode'           => new WP_Customize_View_Tags_Shortcode_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[post_url_shortcode]',
                     array(
@@ -475,7 +497,54 @@ class CustomizerControls
                         'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
                         'content'  => '<input type="text" value="[post-url]">',
                         'settings' => $this->option_prefix . '[post_url_shortcode]',
-                        'priority' => 30
+                        'priority' => 60
+                    )
+                ),
+                'post_category_shortcode'      => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_category_shortcode]',
+                    array(
+                        'label'       => __('Post Category', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'     => '<input type="text" value="[post-category]">',
+                        'settings'    => $this->option_prefix . '[post_category_shortcode]',
+                        'description' => __('Comma separated if the post belongs to multiple categories.', 'mailoptin'),
+                        'priority'    => 70
+                    )
+                ),
+                'post_date_shortcode'      => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_date_shortcode]',
+                    array(
+                        'label'       => __('Post Date', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'     => '<input type="text" value="[post-date]">',
+                        'settings'    => $this->option_prefix . '[post_date_shortcode]',
+                        'description' => __('Publish date of the post in your local time set in WordPress.', 'mailoptin'),
+                        'priority'    => 80
+                    )
+                ),
+                'post_date_gmt_shortcode'      => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_date_gmt_shortcode]',
+                    array(
+                        'label'       => __('Post Date in GMT', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'     => '<input type="text" value="[post-date-gmt]">',
+                        'settings'    => $this->option_prefix . '[post_date_shortcode]',
+                        'description' => __('Publish date of the post in GMT.', 'mailoptin'),
+                        'priority'    => 90
+                    )
+                ),
+                'post_id_shortcode'            => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_id_shortcode]',
+                    array(
+                        'label'    => __('Post ID', 'mailoptin'),
+                        'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'  => '<input type="text" value="[post-id]">',
+                        'settings' => $this->option_prefix . '[post_id_shortcode]',
+                        'priority' => 100
                     )
                 ),
             ),
