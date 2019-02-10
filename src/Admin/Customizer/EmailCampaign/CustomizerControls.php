@@ -547,6 +547,39 @@ class CustomizerControls
                         'priority' => 100
                     )
                 ),
+                'post_author_name_shortcode'            => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_author_name_shortcode]',
+                    array(
+                        'label'    => __('Author Name', 'mailoptin'),
+                        'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'  => '<input type="text" value="[post-author-name]">',
+                        'settings' => $this->option_prefix . '[post_author_name_shortcode]',
+                        'priority' => 110
+                    )
+                ),
+                'post_author_website_shortcode'            => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_author_website_shortcode]',
+                    array(
+                        'label'    => __('Author Website', 'mailoptin'),
+                        'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'  => '<input type="text" value="[post-author-website]">',
+                        'settings' => $this->option_prefix . '[post_author_website_shortcode]',
+                        'priority' => 120
+                    )
+                ),
+                'post_author_email_shortcode'            => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_author_email_shortcode]',
+                    array(
+                        'label'    => __('Author Email Address', 'mailoptin'),
+                        'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'  => '<input type="text" value="[post-author-email]">',
+                        'settings' => $this->option_prefix . '[post_author_email_shortcode]',
+                        'priority' => 130
+                    )
+                ),
             ),
             $this->wp_customize,
             $this->option_prefix,
