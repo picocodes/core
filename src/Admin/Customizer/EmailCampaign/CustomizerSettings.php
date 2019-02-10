@@ -30,6 +30,14 @@ class CustomizerSettings extends AbstractCustomizer
     public function available_tags_settings()
     {
         $settings_args = apply_filters("mailoptin_email_campaign_customizer_available_tags_settings", array(
+                'post_tags_header' => array(
+                    'type'      => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'campaign_tags_header' => array(
+                    'type'      => 'option',
+                    'transport' => 'postMessage',
+                ),
                 'post_id_shortcode' => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
@@ -75,6 +83,18 @@ class CustomizerSettings extends AbstractCustomizer
                     'transport' => 'postMessage',
                 ),
                 'post_author_email_shortcode' => array(
+                    'type'      => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'post_meta_shortcode' => array(
+                    'type'      => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'unsubscribe_shortcode' => array(
+                    'type'      => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'web_version_shortcode' => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),

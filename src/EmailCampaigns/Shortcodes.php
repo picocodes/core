@@ -15,6 +15,8 @@ class Shortcodes
         $this->post    = get_post($post_id);
 
         add_shortcode('post_title', [$this, 'post_title']);
+
+        do_action('mo_email_automation_shortcodes', $post_id, $this->post);
     }
 
     public function post_title()
