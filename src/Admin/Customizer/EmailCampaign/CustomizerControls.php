@@ -648,7 +648,7 @@ class CustomizerControls
                         'settings'    => $this->option_prefix . '[company_name_shortcode]',
                         'description' => sprintf(
                             __('Your company name as defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
-                            'MAILOPTIN_SETTINGS_SETTINGS_PAGE . \'#email_campaign_settings'
+                            MAILOPTIN_SETTINGS_SETTINGS_PAGE . '#email_campaign_settings'
                         ),
                         'priority'    => 170
                     )
@@ -663,7 +663,7 @@ class CustomizerControls
                         'settings'    => $this->option_prefix . '[company_address_shortcode]',
                         'description' => sprintf(
                             __('Your company address as defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
-                            'MAILOPTIN_SETTINGS_SETTINGS_PAGE . \'#email_campaign_settings'
+                            MAILOPTIN_SETTINGS_SETTINGS_PAGE . '#email_campaign_settings'
                         ),
                         'priority'    => 180
                     )
@@ -678,7 +678,7 @@ class CustomizerControls
                         'settings'    => $this->option_prefix . '[company_address_2_shortcode]',
                         'description' => sprintf(
                             __('Company address 2 defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
-                            'MAILOPTIN_SETTINGS_SETTINGS_PAGE . \'#email_campaign_settings'
+                            MAILOPTIN_SETTINGS_SETTINGS_PAGE . '#email_campaign_settings'
                         ),
                         'priority'    => 180
                     )
@@ -693,7 +693,7 @@ class CustomizerControls
                         'settings'    => $this->option_prefix . '[company_city_shortcode]',
                         'description' => sprintf(
                             __('Your company city as defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
-                            'MAILOPTIN_SETTINGS_SETTINGS_PAGE . \'#email_campaign_settings'
+                            MAILOPTIN_SETTINGS_SETTINGS_PAGE . '#email_campaign_settings'
                         ),
                         'priority'    => 190
                     )
