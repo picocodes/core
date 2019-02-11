@@ -638,6 +638,111 @@ class CustomizerControls
                         'priority'    => 160
                     )
                 ),
+                'company_name_shortcode'        => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[company_name_shortcode]',
+                    array(
+                        'label'       => __('Company Name', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'     => '<input type="text" value="[company-name]">',
+                        'settings'    => $this->option_prefix . '[company_name_shortcode]',
+                        'description' => sprintf(
+                            __('Your company name as defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
+                            'MAILOPTIN_SETTINGS_SETTINGS_PAGE . \'#email_campaign_settings'
+                        ),
+                        'priority'    => 170
+                    )
+                ),
+                'company_address_shortcode'        => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[company_address_shortcode]',
+                    array(
+                        'label'       => __('Company Address', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'     => '<input type="text" value="[company-address]">',
+                        'settings'    => $this->option_prefix . '[company_address_shortcode]',
+                        'description' => sprintf(
+                            __('Your company address as defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
+                            'MAILOPTIN_SETTINGS_SETTINGS_PAGE . \'#email_campaign_settings'
+                        ),
+                        'priority'    => 180
+                    )
+                ),
+                'company_address_2_shortcode'        => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[company_address_2_shortcode]',
+                    array(
+                        'label'       => __('Company Address 2', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'     => '<input type="text" value="[company-address2]">',
+                        'settings'    => $this->option_prefix . '[company_address_2_shortcode]',
+                        'description' => sprintf(
+                            __('Company address 2 defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
+                            'MAILOPTIN_SETTINGS_SETTINGS_PAGE . \'#email_campaign_settings'
+                        ),
+                        'priority'    => 180
+                    )
+                ),
+                'company_city_shortcode'        => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[company_city_shortcode]',
+                    array(
+                        'label'       => __('Company City', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'     => '<input type="text" value="[company-city]">',
+                        'settings'    => $this->option_prefix . '[company_city_shortcode]',
+                        'description' => sprintf(
+                            __('Your company city as defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
+                            'MAILOPTIN_SETTINGS_SETTINGS_PAGE . \'#email_campaign_settings'
+                        ),
+                        'priority'    => 190
+                    )
+                ),
+                'company_state_shortcode'        => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[company_state_shortcode]',
+                    array(
+                        'label'       => __('Company State', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'     => '<input type="text" value="[company-state]">',
+                        'settings'    => $this->option_prefix . '[company_state_shortcode]',
+                        'description' => sprintf(
+                            __('Your company state as defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
+                            MAILOPTIN_SETTINGS_SETTINGS_PAGE . '#email_campaign_settings'
+                        ),
+                        'priority'    => 200
+                    )
+                ),
+                'company_zip_shortcode'        => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[company_zip_shortcode]',
+                    array(
+                        'label'       => __('Company Zip Code', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'     => '<input type="text" value="[company-zip]">',
+                        'settings'    => $this->option_prefix . '[company_zip_shortcode]',
+                        'description' => sprintf(
+                            __('Zip or postal code as defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
+                            MAILOPTIN_SETTINGS_SETTINGS_PAGE . '#email_campaign_settings'
+                        ),
+                        'priority'    => 200
+                    )
+                ),
+                'company_country_shortcode'        => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[company_country_shortcode]',
+                    array(
+                        'label'       => __('Company Country', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'     => '<input type="text" value="[company-country]">',
+                        'settings'    => $this->option_prefix . '[company_country_shortcode]',
+                        'description' => sprintf(
+                            __('Your company country defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
+                            MAILOPTIN_SETTINGS_SETTINGS_PAGE . '#email_campaign_settings'
+                        ),
+                        'priority'    => 200
+                    )
+                )
             ),
             $this->wp_customize,
             $this->option_prefix,

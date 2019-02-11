@@ -596,3 +596,12 @@ label.mo-single-toggle-tab {
 #sub-accordion-section-mailoptin_campaign_view_tags .customize-section-description-container {
     margin-bottom: -5px !important;
 }
+
+li[id*="code_your_own"] label {
+    display: none;
+}
+
+li[id*="code_your_own"] + .customize-control {
+    border-top: 0;
+    padding-top: 0;
+}

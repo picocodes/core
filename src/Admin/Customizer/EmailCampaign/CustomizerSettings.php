@@ -98,6 +98,34 @@ class CustomizerSettings extends AbstractCustomizer
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
+                'company_name_shortcode'         => array(
+                    'type'      => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'company_address_shortcode'         => array(
+                    'type'      => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'company_address_2_shortcode'         => array(
+                    'type'      => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'company_city_shortcode'         => array(
+                    'type'      => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'company_state_shortcode'         => array(
+                    'type'      => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'company_zip_shortcode'         => array(
+                    'type'      => 'option',
+                    'transport' => 'postMessage',
+                ),
+                'company_country_shortcode'         => array(
+                    'type'      => 'option',
+                    'transport' => 'postMessage',
+                )
             )
         );
 

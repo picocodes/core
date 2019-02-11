@@ -77,13 +77,6 @@
         });
     };
 
-    var reveal_tag_help = function () {
-        $(document).on('click', '.mo-automation-code-view-tags', function (e) {
-            e.preventDefault();
-            $.fancybox.open($('#mo-email-automation-tags-wrap').html());
-        });
-    };
-
     $(document).on('ready', function () {
         // hide on load
         var css = '<style id="customize-preview-iframe-hide" type="text/css">#customize-preview iframe {display:none;}</style>';
@@ -95,6 +88,5 @@
         add_toolbar();
         add_ace_editor();
         switch_view();
-        reveal_tag_help();
     });
 })(jQuery);
