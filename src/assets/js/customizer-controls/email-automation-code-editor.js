@@ -24,7 +24,7 @@
             '</div>'
         ].join('');
 
-        $('#customize-preview iframe').before(markup);
+        $('#customize-preview').append(markup);
     };
 
     var add_ace_editor = function () {
@@ -34,7 +34,7 @@
             '</div>'
         ].join('');
 
-        $('#customize-preview iframe').before(markup).hide();
+        $('#customize-preview').append(markup);
 
         var editor = ace.edit('mo-email-automation-editor');
         editor.setTheme("ace/theme/monokai");
