@@ -134,12 +134,22 @@ class CustomizerControls
         }
 
         $campaign_settings_controls = array(
+            'code_your_own'             => apply_filters('mailoptin_customizer_settings_campaign_code_your_own_args', array(
+                    'type'     => 'hidden',
+                    // simple hack because control won't render if label is empty.
+                    'label'    => '&nbsp;',
+                    'section'  => $this->customizerClassInstance->campaign_settings_section_id,
+                    'settings' => $this->option_prefix . '[code_your_own]',
+                    // 999 cos we want it to be bottom.
+                    'priority' => 5,
+                )
+            ),
             'email_campaign_title'      => apply_filters('mo_optin_form_customizer_email_campaign_title_args', array(
                     'type'     => 'text',
                     'label'    => __('Automation Title', 'mailoptin'),
                     'section'  => $this->customizerClassInstance->campaign_settings_section_id,
                     'settings' => $this->option_prefix . '[email_campaign_title]',
-                    'priority' => 5,
+                    'priority' => 10,
                 )
             ),
             'email_campaign_subject'    => new WP_Customize_Custom_Input_Control(
@@ -318,16 +328,6 @@ class CustomizerControls
                         'format'   => EmailCampaignRepository::POSTS_EMAIL_DIGEST,
                         'priority' => 310
                     )
-                )
-            ),
-            'code_your_own'             => apply_filters('mailoptin_customizer_settings_campaign_code_your_own_args', array(
-                    'type'     => 'hidden',
-                    // simple hack because control won't render if label is empty.
-                    'label'    => '&nbsp;',
-                    'section'  => $this->customizerClassInstance->campaign_settings_section_id,
-                    'settings' => $this->option_prefix . '[code_your_own]',
-                    // 999 cos we want it to be bottom.
-                    'priority' => 899,
                 )
             ),
             'ajax_nonce'                => apply_filters('mailoptin_customizer_settings_campaign_ajax_nonce_args', array(
@@ -622,7 +622,7 @@ class CustomizerControls
                         'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
                         'content'     => '<input type="text" value="[unsubscribe]">',
                         'settings'    => $this->option_prefix . '[unsubscribe_shortcode]',
-                        'description' => __('URL to unsubscribe.', 'mailoptin'),
+                        'description' => __('URL to unsubscribe. This must be in your email template.', 'mailoptin'),
                         'priority'    => 150
                     )
                 ),

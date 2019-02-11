@@ -30,51 +30,51 @@ class CustomizerSettings extends AbstractCustomizer
     public function available_tags_settings()
     {
         $settings_args = apply_filters("mailoptin_email_campaign_customizer_available_tags_settings", array(
-                'post_tags_header' => array(
+                'post_tags_header'              => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'campaign_tags_header' => array(
+                'campaign_tags_header'          => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'post_id_shortcode' => array(
+                'post_id_shortcode'             => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'post_title_shortcode' => array(
+                'post_title_shortcode'          => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'post_feature_image_shortcode' => array(
+                'post_feature_image_shortcode'  => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'post_excerpt_shortcode' => array(
+                'post_excerpt_shortcode'        => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'post_content_shortcode' => array(
+                'post_content_shortcode'        => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'post_category_shortcode' => array(
+                'post_category_shortcode'       => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'post_date_shortcode' => array(
+                'post_date_shortcode'           => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'post_date_gmt_shortcode' => array(
+                'post_date_gmt_shortcode'       => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'post_url_shortcode' => array(
+                'post_url_shortcode'            => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'post_author_name_shortcode' => array(
+                'post_author_name_shortcode'    => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
@@ -82,19 +82,19 @@ class CustomizerSettings extends AbstractCustomizer
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'post_author_email_shortcode' => array(
+                'post_author_email_shortcode'   => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'post_meta_shortcode' => array(
+                'post_meta_shortcode'           => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'unsubscribe_shortcode' => array(
+                'unsubscribe_shortcode'         => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'web_version_shortcode' => array(
+                'web_version_shortcode'         => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
@@ -244,9 +244,16 @@ class CustomizerSettings extends AbstractCustomizer
                     'transport' => 'postMessage',
                 ),
                 'code_your_own'                   => array(
-                    'default'   => $this->customizer_defaults['code_your_own'],
-                    'type'      => 'option',
-                    'transport' => 'postMessage',
+                    'default'           => $this->customizer_defaults['code_your_own'],
+                    'type'              => 'option',
+                    'transport'         => 'postMessage',
+                    'validate_callback' => function ($validity, $value) {
+                        if (empty($value) || strpos($value, '[unsubscribe]') === false) {
+                            $validity->add( 'unsubscribe_tag_required', __( 'Email template must contain the [unsubscribe] tag', 'mailoptin' ) );
+                        }
+
+                        return $validity;
+                    }
                 ),
             )
         );
