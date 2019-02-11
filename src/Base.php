@@ -45,7 +45,7 @@ define('MO_OPTIN_CAMPAIGN_WP_OPTION_NAME', 'mo_optin_campaign');
 define('MO_OPTIN_TEMPLATE_WP_OPTION_NAME', 'mailoptin_email_templates');
 define('MO_EMAIL_CAMPAIGNS_WP_OPTION_NAME', 'mo_email_campaigns');
 
-define('MAILOPTIN_SRC', trailingslashit(__FILE__));
+define('MAILOPTIN_SRC', wp_normalize_path(trailingslashit(__FILE__)));
 define('MAILOPTIN_SETTINGS_PAGE_FOLDER', wp_normalize_path(dirname(__FILE__) . '/Admin/SettingsPage/'));
 
 define('MAILOPTIN_CAMPAIGN_ERROR_LOG', WP_CONTENT_DIR . "/uploads/mailoptin-campaign-log/");
