@@ -579,8 +579,9 @@ label.mo-single-toggle-tab {
     height: calc(100% - 75px);
 }
 
-.mo-automation-code-toolbar ~ iframe {
-    height: calc(100% - 75px);
+.mo-automation-code-toolbar ~ iframe,
+.mo-email-automation-editor-wrap ~ iframe {
+    height: calc(100% - 75px) !important;
 }
 
 .mo-email-automation-editor-wrap .ace_print-margin {

@@ -276,8 +276,13 @@ class CustomizerSettings extends AbstractCustomizer
                     'type'              => 'option',
                     'transport'         => 'postMessage',
                     'validate_callback' => function ($validity, $value) {
-                        if (empty($value) || strpos($value, '[unsubscribe]') === false) {
-                            $validity->add( 'unsubscribe_tag_required', __( 'Email template must contain the [unsubscribe] tag', 'mailoptin' ) );
+                        if (empty($value)) {
+                            $validity->add( 'template_empty', __( 'Email template cannot be empty.', 'mailoptin' ) );
+                            return $validity;
+                        }
+
+                        if (strpos($value, '[unsubscribe]') === false) {
+                            $validity->add( 'unsubscribe_tag_required', __( 'Email template must contain the [unsubscribe] tag.', 'mailoptin' ) );
                         }
 
                         return $validity;

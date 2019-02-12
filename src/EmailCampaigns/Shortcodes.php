@@ -5,39 +5,78 @@ namespace MailOptin\Core\EmailCampaigns;
 class Shortcodes
 {
     /** @var \WP_Post */
-    protected $post;
+    protected $wp_post_obj;
+
+    protected $post_content_length;
 
     protected $post_id;
 
-    protected $old_shortcode_tags;
-
-    public function __construct($post_id)
+    /**
+     * Shortcodes constructor.
+     *
+     * @param int|\WP_Post $post
+     */
+    public function __construct($post, $post_content_length)
     {
-        $this->post_id = $post_id;
-        $this->post    = get_post($post_id);
+        if ($post instanceof \stdClass) {
+            $this->wp_post_obj = $post;
+        } else {
+            $this->wp_post_obj = get_post($post);
+        }
+
+        $this->post_content_length = $post_content_length;
     }
 
-    public function init()
+    public function parse($content)
     {
         global $shortcode_tags;
+        $old_shortcode_tags = $shortcode_tags;
+        $shortcode_tags     = array();
 
-        $this->old_shortcode_tags = $shortcode_tags;
+        $this->define_shortcodes();
 
-        $shortcode_tags = array();
+        $parsed_content = do_shortcode($content);
 
-        add_shortcode('post_title', [$this, 'post_title']);
+        // restore back old shortcode
+        $shortcode_tags = $old_shortcode_tags;
 
-        do_action('mo_email_automation_shortcodes', $this->post_id, $this->post);
+        return $parsed_content;
     }
 
-    public function shut_down()
+    public function define_shortcodes()
     {
-        global $shortcode_tags;
-        $shortcode_tags = $this->old_shortcode_tags;
+        add_shortcode('post-title', [$this, 'post_title']);
+        add_shortcode('post-content', [$this, 'post_content']);
+
+        add_shortcode('unsubscribe', [$this, 'unsubscribe']);
+        add_shortcode('webversion', [$this, 'webversion']);
+
+        do_action('mo_define_email_automation_shortcodes', $this->wp_post_obj);
     }
 
     public function post_title()
     {
-        return $this->post->post_title;
+        return $this->wp_post_obj->post_title;
+    }
+
+    public function post_content()
+    {
+        $content = $this->wp_post_obj->post_content;
+
+        if (0 !== $this->post_content_length) {
+            $content = \MailOptin\Core\limit_text($content, $this->post_content_length);
+        }
+
+        return wpautop($content);
+    }
+
+    public function webversion()
+    {
+        return '{{webversion}}';
+    }
+
+    public function unsubscribe()
+    {
+        return '{{unsubscribe}}';
     }
 }
