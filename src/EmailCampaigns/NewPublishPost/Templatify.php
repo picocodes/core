@@ -67,17 +67,7 @@ class Templatify implements TemplatifyInterface
         return get_permalink($this->post->ID);
     }
 
-    public function tags_replacement()
-    {
-
-    }
-
-    /**
-     * Turn {@see WP_Post} object to email campaign template.
-     *
-     * @return mixed
-     */
-    public function forge()
+    public function post_content_forge()
     {
         $email_campaign_id = $this->email_campaign_id;
         $db_template_class = $this->template_class;
@@ -89,8 +79,8 @@ class Templatify implements TemplatifyInterface
         $search = array(
             '{{post.title}}',
             '{{post.content}}',
-            '{{post.feature.image}}',
             '{{post.url}}',
+            '{{post.feature.image}}'
         );
 
         $post_content_length = absint($this->post_content_length);
@@ -107,11 +97,21 @@ class Templatify implements TemplatifyInterface
         $replace = [
             $this->post_title(),
             wpautop($post_content),
-            $this->feature_image($this->post->ID),
             $this->post_url(),
+            $this->feature_image($this->post->ID)
         ];
 
-        $templatified_content = str_replace($search, $replace, $instance->get_preview_structure());
+        return str_replace($search, $replace, $instance->get_preview_structure());
+    }
+
+    /**
+     * Turn {@see WP_Post} object to email campaign template.
+     *
+     * @return mixed
+     */
+    public function forge()
+    {
+        $templatified_content = $this->post_content_forge();
 
         $templatified_content = apply_filters('mo_new_publish_post_post_templatify_forge', $templatified_content, $this->post->ID, $this);
 
