@@ -10,8 +10,6 @@ $email_campaign_type = EmailCampaignRepository::get_email_campaign_type($email_c
 
 $email_campaign_type_namespace = EmailCampaignFactory::get_campaign_type_namespace($email_campaign_type);
 
-$db_template_class = EmailCampaignRepository::get_template_class($email_campaign_id);
-
 $template_preview_class = "MailOptin\\Core\\Admin\\Customizer\\EmailCampaign\\{$email_campaign_type_namespace}TemplatePreview";
 
 switch ($email_campaign_type) {

@@ -49,8 +49,10 @@ class Shortcodes
     {
         add_shortcode('post-title', [$this, 'post_title_tag']);
         add_shortcode('post-content', [$this, 'post_content_tag']);
+        add_shortcode('post-excerpt', [$this, 'post_excerpt_tag']);
         add_shortcode('post-feature-image', [$this, 'post_feature_image_tag']);
         add_shortcode('post-feature-image-url', [$this, 'post_feature_image_url_tag']);
+        add_shortcode('post-url', [$this, 'post_url_tag']);
 
         add_shortcode('unsubscribe', [$this, 'unsubscribe']);
         add_shortcode('webversion', [$this, 'webversion']);
@@ -77,9 +79,19 @@ class Shortcodes
         return $this->feature_image($this->wp_post_obj->ID);
     }
 
+    public function post_url_tag()
+    {
+        return $this->post_url($this->wp_post_obj);
+    }
+
     public function post_content_tag()
     {
         return $this->post_content($this->wp_post_obj);
+    }
+
+    public function post_excerpt_tag()
+    {
+        return wpautop($this->wp_post_obj->post_excerpt);
     }
 
     public function webversion()
