@@ -53,6 +53,9 @@ class Shortcodes
         add_shortcode('post-feature-image', [$this, 'post_feature_image_tag']);
         add_shortcode('post-feature-image-url', [$this, 'post_feature_image_url_tag']);
         add_shortcode('post-url', [$this, 'post_url_tag']);
+        add_shortcode('post-date', [$this, 'post_date_tag']);
+        add_shortcode('post-date-gmt', [$this, 'post_date_gmt_tag']);
+        add_shortcode('post-category', [$this, 'post_category_tag']);
 
         add_shortcode('unsubscribe', [$this, 'unsubscribe']);
         add_shortcode('webversion', [$this, 'webversion']);
@@ -84,6 +87,16 @@ class Shortcodes
         return $this->post_url($this->wp_post_obj);
     }
 
+    public function post_date_tag()
+    {
+        return $this->wp_post_obj->post_date;
+    }
+
+    public function post_date_gmt_tag()
+    {
+        return $this->wp_post_obj->post_date_gmt;
+    }
+
     public function post_content_tag()
     {
         return $this->post_content($this->wp_post_obj);
@@ -102,5 +115,20 @@ class Shortcodes
     public function unsubscribe()
     {
         return '{{unsubscribe}}';
+    }
+
+    public function post_category_tag($atts)
+    {
+        $atts = shortcode_atts(['link' => 'true'], $atts);
+
+        $output = '';
+
+        $categories = get_the_term_list($this->wp_post_obj->ID, 'category', '', ', ');
+
+        if ( ! is_wp_error($categories)) {
+            $output = $atts['link'] == 'true' ? $categories : strip_tags($categories);
+        }
+
+        return $output;
     }
 }

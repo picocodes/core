@@ -530,9 +530,9 @@ class CustomizerControls
                     array(
                         'label'       => __('Post Category', 'mailoptin'),
                         'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
-                        'content'     => '<input type="text" value="[post-category]">',
+                        'content'     => '<input type="text" value="[post-category link=' . esc_attr('"true"') . ']">',
                         'settings'    => $this->option_prefix . '[post_category_shortcode]',
-                        'description' => __('Comma separated if the post belongs to multiple categories.', 'mailoptin'),
+                        'description' => __('Comma separated list of post categories. Set "link" attribute to false to remove the link to category.', 'mailoptin'),
                         'priority'    => 70
                     )
                 ),

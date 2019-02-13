@@ -23,12 +23,14 @@ class NewPublishPostTemplatePreview extends Templatify
 
     public function postMockObject()
     {
-        $mock_post               = new \stdClass();
-        $mock_post->ID           = false;
-        $mock_post->post_title   = SolitaryDummyContent::title();
-        $mock_post->post_content = SolitaryDummyContent::content();
-        $mock_post->post_excerpt = SolitaryDummyContent::excerpt();
-        $mock_post->post_url     = '#';
+        $mock_post                = new \stdClass();
+        $mock_post->ID            = false;
+        $mock_post->post_title    = SolitaryDummyContent::title();
+        $mock_post->post_content  = SolitaryDummyContent::content();
+        $mock_post->post_excerpt  = SolitaryDummyContent::excerpt();
+        $mock_post->post_url      = '#';
+        $mock_post->post_date     = '2018-08-01 15:19:16';
+        $mock_post->post_date_gmt = '2018-08-01 14:19:16';
 
         return $mock_post;
     }
