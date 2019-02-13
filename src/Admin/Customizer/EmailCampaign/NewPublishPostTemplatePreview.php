@@ -18,28 +18,8 @@ class NewPublishPostTemplatePreview extends Templatify
         $mock_post->ID = false;
         $mock_post->post_title = SolitaryDummyContent::title();
         $mock_post->post_content = SolitaryDummyContent::content();
+        $mock_post->post_url = '#';
 
         return $mock_post;
-    }
-
-    public function post_title()
-    {
-        return SolitaryDummyContent::title();
-    }
-
-    public function post_content()
-    {
-        return SolitaryDummyContent::content();
-    }
-
-    public function post_url()
-    {
-        return '#';
-    }
-
-    public function feature_image($post_id)
-    {
-        // we need the default image shown, so we are gonna supply invalid post ID
-        return parent::feature_image('');
     }
 }

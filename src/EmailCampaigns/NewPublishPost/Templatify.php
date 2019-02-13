@@ -38,66 +38,25 @@ class Templatify implements TemplatifyInterface
         $this->post_content_length = absint(ER::get_customizer_value($email_campaign_id, 'post_content_length'));
     }
 
-    /**
-     *
-     * @return string
-     */
-    public function post_title()
-    {
-        return $this->post->post_title;
-    }
-
-    /**
-     * @return string
-     */
-    public function post_content()
-    {
-        return do_shortcode($this->post->post_content);
-    }
-
-    /**
-     * @return false|mixed|string
-     */
-    public function post_url()
-    {
-        if ($this->post instanceof \stdClass) {
-            return $this->post->post_url;
-        }
-
-        return get_permalink($this->post->ID);
-    }
-
     public function post_content_forge()
     {
-        $email_campaign_id = $this->email_campaign_id;
-        $db_template_class = $this->template_class;
+        $preview_structure = EmailCampaignFactory::make($this->email_campaign_id)->get_preview_structure();
 
-        do_action('mailoptin_email_template_before_forge', $email_campaign_id, $db_template_class);
+        $preview_structure = str_replace('{{post.feature.image}}', $this->feature_image($this->post->ID), $preview_structure);
 
         $search = array(
             '{{post.title}}',
             '{{post.content}}',
-            '{{post.url}}',
-            '{{post.feature.image}}'
+            '{{post.url}}'
         );
 
-        if (0 === $this->post_content_length) {
-            $post_content = $this->post_content();
-        } else {
-            $post_content = \MailOptin\Core\limit_text(
-                $this->post_content(),
-                $this->post_content_length
-            );
-        }
-
         $replace = [
-            $this->post_title(),
-            wpautop($post_content),
-            $this->post_url(),
-            $this->feature_image($this->post->ID)
+            $this->post->post_title,
+            wpautop($this->post_content($this->post)),
+            $this->post_url($this->post)
         ];
 
-        return str_replace($search, $replace, EmailCampaignFactory::make($email_campaign_id)->get_preview_structure());
+        return str_replace($search, $replace, $preview_structure);
     }
 
     /**
@@ -107,9 +66,11 @@ class Templatify implements TemplatifyInterface
      */
     public function forge()
     {
+        do_action('mailoptin_email_template_before_forge', $this->email_campaign_id, $this->template_class);
+
         if (ER::is_code_your_own_template($this->email_campaign_id)) {
             $content              = ER::get_merged_customizer_value($this->email_campaign_id, 'code_your_own');
-            $templatified_content = (new Shortcodes($this->post, $this->post_content_length))->parse($content);
+            $templatified_content = (new Shortcodes($this->post, $this->email_campaign_id))->parse($content);
         } else {
             $templatified_content = $this->post_content_forge();
         }

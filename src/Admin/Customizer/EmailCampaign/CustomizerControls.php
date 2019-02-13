@@ -493,11 +493,24 @@ class CustomizerControls
                     $this->wp_customize,
                     $this->option_prefix . '[post_feature_image_shortcode]',
                     array(
-                        'label'    => __('Post Feature Image', 'mailoptin'),
+                        'label'    => __('Feature Image', 'mailoptin'),
                         'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
                         'content'  => '<input type="text" value="[post-feature-image]">',
+                        'description' => __('HTML image of post\'s featured image.', 'mailoptin'),
                         'settings' => $this->option_prefix . '[post_feature_image_shortcode]',
                         'priority' => 50
+                    )
+                ),
+                'post_feature_image_url_shortcode'  => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_feature_image_url_shortcode]',
+                    array(
+                        'label'    => __('Feature Image URL', 'mailoptin'),
+                        'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'  => '<input type="text" value="[post-feature-image-url]">',
+                        'description' => __('URL of post\'s featured image.', 'mailoptin'),
+                        'settings' => $this->option_prefix . '[post_feature_image_url_shortcode]',
+                        'priority' => 55
                     )
                 ),
                 'post_url_shortcode'            => new WP_Customize_View_Tags_Shortcode_Content(

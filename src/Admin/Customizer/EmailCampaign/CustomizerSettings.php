@@ -50,6 +50,10 @@ class CustomizerSettings extends AbstractCustomizer
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
+                'post_feature_image_url_shortcode'  => array(
+                    'type'      => 'option',
+                    'transport' => 'postMessage',
+                ),
                 'post_excerpt_shortcode'        => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',

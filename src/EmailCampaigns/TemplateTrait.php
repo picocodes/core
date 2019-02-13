@@ -29,6 +29,10 @@ trait TemplateTrait
      */
     public function post_url($post)
     {
+        if ($post instanceof \stdClass) {
+            return $post->post_url;
+        }
+
         if ( ! is_object($post) || ! ($post instanceof WP_Post)) {
             $post = get_post($post);
         }
@@ -47,14 +51,12 @@ trait TemplateTrait
             $post = get_post($post);
         }
 
-        $content             = do_shortcode($post->post_content);
+        $post_content             = do_shortcode($post->post_content);
         $post_content_length = ER::get_merged_customizer_value($this->email_campaign_id, 'post_content_length');
 
-        if (0 === $post_content_length) {
-            $post_content = $content;
-        } else {
+        if (0 !== $post_content_length) {
             $post_content = \MailOptin\Core\limit_text(
-                $content,
+                $post_content,
                 $post_content_length
             );
         }
@@ -65,14 +67,16 @@ trait TemplateTrait
     /**
      * @return mixed
      */
-    public function feature_image($post_id)
+    public function feature_image($post_id, $email_campaign_id = '')
     {
-        $default_feature_image = ER::get_merged_customizer_value($this->email_campaign_id, 'default_image_url');
+        $email_campaign_id = !empty($email_campaign_id) ? $email_campaign_id : $this->email_campaign_id;
+
+        $default_feature_image = ER::get_merged_customizer_value($email_campaign_id, 'default_image_url');
 
         if ( ! $post_id) return $default_feature_image;
 
         $is_remove_featured_image = ER::get_merged_customizer_value(
-            $this->email_campaign_id,
+            $email_campaign_id,
             'content_remove_feature_image'
         );
 
