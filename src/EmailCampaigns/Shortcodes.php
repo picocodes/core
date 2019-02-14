@@ -58,11 +58,13 @@ class Shortcodes
         add_shortcode('post-category', [$this, 'post_category_tag']);
         add_shortcode('post-id', [$this, 'post_id_tag']);
         add_shortcode('post-author-name', [$this, 'post_author_name_tag']);
+        add_shortcode('post-author-website', [$this, 'post_author_website_tag']);
         add_shortcode('post-author-email', [$this, 'post_author_email_tag']);
         add_shortcode('post-meta', [$this, 'post_meta_tag']);
 
         add_shortcode('unsubscribe', [$this, 'unsubscribe']);
         add_shortcode('webversion', [$this, 'webversion']);
+        add_shortcode('company-name', [$this, 'company_name']);
 
         do_action('mo_define_email_automation_shortcodes', $this->wp_post_obj);
     }
@@ -121,6 +123,11 @@ class Shortcodes
         return '{{unsubscribe}}';
     }
 
+    public function company_name()
+    {
+        return '{{company_name}}';
+    }
+
     public function post_category_tag($atts)
     {
         $atts = shortcode_atts(['link' => 'true'], $atts);
@@ -153,6 +160,11 @@ class Shortcodes
         }
 
         return $output;
+    }
+
+    public function post_author_website_tag()
+    {
+        return get_user_by('id', $this->wp_post_obj->post_author)->user_url;
     }
 
     public function post_author_email_tag()
