@@ -65,6 +65,12 @@ class Shortcodes
         add_shortcode('unsubscribe', [$this, 'unsubscribe']);
         add_shortcode('webversion', [$this, 'webversion']);
         add_shortcode('company-name', [$this, 'company_name']);
+        add_shortcode('company-address', [$this, 'company_address']);
+        add_shortcode('company-address2', [$this, 'company_address2']);
+        add_shortcode('company-city', [$this, 'company_city']);
+        add_shortcode('company-state', [$this, 'company_state']);
+        add_shortcode('company-zip', [$this, 'company_zip']);
+        add_shortcode('company-country', [$this, 'company_country']);
 
         do_action('mo_define_email_automation_shortcodes', $this->wp_post_obj);
     }
@@ -126,6 +132,36 @@ class Shortcodes
     public function company_name()
     {
         return '{{company_name}}';
+    }
+
+    public function company_address()
+    {
+        return '{{company_address}}';
+    }
+
+    public function company_address2()
+    {
+        return '{{company_address_2}}';
+    }
+
+    public function company_city()
+    {
+        return '{{company_city}}';
+    }
+
+    public function company_state()
+    {
+        return '{{company_state}}';
+    }
+
+    public function company_zip()
+    {
+        return '{{company_zip}}';
+    }
+
+    public function company_country()
+    {
+        return '{{company_country}}';
     }
 
     public function post_category_tag($atts)
