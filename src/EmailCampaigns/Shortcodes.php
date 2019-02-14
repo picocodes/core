@@ -56,6 +56,10 @@ class Shortcodes
         add_shortcode('post-date', [$this, 'post_date_tag']);
         add_shortcode('post-date-gmt', [$this, 'post_date_gmt_tag']);
         add_shortcode('post-category', [$this, 'post_category_tag']);
+        add_shortcode('post-id', [$this, 'post_id_tag']);
+        add_shortcode('post-author-name', [$this, 'post_author_name_tag']);
+        add_shortcode('post-author-email', [$this, 'post_author_email_tag']);
+        add_shortcode('post-meta', [$this, 'post_meta_tag']);
 
         add_shortcode('unsubscribe', [$this, 'unsubscribe']);
         add_shortcode('webversion', [$this, 'webversion']);
@@ -130,5 +134,38 @@ class Shortcodes
         }
 
         return $output;
+    }
+
+    public function post_id_tag()
+    {
+        return $this->wp_post_obj->ID;
+    }
+
+    public function post_author_name_tag($atts)
+    {
+        $atts    = shortcode_atts(['link' => 'true'], $atts);
+        $wp_user = get_user_by('id', $this->wp_post_obj->post_author);
+
+        $output = $wp_user->display_name;
+
+        if ($atts['link'] == 'true') {
+            $output = '<a href="' . $wp_user->user_url . '">' . $wp_user->display_name . '</a>';
+        }
+
+        return $output;
+    }
+
+    public function post_author_email_tag()
+    {
+        return get_user_by('id', $this->wp_post_obj->post_author)->user_email;
+    }
+
+    public function post_meta_tag($atts)
+    {
+        $atts = shortcode_atts(['key' => ''], $atts);
+
+        $key = sanitize_key($atts['key']);
+
+        return get_post_meta($this->wp_post_obj->ID, $key, true);
     }
 }

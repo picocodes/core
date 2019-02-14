@@ -462,7 +462,7 @@ class CustomizerControls
                     array(
                         'label'    => __('Post Title', 'mailoptin'),
                         'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
-                        'content'  => '<input type="text" value="[post-title]">',
+                        'content'  => '<input type="text" value="[post-title]" style="background-color:#fff;" readonly>',
                         'settings' => $this->option_prefix . '[post_title_shortcode]',
                         'priority' => 20
                     )
@@ -473,7 +473,7 @@ class CustomizerControls
                     array(
                         'label'    => __('Post Content', 'mailoptin'),
                         'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
-                        'content'  => '<input type="text" value="[post-content]">',
+                        'content'  => '<input type="text" value="[post-content]" style="background-color:#fff;" readonly>',
                         'settings' => $this->option_prefix . '[post_content_shortcode]',
                         'priority' => 30
                     )
@@ -484,7 +484,7 @@ class CustomizerControls
                     array(
                         'label'    => __('Post Excerpt', 'mailoptin'),
                         'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
-                        'content'  => '<input type="text" value="[post-excerpt]">',
+                        'content'  => '<input type="text" value="[post-excerpt]" style="background-color:#fff;" readonly>',
                         'settings' => $this->option_prefix . '[post_excerpt_shortcode]',
                         'priority' => 40
                     )
@@ -495,7 +495,7 @@ class CustomizerControls
                     array(
                         'label'    => __('Feature Image', 'mailoptin'),
                         'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
-                        'content'  => '<input type="text" value="[post-feature-image]">',
+                        'content'  => '<input type="text" value="[post-feature-image]" style="background-color:#fff;" readonly>',
                         'description' => __('HTML image of post\'s featured image.', 'mailoptin'),
                         'settings' => $this->option_prefix . '[post_feature_image_shortcode]',
                         'priority' => 50
@@ -507,7 +507,7 @@ class CustomizerControls
                     array(
                         'label'    => __('Feature Image URL', 'mailoptin'),
                         'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
-                        'content'  => '<input type="text" value="[post-feature-image-url]">',
+                        'content'  => '<input type="text" value="[post-feature-image-url]" style="background-color:#fff;" readonly>',
                         'description' => __('URL of post\'s featured image.', 'mailoptin'),
                         'settings' => $this->option_prefix . '[post_feature_image_url_shortcode]',
                         'priority' => 55
@@ -519,7 +519,7 @@ class CustomizerControls
                     array(
                         'label'    => __('Post URL', 'mailoptin'),
                         'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
-                        'content'  => '<input type="text" value="[post-url]">',
+                        'content'  => '<input type="text" value="[post-url]" style="background-color:#fff;" readonly>',
                         'settings' => $this->option_prefix . '[post_url_shortcode]',
                         'priority' => 60
                     )
@@ -530,7 +530,7 @@ class CustomizerControls
                     array(
                         'label'       => __('Post Category', 'mailoptin'),
                         'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
-                        'content'     => '<input type="text" value="[post-category link=' . esc_attr('"true"') . ']">',
+                        'content'     => '<input type="text" value="[post-category link=' . esc_attr('"true"') . ']" style="background-color:#fff;" readonly>',
                         'settings'    => $this->option_prefix . '[post_category_shortcode]',
                         'description' => __('Comma separated list of post categories. Set "link" attribute to false to remove the link to category.', 'mailoptin'),
                         'priority'    => 70
@@ -542,7 +542,7 @@ class CustomizerControls
                     array(
                         'label'       => __('Post Date', 'mailoptin'),
                         'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
-                        'content'     => '<input type="text" value="[post-date]">',
+                        'content'     => '<input type="text" value="[post-date]" style="background-color:#fff;" readonly>',
                         'settings'    => $this->option_prefix . '[post_date_shortcode]',
                         'description' => __('Publish date of the post in your local time set in WordPress.', 'mailoptin'),
                         'priority'    => 80
@@ -554,7 +554,7 @@ class CustomizerControls
                     array(
                         'label'       => __('Post Date in GMT', 'mailoptin'),
                         'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
-                        'content'     => '<input type="text" value="[post-date-gmt]">',
+                        'content'     => '<input type="text" value="[post-date-gmt]" style="background-color:#fff;" readonly>',
                         'settings'    => $this->option_prefix . '[post_date_shortcode]',
                         'description' => __('Publish date of the post in GMT.', 'mailoptin'),
                         'priority'    => 90
@@ -566,7 +566,7 @@ class CustomizerControls
                     array(
                         'label'       => __('Post Meta Value', 'mailoptin'),
                         'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
-                        'content'     => '<input type="text" value="[post-meta key=' . esc_attr('"meta_key"') . ']">',
+                        'content'     => '<input type="text" value="[post-meta key=' . esc_attr('"meta_key"') . ']" style="background-color:#fff;" readonly>',
                         'settings'    => $this->option_prefix . '[post_meta_shortcode]',
                         'description' => __('Post meta value of a certain "meta_key".', 'mailoptin'),
                         'priority'    => 95
@@ -578,7 +578,7 @@ class CustomizerControls
                     array(
                         'label'    => __('Post ID', 'mailoptin'),
                         'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
-                        'content'  => '<input type="text" value="[post-id]">',
+                        'content'  => '<input type="text" value="[post-id]" style="background-color:#fff;" readonly>',
                         'settings' => $this->option_prefix . '[post_id_shortcode]',
                         'priority' => 100
                     )
@@ -589,7 +589,8 @@ class CustomizerControls
                     array(
                         'label'    => __('Author Name', 'mailoptin'),
                         'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
-                        'content'  => '<input type="text" value="[post-author-name]">',
+                        'content'     => '<input type="text" value="[post-author-name link=' . esc_attr('"true"') . ']" style="background-color:#fff;" readonly>',
+                        'description' => __('Set "link" attribute to false to remove the link to author\'s website.', 'mailoptin'),
                         'settings' => $this->option_prefix . '[post_author_name_shortcode]',
                         'priority' => 110
                     )
@@ -600,7 +601,7 @@ class CustomizerControls
                     array(
                         'label'    => __('Author Website', 'mailoptin'),
                         'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
-                        'content'  => '<input type="text" value="[post-author-website]">',
+                        'content'  => '<input type="text" value="[post-author-website]" style="background-color:#fff;" readonly>',
                         'settings' => $this->option_prefix . '[post_author_website_shortcode]',
                         'priority' => 120
                     )
@@ -611,7 +612,7 @@ class CustomizerControls
                     array(
                         'label'    => __('Author Email Address', 'mailoptin'),
                         'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
-                        'content'  => '<input type="text" value="[post-author-email]">',
+                        'content'  => '<input type="text" value="[post-author-email]" style="background-color:#fff;" readonly>',
                         'settings' => $this->option_prefix . '[post_author_email_shortcode]',
                         'priority' => 130
                     )
@@ -633,7 +634,7 @@ class CustomizerControls
                     array(
                         'label'       => __('Unsubscribe URL', 'mailoptin'),
                         'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
-                        'content'     => '<input type="text" value="[unsubscribe]">',
+                        'content'     => '<input type="text" value="[unsubscribe]" style="background-color:#fff;" readonly>',
                         'settings'    => $this->option_prefix . '[unsubscribe_shortcode]',
                         'description' => __('URL to unsubscribe. This must be in your email template.', 'mailoptin'),
                         'priority'    => 150
@@ -645,7 +646,7 @@ class CustomizerControls
                     array(
                         'label'       => __('Web Version URL', 'mailoptin'),
                         'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
-                        'content'     => '<input type="text" value="[webversion]">',
+                        'content'     => '<input type="text" value="[webversion]" style="background-color:#fff;" readonly>',
                         'settings'    => $this->option_prefix . '[web_version_shortcode]',
                         'description' => __('URL to the web version.', 'mailoptin'),
                         'priority'    => 160
@@ -657,7 +658,7 @@ class CustomizerControls
                     array(
                         'label'       => __('Company Name', 'mailoptin'),
                         'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
-                        'content'     => '<input type="text" value="[company-name]">',
+                        'content'     => '<input type="text" value="[company-name]" style="background-color:#fff;" readonly>',
                         'settings'    => $this->option_prefix . '[company_name_shortcode]',
                         'description' => sprintf(
                             __('Your company name as defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
@@ -672,7 +673,7 @@ class CustomizerControls
                     array(
                         'label'       => __('Company Address', 'mailoptin'),
                         'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
-                        'content'     => '<input type="text" value="[company-address]">',
+                        'content'     => '<input type="text" value="[company-address]" style="background-color:#fff;" readonly>',
                         'settings'    => $this->option_prefix . '[company_address_shortcode]',
                         'description' => sprintf(
                             __('Your company address as defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
@@ -687,7 +688,7 @@ class CustomizerControls
                     array(
                         'label'       => __('Company Address 2', 'mailoptin'),
                         'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
-                        'content'     => '<input type="text" value="[company-address2]">',
+                        'content'     => '<input type="text" value="[company-address2]" style="background-color:#fff;" readonly>',
                         'settings'    => $this->option_prefix . '[company_address_2_shortcode]',
                         'description' => sprintf(
                             __('Company address 2 defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
@@ -702,7 +703,7 @@ class CustomizerControls
                     array(
                         'label'       => __('Company City', 'mailoptin'),
                         'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
-                        'content'     => '<input type="text" value="[company-city]">',
+                        'content'     => '<input type="text" value="[company-city]" style="background-color:#fff;" readonly>',
                         'settings'    => $this->option_prefix . '[company_city_shortcode]',
                         'description' => sprintf(
                             __('Your company city as defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
@@ -717,7 +718,7 @@ class CustomizerControls
                     array(
                         'label'       => __('Company State', 'mailoptin'),
                         'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
-                        'content'     => '<input type="text" value="[company-state]">',
+                        'content'     => '<input type="text" value="[company-state]" style="background-color:#fff;" readonly>',
                         'settings'    => $this->option_prefix . '[company_state_shortcode]',
                         'description' => sprintf(
                             __('Your company state as defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
@@ -732,7 +733,7 @@ class CustomizerControls
                     array(
                         'label'       => __('Company Zip Code', 'mailoptin'),
                         'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
-                        'content'     => '<input type="text" value="[company-zip]">',
+                        'content'     => '<input type="text" value="[company-zip]" style="background-color:#fff;" readonly>',
                         'settings'    => $this->option_prefix . '[company_zip_shortcode]',
                         'description' => sprintf(
                             __('Zip or postal code as defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
@@ -747,7 +748,7 @@ class CustomizerControls
                     array(
                         'label'       => __('Company Country', 'mailoptin'),
                         'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
-                        'content'     => '<input type="text" value="[company-country]">',
+                        'content'     => '<input type="text" value="[company-country]" style="background-color:#fff;" readonly>',
                         'settings'    => $this->option_prefix . '[company_country_shortcode]',
                         'description' => sprintf(
                             __('Your company country defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
