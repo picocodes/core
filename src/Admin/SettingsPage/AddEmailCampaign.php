@@ -138,8 +138,6 @@ class AddEmailCampaign extends AbstractSettingsPage
 
     public function code_your_own_box($campaign_type)
     {
-        if ($campaign_type !== EmailCampaignRepository::NEW_PUBLISH_POST) return;
-
         $label = __('Code your own', 'mailoptin');
         ?>
         <div id="mailoptin-email-template-list"

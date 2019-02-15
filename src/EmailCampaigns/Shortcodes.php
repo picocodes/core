@@ -13,12 +13,18 @@ class Shortcodes
 
     protected $post_id;
 
+    protected $posts;
+
+    public function __construct($email_campaign_id)
+    {
+        $this->email_campaign_id = $email_campaign_id;
+    }
+
     /**
-     * Shortcodes constructor.
      *
      * @param int|\WP_Post $post
      */
-    public function __construct($post, $email_campaign_id)
+    public function from($post)
     {
         if ($post instanceof \stdClass) {
             $this->wp_post_obj = $post;
@@ -26,7 +32,14 @@ class Shortcodes
             $this->wp_post_obj = get_post($post);
         }
 
-        $this->email_campaign_id = $email_campaign_id;
+        return $this;
+    }
+
+    public function fromCollection($posts)
+    {
+        $this->posts = $posts;
+
+        return $this;
     }
 
     public function parse($content)
@@ -47,6 +60,7 @@ class Shortcodes
 
     public function define_shortcodes()
     {
+        add_shortcode('posts-loop', [$this, 'posts_loop_tag']);
         add_shortcode('post-title', [$this, 'post_title_tag']);
         add_shortcode('post-content', [$this, 'post_content_tag']);
         add_shortcode('post-excerpt', [$this, 'post_excerpt_tag']);
@@ -73,6 +87,19 @@ class Shortcodes
         add_shortcode('company-country', [$this, 'company_country']);
 
         do_action('mo_define_email_automation_shortcodes', $this->wp_post_obj);
+    }
+
+    public function posts_loop_tag($atts, $content)
+    {
+        if ( ! empty($this->posts)) return '';
+        $output = '';
+        foreach ($this->posts as $post) {
+            $this->from($post);
+            $this->define_shortcodes();
+            $output .= do_shortcode($content);
+        }
+
+        return $output;
     }
 
     public function post_title_tag()

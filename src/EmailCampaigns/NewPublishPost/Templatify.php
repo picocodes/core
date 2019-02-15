@@ -70,7 +70,7 @@ class Templatify implements TemplatifyInterface
 
         if (ER::is_code_your_own_template($this->email_campaign_id)) {
             $content              = ER::get_merged_customizer_value($this->email_campaign_id, 'code_your_own');
-            $templatified_content = (new Shortcodes($this->post, $this->email_campaign_id))->parse($content);
+            $templatified_content = (new Shortcodes($this->email_campaign_id))->from($this->post)->parse($content);
         } else {
             $templatified_content = $this->post_content_forge();
         }
