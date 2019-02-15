@@ -51,7 +51,7 @@ trait TemplateTrait
             $post = get_post($post);
         }
 
-        $post_content             = do_shortcode($post->post_content);
+        $post_content        = do_shortcode($post->post_content);
         $post_content_length = ER::get_merged_customizer_value($this->email_campaign_id, 'post_content_length');
 
         if (0 !== $post_content_length) {
@@ -69,7 +69,7 @@ trait TemplateTrait
      */
     public function feature_image($post_id, $email_campaign_id = '')
     {
-        $email_campaign_id = !empty($email_campaign_id) ? $email_campaign_id : $this->email_campaign_id;
+        $email_campaign_id = ! empty($email_campaign_id) ? $email_campaign_id : $this->email_campaign_id;
 
         $default_feature_image = ER::get_merged_customizer_value($email_campaign_id, 'default_image_url');
 
