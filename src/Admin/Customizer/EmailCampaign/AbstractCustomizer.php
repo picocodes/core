@@ -157,7 +157,125 @@ class AbstractCustomizer
 HTML;
 
         if ($this->email_campaign_type == EmailCampaignRepository::POSTS_EMAIL_DIGEST) {
-            $output = '';
+            $output = <<<HTML
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Posts Roundup</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+    body {
+        background-color: #fff;
+    }
+  .message-content {
+    max-width: 600px;
+    margin: 30px auto;
+    font-family: Georgia, Times, serif;
+  }
+  .message-content div { padding-bottom: 10px; }
+  .message-content img { max-width: 100%; height: auto; }
+
+  * { font-family: Georgia, Times, serif; }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #333;
+  }
+  h1 { font-size: 32px; }
+  h2 { font-size: 24px; }
+  h3 { font-size: 18px; }
+
+  p, p *, li, li * {
+    font-size: 18px;
+    line-height: 1.5em;
+  }
+
+  p, ul {
+    margin-bottom: 1em;
+    color: #333333;
+    font-family: Georgia, Times, serif;
+  }
+
+  blockquote {
+    border-left: solid 5px #aaa;
+    margin: 20px 0px;
+    padding: 15px 30px;
+    font-size: 20px;
+    line-height: 1.5em;
+    font-style: italic;
+    color: #444;
+    font-family: Georgia, Times, serif;
+  }
+
+  a {
+    text-decoration: none;
+    border-bottom: 1px dotted #0875c1;
+    color: #0875c1;
+  }
+
+  a:hover {
+    color: #1b8ede;
+    border-bottom-color: #1b8ede;
+  }
+
+  .button {
+    border: none;
+    background: #777;
+    color: #fff;
+    padding: 10px;
+    display: inline-block;
+    margin: 10px 0px;
+    font-family: Helvetica, Arial, sans-serif;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+  }
+
+  .button:hover {
+    color: #fff;
+    background: #666;
+  }
+
+  .footer {
+    border-top: 1px dotted #888;
+    padding: 20px 0px;
+    font-family: Helvetica, Arial, sans-serif;
+    color: #aaa;
+    font-size: 12px;
+  }
+</style>
+</head>
+
+<body>
+<!--[if mso]>
+<center>
+    <table><tr><td width="580">
+<![endif]-->
+<div class='message-content'>
+    
+    [posts-loop]
+    
+        <h2>[post-title]</h2>
+        
+        [post-feature-image]
+        
+        [post-content]
+    
+    [/posts-loop]
+
+    <div class="footer">
+        <a href="[unsubscribe]">Unsubscribe</a>
+    </div>
+</div>
+<!--[if mso]>
+</td></tr></table>
+</center>
+<![endif]-->
+
+</body>
+
+</html>
+HTML;
+
         }
 
         return $output;

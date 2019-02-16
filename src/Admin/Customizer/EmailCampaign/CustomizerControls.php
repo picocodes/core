@@ -14,7 +14,7 @@ use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Tinymce_Expanded
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Toggle_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_View_Tags_Shortcode_Content;
 use MailOptin\Core\Repositories\ConnectionsRepository;
-use MailOptin\Core\Repositories\EmailCampaignRepository;
+use MailOptin\Core\Repositories\EmailCampaignRepository as ER;
 
 class CustomizerControls
 {
@@ -102,7 +102,7 @@ class CustomizerControls
     {
         add_filter('mailoptin_customizer_settings_email_campaign_subject_description',
             function ($description, $campaign_type) {
-                if (EmailCampaignRepository::NEW_PUBLISH_POST == $campaign_type) {
+                if (ER::NEW_PUBLISH_POST == $campaign_type) {
                     $description = sprintf(
                         __('Available placeholders for use in subject line:%s %s', 'mailoptin'),
                         '<br><strong>{{title}}</strong>:',
@@ -116,7 +116,7 @@ class CustomizerControls
 
     public function campaign_settings_controls()
     {
-        $saved_connection_service = EmailCampaignRepository::get_customizer_value(
+        $saved_connection_service = ER::get_customizer_value(
             $this->customizerClassInstance->email_campaign_id,
             'connection_service'
         );
@@ -325,7 +325,7 @@ class CustomizerControls
                             'schedule_day'        => $this->option_prefix . '[schedule_day]',
                             'schedule_month_date' => $this->option_prefix . '[schedule_month_date]'
                         ],
-                        'format'   => EmailCampaignRepository::POSTS_EMAIL_DIGEST,
+                        'format'   => ER::POSTS_EMAIL_DIGEST,
                         'priority' => 310
                     )
                 )
@@ -347,14 +347,14 @@ class CustomizerControls
             unset($campaign_settings_controls['custom_post_type_settings']);
         }
 
-        $email_campaign_type = EmailCampaignRepository::get_email_campaign_type($this->customizerClassInstance->email_campaign_id);
+        $email_campaign_type = ER::get_email_campaign_type($this->customizerClassInstance->email_campaign_id);
 
-        if ($email_campaign_type !== EmailCampaignRepository::NEW_PUBLISH_POST) {
+        if ($email_campaign_type !== ER::NEW_PUBLISH_POST) {
             unset($campaign_settings_controls['send_immediately']);
             unset($campaign_settings_controls['email_campaign_schedule']);
         }
 
-        if ($email_campaign_type != EmailCampaignRepository::POSTS_EMAIL_DIGEST) {
+        if ($email_campaign_type != ER::POSTS_EMAIL_DIGEST) {
             unset($campaign_settings_controls['item_number']);
             unset($campaign_settings_controls['email_digest_schedule']);
         }
@@ -774,6 +774,8 @@ class CustomizerControls
 
     public function preview_control()
     {
+        if(ER::get_email_campaign_type($this->customizerClassInstance->email_campaign_id) != ER::NEW_PUBLISH_POST) return;
+
         $choices     = ControlsHelpers::get_post_type_posts('post');
         $search_type = 'posts_never_load';
         if (defined('MAILOPTIN_DETACH_LIBSODIUM')) {
