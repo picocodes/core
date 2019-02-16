@@ -32,7 +32,7 @@ class Templatify implements TemplatifyInterface
         do_action('mailoptin_email_template_before_forge', $this->email_campaign_id);
 
         if (ER::is_code_your_own_template($this->email_campaign_id)) {
-            $content              = ER::get_merged_customizer_value($this->email_campaign_id, 'code_your_own');
+            $content              = ER::get_customizer_value($this->email_campaign_id, 'code_your_own');
             $templatified_content = (new Shortcodes($this->email_campaign_id))->fromCollection($this->posts)->parse($content);
         } else {
             $templatified_content = EmailCampaignFactory::make($this->email_campaign_id, $this->posts)->get_preview_structure();

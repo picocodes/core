@@ -30,6 +30,10 @@ class CustomizerSettings extends AbstractCustomizer
     public function available_tags_settings()
     {
         $settings_args = apply_filters("mailoptin_email_campaign_customizer_available_tags_settings", array(
+                'email_digest_tag_help'              => array(
+                    'type'      => 'option',
+                    'transport' => 'postMessage',
+                ),
                 'post_tags_header'              => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',

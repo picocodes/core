@@ -442,10 +442,44 @@ class CustomizerControls
 
     public function available_tags_control()
     {
+        $email_digest_code_example = <<<HTML
+[posts-loop]
+
+    <h2>[post-title]</h2>
+    
+    [post-feature-image]
+    
+    [post-content]
+
+[/posts-loop]
+
+<p>
+    <a href="[unsubscribe]">Unsubscribe</a>
+</p>
+HTML;
+
         $control_args = apply_filters(
             "mailoptin_template_customizer_available_tags_control",
             array(
-                'post_tags_header'              => new WP_Customize_Custom_Content(
+                'email_digest_tag_help'            => new WP_Customize_Custom_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[email_digest_tag_help]',
+                    array(
+                        'content'        => sprintf(
+                            '%1$sEmail digest requires tags must be wrapped between %3$s[posts-loop] .. [/posts-loop]%4$s like so: %5$s%2$s',
+                            '<div class="mo-email-digest-tag-help">',
+                            '</div>',
+                            '<strong>',
+                            '</strong>',
+                            '<div class="mo-email-digest-tag-help-code">' . nl2br(esc_html($email_digest_code_example)) . '</div>'
+                        ),
+                        'section'        => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'settings'       => $this->option_prefix . '[email_digest_tag_help]',
+                        'no_wrapper_div' => true,
+                        'priority'       => 5
+                    )
+                ),
+                'post_tags_header'                 => new WP_Customize_Custom_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[post_tags_header]',
                     array(
@@ -456,7 +490,7 @@ class CustomizerControls
                         'priority'    => 10
                     )
                 ),
-                'post_title_shortcode'          => new WP_Customize_View_Tags_Shortcode_Content(
+                'post_title_shortcode'             => new WP_Customize_View_Tags_Shortcode_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[post_title_shortcode]',
                     array(
@@ -467,7 +501,7 @@ class CustomizerControls
                         'priority' => 20
                     )
                 ),
-                'post_content_shortcode'        => new WP_Customize_View_Tags_Shortcode_Content(
+                'post_content_shortcode'           => new WP_Customize_View_Tags_Shortcode_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[post_content_shortcode]',
                     array(
@@ -478,7 +512,7 @@ class CustomizerControls
                         'priority' => 30
                     )
                 ),
-                'post_excerpt_shortcode'        => new WP_Customize_View_Tags_Shortcode_Content(
+                'post_excerpt_shortcode'           => new WP_Customize_View_Tags_Shortcode_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[post_excerpt_shortcode]',
                     array(
@@ -489,31 +523,31 @@ class CustomizerControls
                         'priority' => 40
                     )
                 ),
-                'post_feature_image_shortcode'  => new WP_Customize_View_Tags_Shortcode_Content(
+                'post_feature_image_shortcode'     => new WP_Customize_View_Tags_Shortcode_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[post_feature_image_shortcode]',
                     array(
-                        'label'    => __('Feature Image', 'mailoptin'),
-                        'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
-                        'content'  => '<input type="text" value="[post-feature-image]" style="background-color:#fff;" readonly>',
+                        'label'       => __('Feature Image', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'     => '<input type="text" value="[post-feature-image]" style="background-color:#fff;" readonly>',
                         'description' => __('HTML image of post\'s featured image.', 'mailoptin'),
-                        'settings' => $this->option_prefix . '[post_feature_image_shortcode]',
-                        'priority' => 50
+                        'settings'    => $this->option_prefix . '[post_feature_image_shortcode]',
+                        'priority'    => 50
                     )
                 ),
-                'post_feature_image_url_shortcode'  => new WP_Customize_View_Tags_Shortcode_Content(
+                'post_feature_image_url_shortcode' => new WP_Customize_View_Tags_Shortcode_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[post_feature_image_url_shortcode]',
                     array(
-                        'label'    => __('Feature Image URL', 'mailoptin'),
-                        'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
-                        'content'  => '<input type="text" value="[post-feature-image-url]" style="background-color:#fff;" readonly>',
+                        'label'       => __('Feature Image URL', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'     => '<input type="text" value="[post-feature-image-url]" style="background-color:#fff;" readonly>',
                         'description' => __('URL of post\'s featured image.', 'mailoptin'),
-                        'settings' => $this->option_prefix . '[post_feature_image_url_shortcode]',
-                        'priority' => 55
+                        'settings'    => $this->option_prefix . '[post_feature_image_url_shortcode]',
+                        'priority'    => 55
                     )
                 ),
-                'post_url_shortcode'            => new WP_Customize_View_Tags_Shortcode_Content(
+                'post_url_shortcode'               => new WP_Customize_View_Tags_Shortcode_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[post_url_shortcode]',
                     array(
@@ -524,7 +558,7 @@ class CustomizerControls
                         'priority' => 60
                     )
                 ),
-                'post_category_shortcode'       => new WP_Customize_View_Tags_Shortcode_Content(
+                'post_category_shortcode'          => new WP_Customize_View_Tags_Shortcode_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[post_category_shortcode]',
                     array(
@@ -536,7 +570,7 @@ class CustomizerControls
                         'priority'    => 70
                     )
                 ),
-                'post_date_shortcode'           => new WP_Customize_View_Tags_Shortcode_Content(
+                'post_date_shortcode'              => new WP_Customize_View_Tags_Shortcode_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[post_date_shortcode]',
                     array(
@@ -548,7 +582,7 @@ class CustomizerControls
                         'priority'    => 80
                     )
                 ),
-                'post_date_gmt_shortcode'       => new WP_Customize_View_Tags_Shortcode_Content(
+                'post_date_gmt_shortcode'          => new WP_Customize_View_Tags_Shortcode_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[post_date_gmt_shortcode]',
                     array(
@@ -560,7 +594,7 @@ class CustomizerControls
                         'priority'    => 90
                     )
                 ),
-                'post_meta_shortcode'           => new WP_Customize_View_Tags_Shortcode_Content(
+                'post_meta_shortcode'              => new WP_Customize_View_Tags_Shortcode_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[post_meta_shortcode]',
                     array(
@@ -572,7 +606,7 @@ class CustomizerControls
                         'priority'    => 95
                     )
                 ),
-                'post_id_shortcode'             => new WP_Customize_View_Tags_Shortcode_Content(
+                'post_id_shortcode'                => new WP_Customize_View_Tags_Shortcode_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[post_id_shortcode]',
                     array(
@@ -583,19 +617,19 @@ class CustomizerControls
                         'priority' => 100
                     )
                 ),
-                'post_author_name_shortcode'    => new WP_Customize_View_Tags_Shortcode_Content(
+                'post_author_name_shortcode'       => new WP_Customize_View_Tags_Shortcode_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[post_author_name_shortcode]',
                     array(
-                        'label'    => __('Author Name', 'mailoptin'),
-                        'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'label'       => __('Author Name', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
                         'content'     => '<input type="text" value="[post-author-name link=' . esc_attr('"true"') . ']" style="background-color:#fff;" readonly>',
                         'description' => __('Set "link" attribute to false to remove the link to author\'s website.', 'mailoptin'),
-                        'settings' => $this->option_prefix . '[post_author_name_shortcode]',
-                        'priority' => 110
+                        'settings'    => $this->option_prefix . '[post_author_name_shortcode]',
+                        'priority'    => 110
                     )
                 ),
-                'post_author_website_shortcode' => new WP_Customize_View_Tags_Shortcode_Content(
+                'post_author_website_shortcode'    => new WP_Customize_View_Tags_Shortcode_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[post_author_website_shortcode]',
                     array(
@@ -606,7 +640,7 @@ class CustomizerControls
                         'priority' => 120
                     )
                 ),
-                'post_author_email_shortcode'   => new WP_Customize_View_Tags_Shortcode_Content(
+                'post_author_email_shortcode'      => new WP_Customize_View_Tags_Shortcode_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[post_author_email_shortcode]',
                     array(
@@ -617,7 +651,7 @@ class CustomizerControls
                         'priority' => 130
                     )
                 ),
-                'campaign_tags_header'          => new WP_Customize_Custom_Content(
+                'campaign_tags_header'             => new WP_Customize_Custom_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[campaign_tags_header]',
                     array(
@@ -628,7 +662,7 @@ class CustomizerControls
                         'priority'    => 140
                     )
                 ),
-                'unsubscribe_shortcode'         => new WP_Customize_View_Tags_Shortcode_Content(
+                'unsubscribe_shortcode'            => new WP_Customize_View_Tags_Shortcode_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[unsubscribe_shortcode]',
                     array(
@@ -640,7 +674,7 @@ class CustomizerControls
                         'priority'    => 150
                     )
                 ),
-                'web_version_shortcode'         => new WP_Customize_View_Tags_Shortcode_Content(
+                'web_version_shortcode'            => new WP_Customize_View_Tags_Shortcode_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[web_version_shortcode]',
                     array(
@@ -652,7 +686,7 @@ class CustomizerControls
                         'priority'    => 160
                     )
                 ),
-                'company_name_shortcode'        => new WP_Customize_View_Tags_Shortcode_Content(
+                'company_name_shortcode'           => new WP_Customize_View_Tags_Shortcode_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[company_name_shortcode]',
                     array(
@@ -682,7 +716,7 @@ class CustomizerControls
                         'priority'    => 180
                     )
                 ),
-                'company_address_2_shortcode'        => new WP_Customize_View_Tags_Shortcode_Content(
+                'company_address_2_shortcode'      => new WP_Customize_View_Tags_Shortcode_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[company_address_2_shortcode]',
                     array(
@@ -697,7 +731,7 @@ class CustomizerControls
                         'priority'    => 180
                     )
                 ),
-                'company_city_shortcode'        => new WP_Customize_View_Tags_Shortcode_Content(
+                'company_city_shortcode'           => new WP_Customize_View_Tags_Shortcode_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[company_city_shortcode]',
                     array(
@@ -712,7 +746,7 @@ class CustomizerControls
                         'priority'    => 190
                     )
                 ),
-                'company_state_shortcode'        => new WP_Customize_View_Tags_Shortcode_Content(
+                'company_state_shortcode'          => new WP_Customize_View_Tags_Shortcode_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[company_state_shortcode]',
                     array(
@@ -727,7 +761,7 @@ class CustomizerControls
                         'priority'    => 200
                     )
                 ),
-                'company_zip_shortcode'        => new WP_Customize_View_Tags_Shortcode_Content(
+                'company_zip_shortcode'            => new WP_Customize_View_Tags_Shortcode_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[company_zip_shortcode]',
                     array(
@@ -774,7 +808,7 @@ class CustomizerControls
 
     public function preview_control()
     {
-        if(ER::get_email_campaign_type($this->customizerClassInstance->email_campaign_id) != ER::NEW_PUBLISH_POST) return;
+        if (ER::get_email_campaign_type($this->customizerClassInstance->email_campaign_id) != ER::NEW_PUBLISH_POST) return;
 
         $choices     = ControlsHelpers::get_post_type_posts('post');
         $search_type = 'posts_never_load';
