@@ -6,6 +6,8 @@ class Shortcodes
 {
     use TemplateTrait;
 
+    protected $old_shortcode_tags;
+
     /** @var \WP_Post */
     protected $wp_post_obj;
 
@@ -32,6 +34,14 @@ class Shortcodes
             $this->wp_post_obj = get_post($post);
         }
 
+        // do not remove old shortcodes if this is email digest because we already have it implemented
+        // but need from() for initialization.
+        if (empty($this->posts)) {
+            $this->removeOldShortcodes();
+        }
+
+        $this->define_shortcodes();
+
         return $this;
     }
 
@@ -39,28 +49,35 @@ class Shortcodes
     {
         $this->posts = $posts;
 
+        add_shortcode('posts-loop', [$this, 'posts_loop_tag']);
+
         return $this;
+    }
+
+    public function removeOldShortcodes()
+    {
+        global $shortcode_tags;
+        $this->old_shortcode_tags = $shortcode_tags;
+        $shortcode_tags           = array();
+    }
+
+    public function restoreOldShortcode()
+    {
+        global $shortcode_tags;
+        $shortcode_tags = $this->old_shortcode_tags;
     }
 
     public function parse($content)
     {
-        global $shortcode_tags;
-        $old_shortcode_tags = $shortcode_tags;
-        $shortcode_tags     = array();
-
-        $this->define_shortcodes();
-
         $parsed_content = do_shortcode($content);
 
-        // restore back old shortcode
-        $shortcode_tags = $old_shortcode_tags;
+        $this->restoreOldShortcode();
 
         return $parsed_content;
     }
 
     public function define_shortcodes()
     {
-        add_shortcode('posts-loop', [$this, 'posts_loop_tag']);
         add_shortcode('post-title', [$this, 'post_title_tag']);
         add_shortcode('post-content', [$this, 'post_content_tag']);
         add_shortcode('post-excerpt', [$this, 'post_excerpt_tag']);
@@ -91,13 +108,17 @@ class Shortcodes
 
     public function posts_loop_tag($atts, $content)
     {
-        if ( ! empty($this->posts)) return '';
+        if (empty($this->posts)) return '';
+
+        $this->removeOldShortcodes();
         $output = '';
         foreach ($this->posts as $post) {
             $this->from($post);
             $this->define_shortcodes();
             $output .= do_shortcode($content);
         }
+
+        $this->restoreOldShortcode();
 
         return $output;
     }
