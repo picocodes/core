@@ -47,7 +47,7 @@ class AbstractCustomizer
 <head>
     <title>[post-title]</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <style>
+    <style type="text/css">
     body {
         background-color: #fff;
     }
@@ -141,6 +141,10 @@ class AbstractCustomizer
     [post-feature-image]
 
     [post-content]
+
+    <div class="footer">
+        <a href="[unsubscribe]">Unsubscribe</a>
+    </div>
 </div>
 <!--[if mso]>
 </td></tr></table>

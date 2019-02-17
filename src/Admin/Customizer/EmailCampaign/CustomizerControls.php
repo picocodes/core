@@ -452,10 +452,6 @@ class CustomizerControls
     [post-content]
 
 [/posts-loop]
-
-<p>
-    <a href="[unsubscribe]">Unsubscribe</a>
-</p>
 HTML;
 
         $control_args = apply_filters(
@@ -773,7 +769,7 @@ HTML;
                             __('Zip or postal code as defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
                             MAILOPTIN_SETTINGS_SETTINGS_PAGE . '#email_campaign_settings'
                         ),
-                        'priority'    => 200
+                        'priority'    => 210
                     )
                 ),
                 'company_country_shortcode'        => new WP_Customize_View_Tags_Shortcode_Content(
@@ -788,7 +784,7 @@ HTML;
                             __('Your company country defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
                             MAILOPTIN_SETTINGS_SETTINGS_PAGE . '#email_campaign_settings'
                         ),
-                        'priority'    => 200
+                        'priority'    => 220
                     )
                 )
             ),

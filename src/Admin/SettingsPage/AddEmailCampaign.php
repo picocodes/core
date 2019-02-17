@@ -138,7 +138,9 @@ class AddEmailCampaign extends AbstractSettingsPage
 
     public function code_your_own_box($campaign_type)
     {
-        $label = __('Code your own', 'mailoptin');
+        if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM')) return;
+
+        $label = __('Code Your Own', 'mailoptin');
         ?>
         <div id="mailoptin-email-template-list"
              class="mailoptin-email-template"
