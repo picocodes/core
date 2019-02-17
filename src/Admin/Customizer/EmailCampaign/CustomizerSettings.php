@@ -2,6 +2,8 @@
 
 namespace MailOptin\Core\Admin\Customizer\EmailCampaign;
 
+use MailOptin\Core\Repositories\EmailCampaignRepository;
+
 class CustomizerSettings extends AbstractCustomizer
 {
     /** @var \WP_Customize_Manager */
@@ -30,107 +32,107 @@ class CustomizerSettings extends AbstractCustomizer
     public function available_tags_settings()
     {
         $settings_args = apply_filters("mailoptin_email_campaign_customizer_available_tags_settings", array(
-                'email_digest_tag_help'              => array(
+                'email_digest_tag_help'            => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'post_tags_header'              => array(
+                'post_tags_header'                 => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'campaign_tags_header'          => array(
+                'campaign_tags_header'             => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'post_id_shortcode'             => array(
+                'post_id_shortcode'                => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'post_title_shortcode'          => array(
+                'post_title_shortcode'             => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'post_feature_image_shortcode'  => array(
+                'post_feature_image_shortcode'     => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'post_feature_image_url_shortcode'  => array(
+                'post_feature_image_url_shortcode' => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'post_excerpt_shortcode'        => array(
+                'post_excerpt_shortcode'           => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'post_content_shortcode'        => array(
+                'post_content_shortcode'           => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'post_category_shortcode'       => array(
+                'post_category_shortcode'          => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'post_date_shortcode'           => array(
+                'post_date_shortcode'              => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'post_date_gmt_shortcode'       => array(
+                'post_date_gmt_shortcode'          => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'post_url_shortcode'            => array(
+                'post_url_shortcode'               => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'post_author_name_shortcode'    => array(
+                'post_author_name_shortcode'       => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'post_author_website_shortcode' => array(
+                'post_author_website_shortcode'    => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'post_author_email_shortcode'   => array(
+                'post_author_email_shortcode'      => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'post_meta_shortcode'           => array(
+                'post_meta_shortcode'              => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'unsubscribe_shortcode'         => array(
+                'unsubscribe_shortcode'            => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'web_version_shortcode'         => array(
+                'web_version_shortcode'            => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'company_name_shortcode'         => array(
+                'company_name_shortcode'           => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'company_address_shortcode'         => array(
+                'company_address_shortcode'        => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'company_address_2_shortcode'         => array(
+                'company_address_2_shortcode'      => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'company_city_shortcode'         => array(
+                'company_city_shortcode'           => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'company_state_shortcode'         => array(
+                'company_state_shortcode'          => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'company_zip_shortcode'         => array(
+                'company_zip_shortcode'            => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'company_country_shortcode'         => array(
+                'company_country_shortcode'        => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 )
@@ -285,7 +287,8 @@ class CustomizerSettings extends AbstractCustomizer
                     'transport'         => 'postMessage',
                     'validate_callback' => function ($validity, $value) {
                         if (empty($value)) {
-                            $validity->add( 'template_empty', __( 'Email template cannot be empty.', 'mailoptin' ) );
+                            $validity->add('template_empty', __('Email template cannot be empty.', 'mailoptin'));
+
                             return $validity;
                         }
 
@@ -294,6 +297,10 @@ class CustomizerSettings extends AbstractCustomizer
                 ),
             )
         );
+
+        if ($this->email_campaign_type == EmailCampaignRepository::POSTS_EMAIL_DIGEST) {
+            $email_campaign_settings_args['custom_post_type']['transport'] = 'refresh';
+        }
 
         foreach ($email_campaign_settings_args as $id => $args) {
             $this->wp_customize->add_setting(new EC_Customizer_Setting(

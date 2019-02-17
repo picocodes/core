@@ -17,14 +17,26 @@ class PostsEmailDigestTemplatePreview extends Templatify
     {
         $item_count = EmailCampaignRepository::get_merged_customizer_value($email_campaign_id, 'item_number');
 
-        $parameters = [
+        $parameters = $default_params = [
             'posts_per_page' => $item_count,
-            'post_status' => 'publish',
-            'post_type' => 'post',
-            'order' => 'DESC',
-            'orderby' => 'post_date'
+            'post_status'    => 'publish',
+            'post_type'      => 'post',
+            'order'          => 'DESC',
+            'orderby'        => 'post_date'
         ];
 
-        return get_posts($parameters);
+        $custom_post_type = EmailCampaignRepository::get_merged_customizer_value($email_campaign_id, 'custom_post_type');
+
+        if ($custom_post_type != 'post') {
+            $parameters['post_type'] = $custom_post_type;
+        }
+
+        $response = get_posts($parameters);
+
+        if (empty($response)) {
+            $response = get_posts($default_params);
+        }
+
+        return $response;
     }
 }
