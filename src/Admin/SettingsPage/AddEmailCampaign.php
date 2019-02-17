@@ -138,7 +138,7 @@ class AddEmailCampaign extends AbstractSettingsPage
 
     public function code_your_own_box($campaign_type)
     {
-        if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM')) return;
+        if ( ! apply_filters('mailoptin_enable_post_email_digest', false)) return;
 
         $label = __('Code Your Own', 'mailoptin');
         ?>
