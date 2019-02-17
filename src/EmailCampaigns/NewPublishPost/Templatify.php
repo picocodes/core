@@ -42,7 +42,7 @@ class Templatify implements TemplatifyInterface
     {
         $preview_structure = EmailCampaignFactory::make($this->email_campaign_id)->get_preview_structure();
 
-        $preview_structure = str_replace('{{post.feature.image}}', $this->feature_image($this->post->ID), $preview_structure);
+        $preview_structure = str_replace('{{post.feature.image}}', $this->feature_image($this->post), $preview_structure);
 
         $search = array(
             '{{post.title}}',

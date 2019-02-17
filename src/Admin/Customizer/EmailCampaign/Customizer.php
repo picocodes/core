@@ -391,12 +391,6 @@ class Customizer
                     'priority' => 20,
                 )
             );
-
-            $wp_customize->add_section($this->campaign_preview_section_id, array(
-                    'title'    => __('Preview', 'mailoptin'),
-                    'priority' => 30,
-                )
-            );
         } else {
             $wp_customize->add_section($this->campaign_page_section_id, array(
                     'title'    => __('Body', 'mailoptin'),
@@ -422,6 +416,12 @@ class Customizer
                 )
             );
         }
+
+        $wp_customize->add_section($this->campaign_preview_section_id, array(
+                'title'    => __('Preview', 'mailoptin'),
+                'priority' => 55,
+            )
+        );
 
         $wp_customize->add_section($this->campaign_send_email_section_id, array(
                 'title'    => __('Send Test Email', 'mailoptin'),

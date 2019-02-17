@@ -132,14 +132,14 @@ class Shortcodes
     {
         return sprintf(
             '<img class="mo-post-feature-image" src="%s" alt="%s">',
-            $this->feature_image($this->wp_post_obj->ID),
+            $this->feature_image($this->wp_post_obj),
             $this->wp_post_obj->post_title
         );
     }
 
     public function post_feature_image_url_tag()
     {
-        return $this->feature_image($this->wp_post_obj->ID);
+        return $this->feature_image($this->wp_post_obj);
     }
 
     public function post_url_tag()

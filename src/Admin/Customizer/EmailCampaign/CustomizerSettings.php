@@ -289,10 +289,6 @@ class CustomizerSettings extends AbstractCustomizer
                             return $validity;
                         }
 
-                        if (strpos($value, '[unsubscribe]') === false) {
-                            $validity->add( 'unsubscribe_tag_required', __( 'Email template must contain the [unsubscribe] tag.', 'mailoptin' ) );
-                        }
-
                         return $validity;
                     }
                 ),

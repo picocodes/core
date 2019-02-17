@@ -797,6 +797,10 @@ HTML;
             $this->customizerClassInstance
         );
 
+        if ($this->customizerClassInstance->email_campaign_type != ER::POSTS_EMAIL_DIGEST) {
+            unset($control_args['email_digest_tag_help']);
+        }
+
         foreach ($control_args as $id => $args) {
             if (is_object($args)) {
                 $this->wp_customize->add_control($args);
@@ -808,14 +812,14 @@ HTML;
 
     public function preview_control()
     {
-        if (ER::get_email_campaign_type($this->customizerClassInstance->email_campaign_id) != ER::NEW_PUBLISH_POST) return;
-
         $choices     = ControlsHelpers::get_post_type_posts('post');
         $search_type = 'posts_never_load';
         if (defined('MAILOPTIN_DETACH_LIBSODIUM')) {
             $choices     = ControlsHelpers::get_all_post_types_posts();
             $search_type = 'exclusive_post_types_posts_load';
         }
+
+        $choices = ['' => __('Select...', 'mailoptin')] + $choices;
 
         $control_args = apply_filters(
             "mailoptin_template_customizer_preview_control",

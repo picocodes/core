@@ -12,9 +12,13 @@ abstract class AbstractTemplate extends ParentAbstractTemplate
 
     public $posts;
 
+    public $email_campaign_id;
+
     public function __construct($email_campaign_id, $posts)
     {
         $this->posts = $posts;
+
+        $this->email_campaign_id = $email_campaign_id;
 
         parent::__construct($email_campaign_id);
     }

@@ -65,15 +65,16 @@ trait TemplateTrait
     }
 
     /**
-     * @return mixed
+     * @param WP_Post|\stdClass $post
+     * @param string $email_campaign_id
+     *
+     * @return mixed|string
      */
-    public function feature_image($post_id, $email_campaign_id = '')
+    public function feature_image($post, $email_campaign_id = '')
     {
         $email_campaign_id = ! empty($email_campaign_id) ? $email_campaign_id : $this->email_campaign_id;
 
         $default_feature_image = ER::get_merged_customizer_value($email_campaign_id, 'default_image_url');
-
-        if ( ! $post_id) return $default_feature_image;
 
         $is_remove_featured_image = ER::get_merged_customizer_value(
             $email_campaign_id,
@@ -82,8 +83,12 @@ trait TemplateTrait
 
         if ($is_remove_featured_image) return '';
 
-        if (has_post_thumbnail($post_id)) {
-            $image_data = wp_get_attachment_image_src(get_post_thumbnail_id($post_id), 'full');
+        if ($post instanceof \stdClass) {
+            return $default_feature_image;
+        }
+
+        if (has_post_thumbnail($post)) {
+            $image_data = wp_get_attachment_image_src(get_post_thumbnail_id($post), 'full');
             if ( ! empty($image_data[0])) {
                 return $image_data[0];
             }

@@ -19,14 +19,14 @@ class AbstractCustomizer
      *
      * @param null|int $email_campaign_id
      */
-    public function __construct($email_campaign_id = null)
+    public function __construct($email_campaign_id)
     {
         $this->email_campaign_id = $email_campaign_id;
 
         $this->email_campaign_type  = EmailCampaignRepository::get_email_campaign_type($email_campaign_id);
         $this->email_campaign_class = EmailCampaignRepository::get_template_class($email_campaign_id);
 
-        $this->customizer_defaults = $this->register_customizer_defaults($email_campaign_id);
+        $this->customizer_defaults = $this->register_customizer_defaults();
     }
 
     public function campaign_title_default()
@@ -141,10 +141,6 @@ class AbstractCustomizer
     [post-feature-image]
 
     [post-content]
-
-    <div class="footer">
-        <a href="[unsubscribe]">Unsubscribe</a>
-    </div>
 </div>
 <!--[if mso]>
 </td></tr></table>
@@ -287,8 +283,10 @@ HTML;
      *
      * @return array
      */
-    public function register_customizer_defaults($email_campaign_id = null)
+    public function register_customizer_defaults()
     {
+        $email_campaign_id = $this->email_campaign_id;
+
         $blog_name    = get_bloginfo('name');
         $current_year = date("Y");
 
