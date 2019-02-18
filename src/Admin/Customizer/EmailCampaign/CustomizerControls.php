@@ -554,28 +554,28 @@ HTML;
                         'priority' => 60
                     )
                 ),
-                'post_categories_shortcode'          => new WP_Customize_View_Tags_Shortcode_Content(
+                'post_categories_shortcode'        => new WP_Customize_View_Tags_Shortcode_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[post_categories_shortcode]',
                     array(
-                        'label'       => __('Post Category', 'mailoptin'),
+                        'label'       => __('Post Categories', 'mailoptin'),
                         'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
                         'content'     => '<input type="text" value="[post-categories link=' . esc_attr('"true"') . ']" style="background-color:#fff;" readonly>',
                         'settings'    => $this->option_prefix . '[post_categories_shortcode]',
-                        'description' => __('Comma separated list of post categories. Set "link" attribute to false to remove the link to category.', 'mailoptin'),
+                        'description' => __('Comma separated list of post categories. Set "link" attribute to false to remove the link.', 'mailoptin'),
                         'priority'    => 70
                     )
                 ),
-                'post_terms_shortcode'          => new WP_Customize_View_Tags_Shortcode_Content(
+                'post_terms_shortcode'             => new WP_Customize_View_Tags_Shortcode_Content(
                     $this->wp_customize,
                     $this->option_prefix . '[post_terms_shortcode]',
                     array(
-                        'label'       => __('Post Category', 'mailoptin'),
+                        'label'       => __('Post Taxonomy Terms', 'mailoptin'),
                         'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
-                        'content'     => '<input type="text" value="[post-terms link=' . esc_attr('"true"') . ']" style="background-color:#fff;" readonly>',
+                        'content'     => '<input type="text" value="[post-terms tax=' . esc_attr('"taxonomy_name"') . ' link=' . esc_attr('"true"') . ']" style="background-color:#fff;" readonly>',
                         'settings'    => $this->option_prefix . '[post_terms_shortcode]',
-                        'description' => __('Comma separated list of post categories. Set "link" attribute to false to remove the link to category.', 'mailoptin'),
-                        'priority'    => 70
+                        'description' => __('Comma separated list of post terms of a taxonomy. Set "tax" attribute to the taxonomy name. Set "link" attribute to false to remove the link.', 'mailoptin'),
+                        'priority'    => 75
                     )
                 ),
                 'post_date_shortcode'              => new WP_Customize_View_Tags_Shortcode_Content(
@@ -852,6 +852,10 @@ HTML;
             $this->option_prefix,
             $this->customizerClassInstance
         );
+
+        if ($this->customizerClassInstance->email_campaign_type != ER::NEW_PUBLISH_POST) {
+            unset($control_args['post_as_preview']);
+        }
 
         foreach ($control_args as $id => $args) {
             if (is_object($args)) {

@@ -86,7 +86,8 @@ class Shortcodes
         add_shortcode('post-url', [$this, 'post_url_tag']);
         add_shortcode('post-date', [$this, 'post_date_tag']);
         add_shortcode('post-date-gmt', [$this, 'post_date_gmt_tag']);
-        add_shortcode('post-categories', [$this, 'post_category_tag']);
+        add_shortcode('post-categories', [$this, 'post_categories_tag']);
+        add_shortcode('post-terms', [$this, 'post_terms_tag']);
         add_shortcode('post-id', [$this, 'post_id_tag']);
         add_shortcode('post-author-name', [$this, 'post_author_name_tag']);
         add_shortcode('post-author-website', [$this, 'post_author_website_tag']);
@@ -212,7 +213,7 @@ class Shortcodes
         return '{{company_country}}';
     }
 
-    public function post_category_tag($atts)
+    public function post_categories_tag($atts)
     {
         $atts = shortcode_atts(['link' => 'true'], $atts);
 
@@ -222,6 +223,26 @@ class Shortcodes
 
         if ( ! is_wp_error($categories)) {
             $output = $atts['link'] == 'true' ? $categories : strip_tags($categories);
+        }
+
+        return $output;
+    }
+
+    public function post_terms_tag($atts)
+    {
+        $output = '';
+
+        $atts = shortcode_atts(['tax' => '', 'link' => 'true'], $atts);
+
+        $tax = sanitize_key($atts['tax']);
+
+        if ( ! empty($tax)) {
+
+            $terms = get_the_term_list($this->wp_post_obj->ID, $tax, '', ', ');
+
+            if ( ! is_wp_error($terms)) {
+                $output = $atts['link'] == 'true' ? $terms : strip_tags($terms);
+            }
         }
 
         return $output;
@@ -261,6 +282,8 @@ class Shortcodes
         $atts = shortcode_atts(['key' => ''], $atts);
 
         $key = sanitize_key($atts['key']);
+
+        if(empty($key)) return '';
 
         return get_post_meta($this->wp_post_obj->ID, $key, true);
     }
