@@ -86,7 +86,7 @@ class Shortcodes
         add_shortcode('post-url', [$this, 'post_url_tag']);
         add_shortcode('post-date', [$this, 'post_date_tag']);
         add_shortcode('post-date-gmt', [$this, 'post_date_gmt_tag']);
-        add_shortcode('post-category', [$this, 'post_category_tag']);
+        add_shortcode('post-categories', [$this, 'post_category_tag']);
         add_shortcode('post-id', [$this, 'post_id_tag']);
         add_shortcode('post-author-name', [$this, 'post_author_name_tag']);
         add_shortcode('post-author-website', [$this, 'post_author_website_tag']);

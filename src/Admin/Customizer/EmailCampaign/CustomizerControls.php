@@ -554,14 +554,26 @@ HTML;
                         'priority' => 60
                     )
                 ),
-                'post_category_shortcode'          => new WP_Customize_View_Tags_Shortcode_Content(
+                'post_categories_shortcode'          => new WP_Customize_View_Tags_Shortcode_Content(
                     $this->wp_customize,
-                    $this->option_prefix . '[post_category_shortcode]',
+                    $this->option_prefix . '[post_categories_shortcode]',
                     array(
                         'label'       => __('Post Category', 'mailoptin'),
                         'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
-                        'content'     => '<input type="text" value="[post-category link=' . esc_attr('"true"') . ']" style="background-color:#fff;" readonly>',
-                        'settings'    => $this->option_prefix . '[post_category_shortcode]',
+                        'content'     => '<input type="text" value="[post-categories link=' . esc_attr('"true"') . ']" style="background-color:#fff;" readonly>',
+                        'settings'    => $this->option_prefix . '[post_categories_shortcode]',
+                        'description' => __('Comma separated list of post categories. Set "link" attribute to false to remove the link to category.', 'mailoptin'),
+                        'priority'    => 70
+                    )
+                ),
+                'post_terms_shortcode'          => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_terms_shortcode]',
+                    array(
+                        'label'       => __('Post Category', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'     => '<input type="text" value="[post-terms link=' . esc_attr('"true"') . ']" style="background-color:#fff;" readonly>',
+                        'settings'    => $this->option_prefix . '[post_terms_shortcode]',
                         'description' => __('Comma separated list of post categories. Set "link" attribute to false to remove the link to category.', 'mailoptin'),
                         'priority'    => 70
                     )

@@ -68,7 +68,7 @@ class CustomizerSettings extends AbstractCustomizer
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
-                'post_category_shortcode'          => array(
+                'post_categories_shortcode'          => array(
                     'type'      => 'option',
                     'transport' => 'postMessage',
                 ),
