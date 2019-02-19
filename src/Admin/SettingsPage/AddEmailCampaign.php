@@ -132,7 +132,34 @@ class AddEmailCampaign extends AbstractSettingsPage
             </div>
             <?php
         }
+        $this->code_your_own_box($campaign_type);
         echo '</div>';
+    }
+
+    public function code_your_own_box($campaign_type)
+    {
+        if ( ! apply_filters('mailoptin_enable_post_email_digest', false)) return;
+
+        $label = __('Code Your Own', 'mailoptin');
+        ?>
+        <div id="mailoptin-email-template-list"
+             class="mailoptin-email-template"
+             data-email-template="HTML"
+             data-campaign-type="<?php echo $campaign_type; ?>">
+            <div class="mailoptin-email-template-screenshot">
+                <img src="<?php echo MAILOPTIN_ASSETS_URL . 'images/email-templates/code-your-own.jpg' ?>" alt="<?php echo $label; ?>">
+            </div>
+            <h3 class="mailoptin-email-template-name" style="visibility:hidden"><?php echo $label; ?></h3>
+            <div class="mailoptin-email-template-actions">
+                <a class="button button-primary mailemail-template-select"
+                   data-email-template="<?php echo EmailCampaignRepository::CODE_YOUR_OWN_TEMPLATE; ?>"
+                   data-campaign-type="<?php echo $campaign_type; ?>"
+                   title="<?php echo $label; ?>">
+                    <?php echo $label; ?>
+                </a>
+            </div>
+        </div>
+        <?php
     }
 
     /**

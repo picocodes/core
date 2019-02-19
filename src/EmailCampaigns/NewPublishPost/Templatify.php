@@ -3,6 +3,7 @@
 namespace MailOptin\Core\EmailCampaigns\NewPublishPost;
 
 use MailOptin\Core\Admin\Customizer\EmailCampaign\EmailCampaignFactory;
+use MailOptin\Core\EmailCampaigns\Shortcodes;
 use MailOptin\Core\EmailCampaigns\TemplateTrait;
 use MailOptin\Core\EmailCampaigns\TemplatifyInterface;
 use MailOptin\Core\EmailCampaigns\VideoToImageLink;
@@ -22,9 +23,8 @@ class Templatify implements TemplatifyInterface
     /**
      * @param null|int $email_campaign_id
      * @param mixed $post could be WP_Post object, post ID or stdClass for customizer preview
-     * @param null|string $template_class
      */
-    public function __construct($email_campaign_id, $post = null, $template_class = null)
+    public function __construct($email_campaign_id, $post = null)
     {
         //used for sending test emails.
         if ($post instanceof \stdClass) {
@@ -34,37 +34,29 @@ class Templatify implements TemplatifyInterface
         }
 
         $this->email_campaign_id   = $email_campaign_id;
-        $this->template_class      = ! is_null($template_class) ? $template_class : ER::get_template_class($email_campaign_id);
-        $this->post_content_length = ER::get_customizer_value($email_campaign_id, 'post_content_length');
+        $this->template_class      = ER::get_template_class($email_campaign_id);
+        $this->post_content_length = absint(ER::get_customizer_value($email_campaign_id, 'post_content_length'));
     }
 
-    /**
-     *
-     * @return string
-     */
-    public function post_title()
+    public function post_content_forge()
     {
-        return $this->post->post_title;
-    }
+        $preview_structure = EmailCampaignFactory::make($this->email_campaign_id)->get_preview_structure();
 
-    /**
-     * @return string
-     */
-    public function post_content()
-    {
-        return do_shortcode($this->post->post_content);
-    }
+        $preview_structure = str_replace('{{post.feature.image}}', $this->feature_image($this->post), $preview_structure);
 
-    /**
-     * @return false|mixed|string
-     */
-    public function post_url()
-    {
-        if ($this->post instanceof \stdClass) {
-            return $this->post->post_url;
-        }
+        $search = array(
+            '{{post.title}}',
+            '{{post.content}}',
+            '{{post.url}}'
+        );
 
-        return get_permalink($this->post->ID);
+        $replace = [
+            $this->post->post_title,
+            wpautop($this->post_content($this->post)),
+            $this->post_url($this->post)
+        ];
+
+        return str_replace($search, $replace, $preview_structure);
     }
 
     /**
@@ -74,41 +66,16 @@ class Templatify implements TemplatifyInterface
      */
     public function forge()
     {
-        $email_campaign_id = $this->email_campaign_id;
-        $db_template_class = $this->template_class;
+        do_action('mailoptin_email_template_before_forge', $this->email_campaign_id, $this->template_class);
 
-        do_action('mailoptin_email_template_before_forge', $email_campaign_id, $db_template_class);
-
-        $instance = EmailCampaignFactory::make($email_campaign_id);
-
-        $search = array(
-            '{{post.title}}',
-            '{{post.content}}',
-            '{{post.feature.image}}',
-            '{{post.url}}',
-        );
-
-        $post_content_length = absint($this->post_content_length);
-
-        if (0 === $post_content_length) {
-            $post_content = $this->post_content();
+        if (ER::is_code_your_own_template($this->email_campaign_id)) {
+            $content              = ER::get_customizer_value($this->email_campaign_id, 'code_your_own');
+            $templatified_content = (new Shortcodes($this->email_campaign_id))->from($this->post)->parse($content);
         } else {
-            $post_content = \MailOptin\Core\limit_text(
-                $this->post_content(),
-                $post_content_length
-            );
+            $templatified_content = $this->post_content_forge();
         }
 
-        $replace = [
-            $this->post_title(),
-            wpautop($post_content),
-            $this->feature_image($this->post->ID),
-            $this->post_url(),
-        ];
-
-        $templatified_content = str_replace($search, $replace, $instance->get_preview_structure());
-
-        $templatified_content = apply_filters('mo_new_publish_post_post_templatify_forge', $templatified_content, $this->post->ID, $this);
+        $templatified_content = apply_filters('mo_new_publish_post_post_templatify_forge', $templatified_content, $this->post, $this);
 
         $content = (new VideoToImageLink($templatified_content))->forge();
 

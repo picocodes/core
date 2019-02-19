@@ -9,6 +9,8 @@ class EmailCampaignRepository extends AbstractRepository
     const NEW_PUBLISH_POST = 'new_publish_post';
     const POSTS_EMAIL_DIGEST = 'posts_email_digest';
 
+    const CODE_YOUR_OWN_TEMPLATE = 'HTML';
+
     /**
      * Return a human readable name for campaign identifier/key/type.
      *
@@ -281,6 +283,11 @@ class EmailCampaignRepository extends AbstractRepository
         $val = self::get_customizer_value($email_campaign_id, 'activate_email_campaign');
 
         return 1 === $val ? true : (is_bool($val) ? $val : false);
+    }
+
+    public static function is_code_your_own_template($email_campaign_id)
+    {
+        return self::get_template_class($email_campaign_id) == self::CODE_YOUR_OWN_TEMPLATE;
     }
 
     /**

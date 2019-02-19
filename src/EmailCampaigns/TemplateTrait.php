@@ -29,6 +29,10 @@ trait TemplateTrait
      */
     public function post_url($post)
     {
+        if ($post instanceof \stdClass) {
+            return $post->post_url;
+        }
+
         if ( ! is_object($post) || ! ($post instanceof WP_Post)) {
             $post = get_post($post);
         }
@@ -47,14 +51,12 @@ trait TemplateTrait
             $post = get_post($post);
         }
 
-        $content             = do_shortcode($post->post_content);
+        $post_content        = do_shortcode($post->post_content);
         $post_content_length = ER::get_merged_customizer_value($this->email_campaign_id, 'post_content_length');
 
-        if (0 === $post_content_length) {
-            $post_content = $content;
-        } else {
+        if (0 !== $post_content_length) {
             $post_content = \MailOptin\Core\limit_text(
-                $content,
+                $post_content,
                 $post_content_length
             );
         }
@@ -63,23 +65,30 @@ trait TemplateTrait
     }
 
     /**
-     * @return mixed
+     * @param WP_Post|\stdClass $post
+     * @param string $email_campaign_id
+     *
+     * @return mixed|string
      */
-    public function feature_image($post_id)
+    public function feature_image($post, $email_campaign_id = '')
     {
-        $default_feature_image = ER::get_merged_customizer_value($this->email_campaign_id, 'default_image_url');
+        $email_campaign_id = ! empty($email_campaign_id) ? $email_campaign_id : $this->email_campaign_id;
 
-        if ( ! $post_id) return $default_feature_image;
+        $default_feature_image = ER::get_merged_customizer_value($email_campaign_id, 'default_image_url');
 
         $is_remove_featured_image = ER::get_merged_customizer_value(
-            $this->email_campaign_id,
+            $email_campaign_id,
             'content_remove_feature_image'
         );
 
         if ($is_remove_featured_image) return '';
 
-        if (has_post_thumbnail($post_id)) {
-            $image_data = wp_get_attachment_image_src(get_post_thumbnail_id($post_id), 'full');
+        if ($post instanceof \stdClass) {
+            return $default_feature_image;
+        }
+
+        if (has_post_thumbnail($post)) {
+            $image_data = wp_get_attachment_image_src(get_post_thumbnail_id($post), 'full');
             if ( ! empty($image_data[0])) {
                 return $image_data[0];
             }

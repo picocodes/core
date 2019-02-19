@@ -908,7 +908,7 @@ public function _header($section_title)
      *
      * @return string
      */
-    public function _footer($disable_submit_button = null)
+    public function _footer()
     {
         return '</table>
 		<p><input class="button-primary" type="submit" name="save_' . $this->option_name . '" value="Save Changes"></p>

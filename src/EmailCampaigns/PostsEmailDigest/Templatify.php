@@ -3,9 +3,11 @@
 namespace MailOptin\Core\EmailCampaigns\PostsEmailDigest;
 
 use MailOptin\Core\Admin\Customizer\EmailCampaign\EmailCampaignFactory;
+use MailOptin\Core\EmailCampaigns\Shortcodes;
 use MailOptin\Core\EmailCampaigns\TemplateTrait;
 use MailOptin\Core\EmailCampaigns\TemplatifyInterface;
 use MailOptin\Core\EmailCampaigns\VideoToImageLink;
+use MailOptin\Core\Repositories\EmailCampaignRepository as ER;
 
 
 class Templatify implements TemplatifyInterface
@@ -29,9 +31,12 @@ class Templatify implements TemplatifyInterface
     {
         do_action('mailoptin_email_template_before_forge', $this->email_campaign_id);
 
-        $instance = EmailCampaignFactory::make($this->email_campaign_id, $this->posts);
-
-        $templatified_content = $instance->get_preview_structure();
+        if (ER::is_code_your_own_template($this->email_campaign_id)) {
+            $content              = ER::get_customizer_value($this->email_campaign_id, 'code_your_own');
+            $templatified_content = (new Shortcodes($this->email_campaign_id))->fromCollection($this->posts)->parse($content);
+        } else {
+            $templatified_content = EmailCampaignFactory::make($this->email_campaign_id, $this->posts)->get_preview_structure();
+        }
 
         $content = (new VideoToImageLink($templatified_content))->forge();
 

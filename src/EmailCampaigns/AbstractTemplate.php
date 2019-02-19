@@ -35,7 +35,7 @@ use MailOptin\Core\Repositories\EmailCampaignRepository as ER;
 abstract class AbstractTemplate extends AbstractCustomizer implements TemplateInterface
 {
     /** @var int ID of email campaign. */
-    protected $email_campaign_id;
+    public $email_campaign_id;
 
     /**
      * ID of email template.

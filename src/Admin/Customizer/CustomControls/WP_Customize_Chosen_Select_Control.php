@@ -13,6 +13,8 @@ class WP_Customize_Chosen_Select_Control extends WP_Customize_Control
      */
     public $search_type = 'post';
 
+    public $is_multiple = true;
+
     public function enqueue()
     {
         wp_enqueue_script('jquery');
@@ -28,7 +30,7 @@ class WP_Customize_Chosen_Select_Control extends WP_Customize_Control
             <?php if (!empty($this->label)) : ?>
                 <span class="customize-control-title"><?php echo esc_html($this->label); ?></span>
             <?php endif; ?>
-            <select class="mailoptin-chosen" data-search-type="<?php echo $this->search_type; ?>" <?php $this->link(); ?> multiple>
+            <select class="mailoptin-chosen" data-search-type="<?php echo $this->search_type; ?>" <?php $this->link(); ?> <?php echo $this->is_multiple ? 'multiple': ''; ?>>
                 <?php
                 foreach ($this->choices as $key => $value) {
                     if (is_array($value)) {

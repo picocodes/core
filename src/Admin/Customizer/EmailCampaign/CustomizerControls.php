@@ -12,8 +12,9 @@ use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Email_Schedule_T
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Range_Value_Control;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Tinymce_Expanded_Editor;
 use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_Toggle_Control;
+use MailOptin\Core\Admin\Customizer\CustomControls\WP_Customize_View_Tags_Shortcode_Content;
 use MailOptin\Core\Repositories\ConnectionsRepository;
-use MailOptin\Core\Repositories\EmailCampaignRepository;
+use MailOptin\Core\Repositories\EmailCampaignRepository as ER;
 
 class CustomizerControls
 {
@@ -101,7 +102,7 @@ class CustomizerControls
     {
         add_filter('mailoptin_customizer_settings_email_campaign_subject_description',
             function ($description, $campaign_type) {
-                if (EmailCampaignRepository::NEW_PUBLISH_POST == $campaign_type) {
+                if (ER::NEW_PUBLISH_POST == $campaign_type) {
                     $description = sprintf(
                         __('Available placeholders for use in subject line:%s %s', 'mailoptin'),
                         '<br><strong>{{title}}</strong>:',
@@ -115,7 +116,7 @@ class CustomizerControls
 
     public function campaign_settings_controls()
     {
-        $saved_connection_service = EmailCampaignRepository::get_customizer_value(
+        $saved_connection_service = ER::get_customizer_value(
             $this->customizerClassInstance->email_campaign_id,
             'connection_service'
         );
@@ -133,12 +134,22 @@ class CustomizerControls
         }
 
         $campaign_settings_controls = array(
+            'code_your_own'             => apply_filters('mailoptin_customizer_settings_campaign_code_your_own_args', array(
+                    'type'     => 'hidden',
+                    // simple hack because control won't render if label is empty.
+                    'label'    => '&nbsp;',
+                    'section'  => $this->customizerClassInstance->campaign_settings_section_id,
+                    'settings' => $this->option_prefix . '[code_your_own]',
+                    // 999 cos we want it to be bottom.
+                    'priority' => 5,
+                )
+            ),
             'email_campaign_title'      => apply_filters('mo_optin_form_customizer_email_campaign_title_args', array(
                     'type'     => 'text',
                     'label'    => __('Automation Title', 'mailoptin'),
                     'section'  => $this->customizerClassInstance->campaign_settings_section_id,
                     'settings' => $this->option_prefix . '[email_campaign_title]',
-                    'priority' => 5,
+                    'priority' => 10,
                 )
             ),
             'email_campaign_subject'    => new WP_Customize_Custom_Input_Control(
@@ -314,7 +325,7 @@ class CustomizerControls
                             'schedule_day'        => $this->option_prefix . '[schedule_day]',
                             'schedule_month_date' => $this->option_prefix . '[schedule_month_date]'
                         ],
-                        'format'   => EmailCampaignRepository::POSTS_EMAIL_DIGEST,
+                        'format'   => ER::POSTS_EMAIL_DIGEST,
                         'priority' => 310
                     )
                 )
@@ -336,14 +347,14 @@ class CustomizerControls
             unset($campaign_settings_controls['custom_post_type_settings']);
         }
 
-        $email_campaign_type = EmailCampaignRepository::get_email_campaign_type($this->customizerClassInstance->email_campaign_id);
+        $email_campaign_type = ER::get_email_campaign_type($this->customizerClassInstance->email_campaign_id);
 
-        if ($email_campaign_type !== EmailCampaignRepository::NEW_PUBLISH_POST) {
+        if ($email_campaign_type !== ER::NEW_PUBLISH_POST) {
             unset($campaign_settings_controls['send_immediately']);
             unset($campaign_settings_controls['email_campaign_schedule']);
         }
 
-        if ($email_campaign_type != EmailCampaignRepository::POSTS_EMAIL_DIGEST) {
+        if ($email_campaign_type != ER::POSTS_EMAIL_DIGEST) {
             unset($campaign_settings_controls['item_number']);
             unset($campaign_settings_controls['email_digest_schedule']);
         }
@@ -427,6 +438,432 @@ class CustomizerControls
             $this->option_prefix,
             $this->customizerClassInstance
         );
+    }
+
+    public function available_tags_control()
+    {
+        $email_digest_code_example = <<<HTML
+[posts-loop]
+
+    <h2>[post-title]</h2>
+    
+    [post-feature-image]
+    
+    [post-content]
+
+[/posts-loop]
+HTML;
+
+        $control_args = apply_filters(
+            "mailoptin_template_customizer_available_tags_control",
+            array(
+                'email_digest_tag_help'            => new WP_Customize_Custom_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[email_digest_tag_help]',
+                    array(
+                        'content'        => sprintf(
+                            '%1$sEmail digest requires tags must be wrapped between %3$s[posts-loop] .. [/posts-loop]%4$s like so: %5$s%2$s',
+                            '<div class="mo-email-digest-tag-help">',
+                            '</div>',
+                            '<strong>',
+                            '</strong>',
+                            '<div class="mo-email-digest-tag-help-code">' . nl2br(esc_html($email_digest_code_example)) . '</div>'
+                        ),
+                        'section'        => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'settings'       => $this->option_prefix . '[email_digest_tag_help]',
+                        'no_wrapper_div' => true,
+                        'priority'       => 5
+                    )
+                ),
+                'post_tags_header'                 => new WP_Customize_Custom_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_tags_header]',
+                    array(
+                        'content'     => '<div class="mo-field-header">' . __("Post Tags", 'mailoptin') . '</div>',
+                        'block_class' => 'mo-field-header-wrapper',
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'settings'    => $this->option_prefix . '[post_tags_header]',
+                        'priority'    => 10
+                    )
+                ),
+                'post_title_shortcode'             => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_title_shortcode]',
+                    array(
+                        'label'    => __('Post Title', 'mailoptin'),
+                        'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'  => '<input type="text" value="[post-title]" style="background-color:#fff;" readonly>',
+                        'settings' => $this->option_prefix . '[post_title_shortcode]',
+                        'priority' => 20
+                    )
+                ),
+                'post_content_shortcode'           => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_content_shortcode]',
+                    array(
+                        'label'    => __('Post Content', 'mailoptin'),
+                        'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'  => '<input type="text" value="[post-content]" style="background-color:#fff;" readonly>',
+                        'settings' => $this->option_prefix . '[post_content_shortcode]',
+                        'priority' => 30
+                    )
+                ),
+                'post_excerpt_shortcode'           => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_excerpt_shortcode]',
+                    array(
+                        'label'    => __('Post Excerpt', 'mailoptin'),
+                        'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'  => '<input type="text" value="[post-excerpt]" style="background-color:#fff;" readonly>',
+                        'settings' => $this->option_prefix . '[post_excerpt_shortcode]',
+                        'priority' => 40
+                    )
+                ),
+                'post_feature_image_shortcode'     => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_feature_image_shortcode]',
+                    array(
+                        'label'       => __('Feature Image', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'     => '<input type="text" value="[post-feature-image]" style="background-color:#fff;" readonly>',
+                        'description' => __('HTML image of post\'s featured image.', 'mailoptin'),
+                        'settings'    => $this->option_prefix . '[post_feature_image_shortcode]',
+                        'priority'    => 50
+                    )
+                ),
+                'post_feature_image_url_shortcode' => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_feature_image_url_shortcode]',
+                    array(
+                        'label'       => __('Feature Image URL', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'     => '<input type="text" value="[post-feature-image-url]" style="background-color:#fff;" readonly>',
+                        'description' => __('URL of post\'s featured image.', 'mailoptin'),
+                        'settings'    => $this->option_prefix . '[post_feature_image_url_shortcode]',
+                        'priority'    => 55
+                    )
+                ),
+                'post_url_shortcode'               => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_url_shortcode]',
+                    array(
+                        'label'    => __('Post URL', 'mailoptin'),
+                        'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'  => '<input type="text" value="[post-url]" style="background-color:#fff;" readonly>',
+                        'settings' => $this->option_prefix . '[post_url_shortcode]',
+                        'priority' => 60
+                    )
+                ),
+                'post_categories_shortcode'        => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_categories_shortcode]',
+                    array(
+                        'label'       => __('Post Categories', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'     => '<input type="text" value="[post-categories link=' . esc_attr('"true"') . ']" style="background-color:#fff;" readonly>',
+                        'settings'    => $this->option_prefix . '[post_categories_shortcode]',
+                        'description' => __('Comma separated list of post categories. Set "link" attribute to false to remove the link.', 'mailoptin'),
+                        'priority'    => 70
+                    )
+                ),
+                'post_terms_shortcode'             => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_terms_shortcode]',
+                    array(
+                        'label'       => __('Post Taxonomy Terms', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'     => '<input type="text" value="[post-terms tax=' . esc_attr('"taxonomy_name"') . ' link=' . esc_attr('"true"') . ']" style="background-color:#fff;" readonly>',
+                        'settings'    => $this->option_prefix . '[post_terms_shortcode]',
+                        'description' => __('Comma separated list of post terms of a taxonomy. Set "tax" attribute to the taxonomy name. Set "link" attribute to false to remove the link.', 'mailoptin'),
+                        'priority'    => 75
+                    )
+                ),
+                'post_date_shortcode'              => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_date_shortcode]',
+                    array(
+                        'label'       => __('Post Date', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'     => '<input type="text" value="[post-date]" style="background-color:#fff;" readonly>',
+                        'settings'    => $this->option_prefix . '[post_date_shortcode]',
+                        'description' => __('Publish date of the post in your local time set in WordPress.', 'mailoptin'),
+                        'priority'    => 80
+                    )
+                ),
+                'post_date_gmt_shortcode'          => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_date_gmt_shortcode]',
+                    array(
+                        'label'       => __('Post Date in GMT', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'     => '<input type="text" value="[post-date-gmt]" style="background-color:#fff;" readonly>',
+                        'settings'    => $this->option_prefix . '[post_date_shortcode]',
+                        'description' => __('Publish date of the post in GMT.', 'mailoptin'),
+                        'priority'    => 90
+                    )
+                ),
+                'post_meta_shortcode'              => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_meta_shortcode]',
+                    array(
+                        'label'       => __('Post Meta Value', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'     => '<input type="text" value="[post-meta key=' . esc_attr('"meta_key"') . ']" style="background-color:#fff;" readonly>',
+                        'settings'    => $this->option_prefix . '[post_meta_shortcode]',
+                        'description' => __('Post meta value of a certain "meta_key".', 'mailoptin'),
+                        'priority'    => 95
+                    )
+                ),
+                'post_id_shortcode'                => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_id_shortcode]',
+                    array(
+                        'label'    => __('Post ID', 'mailoptin'),
+                        'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'  => '<input type="text" value="[post-id]" style="background-color:#fff;" readonly>',
+                        'settings' => $this->option_prefix . '[post_id_shortcode]',
+                        'priority' => 100
+                    )
+                ),
+                'post_author_name_shortcode'       => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_author_name_shortcode]',
+                    array(
+                        'label'       => __('Author Name', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'     => '<input type="text" value="[post-author-name link=' . esc_attr('"true"') . ']" style="background-color:#fff;" readonly>',
+                        'description' => __('Set "link" attribute to false to remove the link to author\'s website.', 'mailoptin'),
+                        'settings'    => $this->option_prefix . '[post_author_name_shortcode]',
+                        'priority'    => 110
+                    )
+                ),
+                'post_author_website_shortcode'    => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_author_website_shortcode]',
+                    array(
+                        'label'    => __('Author Website', 'mailoptin'),
+                        'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'  => '<input type="text" value="[post-author-website]" style="background-color:#fff;" readonly>',
+                        'settings' => $this->option_prefix . '[post_author_website_shortcode]',
+                        'priority' => 120
+                    )
+                ),
+                'post_author_email_shortcode'      => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_author_email_shortcode]',
+                    array(
+                        'label'    => __('Author Email Address', 'mailoptin'),
+                        'section'  => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'  => '<input type="text" value="[post-author-email]" style="background-color:#fff;" readonly>',
+                        'settings' => $this->option_prefix . '[post_author_email_shortcode]',
+                        'priority' => 130
+                    )
+                ),
+                'campaign_tags_header'             => new WP_Customize_Custom_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[campaign_tags_header]',
+                    array(
+                        'content'     => '<div class="mo-field-header">' . __("Campaign Tags", 'mailoptin') . '</div>',
+                        'block_class' => 'mo-field-header-wrapper',
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'settings'    => $this->option_prefix . '[campaign_tags_header]',
+                        'priority'    => 140
+                    )
+                ),
+                'unsubscribe_shortcode'            => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[unsubscribe_shortcode]',
+                    array(
+                        'label'       => __('Unsubscribe URL', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'     => '<input type="text" value="[unsubscribe]" style="background-color:#fff;" readonly>',
+                        'settings'    => $this->option_prefix . '[unsubscribe_shortcode]',
+                        'description' => __('URL to unsubscribe. This must be in your email template.', 'mailoptin'),
+                        'priority'    => 150
+                    )
+                ),
+                'web_version_shortcode'            => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[web_version_shortcode]',
+                    array(
+                        'label'       => __('Web Version URL', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'     => '<input type="text" value="[webversion]" style="background-color:#fff;" readonly>',
+                        'settings'    => $this->option_prefix . '[web_version_shortcode]',
+                        'description' => __('URL to the web version.', 'mailoptin'),
+                        'priority'    => 160
+                    )
+                ),
+                'company_name_shortcode'           => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[company_name_shortcode]',
+                    array(
+                        'label'       => __('Company Name', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'     => '<input type="text" value="[company-name]" style="background-color:#fff;" readonly>',
+                        'settings'    => $this->option_prefix . '[company_name_shortcode]',
+                        'description' => sprintf(
+                            __('Your company name as defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
+                            MAILOPTIN_SETTINGS_SETTINGS_PAGE . '#email_campaign_settings'
+                        ),
+                        'priority'    => 170
+                    )
+                ),
+                'company_address_shortcode'        => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[company_address_shortcode]',
+                    array(
+                        'label'       => __('Company Address', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'     => '<input type="text" value="[company-address]" style="background-color:#fff;" readonly>',
+                        'settings'    => $this->option_prefix . '[company_address_shortcode]',
+                        'description' => sprintf(
+                            __('Your company address as defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
+                            MAILOPTIN_SETTINGS_SETTINGS_PAGE . '#email_campaign_settings'
+                        ),
+                        'priority'    => 180
+                    )
+                ),
+                'company_address_2_shortcode'      => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[company_address_2_shortcode]',
+                    array(
+                        'label'       => __('Company Address 2', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'     => '<input type="text" value="[company-address2]" style="background-color:#fff;" readonly>',
+                        'settings'    => $this->option_prefix . '[company_address_2_shortcode]',
+                        'description' => sprintf(
+                            __('Company address 2 defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
+                            MAILOPTIN_SETTINGS_SETTINGS_PAGE . '#email_campaign_settings'
+                        ),
+                        'priority'    => 180
+                    )
+                ),
+                'company_city_shortcode'           => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[company_city_shortcode]',
+                    array(
+                        'label'       => __('Company City', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'     => '<input type="text" value="[company-city]" style="background-color:#fff;" readonly>',
+                        'settings'    => $this->option_prefix . '[company_city_shortcode]',
+                        'description' => sprintf(
+                            __('Your company city as defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
+                            MAILOPTIN_SETTINGS_SETTINGS_PAGE . '#email_campaign_settings'
+                        ),
+                        'priority'    => 190
+                    )
+                ),
+                'company_state_shortcode'          => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[company_state_shortcode]',
+                    array(
+                        'label'       => __('Company State', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'     => '<input type="text" value="[company-state]" style="background-color:#fff;" readonly>',
+                        'settings'    => $this->option_prefix . '[company_state_shortcode]',
+                        'description' => sprintf(
+                            __('Your company state as defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
+                            MAILOPTIN_SETTINGS_SETTINGS_PAGE . '#email_campaign_settings'
+                        ),
+                        'priority'    => 200
+                    )
+                ),
+                'company_zip_shortcode'            => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[company_zip_shortcode]',
+                    array(
+                        'label'       => __('Company Zip Code', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'     => '<input type="text" value="[company-zip]" style="background-color:#fff;" readonly>',
+                        'settings'    => $this->option_prefix . '[company_zip_shortcode]',
+                        'description' => sprintf(
+                            __('Zip or postal code as defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
+                            MAILOPTIN_SETTINGS_SETTINGS_PAGE . '#email_campaign_settings'
+                        ),
+                        'priority'    => 210
+                    )
+                ),
+                'company_country_shortcode'        => new WP_Customize_View_Tags_Shortcode_Content(
+                    $this->wp_customize,
+                    $this->option_prefix . '[company_country_shortcode]',
+                    array(
+                        'label'       => __('Company Country', 'mailoptin'),
+                        'section'     => $this->customizerClassInstance->campaign_view_tags_section_id,
+                        'content'     => '<input type="text" value="[company-country]" style="background-color:#fff;" readonly>',
+                        'settings'    => $this->option_prefix . '[company_country_shortcode]',
+                        'description' => sprintf(
+                            __('Your company country defined in <a target="_blank" href="%s">settings</a>', 'mailoptin'),
+                            MAILOPTIN_SETTINGS_SETTINGS_PAGE . '#email_campaign_settings'
+                        ),
+                        'priority'    => 220
+                    )
+                )
+            ),
+            $this->wp_customize,
+            $this->option_prefix,
+            $this->customizerClassInstance
+        );
+
+        if ($this->customizerClassInstance->email_campaign_type != ER::POSTS_EMAIL_DIGEST) {
+            unset($control_args['email_digest_tag_help']);
+        }
+
+        foreach ($control_args as $id => $args) {
+            if (is_object($args)) {
+                $this->wp_customize->add_control($args);
+            } else {
+                $this->wp_customize->add_control($this->option_prefix . '[' . $id . ']', $args);
+            }
+        }
+    }
+
+    public function preview_control()
+    {
+        $choices     = ControlsHelpers::get_post_type_posts('post');
+        $search_type = 'posts_never_load';
+        if (defined('MAILOPTIN_DETACH_LIBSODIUM')) {
+            $choices     = ControlsHelpers::get_all_post_types_posts();
+            $search_type = 'exclusive_post_types_posts_load';
+        }
+
+        $choices = ['' => __('Select...', 'mailoptin')] + $choices;
+
+        $control_args = apply_filters(
+            "mailoptin_template_customizer_preview_control",
+            array(
+                'post_as_preview' => new WP_Customize_Chosen_Select_Control(
+                    $this->wp_customize,
+                    $this->option_prefix . '[post_as_preview]',
+                    apply_filters('mo_optin_form_customizer_post_as_preview_args', array(
+                            'label'       => __('Preview Post', 'mailoptin'),
+                            'section'     => $this->customizerClassInstance->campaign_preview_section_id,
+                            'settings'    => $this->option_prefix . '[post_as_preview]',
+                            'description' => __('Select a post to use as preview', 'mailoptin'),
+                            'search_type' => $search_type,
+                            'choices'     => $choices,
+                            'is_multiple' => false,
+                            'priority'    => 10
+                        )
+                    )
+                )
+            ),
+            $this->wp_customize,
+            $this->option_prefix,
+            $this->customizerClassInstance
+        );
+
+        if ($this->customizerClassInstance->email_campaign_type != ER::NEW_PUBLISH_POST) {
+            unset($control_args['post_as_preview']);
+        }
+
+        foreach ($control_args as $id => $args) {
+            if (is_object($args)) {
+                $this->wp_customize->add_control($args);
+            } else {
+                $this->wp_customize->add_control($this->option_prefix . '[' . $id . ']', $args);
+            }
+        }
     }
 
     public function page_controls()
