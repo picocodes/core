@@ -1035,12 +1035,12 @@ form.mo-inline {
     background: #e14c46;
 }
 
-#adminmenu .wp-submenu a[href$="page=mailoptin-integrations"],#adminmenu .wp-submenu a[href$="page=mailoptin-statistics"] {
+#adminmenu .wp-submenu a[href$="page=mailoptin-integrations"] {
     position: relative;
     margin-bottom: 10px
 }
 
-#adminmenu .wp-submenu a[href$="page=mailoptin-integrations"]:after, #adminmenu .wp-submenu a[href$="page=mailoptin-statistics"]:after {
+#adminmenu .wp-submenu a[href$="page=mailoptin-integrations"]:after {
     position: absolute;
     content: "";
     display: block;
