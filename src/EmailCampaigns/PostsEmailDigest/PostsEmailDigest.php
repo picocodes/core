@@ -52,21 +52,23 @@ class PostsEmailDigest extends AbstractTriggers
 
             $custom_post_type_settings = ER::get_merged_customizer_value($email_campaign_id, 'custom_post_type_settings');
 
-            if (empty($custom_post_type_settings)) return;
+            if ( ! empty($custom_post_type_settings)) {
 
-            $custom_post_type_settings = json_decode($custom_post_type_settings, true);
+                $custom_post_type_settings = json_decode($custom_post_type_settings, true);
 
-            if ( ! is_array($custom_post_type_settings)) return;
+                if (is_array($custom_post_type_settings)) {
 
-            $parameters['tax_query'] = [];
+                    $parameters['tax_query'] = [];
 
-            foreach ($custom_post_type_settings as $taxonomy => $digest_terms) {
-                if ( ! empty($digest_terms)) {
-                    $parameters['tax_query'][] = [
-                        'taxonomy' => $taxonomy,
-                        'field'    => 'term_id',
-                        'terms'    => array_map('absint', $digest_terms)
-                    ];
+                    foreach ($custom_post_type_settings as $taxonomy => $digest_terms) {
+                        if ( ! empty($digest_terms)) {
+                            $parameters['tax_query'][] = [
+                                'taxonomy' => $taxonomy,
+                                'field'    => 'term_id',
+                                'terms'    => array_map('absint', $digest_terms)
+                            ];
+                        }
+                    }
                 }
             }
         } else {
@@ -186,6 +188,7 @@ class PostsEmailDigest extends AbstractTriggers
     {
         $email_subject   = ER::get_merged_customizer_value($email_campaign_id, 'email_campaign_subject');
         $post_collection = $this->post_collection($email_campaign_id);
+
         if (empty($post_collection)) return false;
 
         $content_html = (new Templatify($email_campaign_id, $post_collection))->forge();
