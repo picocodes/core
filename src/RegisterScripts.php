@@ -144,9 +144,6 @@ class RegisterScripts
             'custom_field_label'          => sprintf(__('Field %s', 'mailoptin'), '#{ID}')
         );
 
-        var_dump($localize_strings);
-        exit;
-
         if ( ! is_admin()) {
             unset($localize_strings['admin_url']);
             unset($localize_strings['nonce']);
