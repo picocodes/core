@@ -14,6 +14,7 @@ namespace MailOptin\Core\PluginSettings;
  * @method string company_state()
  * @method string company_zip()
  * @method string company_country()
+ * @method string disable_impression_tracking()
  */
 class Settings
 {

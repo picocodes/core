@@ -112,6 +112,11 @@ class Settings extends AbstractSettingsPage
                                              ) .
                                              '</p>',
                         ],
+                        'disable_impression_tracking'     => [
+                            'type'        => 'checkbox',
+                            'label'       => __('Disable Impression Tracking', 'mailoptin'),
+                            'checkbox_label' => __('Disable', 'mailoptin')
+                        ],
                         'global_cookie'         => [
                             'type'        => 'number',
                             'value'       => 0,

@@ -3,6 +3,7 @@
 namespace MailOptin\Core;
 
 
+use MailOptin\Core\PluginSettings\Settings;
 use MailOptin\Core\Repositories\OptinCampaignsRepository;
 
 class RegisterScripts
@@ -123,6 +124,12 @@ class RegisterScripts
      */
     public function global_js_variables($handle)
     {
+        $disable_impression_status = false;
+        $disable_impression        = apply_filters('mo_disable_impression_tracking', Settings::instance()->disable_impression_tracking());
+        if ( ! empty($disable_impression) && ($disable_impression == 'true' || $disable_impression === true)) {
+            $disable_impression_status = true;
+        }
+
         $localize_strings = array(
             'admin_url'                   => admin_url(),
             'public_js'                   => MAILOPTIN_ASSETS_URL . 'js/src',
@@ -130,12 +137,15 @@ class RegisterScripts
             'mailoptin_ajaxurl'           => AjaxHandler::get_endpoint(),
             'is_customize_preview'        => is_customize_preview() ? 'true' : 'false',
             // for some weird reason, boolean false is converted to empty and true to "1" hence the use of 'false' in string form.
-            'disable_impression_tracking' => apply_filters('mo_disable_impression_tracking', 'false'),
+            'disable_impression_tracking' => $disable_impression_status === true ? 'true' : 'false',
             'chosen_search_placeholder'   => __('Type to search', 'mailoptin'),
             'js_confirm_text'             => __('Are you sure you want to do this?', 'mailoptin'),
             'js_clear_stat_text'          => __('Are you sure you want to do this? Clicking OK will delete all your optin analytics records.', 'mailoptin'),
             'custom_field_label'          => sprintf(__('Field %s', 'mailoptin'), '#{ID}')
         );
+
+        var_dump($localize_strings);
+        exit;
 
         if ( ! is_admin()) {
             unset($localize_strings['admin_url']);
