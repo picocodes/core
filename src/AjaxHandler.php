@@ -726,8 +726,14 @@ class AjaxHandler
         $connection_service = isset($conversion_data->connection_service) ? $conversion_data->connection_service : '';
 
         if ( ! empty($connection_service)) {
+
+            if ($connection_service == 'leadbank') {
+                return AbstractConnect::ajax_success();
+            }
+
             $connection_email_list = isset($conversion_data->connection_email_list) ? $conversion_data->connection_email_list : '';
             $response              = self::add_lead_to_connection($connection_service, $connection_email_list, $conversion_data);
+
             if (AbstractConnect::is_ajax_success($response)) {
                 self::track_conversion($optin_campaign_id, $lead_data);
             }
@@ -800,7 +806,7 @@ class AjaxHandler
 
         if (empty($connection_service) ||
             // useful for service such as convertfox and in future customer.io that doesnt require an email list to be specified.
-            ( ! in_array('non_email_list_support', $connection_fqn_class::features_support($connection_service)) && empty($connection_email_list))
+            ( ! in_array(AbstractConnect::NON_EMAIL_LIST_SUPPORT, $connection_fqn_class::features_support($connection_service)) && empty($connection_email_list))
         ) {
             AbstractConnect::send_optin_error_email($optin_campaign_id, 'No email provider or list has been set for this optin.');
 
