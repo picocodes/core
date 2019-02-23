@@ -673,7 +673,7 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
                 'z-index: 999999999'
             ];
             $slideinWrapperStyle              = implode(';', $slidein_wrapper_style_properties);
-            $optin_form                       .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type}{$display_only_button_class_indicator}{$position_class}{$has_custom_field_class_indicator}\" data-optin-type='{$this->optin_campaign_type}' style='$slideinWrapperStyle'>";
+            $optin_form                       .= "<div id='$optin_campaign_uuid' class=\"moOptinForm mo-optin-form-{$this->optin_campaign_type} {$name_email_class_indicator}{$display_only_button_class_indicator}{$position_class}{$has_custom_field_class_indicator}\" data-optin-type='{$this->optin_campaign_type}' style='$slideinWrapperStyle'>";
         }
 
         // set optin to display:none when schedule is active then allow mailoptinjs to decide whether to show it or not.
