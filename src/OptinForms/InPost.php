@@ -34,8 +34,6 @@ class InPost
 
             do_action('mailoptin_before_inpost_optin_display_determinant', $id, $optin_ids);
 
-            if ( ! apply_filters('mailoptin_show_optin_form', true, $id)) continue;
-
             // if it is a split test variant, skip
             if (Repository::is_split_test_variant($id)) continue;
 
@@ -50,6 +48,8 @@ class InPost
 
                 // if optin global exit/interaction and success cookie result fails, move to next.
                 if ( ! Repository::global_cookie_check_result($id)) continue;
+
+                if ( ! apply_filters('mailoptin_show_optin_form', true, $id)) continue;
 
                 if ( ! $this->user_targeting_rule_checker($id)) {
                     continue;

@@ -26,7 +26,7 @@ abstract class AbstractSettingsPage
             'manage_options',
             MAILOPTIN_SETTINGS_SETTINGS_SLUG,
             '',
-            'dashicons-email-alt'
+            MAILOPTIN_ASSETS_URL . 'images/admin-icon.svg'
         );
 
         add_filter('admin_body_class', array($this, 'add_admin_body_class'));
