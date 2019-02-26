@@ -104,15 +104,16 @@ class PostsEmailDigest extends AbstractTriggers
 
     /**
      * @param $email_campaign_id
-     * @param $carbon_now
      * @param $carbon_today
      * @param Carbon $schedule_hour
-     * @param $timezone
      *
      * @return bool
      */
-    public function should_send($email_campaign_id, $carbon_now, $schedule_hour, $timezone, $digest_type)
+    public function should_send($email_campaign_id, $schedule_hour, $digest_type)
     {
+        $timezone   = $this->timezone();
+        $carbon_now = Carbon::now($timezone);
+
         $last_processed_at = EmailCampaignMeta::get_meta_data($email_campaign_id, 'last_processed_at', true);
 
         if ( ! empty($last_processed_at)) {
@@ -125,7 +126,7 @@ class PostsEmailDigest extends AbstractTriggers
             }
 
             if ($digest_type == 'every_week') {
-                if ($last_processed_at_carbon_instance->weekOfYear == $last_processed_at_carbon_instance->nowWithSameTz()->weekOfYear) {
+                if ($last_processed_at_carbon_instance->isSameAs('o-W', $carbon_now)) {
                     return false;
                 }
             }
@@ -174,21 +175,21 @@ class PostsEmailDigest extends AbstractTriggers
             switch ($schedule_interval) {
                 case 'every_day':
                     if ($schedule_hour->lessThanOrEqualTo($carbon_now) &&
-                        $this->should_send($email_campaign_id, $carbon_now, $schedule_hour, $timezone, 'every_day')) {
+                        $this->should_send($email_campaign_id, $schedule_hour, 'every_day')) {
                         $this->create_and_send_campaign($email_campaign_id);
                     }
                     break;
                 case 'every_week':
                     if ($carbon_today->isDayOfWeek($schedule_day) &&
                         $schedule_hour->lessThanOrEqualTo($carbon_now) &&
-                        $this->should_send($email_campaign_id, $carbon_now, $schedule_hour, $timezone, 'every_week')) {
+                        $this->should_send($email_campaign_id, $schedule_hour, 'every_week')) {
                         $this->create_and_send_campaign($email_campaign_id);
                     }
                     break;
                 case 'every_month':
                     if ($carbon_now->day == $schedule_month_date &&
                         $schedule_hour->lessThanOrEqualTo($carbon_now) &&
-                        $this->should_send($email_campaign_id, $carbon_now, $schedule_hour, $timezone, 'every_month')) {
+                        $this->should_send($email_campaign_id, $schedule_hour, 'every_month')) {
                         $this->create_and_send_campaign($email_campaign_id);
                     }
                     break;
