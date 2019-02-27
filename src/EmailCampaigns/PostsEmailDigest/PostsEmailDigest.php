@@ -18,13 +18,28 @@ class PostsEmailDigest extends AbstractTriggers
         add_action('mo_hourly_recurring_job', [$this, 'run_job']);
     }
 
+    public function last_processed_at($email_campaign_id)
+    {
+        return EmailCampaignMeta::get_meta_data($email_campaign_id, 'last_processed_at', true);
+    }
+
+    public function timezone()
+    {
+        $timezone = get_option('timezone_string');
+        if (empty($timezone)) {
+            $timezone = get_option('gmt_offset');
+        }
+
+        return $timezone;
+    }
+
     public function post_collection($email_campaign_id)
     {
         $item_count = EmailCampaignRepository::get_merged_customizer_value($email_campaign_id, 'item_number');
 
         $newer_than_timestamp = EmailCampaignMeta::get_meta_data($email_campaign_id, 'created_at', true);
 
-        $last_processed_at = EmailCampaignMeta::get_meta_data($email_campaign_id, 'last_processed_at', true);
+        $last_processed_at = $this->last_processed_at($email_campaign_id);
 
         if ( ! empty($last_processed_at)) {
             $newer_than_timestamp = $last_processed_at;
@@ -89,31 +104,46 @@ class PostsEmailDigest extends AbstractTriggers
 
     /**
      * @param $email_campaign_id
-     * @param $carbon_now
      * @param $carbon_today
      * @param Carbon $schedule_hour
-     * @param $timezone
      *
      * @return bool
      */
-    public function should_send($email_campaign_id, $carbon_now, $schedule_hour, $timezone)
+    public function should_send($email_campaign_id, $schedule_hour, $digest_type)
     {
-        $status            = false;
+        $timezone   = $this->timezone();
+        $carbon_now = Carbon::now($timezone);
+
         $last_processed_at = EmailCampaignMeta::get_meta_data($email_campaign_id, 'last_processed_at', true);
 
-        // this ensures at least an hour will have to pass before next email digest would be published
-        if ( ! empty($last_processed_at) && Carbon::parse($last_processed_at, $timezone)->diffInRealHours($carbon_now) >= 1) {
-            $status = true;
+        if ( ! empty($last_processed_at)) {
+            $last_processed_at_carbon_instance = Carbon::createFromFormat('Y-m-d H:i:s', $this->last_processed_at($email_campaign_id), $timezone);
+
+            if ($digest_type == 'every_day') {
+                if ($last_processed_at_carbon_instance->isToday()) {
+                    return false;
+                }
+            }
+
+            if ($digest_type == 'every_week') {
+                if ($last_processed_at_carbon_instance->isSameAs('o-W', $carbon_now)) {
+                    return false;
+                }
+            }
+
+            if ($digest_type == 'every_month') {
+                if ($last_processed_at_carbon_instance->isCurrentMonth()) {
+                    return false;
+                }
+            }
         }
 
         // add an hour grace so missed schedule can still run.
-        // the diffInRealHours condition below is important so it wont always return true even when the set
-        // hour has past.
         if ($schedule_hour->diffInRealHours($carbon_now) <= 1) {
-            $status = true;
+            return true;
         }
 
-        return $status;
+        return false;
     }
 
     public function run_job()
@@ -135,10 +165,7 @@ class PostsEmailDigest extends AbstractTriggers
             $schedule_day        = absint(ER::get_merged_customizer_value($email_campaign_id, 'schedule_day'));
             $schedule_month_date = absint(ER::get_merged_customizer_value($email_campaign_id, 'schedule_month_date'));
 
-            $timezone = get_option('timezone_string');
-            if (empty($timezone)) {
-                $timezone = get_option('gmt_offset');
-            }
+            $timezone = $this->timezone();
 
             $carbon_now   = Carbon::now($timezone);
             $carbon_today = Carbon::today($timezone);
@@ -148,21 +175,21 @@ class PostsEmailDigest extends AbstractTriggers
             switch ($schedule_interval) {
                 case 'every_day':
                     if ($schedule_hour->lessThanOrEqualTo($carbon_now) &&
-                        $this->should_send($email_campaign_id, $carbon_now, $schedule_hour, $timezone)) {
+                        $this->should_send($email_campaign_id, $schedule_hour, 'every_day')) {
                         $this->create_and_send_campaign($email_campaign_id);
                     }
                     break;
                 case 'every_week':
                     if ($carbon_today->isDayOfWeek($schedule_day) &&
                         $schedule_hour->lessThanOrEqualTo($carbon_now) &&
-                        $this->should_send($email_campaign_id, $carbon_now, $schedule_hour, $timezone)) {
+                        $this->should_send($email_campaign_id, $schedule_hour, 'every_week')) {
                         $this->create_and_send_campaign($email_campaign_id);
                     }
                     break;
                 case 'every_month':
                     if ($carbon_now->day == $schedule_month_date &&
                         $schedule_hour->lessThanOrEqualTo($carbon_now) &&
-                        $this->should_send($email_campaign_id, $carbon_now, $schedule_hour, $timezone)) {
+                        $this->should_send($email_campaign_id, $schedule_hour, 'every_month')) {
                         $this->create_and_send_campaign($email_campaign_id);
                     }
                     break;
