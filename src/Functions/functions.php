@@ -227,6 +227,7 @@ function is_mailoptin_admin_page()
         MAILOPTIN_CONNECTIONS_SETTINGS_SLUG,
         MAILOPTIN_SETTINGS_SETTINGS_SLUG,
         MAILOPTIN_ADVANCE_ANALYTICS_SETTINGS_SLUG,
+        MAILOPTIN_LEAD_BANK_SETTINGS_SLUG,
         'mailoptin-premium-upgrade'
     );
 

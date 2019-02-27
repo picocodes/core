@@ -907,8 +907,7 @@ form.mo-inline {
 .mo-upgrade-plan {
     background: rgba(255, 255, 255, 0.5);
     padding: 50px 50px;
-    position: fixed;
-    left: 0;
+    position: absolute;
     right: 0;
     z-index: 100;
     width: 100%;
@@ -1035,12 +1034,14 @@ form.mo-inline {
     background: #e14c46;
 }
 
-#adminmenu .wp-submenu a[href$="page=mailoptin-integrations"] {
+#adminmenu .wp-submenu a[href$="page=mailoptin-integrations"],
+#adminmenu .wp-submenu a[href$="page=mailoptin-statistics"] {
     position: relative;
     margin-bottom: 10px
 }
 
-#adminmenu .wp-submenu a[href$="page=mailoptin-integrations"]:after {
+#adminmenu .wp-submenu a[href$="page=mailoptin-integrations"]:after,
+#adminmenu .wp-submenu a[href$="page=mailoptin-statistics"]:after {
     position: absolute;
     content: "";
     display: block;

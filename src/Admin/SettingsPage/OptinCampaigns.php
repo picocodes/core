@@ -1,7 +1,4 @@
 <?php
-/**
- * Copyright (C) 2016  Agbonghama Collins <me@w3guy.com>
- */
 
 namespace MailOptin\Core\Admin\SettingsPage;
 
@@ -44,18 +41,6 @@ class OptinCampaigns extends AbstractSettingsPage
         add_action("load-$hook", function () {
             add_action('admin_enqueue_scripts', array('MailOptin\Core\RegisterScripts', 'fancybox_scripts'));
         });
-
-        add_filter('wp_cspa_active_tab_class', function ($active_tab_class, $tab_url, $current_page_url) {
-            // hack to make optin campaign not active if other sub tab eg lead bank is active.
-            if (strpos($current_page_url, MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE) !== false &&
-                strpos($current_page_url, '&view') !== false &&
-                $tab_url == MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE
-            ) {
-                $active_tab_class = null;
-            }
-
-            return $active_tab_class;
-        }, 10, 3);
     }
 
     /**
@@ -158,8 +143,6 @@ class OptinCampaigns extends AbstractSettingsPage
     {
         if ( ! empty($_GET['view']) && $_GET['view'] == 'add-new-optin') {
             AddOptinCampaign::get_instance()->settings_admin_page();
-        } elseif ( ! empty($_GET['view']) && $_GET['view'] == MAILOPTIN_LEAD_BANK_SETTINGS_SLUG) {
-            LeadBank::get_instance()->settings_admin_page();
         } else {
             // Hook the OptinCampaign_List table to Custom_Settings_Page_Api main content filter.
             add_action('wp_cspa_main_content_area', array($this, 'wp_list_table'), 10, 2);

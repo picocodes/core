@@ -2,14 +2,49 @@
 
 namespace MailOptin\Core\Admin\SettingsPage;
 
-use MailOptin\Libsodium\LibsodiumSettingsPage;
 use W3Guy\Custom_Settings_Page_Api;
 
 class LeadBank extends AbstractSettingsPage
 {
+    public function __construct()
+    {
+        add_action('admin_menu', array($this, 'register_settings_page'));
+    }
+
+    public function register_settings_page()
+    {
+        $hook = add_submenu_page(
+            MAILOPTIN_SETTINGS_SETTINGS_SLUG,
+            __('Lead Bank (Submissions) - MailOptin', 'mailoptin'),
+            __('Lead Bank', 'mailoptin'),
+            'manage_options',
+            MAILOPTIN_LEAD_BANK_SETTINGS_SLUG,
+            array($this, 'settings_admin_page')
+        );
+
+        add_action("load-$hook", array($this, 'screen_option'));
+    }
+
+    /**
+     * Screen options
+     */
+    public function screen_option()
+    {
+        $option = 'per_page';
+        $args   = array(
+            'label'   => __('Leads', 'mailoptin'),
+            'default' => 8,
+            'option'  => 'conversions_per_page',
+        );
+
+        add_screen_option($option, $args);
+
+        do_action('mailoptin_leadbank_settings_page_screen_option');
+    }
+
     public function settings_admin_page()
     {
-        if (!apply_filters('mailoptin_enable_leadbank', false)) {
+        if ( ! apply_filters('mailoptin_enable_leadbank', false)) {
             add_filter('wp_cspa_main_content_area', array($this, 'upsell_settings_page'), 10, 2);
         }
 
@@ -17,7 +52,7 @@ class LeadBank extends AbstractSettingsPage
 
         $instance = Custom_Settings_Page_Api::instance();
         $instance->option_name('mo_leads');
-        $instance->page_header(__('Lead Bank', 'mailoptin'));
+        $instance->page_header(__('Lead Bank (Submissions)', 'mailoptin'));
         $this->register_core_settings($instance);
         $instance->build(true);
     }

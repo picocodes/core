@@ -3,8 +3,6 @@
 namespace MailOptin\Core\Admin;
 
 use MailOptin\Core\Repositories\EmailCampaignRepository;
-use MailOptin\Core\Repositories\OptinCampaignsRepository;
-use MailOptin\Core\Repositories\OptinConversionsRepository;
 use PAnD as PAnD;
 
 class AdminNotices
