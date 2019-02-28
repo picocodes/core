@@ -191,10 +191,6 @@ class Settings extends AbstractSettingsPage
             )
         ];
 
-        if ( ! defined('MAILOPTIN_DETACH_LIBSODIUM')) {
-            unset($args['optin_campaign_settings']);
-        }
-
         do_action('mailoptin_before_settings_page', MAILOPTIN_SETTINGS_DB_OPTION_NAME);
         $settings_args    = apply_filters('mailoptin_settings_page', $args);
         $nav_tabs         = '';
