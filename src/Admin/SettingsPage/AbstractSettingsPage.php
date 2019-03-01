@@ -34,7 +34,7 @@ abstract class AbstractSettingsPage
 
     public function stylish_header()
     {
-        $logo_url = MAILOPTIN_ASSETS_URL . 'images/mailoptin-white.png';
+        $logo_url = MAILOPTIN_ASSETS_URL . 'images/logo-mailoptin.png';
         ?>
         <div class="mo-admin-banner">
             <div class="mo-admin-banner__logo">

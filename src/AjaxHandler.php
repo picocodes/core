@@ -705,10 +705,8 @@ class AjaxHandler
         ];
 
         if (class_exists('MailOptin\Libsodium\LeadBank\LeadBank') && ! LeadBank::is_leadbank_disabled()) {
-            if ($conversion_data->is_leadbank_active === true) {
-                // capture optin lead / conversion
-                OptinConversionsRepository::add($lead_data);
-            }
+            // capture optin lead / conversion
+            OptinConversionsRepository::add($lead_data);
         }
 
         // kick-in if only lead bank should be used
@@ -727,6 +725,7 @@ class AjaxHandler
 
         if ( ! empty($connection_service)) {
 
+            // for Elementor integration that has leadbank among the list of email service.
             if ($connection_service == 'leadbank') {
                 return AbstractConnect::ajax_success();
             }

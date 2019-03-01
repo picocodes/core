@@ -79,7 +79,7 @@ class AdvanceAnalytics extends AbstractSettingsPage
     {
         $instance = Custom_Settings_Page_Api::instance();
         $instance->option_name('mo_analytics');
-        $instance->page_header(__('Optin Statistics', 'mailoptin'));
+        $instance->page_header(__('Statistics', 'mailoptin'));
         $this->register_core_settings($instance);
         if (apply_filters('mailoptin_enable_advance_analytics', false)) {
             $instance->sidebar(SettingsPage::get_instance()->analytic_chart_sidebar());

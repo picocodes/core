@@ -16,5 +16,4 @@ class ConversionDataBuilder
     public $connection_service;
     public $connection_email_list;
     public $is_timestamp_check_active = true;
-    public $is_leadbank_active = true;
 }
