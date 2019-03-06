@@ -1,7 +1,7 @@
 {
   "name": "mailoptin/core",
   "description": "Core lib for MailOptin",
-  "type": "library",
+  "type": "wordpress-plugin",
   "extra": {
     "installer-name": "src"
   },
