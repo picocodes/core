@@ -2,9 +2,6 @@
   "name": "mailoptin/core",
   "description": "Core lib for MailOptin",
   "type": "wordpress-plugin",
-  "extra": {
-    "installer-name": "src"
-  },
   "require": {
     "composer/installers": "~1.0",
     "soundasleep/html2text": "~0.5",
