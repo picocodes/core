@@ -2,7 +2,11 @@
   "name": "mailoptin/core",
   "description": "Core lib for MailOptin",
   "type": "library",
+  "extra": {
+    "installer-name": "src"
+  },
   "require": {
+    "composer/installers": "~1.0",
     "soundasleep/html2text": "~0.5",
     "pelago/emogrifier": "^1.0",
     "league/csv": "7.2.0",
