@@ -130,6 +130,7 @@
                     api.section('mo_wp_referrer_detection_display_rule_section').active(!is_displayed());
                     api.section('mo_wp_schedule_display_rule_section').active(!is_displayed());
                     api.section('mo_wp_device_targeting_display_rule_section').active(!is_displayed());
+                    api.section('mo_wp_polylang_display_rule_section').active(!is_displayed());
                     api.section('mo_wp_user_filter_display_rule_section').active(!is_displayed());
                 };
 
