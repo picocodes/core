@@ -30,22 +30,6 @@ final class Core
 
     public static function init()
     {
-        $requirements = new RequirementsChecker('MailOptin', array(
-            'php' => '5.4',
-            'wp' => '4.5'
-        ));
-
-        if (!$requirements->satisfied()) {
-
-            if (!function_exists('deactivate_plugins')) {
-                require_once(ABSPATH . 'wp-admin/includes/plugin.php');
-            }
-
-            deactivate_plugins(plugin_basename(MAILOPTIN_SYSTEM_FILE_PATH));
-            wp_die($requirements->notice());
-        }
-
-        // checks passed - load the plugin
         Core::get_instance();
 
         do_action('mailoptin_loaded');
