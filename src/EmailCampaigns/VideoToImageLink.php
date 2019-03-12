@@ -22,8 +22,8 @@ class VideoToImageLink
     {
         return preg_replace_callback(
             [
-                '/<iframe src="(?:.+)?youtube.com\/(?:embed|\?)?\/([\w-_]+).+".+<\/iframe>/',
-                '/[^\"\']https:\/\/(?:www.)?youtube.com\/\watch\?v=([\w-_]+).+[^\"\']/'
+                '/<iframe.*src="(?:.+)?youtube.com\/(?:embed|\?)?\/([\w-_]+).+".+<\/iframe>/',
+                '/[^\"\']https:\/\/(?:www.)?youtube.com\/\watch\?v=([\w-_]+)[^\"\']/'
             ],
             function ($matches) {
                 return $this->convertYoutube($matches[1]);
@@ -36,8 +36,8 @@ class VideoToImageLink
     {
         return preg_replace_callback(
             [
-                '/<iframe src="(?:.+)?player.vimeo.com\/video\/(\d+)".+<\/iframe>/',
-                '/[^\"\']https:\/\/(?:www .)?vimeo . com\/([\d] +)[^\"]/'
+                '/<iframe.*src="(?:.+)?player.vimeo.com\/video\/(\d+).+".+<\/iframe>/',
+                '/[^\"\']https:\/\/(?:www .)?vimeo.com\/([\d]+)[^\"]/'
             ],
             function ($matches) {
                 return $this->convertVimeo($matches[1]);
@@ -66,19 +66,20 @@ class VideoToImageLink
     protected function convertYoutube($id)
     {
         $youtube_play_button_overlay = MAILOPTIN_ASSETS_URL . 'images/youtube-play-button-overlay.png';
-        if (defined('W3GUY_LOCAL')) $youtube_play_button_overlay = 'https://d2ffutrenqvap3.cloudfront.net/items/2L1a0X1m1i0D3V1K1f2P/Image%202018-04-07%20at%206.18.08%20PM.png';
+        if (defined('W3GUY_LOCAL')) $youtube_play_button_overlay = 'https://cl.ly/2c9f6a11fc29/download/Image%2525202019-03-12%252520at%25252010.56.57%252520AM.png';
 
         $result = wp_remote_get(sprintf('https://www.youtube.com/oembed?format=json&url=https://youtube.com/watch?v=%s', $id));
 
         $image_url = MAILOPTIN_ASSETS_URL . 'images/video-placeholder.png';
 
-        if (!is_wp_error($result)) {
+        if ( ! is_wp_error($result)) {
             $response = json_decode(wp_remote_retrieve_body($result), true);
 
             if (isset($response['thumbnail_url'])) {
                 // you could use https://web-extract.constantcontact.com/v1/thumbnail?url=https://i.ytimg.com/vi/K4ubA4Ucij4/hqdefault.jpg
                 // if vimeo start failing tomorrow
                 $thumbnail = sprintf('https://i.vimeocdn.com/filter/overlay?src0=%s&src1=%s', $response['thumbnail_url'], $youtube_play_button_overlay);
+
 
                 $image_url = $this->url_upload_to_media($thumbnail, basename($thumbnail));
             }
@@ -91,6 +92,7 @@ class VideoToImageLink
      * @source https://wordpress.stackexchange.com/a/251512/59917
      *
      * @param $url
+     *
      * @return bool|string
      */
     protected function url_upload_to_media($url, $name = '')
@@ -101,15 +103,15 @@ class VideoToImageLink
 
         $temp_file = download_url($url, $timeout_seconds);
 
-        if (!is_wp_error($temp_file)) {
+        if ( ! is_wp_error($temp_file)) {
 
             // Array based on $_FILE as seen in PHP file uploads
             $file = array(
-                'name' => !empty($name) ? $name : basename($url), // ex: wp-header-logo.png
-                'type' => 'image/png',
+                'name'     => ! empty($name) ? $name : basename($url), // ex: wp-header-logo.png
+                'type'     => 'image/png',
                 'tmp_name' => $temp_file,
-                'error' => 0,
-                'size' => filesize($temp_file),
+                'error'    => 0,
+                'size'     => filesize($temp_file),
             );
 
             $overrides = array(
@@ -119,7 +121,7 @@ class VideoToImageLink
 
             $results = wp_handle_sideload($file, $overrides);
 
-            if (!empty($results['error'])) {
+            if ( ! empty($results['error'])) {
                 return false;
             }
 
