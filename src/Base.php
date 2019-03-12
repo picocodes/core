@@ -33,7 +33,7 @@ if (strpos(__FILE__, 'mailoptin/vendor') !== false) {
 }
 
 if ( ! defined('EDD_MO_ITEM_ID')) {
-    define('EDD_MO_ITEM_ID', '8', true);
+    define('EDD_MO_ITEM_ID', '8');
 }
 
 define('MAILOPTIN_OPTIN_THEMES_ASSETS_URL', MAILOPTIN_ASSETS_URL . 'images/optin-themes');
