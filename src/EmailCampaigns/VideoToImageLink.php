@@ -20,7 +20,7 @@ class VideoToImageLink
 
     protected function findYoutube($subject)
     {
-        return preg_replace_callback(
+        $return = preg_replace_callback(
             [
                 '/<iframe.*src="(?:.+)?youtube.com\/(?:embed|\?)?\/([\w-_]+).+".+<\/iframe>/',
                 '/[^\"\']https:\/\/(?:www.)?youtube.com\/\watch\?v=([\w-_]+)[^\"\']/'
@@ -30,11 +30,15 @@ class VideoToImageLink
             },
             $subject
         );
+
+        if ( ! $return) return $subject;
+
+        return $return;
     }
 
     public function findVimeo($subject)
     {
-        return preg_replace_callback(
+        $return = preg_replace_callback(
             [
                 '/<iframe.*src="(?:.+)?player.vimeo.com\/video\/(\d+).+".+<\/iframe>/',
                 '/[^\"\']https:\/\/(?:www .)?vimeo.com\/([\d]+)[^\"]/'
@@ -44,6 +48,10 @@ class VideoToImageLink
             },
             $subject
         );
+
+        if ( ! $return) return $subject;
+
+        return $return;
     }
 
     protected function convertVimeo($id)
