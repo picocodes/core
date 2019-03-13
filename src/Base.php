@@ -24,9 +24,9 @@ define('MAILOPTIN_ROOT', wp_normalize_path(plugin_dir_path(MAILOPTIN_SYSTEM_FILE
 define('MAILOPTIN_URL', plugin_dir_url(MAILOPTIN_SYSTEM_FILE_PATH));
 define('MAILOPTIN_ASSETS_DIR', wp_normalize_path(dirname(__FILE__) . '/assets/'));
 
-if (strpos(__FILE__, 'mailoptin/vendor') !== false) {
+if (strpos(__FILE__, 'mailoptin/src') !== false) {
     // production url path to assets folder.
-    define('MAILOPTIN_ASSETS_URL', MAILOPTIN_URL . wp_normalize_path('../' . dirname(substr(__FILE__, strpos(__FILE__, 'mailoptin/vendor'))) . '/assets/'));
+    define('MAILOPTIN_ASSETS_URL', MAILOPTIN_URL . 'src/core/src/assets/');
 } else {
     // dev url path to assets folder.
     define('MAILOPTIN_ASSETS_URL', MAILOPTIN_URL . wp_normalize_path('../' . dirname(substr(__FILE__, strpos(__FILE__, 'mailoptin'))) . '/assets/'));
