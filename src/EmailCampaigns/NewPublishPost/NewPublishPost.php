@@ -91,6 +91,7 @@ class NewPublishPost extends AbstractTriggers
                             if ( ! empty($npp_terms)) {
                                 $npp_terms  = array_map('absint', $npp_terms);
                                 $post_terms = array_map('absint', wp_get_object_terms($post->ID, $taxonomy, ['fields' => 'ids']));
+
                                 // do not check if $post_terms is empty because if no term is on the post, wp_get_object_terms return empty array
                                 // so we can use the empty to check against if NPP requires certain term(s)
                                 if (is_array($npp_terms) && ! empty($npp_terms)) {
