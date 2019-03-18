@@ -6,8 +6,6 @@ class Shortcodes
 {
     use TemplateTrait;
 
-    protected $old_shortcode_tags;
-
     /** @var \WP_Post */
     protected $wp_post_obj;
 
@@ -34,13 +32,8 @@ class Shortcodes
             $this->wp_post_obj = get_post($post);
         }
 
-        // do not remove old shortcodes if this is email digest because we already have it implemented
-        // but need from() for initialization.
-        if (empty($this->posts)) {
-            $this->removeOldShortcodes();
-        }
-
-        $this->define_shortcodes();
+        $this->define_general_shortcodes();
+        $this->define_post_shortcodes();
 
         return $this;
     }
@@ -50,33 +43,32 @@ class Shortcodes
         $this->posts = $posts;
 
         add_shortcode('posts-loop', [$this, 'posts_loop_tag']);
+        $this->define_general_shortcodes();
 
         return $this;
     }
 
-    public function removeOldShortcodes()
-    {
-        global $shortcode_tags;
-        $this->old_shortcode_tags = $shortcode_tags;
-        $shortcode_tags           = array();
-    }
-
-    public function restoreOldShortcode()
-    {
-        global $shortcode_tags;
-        $shortcode_tags = $this->old_shortcode_tags;
-    }
-
     public function parse($content)
     {
-        $parsed_content = do_shortcode($content);
-
-        $this->restoreOldShortcode();
-
-        return $parsed_content;
+        return do_shortcode($content);
     }
 
-    public function define_shortcodes()
+    public function define_general_shortcodes()
+    {
+        add_shortcode('unsubscribe', [$this, 'unsubscribe']);
+        add_shortcode('webversion', [$this, 'webversion']);
+        add_shortcode('company-name', [$this, 'company_name']);
+        add_shortcode('company-address', [$this, 'company_address']);
+        add_shortcode('company-address2', [$this, 'company_address2']);
+        add_shortcode('company-city', [$this, 'company_city']);
+        add_shortcode('company-state', [$this, 'company_state']);
+        add_shortcode('company-zip', [$this, 'company_zip']);
+        add_shortcode('company-country', [$this, 'company_country']);
+
+        do_action('mo_define_email_automation_general_shortcodes', $this->wp_post_obj);
+    }
+
+    public function define_post_shortcodes()
     {
         add_shortcode('post-title', [$this, 'post_title_tag']);
         add_shortcode('post-content', [$this, 'post_content_tag']);
@@ -94,32 +86,18 @@ class Shortcodes
         add_shortcode('post-author-email', [$this, 'post_author_email_tag']);
         add_shortcode('post-meta', [$this, 'post_meta_tag']);
 
-        add_shortcode('unsubscribe', [$this, 'unsubscribe']);
-        add_shortcode('webversion', [$this, 'webversion']);
-        add_shortcode('company-name', [$this, 'company_name']);
-        add_shortcode('company-address', [$this, 'company_address']);
-        add_shortcode('company-address2', [$this, 'company_address2']);
-        add_shortcode('company-city', [$this, 'company_city']);
-        add_shortcode('company-state', [$this, 'company_state']);
-        add_shortcode('company-zip', [$this, 'company_zip']);
-        add_shortcode('company-country', [$this, 'company_country']);
-
-        do_action('mo_define_email_automation_shortcodes', $this->wp_post_obj);
+        do_action('mo_define_email_automation_post_shortcodes', $this->wp_post_obj);
     }
 
     public function posts_loop_tag($atts, $content)
     {
         if (empty($this->posts)) return '';
-
-        $this->removeOldShortcodes();
         $output = '';
         foreach ($this->posts as $post) {
             $this->from($post);
-            $this->define_shortcodes();
-            $output .= do_shortcode($content);
+            $this->define_post_shortcodes();
+            $output .= do_shortcode(html_entity_decode($content));
         }
-
-        $this->restoreOldShortcode();
 
         return $output;
     }
@@ -283,7 +261,7 @@ class Shortcodes
 
         $key = sanitize_key($atts['key']);
 
-        if(empty($key)) return '';
+        if (empty($key)) return '';
 
         return get_post_meta($this->wp_post_obj->ID, $key, true);
     }
