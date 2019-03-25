@@ -8,7 +8,7 @@ class DBUpdates
 {
     public static $instance;
 
-    const DB_VER = 9;
+    const DB_VER = 10;
 
     public function init_options()
     {
@@ -198,6 +198,17 @@ class DBUpdates
         $table = $wpdb->prefix . Core::conversions_table_name;
 
         $sql = "ALTER TABLE $table ADD custom_fields LONGTEXT NULL AFTER email;";
+
+        $wpdb->query($sql);
+    }
+
+    public function update_routine_10()
+    {
+        global $wpdb;
+
+        $table = $wpdb->prefix . Core::campaign_log_table_name;
+
+        $sql = "ALTER TABLE $table CHANGE content_html content_html LONGTEXT NOT NULL";
 
         $wpdb->query($sql);
     }
