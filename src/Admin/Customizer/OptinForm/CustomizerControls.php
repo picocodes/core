@@ -842,7 +842,7 @@ class CustomizerControls
                     $this->wp_customize,
                     $this->option_prefix . '[hide_close_button]',
                     apply_filters('mo_optin_form_customizer_hide_close_button_args', array(
-                            'label'    => __('Close on Backdrop Click', 'mailoptin'),
+                            'label'    => __('Hide Close Button', 'mailoptin'),
                             'section'  => $this->customizerClassInstance->configuration_section_id,
                             'settings' => $this->option_prefix . '[hide_close_button]',
                             'type'     => 'light',
@@ -854,7 +854,7 @@ class CustomizerControls
                     $this->wp_customize,
                     $this->option_prefix . '[close_backdrop_click]',
                     apply_filters('mo_optin_form_customizer_close_backdrop_click_args', array(
-                            'label'    => __('Hide on Backdrop Click', 'mailoptin'),
+                            'label'    => __('Close on Overlay Click', 'mailoptin'),
                             'section'  => $this->customizerClassInstance->configuration_section_id,
                             'settings' => $this->option_prefix . '[close_backdrop_click]',
                             'type'     => 'light',
