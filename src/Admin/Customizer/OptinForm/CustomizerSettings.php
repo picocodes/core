@@ -478,6 +478,11 @@ class CustomizerSettings extends AbstractCustomizer
                     'type'      => 'option',
                     'transport' => 'refresh',
                 ),
+                'close_backdrop_click'          => array(
+                    'default'   => $this->customizer_defaults['close_backdrop_click'],
+                    'type'      => 'option',
+                    'transport' => 'postMessage',
+                ),
                 'success_message'            => array(
                     'default'   => $this->customizer_defaults['success_message'],
                     'type'      => 'option',

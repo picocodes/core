@@ -1043,7 +1043,8 @@ if (typeof jQuery.MailOptin !== 'undefined' && typeof jQuery.MailOptin.track_imp
         $data['icon_close'] = $icon_close_config;
 
         if ($this->optin_campaign_type == 'lightbox') {
-            $data['body_close'] = apply_filters('mo_optin_campaign_body_close', true);
+            $body_close         = $this->get_customizer_value('close_backdrop_click');
+            $data['body_close'] = apply_filters('mo_optin_campaign_body_close', $body_close);
             $data['keyClose']   = apply_filters('mo_optin_campaign_key_close', true);
         }
 

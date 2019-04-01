@@ -842,11 +842,23 @@ class CustomizerControls
                     $this->wp_customize,
                     $this->option_prefix . '[hide_close_button]',
                     apply_filters('mo_optin_form_customizer_hide_close_button_args', array(
-                            'label'    => __('Hide Close Button', 'mailoptin'),
+                            'label'    => __('Close on Backdrop Click', 'mailoptin'),
                             'section'  => $this->customizerClassInstance->configuration_section_id,
                             'settings' => $this->option_prefix . '[hide_close_button]',
                             'type'     => 'light',
                             'priority' => 45,
+                        )
+                    )
+                ),
+                'close_backdrop_click'          => new WP_Customize_Toggle_Control(
+                    $this->wp_customize,
+                    $this->option_prefix . '[close_backdrop_click]',
+                    apply_filters('mo_optin_form_customizer_close_backdrop_click_args', array(
+                            'label'    => __('Hide on Backdrop Click', 'mailoptin'),
+                            'section'  => $this->customizerClassInstance->configuration_section_id,
+                            'settings' => $this->option_prefix . '[close_backdrop_click]',
+                            'type'     => 'light',
+                            'priority' => 48,
                         )
                     )
                 ),
@@ -899,6 +911,10 @@ class CustomizerControls
 
         if ( ! OptinCampaignsRepository::is_split_test_variant($this->optin_campaign_id)) {
             unset($content_control_args['split_test_note']);
+        }
+
+        if($this->customizerClassInstance->optin_campaign_type !== 'lightbox') {
+            unset($content_control_args['close_backdrop_click']);
         }
 
         do_action('mailoptin_before_configuration_controls_addition');

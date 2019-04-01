@@ -104,6 +104,7 @@ class AbstractCustomizer
         $defaults['slidein_position']  = apply_filters('mo_optin_form_slidein_position_default', 'bottom_right', $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
         $defaults['bar_sticky']        = apply_filters('mo_optin_form_hide_headline_default', true, $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
         $defaults['hide_close_button'] = apply_filters('mo_optin_form_hide_close_button_default', false, $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
+        $defaults['close_backdrop_click'] = apply_filters('mo_optin_form_close_backdrop_click_default', true, $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
         $defaults['hide_headline']     = apply_filters('mo_optin_form_hide_headline_default', false, $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
         $defaults['hide_description']  = apply_filters('mo_optin_form_hide_description_default', false, $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
         $defaults['hide_note']         = apply_filters('mo_optin_form_hide_note_default', false, $this->customizer_defaults, $this->optin_campaign_type, $this->optin_campaign_class);
