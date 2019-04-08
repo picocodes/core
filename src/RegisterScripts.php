@@ -15,6 +15,7 @@ class RegisterScripts
         add_action('admin_enqueue_scripts', [$this, 'fancybox_assets']);
         add_action('wp_enqueue_scripts', array($this, 'public_css'));
         add_action('wp_enqueue_scripts', array($this, 'public_js'));
+	add_action('init', [$this, 'gutenberg_js']);
     }
 
     public function fancybox_assets()
@@ -57,6 +58,84 @@ class RegisterScripts
         wp_enqueue_script('mailoptin-add-email-campaign', MAILOPTIN_ASSETS_URL . 'js/admin/new-email-campaign.js', array('jquery'), MAILOPTIN_VERSION_NUMBER, true);
         $this->global_js_variables('mailoptin-add-optin-campaign');
         do_action('mo_admin_js_enqueue');
+    }
+	
+    /**
+     * Gutenberg JS
+     */
+    public function gutenberg_js()
+    {
+        // Skip block registration if Gutenberg is not enabled/merged.
+	    if (!function_exists('register_block_type')) {
+		    return;
+        }
+        
+        $default  = 0;
+        $templates = array(
+            '0' => array( 
+                    'template' => __( 'Please select an email template from the right sidebar.', 'mailoptin'),
+                    'value' => __( 'No email template was selected.', 'mailoptin')
+            )
+        );
+        $modified = array();
+        $campaigns = OptinCampaignsRepository::get_optin_campaigns();
+        if(!is_array($campaigns)){
+            $campaigns = array();
+        }
+
+        foreach($campaigns as $campaign){
+            if($campaign['optin_type'] != 'sidebar' && $campaign['optin_type'] != 'inpost'){
+                continue;
+            }
+
+            $id = $campaign['id'];
+
+            if(OptinCampaignsRepository::is_activated($id)){
+                $modified[] = array(
+                    'label' => $campaign['name'],
+                    'value' => $id,
+                );
+
+                $templates[$campaign['id']] = array( 
+                    'template' => do_shortcode("[mo-optin-form id=$id]"),
+                    'value' => "[mo-optin-form id=$id]"
+                );
+                
+            }
+        }
+
+        if(!empty($modified)){
+            $default = $modified[0]['value'];
+        }
+
+
+	    wp_register_script(
+		    'mailoptin-gutenberg',
+            MAILOPTIN_ASSETS_URL . 'js/admin/optin-block.js',
+		    array(
+			    'wp-blocks',
+			    'wp-i18n',
+			    'wp-element',
+			    'wp-components'
+		    ),
+            MAILOPTIN_VERSION_NUMBER,
+            true
+        );
+
+        wp_localize_script(
+            'mailoptin-gutenberg', 'MailOptinBlocks',
+            array(
+                'defaultForm' => $default,
+                'formOptions' => $modified,
+                'icon' => 'book-alt',
+                'templates' => $templates
+            )
+        );
+
+        register_block_type('mailoptin/email-optin', array(
+            'editor_script'     => 'mailoptin-gutenberg',
+        ));
+    
     }
 
     /**
