@@ -73,8 +73,14 @@ class RegisterScripts
         $default  = 0;
         $templates = array(
             '0' => array( 
-                    'template' => __( 'Please select an email template from the right sidebar.', 'mailoptin'),
-                    'value' => __( 'No email template was selected.', 'mailoptin')
+                    'template' => sprintf( 
+                        __( '%s You currently have no inpost or sidebar/widget optin created or activated. Please create one first. %s ', 'mailoptin'),
+                        '<div style="background-color: #fff8e1;border: 1px solid #FFE082;padding: 10px;">',
+                        '<div>') ,
+                    'value' => sprintf( 
+                        __( '%s You currently have no inpost or sidebar/widget optin created or activated. Please create one first. %s ', 'mailoptin'),
+                        '<div style="background-color: #fff8e1;border: 1px solid #FFE082;padding: 10px;">',
+                        '<div>') 
             )
         );
         $modified = array();
