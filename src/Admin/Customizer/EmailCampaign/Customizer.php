@@ -81,7 +81,13 @@ class Customizer
                 wp_enqueue_script('mailoptin-send-test-email', MAILOPTIN_ASSETS_URL . 'js/admin/send-test-email.js');
             });
 
-            add_filter('template_include', array($this, 'include_campaign_customizer_template'), 999999999);
+            add_action('template_redirect', function () {
+                echo 'am here';
+                exit;
+            });
+
+            // do not use template_include because it doesnt work in some instances eg when membermouse plugin is installed.
+            add_action('template_redirect', array($this, 'include_campaign_customizer_template'), 1);
 
             add_filter('gettext', array($this, 'rewrite_customizer_panel_description'), 10, 3);
 
@@ -286,20 +292,17 @@ class Customizer
     /**
      * Include template preview template.
      *
-     * @param string $template
-     *
      * @return string
      */
-    public function include_campaign_customizer_template($template)
+    public function include_campaign_customizer_template()
     {
         if (is_customize_preview() && wp_verify_nonce($_REQUEST['_wpnonce'], 'mailoptin-preview-email-campaign')) {
-            $template = MAILOPTIN_SRC . 'Admin/Customizer/EmailCampaign/email-campaign-preview.php';
-        } else {
-            wp_redirect(MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE);
+            include(MAILOPTIN_SRC . 'Admin/Customizer/EmailCampaign/email-campaign-preview.php');
             exit;
         }
 
-        return $template;
+        wp_redirect(MAILOPTIN_EMAIL_CAMPAIGNS_SETTINGS_PAGE);
+        exit;
     }
 
     /**

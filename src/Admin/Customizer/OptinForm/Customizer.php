@@ -100,7 +100,8 @@ class Customizer
                 echo '</script>';
             });
 
-            add_filter('template_include', array($this, 'include_optin_form_customizer_template'), 999999999);
+            // do not use template_include because it doesnt work in some instances eg when membermouse plugin is installed.
+            add_action('template_redirect', array($this, 'include_optin_form_customizer_template'), 1);
 
             add_filter('gettext', array($this, 'rewrite_customizer_panel_description'), 10, 3);
             add_filter('gettext', array($this, 'rewrite_customizer_save_publish_label'), 10, 3);
@@ -529,20 +530,17 @@ class Customizer
     /**
      * Include template preview template.
      *
-     * @param string $template
-     *
      * @return string
      */
-    public function include_optin_form_customizer_template($template)
+    public function include_optin_form_customizer_template()
     {
         if (is_customize_preview() && wp_verify_nonce($_REQUEST['_wpnonce'], 'mailoptin-preview-optin-form')) {
-            $template = MAILOPTIN_SRC . 'Admin/Customizer/OptinForm/optin-form-preview.php';
-        } else {
-            wp_redirect(MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE);
+            include(MAILOPTIN_SRC . 'Admin/Customizer/OptinForm/optin-form-preview.php');
             exit;
         }
 
-        return $template;
+        wp_redirect(MAILOPTIN_OPTIN_CAMPAIGNS_SETTINGS_PAGE);
+        exit;
     }
 
     /**
