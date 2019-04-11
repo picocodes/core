@@ -4,7 +4,7 @@
     var SelectControl = components.SelectControl;
 
     blocks.registerBlockType('mailoptin/email-optin', {
-        title: __('MailOptin', 'noptin'),
+        title: __('MailOptin', 'mailoptin'),
         icon: MailOptinBlocks.icon,
         category: 'embed',
         attributes: {
