@@ -51,7 +51,10 @@ trait TemplateTrait
             $post = get_post($post);
         }
 
-        $post_content        = do_shortcode($post->post_content);
+        $post_content = do_shortcode(
+            apply_filters('mo_email_automation_post_content', $post->post_content, $post, $this->email_campaign_id)
+        );
+        
         $post_content_length = ER::get_merged_customizer_value($this->email_campaign_id, 'post_content_length');
 
         if (0 !== $post_content_length) {

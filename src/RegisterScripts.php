@@ -133,7 +133,7 @@ class RegisterScripts
             array(
                 'defaultForm' => $default,
                 'formOptions' => $modified,
-                'icon' => 'dashicons-email',
+                'icon' => 'email',
                 'templates' => $templates
             )
         );
