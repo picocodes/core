@@ -580,13 +580,11 @@ class OptinCampaignsRepository extends AbstractRepository
     }
 
     /**
-     * Check to determine if optin shpuld be shown base on whether global success and interaction cookie is set and active
-     *
-     * @param int $optin_campaign_id
+     * Check to determine if optin should be shown base on whether global success and interaction cookie is set and active
      *
      * @return bool
      */
-    public static function global_cookie_check_result($optin_campaign_id)
+    public static function global_cookie_check_result()
     {
         $global_exit_cookie = Settings::instance()->global_cookie();
         $global_exit_cookie = ! empty($global_exit_cookie) ? absint($global_exit_cookie) : 0;

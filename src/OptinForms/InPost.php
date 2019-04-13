@@ -47,7 +47,7 @@ class InPost
             if ( ! OptinCampaignsRepository::is_test_mode($id)) {
 
                 // if optin global exit/interaction and success cookie result fails, move to next.
-                if ( ! Repository::global_cookie_check_result($id)) continue;
+                if ( ! Repository::global_cookie_check_result()) continue;
 
                 if ( ! apply_filters('mailoptin_show_optin_form', true, $id)) continue;
 

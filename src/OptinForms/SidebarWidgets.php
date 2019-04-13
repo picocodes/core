@@ -42,7 +42,7 @@ class SidebarWidgets extends \WP_Widget
         // is_customize_preview() takes care of showing the optin regardless of any display rules in customizer
         if (is_customize_preview() || ! OptinCampaignsRepository::is_test_mode($sidebar_optin_id)) {
 
-            if ( ! OCR::global_cookie_check_result($sidebar_optin_id)) return '';
+            if ( ! OCR::global_cookie_check_result()) return '';
 
             $sidebar_optin_uuid = OptinCampaignsRepository::get_optin_campaign_uuid($sidebar_optin_id);
 
