@@ -228,6 +228,41 @@ class OptinThemesRepository extends AbstractRepository
                 'flag'        => 'premium',
                 'optin_type'  => 'slidein',
                 'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/rescript-slidein.png'
+            ],
+            [
+                'name'        => 'Design 1',
+                'optin_class' => 'Design_1',
+                'flag'        => 'premium',
+                'optin_type'  => 'lightbox',
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/Design_1/design_1.png'
+            ],
+            [
+                'name'        => 'Design 2',
+                'optin_class' => 'Design_2',
+                'flag'        => 'premium',
+                'optin_type'  => 'lightbox',
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/Design_2/design_2.png'
+            ],
+            [
+                'name'        => 'Design 3',
+                'optin_class' => 'Design_3',
+                'flag'        => 'premium',
+                'optin_type'  => 'lightbox',
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/design_3.png'
+            ],
+            [
+                'name'        => 'Design 4',
+                'optin_class' => 'Design_4',
+                'flag'        => 'premium',
+                'optin_type'  => 'lightbox',
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/Design_4/design_4.png'
+            ],
+            [
+                'name'        => 'Design 5',
+                'optin_class' => 'Design_5',
+                'flag'        => 'premium',
+                'optin_type'  => 'lightbox',
+                'screenshot'  => MAILOPTIN_ASSETS_URL . 'images/optin-themes/design_5/image.png'
             ]
         ];
     }
